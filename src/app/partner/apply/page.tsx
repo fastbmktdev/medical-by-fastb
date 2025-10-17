@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { 
   BuildingStorefrontIcon,
   UserIcon,
@@ -11,10 +11,20 @@ import {
   DocumentTextIcon,
   PhotoIcon,
   CheckCircleIcon,
-  ExclamationTriangleIcon
+  ExclamationTriangleIcon,
+  ClockIcon
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import Image from "next/image";
+import { createClient } from "@/lib/supabase/client";
+import { User } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
+import TermsModal from "@/components/modals/TermsModal";
 
+/**
+ * Interface for partner application form data
+ * Maps to the gyms table in Supabase
+ */
 interface FormData {
   gymName: string;
   contactName: string;
@@ -27,11 +37,55 @@ interface FormData {
   termsAccepted: boolean;
 }
 
+/**
+ * Interface for form validation errors
+ */
 interface FormErrors {
   [key: string]: string;
 }
 
+
+/**
+ * Interface for gym data in Supabase
+ */
+interface GymData {
+  id?: string;
+  user_id: string;
+  gym_name: string;
+  contact_name: string;
+  phone: string;
+  email: string;
+  website?: string;
+  location: string;
+  gym_details?: string;
+  services: string[];
+  images?: string[];
+  status?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+/**
+ * Application status enum
+ */
+type ApplicationStatus = "pending" | "approved" | "rejected" | "none";
+
 export default function PartnerApplyPage() {
+  // Router for navigation
+  const router = useRouter();
+  
+  // Supabase client instance
+  const supabase = createClient();
+  
+  // Authentication and user state
+  const [user, setUser] = useState<User | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [applicationStatus, setApplicationStatus] = useState<ApplicationStatus>("none");
+  const [existingGym, setExistingGym] = useState<GymData | null>(null);
+
+  // Form state
   const [formData, setFormData] = useState<FormData>({
     gymName: "",
     contactName: "",
@@ -44,11 +98,21 @@ export default function PartnerApplyPage() {
     termsAccepted: false,
   });
 
+  // File upload state
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [fileErrors, setFileErrors] = useState<string[]>([]);
+  
+  // Form validation and submission state
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
+  // Terms modal state
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [marketingConsent, setMarketingConsent] = useState(false);
+
+  // Service options for gym types
   const serviceOptions = [
     "มวยไทย",
     "ฟิตเนส",
@@ -59,6 +123,96 @@ export default function PartnerApplyPage() {
     "คอร์สลดน้ำหนัก",
     "โยคะ/พิลาทิส"
   ];
+
+  /**
+   * Verify user authentication and check their role
+   * If authenticated, fetch their role and check for existing applications
+   */
+  const checkAuthAndRole = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      
+      // Get current session from Supabase
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError || !session) {
+        // User is not logged in, redirect to login page
+        router.push("/login?redirect=/partner/apply");
+        return;
+      }
+
+      const currentUser = session.user;
+      setUser(currentUser);
+
+      // Fetch user role from user_roles table
+      const { data: roleData, error: roleError } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", currentUser.id)
+        .single();
+
+      if (roleError) {
+        if (roleError.code === "PGRST116") {
+          // No rows returned - user doesn't have a role entry yet
+          console.log("No role found for user, defaulting to 'authenticated'");
+        } else if (roleError.code === "42P01") {
+          // Table doesn't exist
+          console.error("❌ user_roles table doesn't exist!");
+          console.error("Please run the migration: supabase/migrations/partner_application_setup.sql");
+          console.error("See MIGRATION_GUIDE.md for instructions");
+        } else {
+          // Other error
+          console.error("Error fetching user role:", roleError);
+          console.error("Error code:", roleError.code);
+          console.error("Error message:", roleError.message);
+        }
+      }
+
+      const currentRole = roleData?.role || "authenticated";
+      setUserRole(currentRole);
+
+      // Check if user already has a gym application
+      const { data: gymData, error: gymError } = await supabase
+        .from("gyms")
+        .select("*")
+        .eq("user_id", currentUser.id)
+        .single();
+
+      if (gymError) {
+        if (gymError.code === "PGRST116") {
+          // No rows returned - user doesn't have a gym application yet
+          console.log("No gym application found for user");
+        } else if (gymError.code === "42P01") {
+          // Table doesn't exist
+          console.error("❌ gyms table doesn't exist!");
+          console.error("Please run the migration: supabase/migrations/partner_application_setup.sql");
+          console.error("See MIGRATION_GUIDE.md for instructions");
+          setSubmitError("Database tables not set up. Please contact administrator.");
+        } else {
+          console.error("Error fetching gym data:", gymError);
+        }
+      } else if (gymData) {
+        // User already has an application
+        setExistingGym(gymData);
+        setApplicationStatus(gymData.status || "pending");
+      }
+
+    } catch (error) {
+      console.error("Authentication check error:", error);
+      router.push("/login?redirect=/partner/apply");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [router, supabase]);
+
+  /**
+   * Check authentication status and user role on component mount
+   * Redirects to login if not authenticated
+   * Fetches user role and existing gym application
+   */
+  useEffect(() => {
+    checkAuthAndRole();
+  }, [checkAuthAndRole]);
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
@@ -133,50 +287,242 @@ export default function PartnerApplyPage() {
     }));
   };
 
+  /**
+   * Handle file selection with validation
+   * Validates file type and size (max 5MB per file)
+   */
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const filesArray = Array.from(e.target.files);
-      setSelectedFiles((prev) => [...prev, ...filesArray]);
+      const newErrors: string[] = [];
+      const validFiles: File[] = [];
+
+      // Validate each file
+      filesArray.forEach((file) => {
+        // Check file type (jpg, jpeg, png only)
+        const validTypes = ["image/jpeg", "image/jpg", "image/png"];
+        if (!validTypes.includes(file.type)) {
+          newErrors.push(`${file.name}: ไฟล์ต้องเป็น JPG หรือ PNG เท่านั้น`);
+          return;
+        }
+
+        // Check file size (max 5MB)
+        const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+        if (file.size > maxSize) {
+          newErrors.push(`${file.name}: ขนาดไฟล์เกิน 5MB`);
+          return;
+        }
+
+        validFiles.push(file);
+      });
+
+      setFileErrors(newErrors);
+      setSelectedFiles((prev) => [...prev, ...validFiles]);
     }
   };
 
+  /**
+   * Remove a file from the selected files list
+   */
   const removeFile = (index: number) => {
     setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
+  /**
+   * Upload gym images to Supabase Storage
+   * Returns array of public URLs for uploaded images
+   */
+  const uploadImages = async (userId: string): Promise<string[]> => {
+    const uploadedUrls: string[] = [];
+
+    for (const file of selectedFiles) {
+      try {
+        // Generate unique file name
+        const fileExt = file.name.split(".").pop();
+        const fileName = `${userId}/${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+        
+        // Upload to Supabase Storage bucket 'gym-images'
+        const { error } = await supabase.storage
+          .from("gym-images")
+          .upload(fileName, file, {
+            cacheControl: "3600",
+            upsert: false,
+          });
+
+        if (error) {
+          console.error("Error uploading image:", error);
+          throw error;
+        }
+
+        // Get public URL for the uploaded image
+        const { data: urlData } = supabase.storage
+          .from("gym-images")
+          .getPublicUrl(fileName);
+
+        uploadedUrls.push(urlData.publicUrl);
+      } catch (error) {
+        console.error("Image upload failed:", error);
+        throw new Error("การอัปโหลดรูปภาพล้มเหลว");
+      }
+    }
+
+    return uploadedUrls;
+  };
+
+  /**
+   * Update user role to 'partner' in user_roles table
+   */
+  const updateUserRole = async (userId: string): Promise<void> => {
+    try {
+      // Check if user already has a role entry
+      const { data: existingRole } = await supabase
+        .from("user_roles")
+        .select("*")
+        .eq("user_id", userId)
+        .single();
+
+      if (existingRole) {
+        // Update existing role
+        const { error } = await supabase
+          .from("user_roles")
+          .update({ role: "partner" })
+          .eq("user_id", userId);
+
+        if (error) throw error;
+      } else {
+        // Insert new role
+        const { error } = await supabase
+          .from("user_roles")
+          .insert({ user_id: userId, role: "partner" });
+
+        if (error) throw error;
+      }
+    } catch (error) {
+      console.error("Error updating user role:", error);
+      throw new Error("ไม่สามารถอัปเดตบทบาทผู้ใช้ได้");
+    }
+  };
+
+  /**
+   * Handle form submission
+   * Shows terms modal instead of submitting immediately
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Validate form data
     if (!validateForm()) {
       return;
     }
 
-    setIsSubmitting(true);
+    // Check if user is authenticated
+    if (!user) {
+      setSubmitError("กรุณาเข้าสู่ระบบก่อนสมัคร");
+      return;
+    }
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    console.log("Form submitted:", formData);
-    console.log("Files:", selectedFiles);
-
-    setIsSubmitting(false);
-    setIsSuccess(true);
-
-    // Reset form
-    setFormData({
-      gymName: "",
-      contactName: "",
-      phone: "",
-      email: "",
-      website: "",
-      address: "",
-      description: "",
-      services: [],
-      termsAccepted: false,
-    });
-    setSelectedFiles([]);
+    // Show terms modal for user to accept
+    setShowTermsModal(true);
   };
 
+  /**
+   * Handle actual form submission after terms acceptance
+   * Uploads images, creates gym record, and updates user role
+   */
+  const handleTermsAccepted = async (hasMarketingConsent: boolean) => {
+    setShowTermsModal(false);
+    setMarketingConsent(hasMarketingConsent);
+
+    // Check if user is authenticated
+    if (!user) {
+      setSubmitError("กรุณาเข้าสู่ระบบก่อนสมัคร");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      // Step 1: Upload images to Supabase Storage
+      let imageUrls: string[] = [];
+      if (selectedFiles.length > 0) {
+        imageUrls = await uploadImages(user.id);
+      }
+
+      // Step 2: Insert gym data into gyms table
+      const gymData: Omit<GymData, "id"> = {
+        user_id: user.id,
+        gym_name: formData.gymName,
+        contact_name: formData.contactName,
+        phone: formData.phone,
+        email: formData.email,
+        website: formData.website || undefined,
+        location: formData.address,
+        gym_details: formData.description || undefined,
+        services: formData.services,
+        images: imageUrls,
+        status: "pending",
+      };
+
+      const { data: insertedGym, error: insertError } = await supabase
+        .from("gyms")
+        .insert(gymData)
+        .select()
+        .single();
+
+      if (insertError) {
+        throw new Error("ไม่สามารถบันทึกข้อมูลยิมได้: " + insertError.message);
+      }
+
+      // Step 3: Update user role to 'partner'
+      await updateUserRole(user.id);
+
+      // Success! Update state
+      setIsSuccess(true);
+      setUserRole("partner");
+      setExistingGym(insertedGym);
+      setApplicationStatus("pending");
+
+      // Reset form
+      setFormData({
+        gymName: "",
+        contactName: "",
+        phone: "",
+        email: "",
+        website: "",
+        address: "",
+        description: "",
+        services: [],
+        termsAccepted: false,
+      });
+      setSelectedFiles([]);
+
+    } catch (error) {
+      console.error("Submission error:", error);
+      const errorMessage = error instanceof Error ? error.message : "เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง";
+      setSubmitError(errorMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  /**
+   * Loading screen while checking authentication
+   */
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center bg-zinc-900 min-h-screen">
+        <div className="text-center">
+          <div className="inline-block mb-4 border-4 border-t-transparent border-red-600 rounded-full w-16 h-16 animate-spin"></div>
+          <p className="text-zinc-300 text-lg">กำลังโหลด...</p>
+        </div>
+      </div>
+    );
+  }
+
+  /**
+   * Success screen after form submission
+   */
   if (isSuccess) {
     return (
       <div className="bg-zinc-900 min-h-screen">
@@ -188,21 +534,139 @@ export default function PartnerApplyPage() {
             <h1 className="mb-4 font-bold text-white text-3xl md:text-4xl">
               สมัครสำเร็จ!
             </h1>
-            <p className="mb-8 text-zinc-300 text-xl leading-relaxed">
+            <p className="mb-4 text-zinc-300 text-xl leading-relaxed">
               ขอบคุณที่สนใจเข้าร่วมเป็น Partner Gym
-              <br />
+            </p>
+            <p className="mb-8 text-zinc-400 text-lg">
               กรุณารอแอดมินตรวจสอบและติดต่อกลับภายใน 3-5 วันทำการ
             </p>
+            <div className="bg-zinc-700 mb-8 p-4 rounded-lg">
+              <p className="text-zinc-300 text-sm">
+                <strong>สถานะ:</strong> <span className="text-yellow-400">รอการตรวจสอบ</span>
+              </p>
+            </div>
             <div className="flex sm:flex-row flex-col justify-center gap-4">
-              <button
-                onClick={() => setIsSuccess(false)}
-                className="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg font-semibold text-white transition-colors"
-              >
-                สมัครอีกครั้ง
-              </button>
               <Link
                 href="/"
-                className="bg-zinc-700 hover:bg-zinc-600 px-6 py-3 rounded-lg font-semibold text-white transition-colors"
+                className="inline-block bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg font-semibold text-white transition-colors"
+              >
+                กลับหน้าหลัก
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  /**
+   * Show application status if user already has a gym application
+   */
+  if (existingGym && applicationStatus !== "none") {
+    const statusColors = {
+      pending: { bg: "bg-yellow-500/20", border: "border-yellow-500", text: "text-yellow-400", label: "รอการตรวจสอบ" },
+      approved: { bg: "bg-green-500/20", border: "border-green-500", text: "text-green-400", label: "อนุมัติแล้ว" },
+      rejected: { bg: "bg-red-500/20", border: "border-red-500", text: "text-red-400", label: "ไม่อนุมัติ" },
+    };
+
+    const status = statusColors[applicationStatus as keyof typeof statusColors] || statusColors.pending;
+
+    return (
+      <div className="bg-zinc-900 min-h-screen">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8 py-16 max-w-4xl">
+          <div className="bg-zinc-800 shadow-2xl p-8 md:p-12 rounded-2xl">
+            <div className="flex items-center gap-4 mb-6">
+              <ClockIcon className="w-12 h-12 text-blue-500" />
+              <div>
+                <h1 className="font-bold text-white text-3xl md:text-4xl">
+                  สถานะการสมัคร Partner
+                </h1>
+                <p className="mt-1 text-zinc-400">ข้อมูลคำขอสมัครของคุณ</p>
+              </div>
+            </div>
+
+            <div className={`${status.bg} border-2 ${status.border} rounded-lg p-6 mb-8`}>
+              <div className="flex items-center gap-3 mb-2">
+                <div className={`w-3 h-3 rounded-full ${status.border.replace('border-', 'bg-')} animate-pulse`}></div>
+                <p className="font-semibold text-zinc-300 text-lg">
+                  สถานะ: <span className={status.text}>{status.label}</span>
+                </p>
+              </div>
+              {applicationStatus === "pending" && (
+                <p className="mt-2 text-zinc-400 text-sm">
+                  ทีมงานกำลังตรวจสอบข้อมูลของคุณ กรุณารอการติดต่อกลับภายใน 3-5 วันทำการ
+                </p>
+              )}
+              {applicationStatus === "approved" && (
+                <p className="mt-2 text-zinc-400 text-sm">
+                  ยินดีด้วย! คำขอของคุณได้รับการอนุมัติแล้ว ตอนนี้คุณเป็น Partner กับเราแล้ว
+                </p>
+              )}
+              {applicationStatus === "rejected" && (
+                <p className="mt-2 text-zinc-400 text-sm">
+                  ขออภัย คำขอของคุณไม่ผ่านการพิจารณา กรุณาติดต่อทีมงานเพื่อสอบถามเพิ่มเติม
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-4 bg-zinc-700 p-6 rounded-lg">
+              <h2 className="mb-4 font-semibold text-white text-xl">ข้อมูลที่ส่งมา</h2>
+              
+              <div className="gap-4 grid grid-cols-1 md:grid-cols-2">
+                <div>
+                  <p className="text-zinc-400 text-sm">ชื่อยิม</p>
+                  <p className="font-medium text-white">{existingGym.gym_name}</p>
+                </div>
+                <div>
+                  <p className="text-zinc-400 text-sm">ผู้ติดต่อ</p>
+                  <p className="font-medium text-white">{existingGym.contact_name}</p>
+                </div>
+                <div>
+                  <p className="text-zinc-400 text-sm">เบอร์โทรศัพท์</p>
+                  <p className="font-mono font-medium text-white">{existingGym.phone}</p>
+                </div>
+                <div>
+                  <p className="text-zinc-400 text-sm">อีเมล</p>
+                  <p className="font-mono font-medium text-white">{existingGym.email}</p>
+                </div>
+              </div>
+
+              {existingGym.services && existingGym.services.length > 0 && (
+                <div>
+                  <p className="mb-2 text-zinc-400 text-sm">บริการ</p>
+                  <div className="flex flex-wrap gap-2">
+                    {existingGym.services.map((service, index) => (
+                      <span key={index} className="bg-red-600/20 px-3 py-1 border border-red-500 rounded-full text-red-400 text-sm">
+                        {service}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {existingGym.images && existingGym.images.length > 0 && (
+                <div>
+                  <p className="mb-2 text-zinc-400 text-sm">รูปภาพ</p>
+                  <div className="gap-3 grid grid-cols-2 md:grid-cols-4">
+                    {existingGym.images.map((image, index) => (
+                      <div key={index} className="relative w-full h-24">
+                        <Image 
+                          src={image} 
+                          alt={`Gym image ${index + 1}`}
+                          fill
+                          className="rounded-lg object-cover"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="flex justify-center mt-8">
+              <Link
+                href="/"
+                className="inline-block bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg font-semibold text-white transition-colors"
               >
                 กลับหน้าหลัก
               </Link>
@@ -215,6 +679,14 @@ export default function PartnerApplyPage() {
 
   return (
     <div className="bg-zinc-900 min-h-screen">
+      {/* Terms Modal */}
+      <TermsModal
+        isOpen={showTermsModal}
+        onClose={() => setShowTermsModal(false)}
+        onAccept={handleTermsAccepted}
+        gymName={formData.gymName || "ยิมของคุณ"}
+      />
+
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-red-900/20 to-zinc-900">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-16 max-w-7xl">
@@ -492,11 +964,23 @@ export default function PartnerApplyPage() {
                   <input
                     type="file"
                     multiple
-                    accept="image/*"
+                    accept="image/jpeg,image/jpg,image/png"
                     onChange={handleFileChange}
                     className="hidden"
                   />
                 </label>
+
+                {/* File Upload Errors */}
+                {fileErrors.length > 0 && (
+                  <div className="space-y-1 mt-3">
+                    {fileErrors.map((error, index) => (
+                      <p key={index} className="flex items-center gap-1 text-red-400 text-sm">
+                        <ExclamationTriangleIcon className="w-4 h-4" />
+                        {error}
+                      </p>
+                    ))}
+                  </div>
+                )}
 
                 {/* Selected Files */}
                 {selectedFiles.length > 0 && (
@@ -508,7 +992,7 @@ export default function PartnerApplyPage() {
                       >
                         <div className="flex items-center gap-3">
                           <PhotoIcon className="w-5 h-5 text-blue-400" />
-                          <span className="font-mono text-white text-sm">
+                          <span className="max-w-[200px] font-mono text-white text-sm truncate">
                             {file.name}
                           </span>
                           <span className="text-zinc-500 text-xs">
@@ -560,6 +1044,19 @@ export default function PartnerApplyPage() {
               </p>
             )}
           </div>
+
+          {/* Submit Error Display */}
+          {submitError && (
+            <div className="bg-red-500/20 p-4 border-2 border-red-500 rounded-lg">
+              <div className="flex items-center gap-3">
+                <ExclamationTriangleIcon className="flex-shrink-0 w-6 h-6 text-red-400" />
+                <div>
+                  <p className="font-semibold text-red-400">เกิดข้อผิดพลาด</p>
+                  <p className="mt-1 text-red-300 text-sm">{submitError}</p>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Submit Button */}
           <div className="pt-4">

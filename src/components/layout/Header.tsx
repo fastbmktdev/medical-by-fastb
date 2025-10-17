@@ -1,8 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { 
+  ChevronDownIcon, 
+  UserCircleIcon, 
+  ArrowRightOnRectangleIcon,
+  HomeIcon,
+  BuildingStorefrontIcon,
+  ShieldCheckIcon,
+} from "@heroicons/react/24/outline";
+import { useAuth } from "@/contexts/AuthContext";
+import { getUserRole, UserRole, getDashboardPath, ROLE_NAMES } from "@/lib/auth-utils.client";
 
 type NavLink =
   | {
@@ -17,11 +27,55 @@ type NavLink =
     };
 
 export default function Header() {
+  // Router for navigation
+  const router = useRouter();
+  
+  // Authentication context
+  const { user, signOut } = useAuth();
+  
+  // UI state
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLangDropdownOpen, setLangDropdownOpen] = useState(false);
   const [isInfoMenuOpen, setInfoMenuOpen] = useState(false);
-
+  const [isUserMenuOpen, setUserMenuOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState("TH");
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [userRole, setUserRole] = useState<UserRole | null>(null);
+
+  /**
+   * Fetch user role when user changes
+   */
+  useEffect(() => {
+    async function fetchUserRole() {
+      if (user) {
+        const role = await getUserRole(user.id);
+        setUserRole(role);
+      } else {
+        setUserRole(null);
+      }
+    }
+    fetchUserRole();
+  }, [user]);
+
+  /**
+   * Handle user logout
+   * Signs out user and redirects to home page
+   */
+  const handleLogout = async () => {
+    try {
+      setIsLoggingOut(true);
+      await signOut();
+      setUserMenuOpen(false);
+      setIsMobileMenuOpen(false);
+      router.push("/");
+      router.refresh();
+    } catch (error) {
+      console.error("Logout error:", error);
+      alert("เกิดข้อผิดพลาดในการออกจากระบบ กรุณาลองใหม่อีกครั้ง");
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
 
   const navLinks: NavLink[] = [
     { text: "ค่ายมวย", href: "/gyms" },
@@ -94,6 +148,102 @@ export default function Header() {
           </div>
 
           <div className="flex items-center gap-2">
+            {/* User Menu (Desktop) */}
+            {user ? (
+              <div className="hidden md:block relative">
+                <button
+                  onClick={() => setUserMenuOpen((o) => !o)}
+                  className="flex items-center gap-2 hover:bg-white/5 px-3 border border-white/20 rounded h-10 transition-colors"
+                >
+                  <UserCircleIcon className="w-5 h-5" />
+                  <span className="max-w-[100px] text-sm truncate">
+                    {user.user_metadata?.full_name || user.email?.split("@")[0]}
+                  </span>
+                  <ChevronDownIcon className="w-4 h-4" />
+                </button>
+                {isUserMenuOpen && (
+                  <div className="right-0 absolute bg-zinc-800 shadow-lg mt-2 border border-white/10 rounded-md w-56">
+                    <div className="py-1">
+                      {/* User Info */}
+                      <div className="px-4 py-2 border-white/10 border-b">
+                        <p className="font-medium text-white/90 text-sm truncate">
+                          {user.user_metadata?.full_name || "ผู้ใช้งาน"}
+                        </p>
+                        <p className="text-white/60 text-xs truncate">
+                          {user.email}
+                        </p>
+                        {userRole && (
+                          <div className="flex items-center gap-1 mt-2">
+                            <span className="inline-block bg-red-500/20 px-2 py-0.5 rounded text-red-400 text-xs">
+                              {ROLE_NAMES[userRole]}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Dashboard Link - Role-based */}
+                      {userRole && (
+                        <Link
+                          href={getDashboardPath(userRole)}
+                          className="flex items-center gap-2 hover:bg-white/5 px-4 py-2 text-white/80 text-sm"
+                          onClick={() => setUserMenuOpen(false)}
+                        >
+                          {userRole === 'admin' && <ShieldCheckIcon className="w-4 h-4" />}
+                          {userRole === 'partner' && <BuildingStorefrontIcon className="w-4 h-4" />}
+                          {userRole === 'authenticated' && <HomeIcon className="w-4 h-4" />}
+                          แดชบอร์ด
+                        </Link>
+                      )}
+
+                      {/* Apply for Partner - Show only for authenticated users */}
+                      {userRole === 'authenticated' && (
+                        <Link
+                          href="/partner/apply"
+                          className="flex items-center gap-2 hover:bg-white/5 px-4 py-2 text-white/80 text-sm"
+                          onClick={() => setUserMenuOpen(false)}
+                        >
+                          <BuildingStorefrontIcon className="w-4 h-4" />
+                          สมัคร Partner
+                        </Link>
+                      )}
+
+                      {/* Admin Link - Show only for admins */}
+                      {userRole === 'admin' && (
+                        <>
+                          <Link
+                            href="/admin/users"
+                            className="flex items-center gap-2 hover:bg-white/5 px-4 py-2 text-white/80 text-sm"
+                            onClick={() => setUserMenuOpen(false)}
+                          >
+                            <UserCircleIcon className="w-4 h-4" />
+                            จัดการผู้ใช้
+                          </Link>
+                          <div className="my-1 border-white/10 border-t"></div>
+                        </>
+                      )}
+
+                      {/* Logout */}
+                      <button
+                        onClick={handleLogout}
+                        disabled={isLoggingOut}
+                        className="flex items-center gap-2 hover:bg-white/5 disabled:opacity-50 px-4 py-2 w-full text-white/80 text-sm text-left"
+                      >
+                        <ArrowRightOnRectangleIcon className="w-4 h-4" />
+                        {isLoggingOut ? "กำลังออกจากระบบ..." : "ออกจากระบบ"}
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="hidden md:inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 px-4 rounded h-10 font-medium text-white text-sm transition-colors"
+              >
+                <UserCircleIcon className="w-5 h-5" />
+                เข้าสู่ระบบ
+              </Link>
+            )}
 
             {/* Language Switcher */}
             <div className="relative">
@@ -202,26 +352,85 @@ export default function Header() {
               )
             )}
 
+            {/* User Menu (Mobile) */}
             <div className="pt-4 border-white/10 border-t">
-              <Link
-                href="/login"
-                className="flex justify-center items-center gap-2 bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded font-medium text-white text-sm transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  className="w-5 h-5"
+              {user ? (
+                <div className="space-y-2">
+                  {/* User Info */}
+                  <div className="bg-zinc-800 px-4 py-3 rounded">
+                    <p className="font-medium text-white text-sm truncate">
+                      {user.user_metadata?.full_name || "ผู้ใช้งาน"}
+                    </p>
+                    <p className="text-white/60 text-xs truncate">
+                      {user.email}
+                    </p>
+                    {userRole && (
+                      <div className="flex items-center gap-1 mt-2">
+                        <span className="inline-block bg-red-500/20 px-2 py-0.5 rounded text-red-400 text-xs">
+                          {ROLE_NAMES[userRole]}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Dashboard Link - Role-based */}
+                  {userRole && (
+                    <Link
+                      href={getDashboardPath(userRole)}
+                      className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded font-medium text-white text-sm transition-colors"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {userRole === 'admin' && <ShieldCheckIcon className="w-5 h-5" />}
+                      {userRole === 'partner' && <BuildingStorefrontIcon className="w-5 h-5" />}
+                      {userRole === 'authenticated' && <HomeIcon className="w-5 h-5" />}
+                      <span>แดชบอร์ด</span>
+                    </Link>
+                  )}
+
+                  {/* Apply for Partner - Show only for authenticated users */}
+                  {userRole === 'authenticated' && (
+                    <Link
+                      href="/partner/apply"
+                      className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded font-medium text-white text-sm transition-colors"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <BuildingStorefrontIcon className="w-5 h-5" />
+                      <span>สมัคร Partner</span>
+                    </Link>
+                  )}
+
+                  {/* Admin Link - Show only for admins */}
+                  {userRole === 'admin' && (
+                    <Link
+                      href="/admin/users"
+                      className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded font-medium text-white text-sm transition-colors"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <UserCircleIcon className="w-5 h-5" />
+                      <span>จัดการผู้ใช้</span>
+                    </Link>
+                  )}
+
+                  {/* Logout Button */}
+                  <button
+                    onClick={handleLogout}
+                    disabled={isLoggingOut}
+                    className="flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 disabled:bg-red-400 px-4 py-2 rounded w-full font-medium text-white text-sm transition-colors"
+                  >
+                    <ArrowRightOnRectangleIcon className="w-5 h-5" />
+                    <span>{isLoggingOut ? "กำลังออกจากระบบ..." : "ออกจากระบบ"}</span>
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className="flex justify-center items-center gap-2 bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded font-medium text-white text-sm transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span>เข้าสู่ระบบ / สมัคร</span>
-              </Link>
+                  <UserCircleIcon className="w-5 h-5" />
+                  <span>เข้าสู่ระบบ / สมัคร</span>
+                </Link>
+              )}
             </div>
 
             <div className="pt-4 border-white/10 border-t">
