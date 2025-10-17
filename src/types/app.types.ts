@@ -1,5 +1,3 @@
-// Application Types (without Strapi dependency)
-
 export interface Gym {
   id: number;
   slug: string;

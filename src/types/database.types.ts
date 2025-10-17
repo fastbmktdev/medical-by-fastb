@@ -27,6 +27,32 @@ export interface Post {
   updated_at: string;
 }
 
+// User Roles Table
+export interface UserRole {
+  user_id: string;
+  role: 'authenticated' | 'partner' | 'admin';
+  created_at: string;
+  updated_at: string;
+}
+
+// Gyms Table (Partner Applications)
+export interface Gym {
+  id: string;
+  user_id: string;
+  gym_name: string;
+  contact_name: string;
+  phone: string;
+  email: string;
+  website?: string;
+  location: string;
+  gym_details?: string;
+  services: string[];
+  images: string[];
+  status: 'pending' | 'approved' | 'rejected';
+  created_at: string;
+  updated_at: string;
+}
+
 // Form Data Types
 export interface CreateTodoInput {
   task: string;
