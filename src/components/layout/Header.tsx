@@ -70,6 +70,7 @@ export default function Header() {
       router.push("/");
       router.refresh();
     } catch (error) {
+      console.error('Check error:', error);
       alert("เกิดข้อผิดพลาดในการออกจากระบบ กรุณาลองใหม่อีกครั้ง");
     } finally {
       setIsLoggingOut(false);

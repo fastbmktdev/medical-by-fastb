@@ -64,6 +64,7 @@ export default function RoleGuard({
         // User is authorized
         setIsAuthorized(true);
       } catch (error) {
+        console.error('Role check error:', error);
         router.push('/login');
       } finally {
         setIsLoading(false);

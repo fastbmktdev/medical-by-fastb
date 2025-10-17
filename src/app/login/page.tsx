@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
@@ -31,22 +31,13 @@ interface FormErrors {
 }
 
 /**
- * Login Page Component
- * Allows users to authenticate with email and password using Supabase Auth
- * 
- * Features:
- * - Email/password authentication
- * - Form validation
- * - Error handling
- * - Redirect to previous page or dashboard after login
- * - Auto-redirect if already authenticated
- * - Password visibility toggle
- * - Link to signup and password reset
+ * Login Form Component
+ * Internal component that handles the actual login logic
  */
-export default function LoginPage() {
+function LoginForm() {
   // Router for navigation
   const router = useRouter();
-  
+
   // Get search params for redirect
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirect") || "/";
@@ -80,6 +71,7 @@ export default function LoginPage() {
           router.push(redirectTo);
         }
       } catch (error) {
+        console.log(error);
         // Silently handle errors
       } finally {
         setIsCheckingAuth(false);
@@ -182,6 +174,7 @@ export default function LoginPage() {
         router.refresh(); // Refresh to update server components
       }
     } catch (error) {
+      console.log(error)
       setErrors({
         general: "เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง",
       });
@@ -365,6 +358,36 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+/**
+ * Login Page Component
+ * Allows users to authenticate with email and password using Supabase Auth
+ *
+ * Features:
+ * - Email/password authentication
+ * - Form validation
+ * - Error handling
+ * - Redirect to previous page or dashboard after login
+ * - Auto-redirect if already authenticated
+ * - Password visibility toggle
+ * - Link to signup and password reset
+ */
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex justify-center items-center bg-zinc-900 min-h-screen">
+          <div className="text-center">
+            <div className="inline-block mb-4 border-4 border-t-transparent border-red-600 rounded-full w-16 h-16 animate-spin"></div>
+            <p className="text-zinc-300 text-lg">กำลังโหลด...</p>
+          </div>
+        </div>
+      }
+    >
+      <LoginForm />
+    </Suspense>
   );
 }
 

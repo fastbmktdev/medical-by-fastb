@@ -4,7 +4,10 @@
       "Bash(rm:*)",
       "Bash(npm install)",
       "Bash(npm run dev:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(npm run build:*)",
+      "Bash(next build)",
+      "Bash(npx next build)"
     ],
     "deny": [],
     "ask": []
