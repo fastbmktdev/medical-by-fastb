@@ -9,6 +9,16 @@ export async function updateSession(request: NextRequest) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
+  // If Supabase is not configured or using placeholder values, skip auth
+  if (!supabaseUrl ||
+      !supabaseAnonKey ||
+      supabaseUrl === 'your-project-url' ||
+      supabaseUrl === 'https://placeholder.supabase.co' ||
+      supabaseAnonKey === 'your-anon-key' ||
+      supabaseAnonKey === 'placeholder-anon-key') {
+    return supabaseResponse;
+  }
+
   const supabase = createServerClient(
     supabaseUrl,
     supabaseAnonKey,

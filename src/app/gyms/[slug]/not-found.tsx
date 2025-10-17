@@ -1,0 +1,25 @@
+import Link from "next/link";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+
+export default function GymNotFound() {
+  return (
+    <div className="flex justify-center items-center bg-zinc-900 px-4 min-h-screen">
+      <div className="text-center">
+        <ExclamationTriangleIcon className="mx-auto mb-6 w-20 h-20 text-yellow-500" />
+        <h1 className="mb-4 font-bold text-white text-4xl">
+          ไม่พบค่ายมวยที่คุณค้นหา
+        </h1>
+        <p className="mb-8 text-zinc-400 text-xl">
+          ขออภัย เราไม่พบค่ายมวยที่คุณกำลังมองหา
+        </p>
+        <Link
+          href="/gyms"
+          className="inline-block bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg font-semibold text-white transition-colors"
+        >
+          กลับไปหน้ารายการค่ายมวย
+        </Link>
+      </div>
+    </div>
+  );
+}
+
