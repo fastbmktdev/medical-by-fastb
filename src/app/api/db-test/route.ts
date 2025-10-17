@@ -51,9 +51,9 @@ export async function GET() {
       WHERE table_schema = 'public'
       AND table_name IN ('user_roles', 'gyms', 'profiles')
       ORDER BY table_name
-    `;
+    ` as Array<{ table_name: string }>;
 
-    const existingTableNames = requiredTables.map((row: { tableName: string }) => row.tableName);
+    const existingTableNames = requiredTables.map(row => row.table_name);
     const missingTables = ['user_roles', 'gyms', 'profiles'].filter(
       table => !existingTableNames.includes(table)
     );
