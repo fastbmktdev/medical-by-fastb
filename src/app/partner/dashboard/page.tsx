@@ -51,6 +51,7 @@ function PartnerDashboardContent() {
   const [user, setUser] = useState<{ email?: string } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [editFormData, setEditFormData] = useState({
     gym_name: '',
     contact_name: '',
@@ -93,6 +94,7 @@ function PartnerDashboardContent() {
   const handleSaveProfile = async () => {
     if (!gym) return;
 
+    setIsSaving(true);
     try {
       const { error } = await supabase
         .from('gyms')
@@ -112,6 +114,8 @@ function PartnerDashboardContent() {
       alert('บันทึกข้อมูลสำเร็จ!');
     } catch {
       alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -470,8 +474,10 @@ function PartnerDashboardContent() {
                   size="sm"
                   color="secondary"
                   onPress={handleSaveProfile}
+                  isLoading={isSaving}
+                  isDisabled={isSaving}
                 >
-                  บันทึก
+                  {isSaving ? 'กำลังบันทึก...' : 'บันทึก'}
                 </Button>
               </div>
             )}

@@ -37,6 +37,7 @@ function GymPageContent() {
   const [user, setUser] = useState<{ email?: string } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [editFormData, setEditFormData] = useState({
     gym_name: '',
     contact_name: '',
@@ -79,6 +80,7 @@ function GymPageContent() {
   const handleSaveProfile = async () => {
     if (!gym) return;
 
+    setIsSaving(true);
     try {
       const { error } = await supabase
         .from('gyms')
@@ -98,6 +100,8 @@ function GymPageContent() {
       alert('บันทึกข้อมูลสำเร็จ!');
     } catch {
       alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -238,8 +242,10 @@ function GymPageContent() {
                 size="sm"
                 color="secondary"
                 onPress={handleSaveProfile}
+                isLoading={isSaving}
+                isDisabled={isSaving}
               >
-                บันทึก
+                {isSaving ? 'กำลังบันทึก...' : 'บันทึก'}
               </Button>
             </div>
           )}
