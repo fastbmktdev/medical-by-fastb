@@ -53,7 +53,6 @@ function FavoritesContent() {
   }, [supabase]);
 
   const menuItems: MenuItem[] = [
-    { label: 'ภาพรวม', href: '/dashboard', icon: HomeIcon },
     { label: 'การจองของฉัน', href: '/dashboard/bookings', icon: CalendarIcon },
     { label: 'รายการโปรด', href: '/dashboard/favorites', icon: HeartIcon },
     { label: 'ประวัติการเงิน', href: '/dashboard/transactions', icon: BanknotesIcon },
@@ -217,7 +216,7 @@ function FavoritesContent() {
                       <p className="text-default-400 text-sm">{gym.location}</p>
                     </div>
                     <div className="flex items-center gap-2 mb-3">
-                      <StarIcon className="w-4 h-4 text-warning fill-warning" />
+                      <StarIcon className="fill-warning w-4 h-4 text-warning" />
                       <span className="font-semibold text-white">{gym.rating}</span>
                       <span className="text-default-400 text-sm">({gym.reviews} รีวิว)</span>
                     </div>

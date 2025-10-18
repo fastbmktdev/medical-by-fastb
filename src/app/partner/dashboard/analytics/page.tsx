@@ -36,7 +36,6 @@ function PartnerAnalyticsContent() {
   }, [supabase]);
 
   const menuItems: MenuItem[] = [
-    { label: 'ภาพรวม', href: '/partner/dashboard', icon: HomeIcon },
     { label: 'ข้อมูลยิม', href: '/partner/dashboard/gym', icon: BuildingStorefrontIcon },
     { label: 'ประวัติการจอง', href: '/partner/dashboard/bookings', icon: CalendarIcon },
     { label: 'รายการธุรกรรม', href: '/partner/dashboard/transactions', icon: BanknotesIcon },
@@ -134,7 +133,7 @@ function PartnerAnalyticsContent() {
           </CardHeader>
           <CardBody className="justify-center items-center min-h-[300px]">
             <ChartBarIcon className="mb-4 w-16 h-16 text-default-300" />
-            <p className="text-center text-default-400">กราฟจะแสดงเมื่อมีข้อมูล</p>
+            <p className="text-default-400 text-center">กราฟจะแสดงเมื่อมีข้อมูล</p>
           </CardBody>
         </Card>
 
@@ -144,7 +143,7 @@ function PartnerAnalyticsContent() {
           </CardHeader>
           <CardBody className="justify-center items-center min-h-[300px]">
             <TrophyIcon className="mb-4 w-16 h-16 text-default-300" />
-            <p className="text-center text-default-400">ข้อมูลจะแสดงเมื่อมีการจอง</p>
+            <p className="text-default-400 text-center">ข้อมูลจะแสดงเมื่อมีการจอง</p>
           </CardBody>
         </Card>
       </div>

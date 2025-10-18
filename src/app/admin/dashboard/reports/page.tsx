@@ -38,7 +38,6 @@ function AdminReportsContent() {
   }, [supabase]);
 
   const menuItems: MenuItem[] = [
-    { label: 'ภาพรวม', href: '/admin/dashboard', icon: HomeIcon },
     { label: 'จัดการผู้ใช้', href: '/admin/dashboard/users', icon: UsersIcon },
     { label: 'จัดการยิม', href: '/admin/dashboard/gyms', icon: BuildingStorefrontIcon },
     { label: 'อนุมัติยิม', href: '/admin/dashboard/approvals', icon: ClockIcon },

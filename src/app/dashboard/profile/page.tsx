@@ -54,7 +54,6 @@ function ProfileContent() {
   }, [supabase]);
 
   const menuItems: MenuItem[] = [
-    { label: 'ภาพรวม', href: '/dashboard', icon: HomeIcon },
     { label: 'การจองของฉัน', href: '/dashboard/bookings', icon: CalendarIcon },
     { label: 'รายการโปรด', href: '/dashboard/favorites', icon: HeartIcon },
     { label: 'ประวัติการเงิน', href: '/dashboard/transactions', icon: BanknotesIcon },
@@ -128,11 +127,11 @@ function ProfileContent() {
                 <p className="mb-3 text-default-400 text-sm">{user?.email}</p>
               </div>
               <div className="space-y-2 w-full">
-                <div className="flex justify-between items-center px-4 py-2 bg-white/5 rounded-lg">
+                <div className="flex justify-between items-center bg-white/5 px-4 py-2 rounded-lg">
                   <span className="text-default-400 text-sm">สถานะบัญชี</span>
                   <span className="font-semibold text-success text-sm">ใช้งานอยู่</span>
                 </div>
-                <div className="flex justify-between items-center px-4 py-2 bg-white/5 rounded-lg">
+                <div className="flex justify-between items-center bg-white/5 px-4 py-2 rounded-lg">
                   <span className="text-default-400 text-sm">สมาชิกตั้งแต่</span>
                   <span className="font-mono text-white text-sm">
                     {user?.created_at ? new Date(user.created_at).toLocaleDateString('th-TH') : '-'}
@@ -144,7 +143,7 @@ function ProfileContent() {
         </div>
 
         {/* Profile Information */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="space-y-6 lg:col-span-2">
           {/* Personal Information */}
           <Card className="bg-default-100/50 backdrop-blur-sm border-none">
             <CardHeader className="flex justify-between items-center">
@@ -286,7 +285,7 @@ function ProfileContent() {
           </Card>
 
           {/* Danger Zone */}
-          <Card className="border-danger/30 bg-danger/5 backdrop-blur-sm border">
+          <Card className="bg-danger/5 backdrop-blur-sm border border-danger/30">
             <CardHeader>
               <h3 className="font-bold text-danger text-xl">โซนอันตราย</h3>
             </CardHeader>

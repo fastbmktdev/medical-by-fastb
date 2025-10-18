@@ -45,7 +45,6 @@ function AdminSettingsContent() {
   }, [supabase]);
 
   const menuItems: MenuItem[] = [
-    { label: 'ภาพรวม', href: '/admin/dashboard', icon: HomeIcon },
     { label: 'จัดการผู้ใช้', href: '/admin/dashboard/users', icon: UsersIcon },
     { label: 'จัดการยิม', href: '/admin/dashboard/gyms', icon: BuildingStorefrontIcon },
     { label: 'อนุมัติยิม', href: '/admin/dashboard/approvals', icon: ClockIcon },
@@ -208,7 +207,7 @@ function AdminSettingsContent() {
         </Card>
 
         {/* Security */}
-        <Card className="bg-default-100/50 backdrop-blur-sm lg:col-span-2 border-none">
+        <Card className="lg:col-span-2 bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader className="flex items-center gap-3">
             <ShieldCheckIcon className="w-6 h-6 text-danger" />
             <h3 className="font-bold text-white text-xl">ความปลอดภัย</h3>
@@ -236,7 +235,7 @@ function AdminSettingsContent() {
         </Card>
 
         {/* Save Button */}
-        <div className="lg:col-span-2 flex justify-end">
+        <div className="flex justify-end lg:col-span-2">
           <Button color="danger" size="lg">
             บันทึกการตั้งค่า
           </Button>

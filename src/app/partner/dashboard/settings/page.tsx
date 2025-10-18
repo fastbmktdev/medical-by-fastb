@@ -40,7 +40,6 @@ function PartnerSettingsContent() {
   }, [supabase]);
 
   const menuItems: MenuItem[] = [
-    { label: 'ภาพรวม', href: '/partner/dashboard', icon: HomeIcon },
     { label: 'ข้อมูลยิม', href: '/partner/dashboard/gym', icon: BuildingStorefrontIcon },
     { label: 'ประวัติการจอง', href: '/partner/dashboard/bookings', icon: CalendarIcon },
     { label: 'รายการธุรกรรม', href: '/partner/dashboard/transactions', icon: BanknotesIcon },
@@ -136,7 +135,7 @@ function PartnerSettingsContent() {
         </Card>
 
         {/* Bank Account */}
-        <Card className="bg-default-100/50 backdrop-blur-sm lg:col-span-2 border-none">
+        <Card className="lg:col-span-2 bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader className="flex items-center gap-3">
             <BanknotesIcon className="w-6 h-6 text-secondary" />
             <h3 className="font-bold text-white text-xl">บัญชีธนาคาร</h3>

@@ -56,7 +56,6 @@ function BookingsContent() {
   }, [supabase]);
 
   const menuItems: MenuItem[] = [
-    { label: 'ภาพรวม', href: '/dashboard', icon: HomeIcon },
     { label: 'การจองของฉัน', href: '/dashboard/bookings', icon: CalendarIcon },
     { label: 'รายการโปรด', href: '/dashboard/favorites', icon: HeartIcon },
     { label: 'ประวัติการเงิน', href: '/dashboard/transactions', icon: BanknotesIcon },
