@@ -15,7 +15,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   return (
     <div className="min-h-(calc(100vh_-_128px)) flex flex-col">
       {!hideHeaderFooter && <Header />}
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 mt-16">{children}</main>
       {!hideHeaderFooter && <Footer />}
     </div>
   );

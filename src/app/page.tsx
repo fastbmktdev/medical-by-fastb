@@ -6,7 +6,7 @@ import { GYMS, EVENTS, PRODUCTS } from "@/lib/data";
 
 export default function Home() {
   return (
-    <main>
+    <main className="mt-16">
       {/* Hero Section with Video */}
       <HeroSection />
 

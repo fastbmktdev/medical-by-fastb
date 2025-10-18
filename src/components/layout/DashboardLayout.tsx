@@ -303,7 +303,7 @@ export default function DashboardLayout({
         </div>
 
         {/* Content */}
-        <main className="flex-1 px-4 sm:px-6 lg:px-8 py-8">
+        <main className="flex-1 mt-16 px-4 sm:px-6 lg:px-8 py-8">
           <div className="mx-auto max-w-7xl">
             {children}
           </div>

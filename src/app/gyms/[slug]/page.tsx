@@ -12,6 +12,8 @@ import {
   CurrencyDollarIcon,
   ClockIcon,
   ArrowLeftIcon,
+  ChevronRightIcon,
+  HomeIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -60,9 +62,32 @@ export default function GymDetailPage({
 
   return (
     <div className="bg-zinc-900 min-h-screen">
-      {/* Back Button */}
+      {/* Breadcrumb & Back Button */}
       <div className="bg-zinc-800 border-zinc-700 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-7xl">
+          {/* Breadcrumb */}
+          <nav className="flex items-center gap-2 mb-3 text-sm">
+            <Link
+              href="/"
+              className="flex items-center gap-1 text-zinc-400 hover:text-white transition-colors"
+            >
+              <HomeIcon className="w-4 h-4" />
+              <span>หน้าแรก</span>
+            </Link>
+            <ChevronRightIcon className="w-4 h-4 text-zinc-600" />
+            <Link
+              href="/gyms"
+              className="text-zinc-400 hover:text-white transition-colors"
+            >
+              ค่ายมวย
+            </Link>
+            <ChevronRightIcon className="w-4 h-4 text-zinc-600" />
+            <span className="font-medium text-white">
+              {gym.gym_name}
+            </span>
+          </nav>
+
+          {/* Back Button */}
           <Link
             href="/gyms"
             className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
@@ -336,26 +361,14 @@ export default function GymDetailPage({
               {/* CTA */}
               <div className="bg-gradient-to-r from-red-600 to-red-700 p-6 rounded-lg text-center">
                 <h3 className="mb-2 font-bold text-white text-xl">
-                  พร้อมที่จะเริ่มต้น?
+                  ต้องการใช้บริการค่ายมวย
                 </h3>
-                <p className="mb-4 text-white/80 text-sm">
-                  ติดต่อค่ายมวยเพื่อจองและสอบถามข้อมูลเพิ่มเติม
-                </p>
-                {gym.phone ? (
-                  <a
-                    href={`tel:${gym.phone}`}
-                    className="block bg-white hover:bg-zinc-100 px-6 py-3 rounded-lg w-full font-semibold text-red-600 transition-colors"
-                  >
-                    จองค่ายมวย
-                  </a>
-                ) : (
-                  <Link
-                    href="/contact"
-                    className="block bg-white hover:bg-zinc-100 px-6 py-3 rounded-lg w-full font-semibold text-red-600 transition-colors"
-                  >
-                    ติดต่อเรา
-                  </Link>
-                )}
+                <Link
+                  href={`/gyms/${gym.slug}/booking`}
+                  className="block bg-white hover:bg-zinc-100 px-6 py-3 rounded-lg w-full font-semibold text-red-600 transition-colors"
+                >
+                  จองค่ายมวย
+                </Link>
               </div>
             </div>
           </div>
