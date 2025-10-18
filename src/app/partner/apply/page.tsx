@@ -68,7 +68,7 @@ interface GymData {
 /**
  * Application status enum
  */
-type ApplicationStatus = "pending" | "approved" | "rejected" | "none";
+type ApplicationStatus = "pending" | "approved" | "denied" | "none";
 
 export default function PartnerApplyPage() {
   // Router for navigation
@@ -110,7 +110,6 @@ export default function PartnerApplyPage() {
 
   // Terms modal state
   const [showTermsModal, setShowTermsModal] = useState(false);
-  const [marketingConsent, setMarketingConsent] = useState(false);
 
   // Service options for gym types
   const serviceOptions = [
@@ -176,7 +175,7 @@ export default function PartnerApplyPage() {
         setApplicationStatus(gymData.status || "pending");
       }
 
-    } catch (error) {
+    } catch {
       router.push("/login?redirect=/partner/apply");
     } finally {
       setIsLoading(false);
@@ -337,7 +336,7 @@ export default function PartnerApplyPage() {
           .getPublicUrl(fileName);
 
         uploadedUrls.push(urlData.publicUrl);
-      } catch (error) {
+      } catch {
         throw new Error("การอัปโหลดรูปภาพล้มเหลว");
       }
     }
@@ -346,37 +345,9 @@ export default function PartnerApplyPage() {
   };
 
   /**
-   * Update user role to 'partner' in user_roles table
+   * NOTE: Role promotion removed - role will be updated to 'partner' only when admin approves
+   * User will remain 'authenticated' until approval
    */
-  const updateUserRole = async (userId: string): Promise<void> => {
-    try {
-      // Check if user already has a role entry
-      const { data: existingRole } = await supabase
-        .from("user_roles")
-        .select("*")
-        .eq("user_id", userId)
-        .single();
-
-      if (existingRole) {
-        // Update existing role
-        const { error } = await supabase
-          .from("user_roles")
-          .update({ role: "partner" })
-          .eq("user_id", userId);
-
-        if (error) throw error;
-      } else {
-        // Insert new role
-        const { error } = await supabase
-          .from("user_roles")
-          .insert({ user_id: userId, role: "partner" });
-
-        if (error) throw error;
-      }
-    } catch (error) {
-      throw new Error("ไม่สามารถอัปเดตบทบาทผู้ใช้ได้");
-    }
-  };
 
   /**
    * Handle form submission
@@ -404,9 +375,8 @@ export default function PartnerApplyPage() {
    * Handle actual form submission after terms acceptance
    * Uploads images, creates gym record, and updates user role
    */
-  const handleTermsAccepted = async (hasMarketingConsent: boolean) => {
+  const handleTermsAccepted = async () => {
     setShowTermsModal(false);
-    setMarketingConsent(hasMarketingConsent);
 
     // Check if user is authenticated
     if (!user) {
@@ -449,12 +419,9 @@ export default function PartnerApplyPage() {
         throw new Error("ไม่สามารถบันทึกข้อมูลยิมได้: " + insertError.message);
       }
 
-      // Step 3: Update user role to 'partner'
-      await updateUserRole(user.id);
-
       // Success! Update state
+      // Note: User role remains 'authenticated' until admin approves
       setIsSuccess(true);
-      setUserRole("partner");
       setExistingGym(insertedGym);
       setApplicationStatus("pending");
 
@@ -535,12 +502,20 @@ export default function PartnerApplyPage() {
 
   /**
    * Show application status if user already has a gym application
+   * If status is 'denied', show the form again so user can reapply
    */
-  if (existingGym && applicationStatus !== "none") {
+  if (existingGym && applicationStatus === "denied") {
+    // If denied, reset the existingGym and allow user to reapply
+    // This happens automatically because the gym record is deleted when denied
+    // So this condition should not be reached, but we handle it just in case
+    setExistingGym(null);
+    setApplicationStatus("none");
+  }
+
+  if (existingGym && applicationStatus !== "none" && applicationStatus !== "denied") {
     const statusColors = {
       pending: { bg: "bg-yellow-500/20", border: "border-yellow-500", text: "text-yellow-400", label: "รอการตรวจสอบ" },
       approved: { bg: "bg-green-500/20", border: "border-green-500", text: "text-green-400", label: "อนุมัติแล้ว" },
-      rejected: { bg: "bg-red-500/20", border: "border-red-500", text: "text-red-400", label: "ไม่อนุมัติ" },
     };
 
     const status = statusColors[applicationStatus as keyof typeof statusColors] || statusColors.pending;
@@ -574,11 +549,6 @@ export default function PartnerApplyPage() {
               {applicationStatus === "approved" && (
                 <p className="mt-2 text-zinc-400 text-sm">
                   ยินดีด้วย! คำขอของคุณได้รับการอนุมัติแล้ว ตอนนี้คุณเป็น Partner กับเราแล้ว
-                </p>
-              )}
-              {applicationStatus === "rejected" && (
-                <p className="mt-2 text-zinc-400 text-sm">
-                  ขออภัย คำขอของคุณไม่ผ่านการพิจารณา กรุณาติดต่อทีมงานเพื่อสอบถามเพิ่มเติม
                 </p>
               )}
             </div>

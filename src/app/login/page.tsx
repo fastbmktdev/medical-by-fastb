@@ -17,7 +17,7 @@ import {
  * Interface for login form data
  */
 interface LoginFormData {
-  email: string;
+  identifier: string; // Can be email or username
   password: string;
 }
 
@@ -25,7 +25,7 @@ interface LoginFormData {
  * Interface for form validation errors
  */
 interface FormErrors {
-  email?: string;
+  identifier?: string;
   password?: string;
   general?: string;
 }
@@ -41,13 +41,14 @@ function LoginForm() {
   // Get search params for redirect
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirect") || "/";
+  const errorParam = searchParams.get("error");
 
   // Supabase client instance
   const supabase = createClient();
 
   // Form state
   const [formData, setFormData] = useState<LoginFormData>({
-    email: "",
+    identifier: "",
     password: "",
   });
 
@@ -57,6 +58,15 @@ function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
+  // Show error message from URL parameter
+  useEffect(() => {
+    if (errorParam === 'session_expired') {
+      setErrors({
+        general: 'Session หมดอายุหรือไม่ถูกต้อง กรุณาเข้าสู่ระบบใหม่',
+      });
+    }
+  }, [errorParam]);
+
   /**
    * Check if user is already authenticated
    * If yes, redirect to the intended destination
@@ -65,7 +75,7 @@ function LoginForm() {
     const checkAuthentication = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
-        
+
         if (session) {
           // User is already logged in, redirect them
           router.push(redirectTo);
@@ -88,11 +98,9 @@ function LoginForm() {
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
-    // Email validation
-    if (!formData.email.trim()) {
-      newErrors.email = "กรุณากรอกอีเมล";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "รูปแบบอีเมลไม่ถูกต้อง";
+    // Identifier validation (email or username)
+    if (!formData.identifier.trim()) {
+      newErrors.identifier = "กรุณากรอกอีเมลหรือ Username";
     }
 
     // Password validation
@@ -112,7 +120,7 @@ function LoginForm() {
    */
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -144,9 +152,30 @@ function LoginForm() {
     setErrors({});
 
     try {
+      // Check if identifier is an email or username
+      const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.identifier);
+
+      let email = formData.identifier;
+
+      // If not an email, look up the email from username using RPC function
+      if (!isEmail) {
+        const { data: userData, error: rpcError } = await supabase
+          .rpc('get_user_by_username_or_email', { identifier: formData.identifier });
+
+        if (rpcError || !userData || userData.length === 0) {
+          setErrors({
+            general: "ไม่พบผู้ใช้งานนี้ในระบบ กรุณาตรวจสอบ Username หรืออีเมลของคุณ",
+          });
+          setIsLoading(false);
+          return;
+        }
+
+        email = userData[0].email;
+      }
+
       // Attempt to sign in with Supabase
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: formData.email,
+        email,
         password: formData.password,
       });
 
@@ -154,7 +183,7 @@ function LoginForm() {
         // Handle authentication errors
         if (error.message.includes("Invalid login credentials")) {
           setErrors({
-            general: "อีเมลหรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง",
+            general: "อีเมล, Username หรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง",
           });
         } else if (error.message.includes("Email not confirmed")) {
           setErrors({
@@ -205,7 +234,7 @@ function LoginForm() {
   }
 
   return (
-    <div className="flex justify-center items-center bg-zinc-900 px-4 sm:px-6 lg:px-8 py-12 min-h-screen">
+    <div className="container">
       <div className="space-y-8 w-full max-w-md">
         {/* Header */}
         <div className="text-center">
@@ -230,33 +259,33 @@ function LoginForm() {
               </div>
             )}
 
-            {/* Email Field */}
+            {/* Email or Username Field */}
             <div>
               <label
-                htmlFor="email"
+                htmlFor="identifier"
                 className="block mb-2 font-medium text-zinc-300 text-sm"
               >
-                อีเมล
+                อีเมลหรือ Username
               </label>
               <div className="relative">
                 <EnvelopeIcon className="top-3.5 left-3 absolute w-5 h-5 text-zinc-500" />
                 <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
+                  type="text"
+                  id="identifier"
+                  name="identifier"
+                  value={formData.identifier}
                   onChange={handleInputChange}
                   className={`w-full bg-zinc-700 border ${
-                    errors.email ? "border-red-500" : "border-zinc-600"
+                    errors.identifier ? "border-red-500" : "border-zinc-600"
                   } rounded-lg px-4 py-3 pl-10 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent font-mono`}
-                  placeholder="your@email.com"
-                  autoComplete="email"
+                  placeholder="your@email.com or username"
+                  autoComplete="username"
                 />
               </div>
-              {errors.email && (
+              {errors.identifier && (
                 <p className="flex items-center gap-1 mt-2 text-red-400 text-sm">
                   <ExclamationTriangleIcon className="w-4 h-4" />
-                  {errors.email}
+                  {errors.identifier}
                 </p>
               )}
             </div>
@@ -363,10 +392,10 @@ function LoginForm() {
 
 /**
  * Login Page Component
- * Allows users to authenticate with email and password using Supabase Auth
+ * Allows users to authenticate with email/username and password using Supabase Auth
  *
  * Features:
- * - Email/password authentication
+ * - Email or Username/password authentication
  * - Form validation
  * - Error handling
  * - Redirect to previous page or dashboard after login
@@ -390,4 +419,3 @@ export default function LoginPage() {
     </Suspense>
   );
 }
-

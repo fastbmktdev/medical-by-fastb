@@ -59,10 +59,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const initializeAuth = async () => {
       try {
         const { data: { session: initialSession } } = await supabase.auth.getSession();
-        
+
         setSession(initialSession);
         setUser(initialSession?.user ?? null);
-      } catch (error) {
+      } catch {
         // Silently handle auth initialization errors
       } finally {
         setIsLoading(false);

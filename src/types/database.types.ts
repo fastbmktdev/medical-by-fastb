@@ -1,28 +1,12 @@
 // Database Types
-// ประเภทข้อมูลสำหรับ Database Tables
-
-export interface Todo {
-  id: number;
-  task: string;
-  is_complete: boolean;
-  created_at: string;
-}
+// ประเภทข้อมูลสำหรับ Database Tables ของ MUAYTHAI Platform
 
 export interface Profile {
-  id: string;
+  user_id: string;
   username: string | null;
   full_name: string | null;
   avatar_url: string | null;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface Post {
-  id: number;
-  user_id: string;
-  title: string;
-  content: string | null;
-  published: boolean;
+  bio: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -51,16 +35,6 @@ export interface Gym {
   status: 'pending' | 'approved' | 'rejected';
   created_at: string;
   updated_at: string;
-}
-
-// Form Data Types
-export interface CreateTodoInput {
-  task: string;
-}
-
-export interface UpdateTodoInput {
-  id: number;
-  is_complete: boolean;
 }
 
 // Response Types

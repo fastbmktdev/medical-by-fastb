@@ -8,6 +8,7 @@ import {
   Bars3Icon,
   XMarkIcon,
   ArrowRightOnRectangleIcon,
+  BriefcaseIcon,
 } from '@heroicons/react/24/outline';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
@@ -26,6 +27,7 @@ interface DashboardLayoutProps {
   roleLabel: string;
   roleColor: "primary" | "secondary" | "success" | "warning" | "danger";
   userEmail?: string;
+  showPartnerButton?: boolean;
 }
 
 /**
@@ -42,6 +44,7 @@ export default function DashboardLayout({
   roleLabel,
   roleColor,
   userEmail,
+  showPartnerButton = false,
 }: DashboardLayoutProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pathname = usePathname();
@@ -52,7 +55,7 @@ export default function DashboardLayout({
     try {
       await signOut();
       router.push('/');
-    } catch (error) {
+    } catch {
       // Silently handle logout errors
     }
   };
@@ -60,7 +63,7 @@ export default function DashboardLayout({
   return (
     <div className="flex bg-gradient-to-br from-zinc-950 to-zinc-900 min-h-screen">
       {/* Sidebar - Desktop */}
-      <aside className="hidden left-0 z-40 lg:static fixed inset-y-0 lg:flex flex-col bg-zinc-900/50 backdrop-blur-xl border-white/5 border-r w-64">
+      <aside className="hidden top-0 lg:sticky lg:flex flex-col bg-zinc-900/50 backdrop-blur-xl border-white/5 border-r w-64 h-screen max-h-screen">
         {/* Sidebar Header */}
         <div className="flex items-center gap-3 p-6 border-white/5 border-b">
           <Link href="/" className="flex items-center gap-2">
@@ -103,7 +106,7 @@ export default function DashboardLayout({
           {menuItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
-            
+
             return (
               <Link
                 key={item.href}
@@ -120,6 +123,22 @@ export default function DashboardLayout({
             );
           })}
         </nav>
+
+        {/* Partner Button */}
+        {showPartnerButton && (
+          <div className="px-4 pb-4">
+            <Button
+              as={Link}
+              href="/partner/apply"
+              variant="flat"
+              color="secondary"
+              startContent={<BriefcaseIcon className="w-5 h-5" />}
+              className="w-full font-semibold"
+            >
+              สมัครพาร์ทเนอร์
+            </Button>
+          </div>
+        )}
 
         {/* Logout Button */}
         <div className="p-4 border-white/5 border-t">
@@ -198,7 +217,7 @@ export default function DashboardLayout({
           {menuItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
-            
+
             return (
               <Link
                 key={item.href}
@@ -216,6 +235,23 @@ export default function DashboardLayout({
             );
           })}
         </nav>
+
+        {/* Partner Button */}
+        {showPartnerButton && (
+          <div className="px-4 pb-4">
+            <Button
+              as={Link}
+              href="/partner/apply"
+              variant="flat"
+              color="secondary"
+              startContent={<BriefcaseIcon className="w-5 h-5" />}
+              className="w-full font-semibold"
+              onPress={() => setIsSidebarOpen(false)}
+            >
+              สมัครพาร์ทเนอร์
+            </Button>
+          </div>
+        )}
 
         {/* Logout Button */}
         <div className="p-4 border-white/5 border-t">

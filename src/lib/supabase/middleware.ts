@@ -6,15 +6,18 @@ export async function updateSession(request: NextRequest) {
     request,
   })
   
-  // Use local URL first for self-hosting, fallback to production URL
-  const supabaseUrl = 
-    process.env.SUPABASE_LOCAL_URL || 
-    process.env.SUPABASE_URL || 
+  // Use local URL first for self-hosting, fallback to regular or public env vars
+  // Middleware can access both NEXT_PUBLIC_ and regular env vars
+  const supabaseUrl =
+    process.env.SUPABASE_LOCAL_URL ||
+    process.env.SUPABASE_URL ||
+    process.env.NEXT_PUBLIC_SUPABASE_URL ||
     '';
-  
-  const supabaseAnonKey = 
-    process.env.SUPABASE_LOCAL_ANON_KEY || 
-    process.env.SUPABASE_ANON_KEY || 
+
+  const supabaseAnonKey =
+    process.env.SUPABASE_LOCAL_ANON_KEY ||
+    process.env.SUPABASE_ANON_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
     '';
 
   // If Supabase is not configured or using placeholder values, skip auth

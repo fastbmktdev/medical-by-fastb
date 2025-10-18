@@ -110,7 +110,7 @@ function PartnerDashboardContent() {
       setGym(updatedGym);
       setIsEditing(false);
       alert('บันทึกข้อมูลสำเร็จ!');
-    } catch (error) {
+    } catch {
       alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
     }
   };

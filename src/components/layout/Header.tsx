@@ -41,20 +41,32 @@ export default function Header() {
   const [currentLang, setCurrentLang] = useState("TH");
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [userRole, setUserRole] = useState<UserRole | null>(null);
+  const [applicationStatus, setApplicationStatus] = useState<string | null>(null);
 
   /**
-   * Fetch user role when user changes
+   * Fetch user role and application status when user changes
    */
   useEffect(() => {
-    async function fetchUserRole() {
+    async function fetchUserData() {
       if (user) {
         const role = await getUserRole(user.id);
         setUserRole(role);
+
+        // Check if user has a gym application and its status
+        const supabase = (await import('@/lib/supabase/client')).createClient();
+        const { data: gymData } = await supabase
+          .from('gyms')
+          .select('status')
+          .eq('user_id', user.id)
+          .single();
+        
+        setApplicationStatus(gymData?.status || null);
       } else {
         setUserRole(null);
+        setApplicationStatus(null);
       }
     }
-    fetchUserRole();
+    fetchUserData();
   }, [user]);
 
   /**
@@ -93,8 +105,8 @@ export default function Header() {
   ];
 
   return (
-    <header className="top-0 z-[5000] sticky bg-background/60 supports-[backdrop-filter]:bg-background/60 backdrop-blur border-white/10 border-b h-16">
-      <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+    <header className="top-0 z-[5000] fixed bg-background/60 supports-[backdrop-filter]:bg-background/60 backdrop-blur border-white/10 border-b w-screen h-16">
+      <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex justify-center items-center gap-8">
             <Link href="/" className="flex items-center gap-2">
@@ -181,7 +193,7 @@ export default function Header() {
                         )}
                       </div>
 
-                      {/* Dashboard Link - Role-based */}
+                      {/* Dashboard Link - Role-based, but check application status */}
                       {userRole && (
                         <Link
                           href={getDashboardPath(userRole)}
@@ -195,8 +207,8 @@ export default function Header() {
                         </Link>
                       )}
 
-                      {/* Apply for Partner - Show only for authenticated users */}
-                      {userRole === 'authenticated' && (
+                      {/* Apply for Partner - Show only for authenticated users without pending/approved application */}
+                      {userRole === 'authenticated' && !applicationStatus && (
                         <Link
                           href="/partner/apply"
                           className="flex items-center gap-2 hover:bg-white/5 px-4 py-2 text-white/80 text-sm"
@@ -206,17 +218,24 @@ export default function Header() {
                           สมัคร Partner
                         </Link>
                       )}
+                      
+                      {/* Show Application Status if pending */}
+                      {userRole === 'authenticated' && applicationStatus === 'pending' && (
+                        <div className="px-4 py-2 border-white/10 border-t">
+                          <p className="text-yellow-400 text-xs">📋 รอการอนุมัติ Partner</p>
+                        </div>
+                      )}
 
                       {/* Admin Link - Show only for admins */}
                       {userRole === 'admin' && (
                         <>
                           <Link
-                            href="/admin/users"
+                            href="/admin/dashboard"
                             className="flex items-center gap-2 hover:bg-white/5 px-4 py-2 text-white/80 text-sm"
                             onClick={() => setUserMenuOpen(false)}
                           >
                             <UserCircleIcon className="w-4 h-4" />
-                            จัดการผู้ใช้
+                            แดชบอร์ดผู้ดูแล
                           </Link>
                           <div className="my-1 border-white/10 border-t"></div>
                         </>
@@ -387,8 +406,8 @@ export default function Header() {
                     </Link>
                   )}
 
-                  {/* Apply for Partner - Show only for authenticated users */}
-                  {userRole === 'authenticated' && (
+                  {/* Apply for Partner - Show only for authenticated users without pending/approved application */}
+                  {userRole === 'authenticated' && !applicationStatus && (
                     <Link
                       href="/partner/apply"
                       className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded font-medium text-white text-sm transition-colors"
@@ -399,15 +418,23 @@ export default function Header() {
                     </Link>
                   )}
 
+                  {/* Show Application Status if pending */}
+                  {userRole === 'authenticated' && applicationStatus === 'pending' && (
+                    <div className="bg-yellow-500/20 px-4 py-3 border border-yellow-500/30 rounded">
+                      <p className="font-medium text-white text-sm">📋 รอการอนุมัติ Partner</p>
+                      <p className="mt-1 text-yellow-400 text-xs">ทีมงานกำลังตรวจสอบข้อมูล</p>
+                    </div>
+                  )}
+
                   {/* Admin Link - Show only for admins */}
                   {userRole === 'admin' && (
                     <Link
-                      href="/admin/users"
+                      href="/admin/dashboard"
                       className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded font-medium text-white text-sm transition-colors"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       <UserCircleIcon className="w-5 h-5" />
-                      <span>จัดการผู้ใช้</span>
+                      <span>แดชบอร์ดผู้ดูแล</span>
                     </Link>
                   )}
 

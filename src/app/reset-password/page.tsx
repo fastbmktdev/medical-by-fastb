@@ -130,7 +130,7 @@ export default function ResetPasswordPage() {
 
       // Success
       setIsSuccess(true);
-    } catch (error) {
+    } catch {
       setErrors({
         general: "เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง",
       });
@@ -144,7 +144,7 @@ export default function ResetPasswordPage() {
    */
   if (isSuccess) {
     return (
-      <div className="flex justify-center items-center bg-zinc-900 px-4 sm:px-6 lg:px-8 py-12 min-h-screen">
+      <div className="container">
         <div className="w-full max-w-md">
           <div className="bg-zinc-800 shadow-2xl p-8 rounded-2xl text-center">
             <div className="flex justify-center mb-6">
@@ -177,7 +177,7 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <div className="flex justify-center items-center bg-zinc-900 px-4 sm:px-6 lg:px-8 py-12 min-h-screen">
+    <div className="container">
       <div className="space-y-8 w-full max-w-md">
         {/* Header */}
         <div className="text-center">

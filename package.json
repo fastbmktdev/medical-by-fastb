@@ -8,11 +8,18 @@
     "start": "next start",
     "lint": "next lint",
     "build:placeholder": "SUPABASE_URL=https://placeholder.supabase.co SUPABASE_ANON_KEY=placeholder npm run build",
-    "check-db": "node scripts/check-database.mjs"
+    "check-db": "node scripts/check-database.mjs",
+    "db:reset": "supabase db reset",
+    "db:seed": "supabase db reset",
+    "db:migrate": "supabase migration up",
+    "db:status": "supabase db diff",
+    "db:start": "supabase start",
+    "db:stop": "supabase stop"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@heroui/react": "^2.7.3",
+    "@react-email/render": "^1.4.0",
     "@stripe/react-stripe-js": "^2.8.0",
     "@stripe/stripe-js": "^4.8.0",
     "@supabase/ssr": "^0.7.0",
@@ -26,6 +33,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.4.1",
+    "resend": "^6.2.0",
     "sharp": "^0.33.5",
     "tw-animate-css": "^1.0.1"
   },

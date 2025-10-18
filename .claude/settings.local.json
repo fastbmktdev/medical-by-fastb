@@ -7,7 +7,9 @@
       "Bash(mkdir:*)",
       "Bash(npm run build:*)",
       "Bash(next build)",
-      "Bash(npx next build)"
+      "Bash(npx next build)",
+      "Bash(xargs basename -a)",
+      "Bash(cat /Users/sirinyaongkhamhaeng/Documents/GitHub/muaythai-next-postgres/.env.example)"
     ],
     "deny": [],
     "ask": []

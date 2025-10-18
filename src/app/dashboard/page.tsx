@@ -28,6 +28,8 @@ import {
   HeartIcon,
   ArrowRightIcon,
   BanknotesIcon,
+  ClockIcon,
+  CheckCircleIcon,
 } from '@heroicons/react/24/outline';
 import { User } from '@supabase/supabase-js';
 
@@ -37,15 +39,35 @@ import { User } from '@supabase/supabase-js';
  * Dashboard for regular users (authenticated role)
  * Shows user profile, bookings, favorites, and quick actions
  */
+interface GymApplication {
+  id: string;
+  gym_name: string;
+  status: string;
+  created_at: string;
+}
+
 function DashboardContent() {
   const supabase = createClient();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [gymApplication, setGymApplication] = useState<GymApplication | null>(null);
 
   useEffect(() => {
     async function loadUser() {
       const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
+
+      if (user) {
+        // Check if user has a gym application
+        const { data: gymData } = await supabase
+          .from('gyms')
+          .select('id, gym_name, status, created_at')
+          .eq('user_id', user.id)
+          .single();
+        
+        setGymApplication(gymData);
+      }
+
       setIsLoading(false);
     }
     loadUser();
@@ -122,6 +144,7 @@ function DashboardContent() {
         roleLabel="ผู้ใช้ทั่วไป"
         roleColor="primary"
         userEmail={user?.email}
+        showPartnerButton={true}
       >
         <div className="flex justify-center items-center py-20">
           <div className="border-4 border-t-transparent border-red-600 rounded-full w-12 h-12 animate-spin"></div>
@@ -138,7 +161,90 @@ function DashboardContent() {
       roleLabel="ผู้ใช้ทั่วไป"
       roleColor="primary"
       userEmail={user?.email}
+      showPartnerButton={!gymApplication}
     >
+      {/* Show Partner Application Status if exists */}
+      {gymApplication && gymApplication.status === 'pending' && (
+        <section className="mb-8">
+          <Card className="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 backdrop-blur-sm border border-yellow-500/30">
+            <CardBody className="gap-4 p-8">
+              <div className="flex sm:flex-row flex-col items-start gap-4">
+                <div className="flex flex-shrink-0 justify-center items-center bg-yellow-500/20 rounded-full w-16 h-16">
+                  <ClockIcon className="w-8 h-8 text-yellow-400" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex sm:flex-row flex-col sm:justify-between sm:items-center gap-2 mb-2">
+                    <h2 className="font-bold text-white text-2xl">
+                      📋 รอการอนุมัติ Partner
+                    </h2>
+                    <Chip color="warning" variant="flat" size="lg">
+                      กำลังตรวจสอบ
+                    </Chip>
+                  </div>
+                  <p className="mb-4 text-zinc-300 text-lg">
+                    คำขอสมัครของคุณสำหรับ <strong className="text-yellow-400">{gymApplication.gym_name}</strong> กำลังรอการตรวจสอบจากทีมงาน
+                  </p>
+                  <div className="bg-zinc-800/50 mb-4 p-4 border border-zinc-700 rounded-lg">
+                    <p className="mb-2 text-white text-sm">📅 ส่งคำขอเมื่อ: <span className="font-mono text-zinc-300">{new Date(gymApplication.created_at).toLocaleDateString('th-TH', { 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}</span></p>
+                    <p className="text-zinc-400 text-sm">
+                      ⏱️ ระยะเวลาการตรวจสอบโดยเฉลี่ย: <strong className="text-white">3-5 วันทำการ</strong>
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <p className="font-semibold text-white text-sm">🔍 ขั้นตอนการตรวจสอบ:</p>
+                    <ul className="space-y-1 ml-4 text-zinc-300 text-sm list-disc">
+                      <li>ตรวจสอบความถูกต้องของข้อมูล</li>
+                      <li>ตรวจสอบความครบถ้วนของเอกสาร</li>
+                      <li>ยืนยันตัวตนและสถานที่</li>
+                      <li>แอดมินอนุมัติและเปิดใช้งานบัญชี Partner</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </CardBody>
+          </Card>
+        </section>
+      )}
+
+      {gymApplication && gymApplication.status === 'approved' && (
+        <section className="mb-8">
+          <Card className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 backdrop-blur-sm border border-green-500/30">
+            <CardBody className="gap-4 p-6">
+              <div className="flex items-center gap-4">
+                <div className="flex flex-shrink-0 justify-center items-center bg-green-500/20 rounded-full w-12 h-12">
+                  <CheckCircleIcon className="w-6 h-6 text-green-400" />
+                </div>
+                <div>
+                  <h2 className="font-bold text-white text-xl">
+                    ✅ คำขอของคุณได้รับการอนุมัติแล้ว!
+                  </h2>
+                  <p className="text-green-300 text-sm">
+                    ตอนนี้คุณสามารถเข้าใช้งาน Partner Dashboard ได้แล้ว
+                  </p>
+                </div>
+                <Button
+                  as={Link}
+                  href="/partner/dashboard"
+                  color="success"
+                  variant="shadow"
+                  size="lg"
+                  endContent={<ArrowRightIcon className="w-5 h-5" />}
+                  className="ml-auto font-bold"
+                >
+                  เข้าสู่ Partner Dashboard
+                </Button>
+              </div>
+            </CardBody>
+          </Card>
+        </section>
+      )}
+
       {/* Quick Actions */}
       <section className="mb-8">
         <h2 className="mb-6 font-bold text-white text-2xl">เมนูด่วน</h2>
@@ -242,7 +348,7 @@ function DashboardContent() {
       </section>
 
       {/* Recent Bookings */}
-      <section className="mb-8">
+      <section>
         <div className="flex justify-between items-center mb-6">
           <h2 className="font-bold text-white text-2xl">การจองล่าสุด</h2>
           <Button
@@ -291,30 +397,6 @@ function DashboardContent() {
                 ))}
               </TableBody>
             </Table>
-          </CardBody>
-        </Card>
-      </section>
-
-      {/* Become Partner CTA */}
-      <section>
-        <Card className="bg-gradient-to-br from-purple-950/50 to-transparent backdrop-blur-sm border border-purple-500/20">
-          <CardBody className="sm:flex-row flex-col items-center gap-6 p-8">
-            <div className="flex-1 sm:text-left text-center">
-              <h3 className="mb-2 font-bold text-white text-2xl">เป็นพาร์ทเนอร์กับเรา</h3>
-              <p className="text-default-400 text-lg">
-                เปิดยิมของคุณให้ผู้ใช้ได้จองและเข้าถึงฐานลูกค้ากว้างขึ้น
-              </p>
-            </div>
-            <Button
-              as={Link}
-              href="/partner/apply"
-              color="secondary"
-              size="lg"
-              endContent={<ArrowRightIcon className="w-5 h-5" />}
-              className="font-bold"
-            >
-              สมัครเลย
-            </Button>
           </CardBody>
         </Card>
       </section>

@@ -3,6 +3,7 @@
 @import "leaflet/dist/leaflet.css";
 @import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 
+/* Uncomment to enable dark variant via custom selector */
 /* @custom-variant dark (&:is(.dark *)); */
 
 body {
@@ -16,17 +17,22 @@ body {
 button {
   cursor: pointer;
 }
+
 /* Custom Scrollbar Styles */
+::-webkit-scrollbar,
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-thumb {
+  padding: 2px;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
-  padding: 2px;
 }
 
 ::-webkit-scrollbar-track {
   background: #393939;
   border-radius: 32px;
-  padding: 2px;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -36,21 +42,13 @@ button {
 
 /* Modal Animations */
 @keyframes modalFadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes modalFadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
 @keyframes modalSlideIn {
@@ -89,4 +87,8 @@ button {
 
 .modal-content-exit {
   animation: modalSlideOut 0.2s ease-in forwards;
+}
+
+.container {
+  @apply flex justify-center items-center bg-zinc-900 px-4 sm:px-6 lg:px-8 py-16 w-full max-w-[2560px] min-h-[calc(100vh_-_128px)];
 }

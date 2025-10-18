@@ -8,12 +8,15 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   const pathname = usePathname();
   const isAdminPage = pathname.startsWith('/admin');
   const isDashboardPage = pathname.startsWith('/dashboard');
+  const isPartnerDashboard = pathname.startsWith('/partner/dashboard');
+
+  const hideHeaderFooter = isAdminPage || isDashboardPage || isPartnerDashboard;
 
   return (
     <div className="min-h-(calc(100vh_-_128px)) flex flex-col">
-      {!isAdminPage && !isDashboardPage && <Header />}
+      {!hideHeaderFooter && <Header />}
       <main className="flex-1">{children}</main>
-      {!isAdminPage && !isDashboardPage && <Footer />}
+      {!hideHeaderFooter && <Footer />}
     </div>
   );
 }

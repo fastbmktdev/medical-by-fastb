@@ -1,0 +1,215 @@
+/**
+ * Email Service using Resend
+ * 
+ * This service is for sending custom emails like:
+ * - Contact form submissions
+ * - Custom notifications
+ * - Marketing emails
+ * 
+ * Note: Auth emails (signup, reset password) are handled by Supabase SMTP
+ */
+
+import { Resend } from 'resend';
+
+// Initialize Resend client
+// Will gracefully handle missing API key to prevent errors
+const resendApiKey = process.env.RESEND_API_KEY;
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
+
+/**
+ * Email configuration
+ */
+const EMAIL_CONFIG = {
+  from: process.env.CONTACT_EMAIL_FROM || 'onboarding@resend.dev',
+  to: process.env.CONTACT_EMAIL_TO || 'admin@yourdomain.com',
+};
+
+/**
+ * Contact Form Email Data
+ */
+export interface ContactEmailData {
+  name: string;
+  email: string;
+  message: string;
+}
+
+/**
+ * Send contact form email
+ * 
+ * @param data - Contact form data
+ * @returns Promise with success status and message
+ */
+export async function sendContactEmail(data: ContactEmailData) {
+  // Check if Resend is configured
+  if (!resend || !resendApiKey) {
+    console.warn('⚠️ Resend API Key not configured. Email not sent.');
+    return {
+      success: false,
+      error: 'Email service not configured. Please contact administrator.',
+    };
+  }
+
+  try {
+    const { name, email, message } = data;
+
+    // Send email
+    const result = await resend.emails.send({
+      from: EMAIL_CONFIG.from,
+      to: EMAIL_CONFIG.to,
+      replyTo: email,
+      subject: `ข้อความติดต่อจาก ${name}`,
+      html: generateContactEmailHtml(data),
+    });
+
+    if (result.error) {
+      console.error('❌ Failed to send email:', result.error);
+      return {
+        success: false,
+        error: 'Failed to send email. Please try again later.',
+      };
+    }
+
+    console.log('✅ Email sent successfully:', result.data?.id);
+    return {
+      success: true,
+      message: 'Email sent successfully',
+      id: result.data?.id,
+    };
+  } catch (error) {
+    console.error('❌ Error sending email:', error);
+    return {
+      success: false,
+      error: 'An error occurred while sending email.',
+    };
+  }
+}
+
+/**
+ * Generate HTML for contact email
+ */
+function generateContactEmailHtml(data: ContactEmailData): string {
+  const { name, email, message } = data;
+  
+  return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ข้อความติดต่อใหม่</title>
+      </head>
+      <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); padding: 30px; border-radius: 10px 10px 0 0; text-align: center;">
+          <h1 style="color: white; margin: 0; font-size: 24px;">🥊 MUAYTHAI Platform</h1>
+          <p style="color: rgba(255, 255, 255, 0.9); margin: 10px 0 0 0;">ข้อความติดต่อใหม่</p>
+        </div>
+        
+        <div style="background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px;">
+          <h2 style="color: #dc2626; margin-top: 0;">ข้อมูลผู้ติดต่อ</h2>
+          
+          <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #dc2626;">
+            <p style="margin: 0 0 10px 0;">
+              <strong style="color: #374151;">ชื่อ:</strong><br>
+              <span style="color: #1f2937; font-size: 16px;">${name}</span>
+            </p>
+            
+            <p style="margin: 0;">
+              <strong style="color: #374151;">อีเมล:</strong><br>
+              <a href="mailto:${email}" style="color: #dc2626; text-decoration: none; font-size: 16px;">${email}</a>
+            </p>
+          </div>
+          
+          <h3 style="color: #374151; margin-bottom: 10px;">ข้อความ:</h3>
+          <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #e5e7eb;">
+            <p style="margin: 0; white-space: pre-wrap; color: #1f2937;">${message}</p>
+          </div>
+          
+          <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+            <p style="color: #6b7280; font-size: 14px; margin: 0;">
+              📅 วันที่: ${new Date().toLocaleString('th-TH', { 
+                timeZone: 'Asia/Bangkok',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
+            </p>
+          </div>
+          
+          <div style="margin-top: 20px; text-align: center;">
+            <a href="mailto:${email}" style="display: inline-block; background: #dc2626; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600;">
+              ตอบกลับทางอีเมล
+            </a>
+          </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px; padding: 20px;">
+          <p style="color: #6b7280; font-size: 12px; margin: 0;">
+            Email sent automatically from MUAYTHAI Platform Contact Form
+          </p>
+        </div>
+      </body>
+    </html>
+  `;
+}
+
+/**
+ * Send welcome email (example for future use)
+ * 
+ * @param to - Recipient email
+ * @param name - Recipient name
+ */
+export async function sendWelcomeEmail(to: string, name: string) {
+  if (!resend || !resendApiKey) {
+    console.warn('⚠️ Resend API Key not configured. Email not sent.');
+    return { success: false, error: 'Email service not configured' };
+  }
+
+  try {
+    const result = await resend.emails.send({
+      from: EMAIL_CONFIG.from,
+      to,
+      subject: 'ยินดีต้อนรับสู่ MUAYTHAI Platform! 🥊',
+      html: `
+        <h2>สวัสดี ${name}!</h2>
+        <p>ยินดีต้อนรับสู่ MUAYTHAI Platform</p>
+        <p>เราดีใจที่คุณมาร่วมเป็นส่วนหนึ่งของชุมชนมวยไทย</p>
+        <p>เริ่มต้นสำรวจ:</p>
+        <ul>
+          <li>ค้นหาค่ายมวยใกล้คุณ</li>
+          <li>เรียนรู้เทคนิคมวยไทย</li>
+          <li>ติดตามอีเว้นท์และการแข่งขัน</li>
+        </ul>
+      `,
+    });
+
+    return {
+      success: !result.error,
+      id: result.data?.id,
+      error: result.error,
+    };
+  } catch (error) {
+    console.error('❌ Error sending welcome email:', error);
+    return { success: false, error: 'Failed to send email' };
+  }
+}
+
+/**
+ * Check if email service is configured
+ */
+export function isEmailServiceConfigured(): boolean {
+  return !!(resend && resendApiKey);
+}
+
+/**
+ * Get email configuration status
+ */
+export function getEmailServiceStatus() {
+  return {
+    configured: isEmailServiceConfigured(),
+    from: EMAIL_CONFIG.from,
+    to: EMAIL_CONFIG.to,
+  };
+}
+

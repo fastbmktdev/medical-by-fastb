@@ -8,16 +8,17 @@ import {
   EnvelopeIcon,
   LockClosedIcon,
   UserIcon,
+  AtSymbolIcon,
   ExclamationTriangleIcon,
   EyeIcon,
   EyeSlashIcon,
-  CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 
 /**
  * Interface for signup form data
  */
 interface SignupFormData {
+  username: string;
   fullName: string;
   email: string;
   password: string;
@@ -28,6 +29,7 @@ interface SignupFormData {
  * Interface for form validation errors
  */
 interface FormErrors {
+  username?: string;
   fullName?: string;
   email?: string;
   password?: string;
@@ -38,9 +40,9 @@ interface FormErrors {
 /**
  * Signup Page Component
  * Allows new users to create an account using Supabase Auth
- * 
+ *
  * Features:
- * - Email/password registration
+ * - Username/Email/password registration
  * - Full name capture
  * - Password confirmation
  * - Form validation
@@ -59,6 +61,7 @@ export default function SignupPage() {
 
   // Form state
   const [formData, setFormData] = useState<SignupFormData>({
+    username: "",
     fullName: "",
     email: "",
     password: "",
@@ -71,7 +74,6 @@ export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-  const [isSuccess, setIsSuccess] = useState(false);
 
   /**
    * Check if user is already authenticated
@@ -81,12 +83,12 @@ export default function SignupPage() {
     const checkAuthentication = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
-        
+
         if (session) {
           // User is already logged in, redirect them
           router.push("/");
         }
-      } catch (error) {
+      } catch {
         // Silently handle errors
       } finally {
         setIsCheckingAuth(false);
@@ -117,6 +119,15 @@ export default function SignupPage() {
    */
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
+
+    // Username validation
+    if (!formData.username.trim()) {
+      newErrors.username = "กรุณากรอก Username";
+    } else if (formData.username.trim().length < 3) {
+      newErrors.username = "Username ต้องมีอย่างน้อย 3 ตัวอักษร";
+    } else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
+      newErrors.username = "Username ต้องประกอบด้วย ตัวอักษร ตัวเลข และ _ เท่านั้น";
+    }
 
     // Full name validation
     if (!formData.fullName.trim()) {
@@ -156,7 +167,7 @@ export default function SignupPage() {
    */
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -188,12 +199,28 @@ export default function SignupPage() {
     setErrors({});
 
     try {
+      // Check if username already exists
+      const { data: existingProfiles } = await supabase
+        .from('profiles')
+        .select('username')
+        .eq('username', formData.username);
+
+      // Ignore "no rows" error as it means username is available
+      if (existingProfiles && existingProfiles.length > 0) {
+        setErrors({
+          username: "Username นี้ถูกใช้งานแล้ว",
+        });
+        setIsLoading(false);
+        return;
+      }
+
       // Attempt to sign up with Supabase
       const { data, error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
         options: {
           data: {
+            username: formData.username,
             full_name: formData.fullName,
           },
           // Email confirmation URL
@@ -228,20 +255,34 @@ export default function SignupPage() {
           return;
         }
 
-        // Signup successful
-        setIsSuccess(true);
-
-        // Initialize user role as 'authenticated'
+        // Signup successful - Get user role and redirect to appropriate dashboard
+        // Note: profile and user_role are created automatically by database trigger
         try {
-          await supabase.from("user_roles").insert({
-            user_id: data.user.id,
-            role: "authenticated",
-          });
-        } catch (roleError) {
-          // Don't block signup if role creation fails
+          // Wait a bit for the trigger to complete
+          await new Promise(resolve => setTimeout(resolve, 1000));
+
+          // Fetch user role
+          const { data: roleData } = await supabase
+            .from('user_roles')
+            .select('role')
+            .eq('user_id', data.user.id)
+            .single();
+
+          // Redirect based on role
+          if (roleData?.role === 'admin') {
+            router.push('/admin/dashboard');
+          } else if (roleData?.role === 'partner') {
+            router.push('/partner/dashboard');
+          } else {
+            // Default to user dashboard or home
+            router.push('/dashboard');
+          }
+        } catch {
+          // If role fetch fails, redirect to home
+          router.push('/');
         }
       }
-    } catch (error) {
+    } catch {
       setErrors({
         general: "เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง",
       });
@@ -278,48 +319,10 @@ export default function SignupPage() {
     );
   }
 
-  /**
-   * Success screen after registration
-   */
-  if (isSuccess) {
-    return (
-      <div className="flex justify-center items-center bg-zinc-900 px-4 sm:px-6 lg:px-8 py-12 min-h-screen">
-        <div className="w-full max-w-md">
-          <div className="bg-zinc-800 shadow-2xl p-8 rounded-2xl text-center">
-            <div className="flex justify-center mb-6">
-              <CheckCircleIcon className="w-24 h-24 text-green-500" />
-            </div>
-            <h1 className="mb-4 font-bold text-white text-3xl">
-              สมัครสมาชิกสำเร็จ!
-            </h1>
-            <p className="mb-2 text-zinc-300 text-lg">
-              ยินดีต้อนรับ {formData.fullName}
-            </p>
-            <p className="mb-6 text-zinc-400">
-              กรุณาตรวจสอบอีเมล <span className="font-mono text-white">{formData.email}</span> 
-              <br />เพื่อยืนยันบัญชีของคุณ
-            </p>
-            <div className="bg-blue-500/20 mb-6 p-4 border border-blue-500 rounded-lg">
-              <p className="text-blue-400 text-sm">
-                💡 ตรวจสอบในโฟลเดอร์ Spam หากไม่พบอีเมลยืนยัน
-              </p>
-            </div>
-            <Link
-              href="/login"
-              className="inline-block bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg font-semibold text-white transition-colors"
-            >
-              ไปยังหน้าเข้าสู่ระบบ
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   const passwordStrength = getPasswordStrength(formData.password);
 
   return (
-    <div className="flex justify-center items-center bg-zinc-900 px-4 sm:px-6 lg:px-8 py-12 min-h-screen">
+    <div className="container">
       <div className="space-y-8 w-full max-w-md">
         {/* Header */}
         <div className="text-center">
@@ -343,6 +346,37 @@ export default function SignupPage() {
                 </div>
               </div>
             )}
+
+            {/* Username Field */}
+            <div>
+              <label
+                htmlFor="username"
+                className="block mb-2 font-medium text-zinc-300 text-sm"
+              >
+                Username
+              </label>
+              <div className="relative">
+                <AtSymbolIcon className="top-3.5 left-3 absolute w-5 h-5 text-zinc-500" />
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleInputChange}
+                  className={`w-full bg-zinc-700 border ${
+                    errors.username ? "border-red-500" : "border-zinc-600"
+                  } rounded-lg px-4 py-3 pl-10 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent font-mono`}
+                  placeholder="john_doe123"
+                  autoComplete="username"
+                />
+              </div>
+              {errors.username && (
+                <p className="flex items-center gap-1 mt-2 text-red-400 text-sm">
+                  <ExclamationTriangleIcon className="w-4 h-4" />
+                  {errors.username}
+                </p>
+              )}
+            </div>
 
             {/* Full Name Field */}
             <div>
@@ -539,4 +573,3 @@ export default function SignupPage() {
     </div>
   );
 }
-

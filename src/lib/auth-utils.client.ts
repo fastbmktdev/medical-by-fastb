@@ -11,6 +11,8 @@ export type UserRole = 'authenticated' | 'partner' | 'admin';
 /**
  * Get user role from user_roles table (Client-side)
  * Use this in Client Components
+ * 
+ * If error 406 or authentication issues occur, will logout user automatically
  */
 export async function getUserRole(userId: string): Promise<UserRole> {
   const supabase = createBrowserClient();
@@ -21,8 +23,29 @@ export async function getUserRole(userId: string): Promise<UserRole> {
     .eq('user_id', userId)
     .single();
 
-  if (error || !data) {
+  if (error) {
+    console.error('[getUserRole] Error fetching role:', error);
+    
+    // If error is 406 (Not Acceptable) or authentication-related, logout user
+    if (error.code === 'PGRST301' || error.message.includes('406') || error.message.includes('JWT')) {
+      console.warn('[getUserRole] Session invalid or RLS error. Logging out...');
+      
+      // Logout user
+      await supabase.auth.signOut();
+      
+      // Redirect to login
+      if (typeof window !== 'undefined') {
+        window.location.href = '/login?error=session_expired';
+      }
+      
+      throw new Error('Session expired. Please login again.');
+    }
+    
     // Default to 'authenticated' if no role found
+    return 'authenticated';
+  }
+
+  if (!data) {
     return 'authenticated';
   }
 
