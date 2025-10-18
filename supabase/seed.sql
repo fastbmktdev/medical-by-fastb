@@ -79,6 +79,17 @@ CREATE POLICY "users_can_view_own_gym"
   TO authenticated
   USING (auth.uid() = user_id);
 
+CREATE POLICY "admins_can_view_all_gyms"
+  ON gyms FOR SELECT
+  TO authenticated
+  USING (
+    EXISTS (
+      SELECT 1 FROM user_roles
+      WHERE user_id = auth.uid()
+      AND role = 'admin'
+    )
+  );
+
 CREATE POLICY "users_can_insert_own_gym"
   ON gyms FOR INSERT
   TO authenticated
@@ -88,6 +99,28 @@ CREATE POLICY "users_can_update_own_gym"
   ON gyms FOR UPDATE
   TO authenticated
   USING (auth.uid() = user_id);
+
+CREATE POLICY "admins_can_update_all_gyms"
+  ON gyms FOR UPDATE
+  TO authenticated
+  USING (
+    EXISTS (
+      SELECT 1 FROM user_roles
+      WHERE user_id = auth.uid()
+      AND role = 'admin'
+    )
+  );
+
+CREATE POLICY "admins_can_delete_gyms"
+  ON gyms FOR DELETE
+  TO authenticated
+  USING (
+    EXISTS (
+      SELECT 1 FROM user_roles
+      WHERE user_id = auth.uid()
+      AND role = 'admin'
+    )
+  );
 
 -- RLS Policies for profiles
 CREATE POLICY "anyone_can_view_profiles"
@@ -235,6 +268,22 @@ $$;
 
 GRANT EXECUTE ON FUNCTION get_user_role(UUID) TO authenticated, anon;
 
+-- Helper function to check if current user is admin
+CREATE OR REPLACE FUNCTION is_admin()
+RETURNS BOOLEAN
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM user_roles
+    WHERE user_id = auth.uid()
+    AND role = 'admin'
+  );
+$$;
+
+GRANT EXECUTE ON FUNCTION is_admin() TO authenticated, anon;
+
 -- Helper function to get user by username or email (for login)
 CREATE OR REPLACE FUNCTION get_user_by_username_or_email(identifier TEXT)
 RETURNS TABLE (
@@ -263,6 +312,7 @@ COMMENT ON TABLE user_roles IS 'Stores user roles for authorization';
 COMMENT ON TABLE gyms IS 'Stores gym partner applications and information';
 COMMENT ON TABLE profiles IS 'Stores user profiles with username support';
 COMMENT ON FUNCTION get_user_role IS 'Helper function to get user role, bypasses RLS for easier access';
+COMMENT ON FUNCTION is_admin IS 'Check if current authenticated user is an admin';
 
 -- ============================================================================
 -- SEED DATA FOR TESTING

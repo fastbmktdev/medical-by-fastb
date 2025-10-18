@@ -13,9 +13,20 @@ export async function GET(request: NextRequest) {
     // ตรวจสอบ authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
+    // Debug logging
+    console.log('[API] Authentication check:', {
+      hasUser: !!user,
+      userId: user?.id,
+      authError: authError?.message,
+    });
+
     if (authError || !user) {
+      console.error('[API] Authentication failed:', authError);
       return NextResponse.json(
-        { error: 'Unauthorized - กรุณาเข้าสู่ระบบ' },
+        { 
+          error: 'Unauthorized - กรุณาเข้าสู่ระบบ',
+          details: authError?.message 
+        },
         { status: 401 }
       );
     }
@@ -27,9 +38,21 @@ export async function GET(request: NextRequest) {
       .eq('user_id', user.id)
       .single();
 
+    console.log('[API] Role check:', {
+      role: roleData?.role,
+      roleError: roleError?.message,
+    });
+
     if (roleError || roleData?.role !== 'admin') {
+      console.error('[API] Authorization failed:', { 
+        role: roleData?.role, 
+        error: roleError?.message 
+      });
       return NextResponse.json(
-        { error: 'Forbidden - คุณไม่มีสิทธิ์เข้าถึง' },
+        { 
+          error: 'Forbidden - คุณไม่มีสิทธิ์เข้าถึง',
+          details: `Current role: ${roleData?.role || 'unknown'}`,
+        },
         { status: 403 }
       );
     }
