@@ -5,7 +5,7 @@
 
 -- Method: Update user_roles by email
 WITH user_info AS (
-  SELECT id FROM auth.users WHERE email = 'admin@gmail.com'
+  SELECT id FROM auth.users WHERE email = 'admin@muaythai.com'
 )
 INSERT INTO user_roles (user_id, role)
 SELECT id, 'admin' FROM user_info
@@ -22,4 +22,4 @@ SELECT
   ur.updated_at
 FROM auth.users u
 LEFT JOIN user_roles ur ON ur.user_id = u.id
-WHERE u.email = 'admin@gmail.com';
+WHERE u.email = 'admin@muaythai.com';
