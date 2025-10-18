@@ -68,6 +68,32 @@ export function getDashboardPath(role: UserRole): string {
 }
 
 /**
+ * Role hierarchy levels (higher number = more permissions)
+ */
+const ROLE_HIERARCHY: Record<UserRole, number> = {
+  'authenticated': 1,
+  'partner': 2,
+  'admin': 3,
+};
+
+/**
+ * Check if user has sufficient role to access a resource
+ * Uses role hierarchy: admin > partner > authenticated
+ *
+ * @param userRole - The role the user currently has
+ * @param requiredRole - The minimum role required
+ * @returns true if user has sufficient role
+ *
+ * @example
+ * hasRole('admin', 'authenticated') // true - admin can access authenticated routes
+ * hasRole('partner', 'authenticated') // true - partner can access authenticated routes
+ * hasRole('authenticated', 'partner') // false - authenticated cannot access partner routes
+ */
+export function hasRole(userRole: UserRole, requiredRole: UserRole): boolean {
+  return ROLE_HIERARCHY[userRole] >= ROLE_HIERARCHY[requiredRole];
+}
+
+/**
  * Check if user can access a specific dashboard
  */
 export function canAccessDashboard(userRole: UserRole, dashboardRole: UserRole): boolean {

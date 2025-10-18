@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import { UserRole, getUserRole, getDashboardPath } from '@/lib/auth-utils.client';
+import { UserRole, getUserRole, getDashboardPath, hasRole } from '@/lib/auth-utils.client';
 import { User } from '@supabase/supabase-js';
 
 interface RoleGuardProps {
@@ -14,10 +14,15 @@ interface RoleGuardProps {
 
 /**
  * RoleGuard Component
- * 
- * Protects routes by checking user role
+ *
+ * Protects routes by checking user role using EXACT MATCH
+ * Each role can only access their own dashboard:
+ * - admin -> /admin/dashboard only
+ * - partner -> /partner/dashboard only
+ * - authenticated -> /dashboard only
+ *
  * Redirects unauthorized users to their appropriate dashboard or login
- * 
+ *
  * Usage:
  * <RoleGuard allowedRole="admin">
  *   <AdminContent />
@@ -64,11 +69,13 @@ export default function RoleGuard({
         console.log('[RoleGuard] User:', user.email);
         console.log('[RoleGuard] User Role:', userRole);
         console.log('[RoleGuard] Required Role:', allowedRole);
-        console.log('[RoleGuard] Authorized:', userRole === allowedRole);
+        console.log('[RoleGuard] Exact match:', userRole === allowedRole);
 
-        // Check if user has the required role
+        // Check if user has the exact required role
+        // For dashboard routes, we use exact matching to prevent role escalation
+        // (e.g., admin cannot access partner dashboard, partner cannot access user dashboard)
         if (userRole !== allowedRole) {
-          // User doesn't have required role - redirect to their dashboard
+          // User doesn't have the required role - redirect to their own dashboard
           console.warn(`[RoleGuard] Access denied. User has '${userRole}' but needs '${allowedRole}'`);
           const redirectPath = redirectTo || getDashboardPath(userRole);
           router.push(redirectPath);

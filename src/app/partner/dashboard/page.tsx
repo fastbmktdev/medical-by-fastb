@@ -266,6 +266,111 @@ function PartnerDashboardContent() {
     );
   }
 
+  // Show pending status UI (no sidebar, centered content)
+  if (gym.status === 'pending') {
+    return (
+      <DashboardLayout
+        menuItems={[]}
+        headerTitle="สถานะการสมัคร"
+        headerSubtitle="รอการตรวจสอบจากทีมงาน"
+        roleLabel="พาร์ทเนอร์"
+        roleColor="secondary"
+        userEmail={user?.email}
+        hideSidebar={true}
+      >
+        <div className="mx-auto max-w-4xl">
+          <div className="space-y-6">
+            {/* Status Header */}
+            <div className="bg-gradient-to-br from-yellow-900/20 to-zinc-800 p-8 border-2 border-yellow-600 rounded-2xl text-center">
+              <div className="flex justify-center mb-4">
+                <ClockIcon className="w-20 h-20 text-yellow-500 animate-pulse" />
+              </div>
+              <h1 className="mb-2 font-bold text-white text-3xl">
+                รอการตรวจสอบ
+              </h1>
+              <p className="mt-2 text-zinc-300 text-lg">
+                ทีมงานกำลังตรวจสอบข้อมูลของคุณ กรุณารอการติดต่อกลับภายใน 3-5 วันทำการ
+              </p>
+            </div>
+
+            {/* Gym Information */}
+            <div className="space-y-4 bg-zinc-800 p-6 rounded-lg">
+              <h2 className="mb-4 font-semibold text-white text-xl">ข้อมูลที่ส่งมา</h2>
+
+              <div className="gap-4 grid grid-cols-1 md:grid-cols-2">
+                <div>
+                  <p className="text-zinc-400 text-sm">ชื่อยิม</p>
+                  <p className="font-medium text-white">{gym.gym_name}</p>
+                </div>
+                <div>
+                  <p className="text-zinc-400 text-sm">ผู้ติดต่อ</p>
+                  <p className="font-medium text-white">{gym.contact_name}</p>
+                </div>
+                <div>
+                  <p className="text-zinc-400 text-sm">เบอร์โทรศัพท์</p>
+                  <p className="font-mono font-medium text-white">{gym.phone}</p>
+                </div>
+                <div>
+                  <p className="text-zinc-400 text-sm">อีเมล</p>
+                  <p className="font-mono font-medium text-white">{gym.email}</p>
+                </div>
+                {gym.location && (
+                  <div className="md:col-span-2">
+                    <p className="text-zinc-400 text-sm">ที่อยู่</p>
+                    <p className="font-medium text-white">{gym.location}</p>
+                  </div>
+                )}
+              </div>
+
+              {gym.services && gym.services.length > 0 && (
+                <div>
+                  <p className="mb-2 text-zinc-400 text-sm">บริการ</p>
+                  <div className="flex flex-wrap gap-2">
+                    {gym.services.map((service, index) => (
+                      <span key={index} className="bg-purple-600/20 px-3 py-1 border border-purple-500 rounded-full text-purple-400 text-sm">
+                        {service}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {gym.images && gym.images.length > 0 && (
+                <div>
+                  <p className="mb-2 text-zinc-400 text-sm">รูปภาพ</p>
+                  <div className="gap-3 grid grid-cols-2 md:grid-cols-4">
+                    {gym.images.map((image, index) => (
+                      <div key={index} className="relative w-full h-24">
+                        <Image
+                          src={image}
+                          alt={`Gym image ${index + 1}`}
+                          fill
+                          className="rounded-lg object-cover"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex justify-center gap-4 mt-8">
+              <Button
+                as={Link}
+                href="/"
+                variant="bordered"
+                size="lg"
+              >
+                กลับหน้าหลัก
+              </Button>
+            </div>
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
   return (
     <DashboardLayout
       menuItems={menuItems}

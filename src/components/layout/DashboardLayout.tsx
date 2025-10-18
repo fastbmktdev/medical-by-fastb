@@ -28,6 +28,7 @@ interface DashboardLayoutProps {
   roleColor: "primary" | "secondary" | "success" | "warning" | "danger";
   userEmail?: string;
   showPartnerButton?: boolean;
+  hideSidebar?: boolean;
 }
 
 /**
@@ -45,6 +46,7 @@ export default function DashboardLayout({
   roleColor,
   userEmail,
   showPartnerButton = false,
+  hideSidebar = false,
 }: DashboardLayoutProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pathname = usePathname();
@@ -63,99 +65,101 @@ export default function DashboardLayout({
   return (
     <div className="flex bg-gradient-to-br from-zinc-950 to-zinc-900 min-h-screen">
       {/* Sidebar - Desktop */}
-      <aside className="hidden top-0 lg:sticky lg:flex flex-col bg-zinc-900/50 backdrop-blur-xl border-white/5 border-r w-64 h-screen max-h-screen">
-        {/* Sidebar Header */}
-        <div className="flex items-center gap-3 p-6 border-white/5 border-b">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex justify-center items-center bg-red-600 rounded w-10 h-10 font-bold text-white">
-              MT
-            </div>
-            <span className="font-semibold text-white text-lg">
-              MUAYTHAI
-            </span>
-          </Link>
-        </div>
-
-        {/* User Info */}
-        <div className="p-6 border-white/5 border-b">
-          <div className="flex items-center gap-3 mb-3">
-            <Avatar
-              size="md"
-              classNames={{
-                base: `bg-gradient-to-br ${
-                  roleColor === 'danger' ? 'from-red-600 to-red-700' :
-                  roleColor === 'secondary' ? 'from-purple-600 to-purple-700' :
-                  'from-blue-600 to-blue-700'
-                }`,
-              }}
-            />
-            <div className="flex-1 min-w-0">
-              <p className="font-semibold text-white text-sm truncate">
-                {userEmail?.split('@')[0] || 'ผู้ใช้'}
-              </p>
-              <p className="text-default-400 text-xs truncate">{userEmail}</p>
-            </div>
+      {!hideSidebar && (
+        <aside className="hidden top-0 lg:sticky lg:flex flex-col bg-zinc-900/50 backdrop-blur-xl border-white/5 border-r w-64 h-screen max-h-screen">
+          {/* Sidebar Header */}
+          <div className="flex items-center gap-3 p-6 border-white/5 border-b">
+            <Link href="/" className="flex items-center gap-2">
+              <div className="flex justify-center items-center bg-red-600 rounded w-10 h-10 font-bold text-white">
+                MT
+              </div>
+              <span className="font-semibold text-white text-lg">
+                MUAYTHAI
+              </span>
+            </Link>
           </div>
-          <Chip color={roleColor} variant="flat" size="sm" className="justify-center w-full">
-            {roleLabel}
-          </Chip>
-        </div>
 
-        {/* Navigation Menu */}
-        <nav className="flex-1 space-y-1 p-4 overflow-y-auto">
-          {menuItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = pathname === item.href;
+          {/* User Info */}
+          <div className="p-6 border-white/5 border-b">
+            <div className="flex items-center gap-3 mb-3">
+              <Avatar
+                size="md"
+                classNames={{
+                  base: `bg-gradient-to-br ${
+                    roleColor === 'danger' ? 'from-red-600 to-red-700' :
+                    roleColor === 'secondary' ? 'from-purple-600 to-purple-700' :
+                    'from-blue-600 to-blue-700'
+                  }`,
+                }}
+              />
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-white text-sm truncate">
+                  {userEmail?.split('@')[0] || 'ผู้ใช้'}
+                </p>
+                <p className="text-default-400 text-xs truncate">{userEmail}</p>
+              </div>
+            </div>
+            <Chip color={roleColor} variant="flat" size="sm" className="justify-center w-full">
+              {roleLabel}
+            </Chip>
+          </div>
 
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-                  isActive
-                    ? 'bg-danger text-white font-semibold'
-                    : 'text-default-400 hover:bg-white/5 hover:text-white'
-                }`}
+          {/* Navigation Menu */}
+          <nav className="flex-1 space-y-1 p-4 overflow-y-auto">
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname === item.href;
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                    isActive
+                      ? 'bg-danger text-white font-semibold'
+                      : 'text-default-400 hover:bg-white/5 hover:text-white'
+                  }`}
+                >
+                  <Icon className="w-5 h-5" />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* Partner Button */}
+          {showPartnerButton && (
+            <div className="px-4 pb-4">
+              <Button
+                as={Link}
+                href="/partner/apply"
+                variant="flat"
+                color="secondary"
+                startContent={<BriefcaseIcon className="w-5 h-5" />}
+                className="w-full font-semibold"
               >
-                <Icon className="w-5 h-5" />
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
-        </nav>
+                สมัครพาร์ทเนอร์
+              </Button>
+            </div>
+          )}
 
-        {/* Partner Button */}
-        {showPartnerButton && (
-          <div className="px-4 pb-4">
+          {/* Logout Button */}
+          <div className="p-4 border-white/5 border-t">
             <Button
-              as={Link}
-              href="/partner/apply"
+              onPress={handleLogout}
               variant="flat"
-              color="secondary"
-              startContent={<BriefcaseIcon className="w-5 h-5" />}
+              color="danger"
+              startContent={<ArrowRightOnRectangleIcon className="w-5 h-5" />}
               className="w-full font-semibold"
             >
-              สมัครพาร์ทเนอร์
+              ออกจากระบบ
             </Button>
           </div>
-        )}
-
-        {/* Logout Button */}
-        <div className="p-4 border-white/5 border-t">
-          <Button
-            onPress={handleLogout}
-            variant="flat"
-            color="danger"
-            startContent={<ArrowRightOnRectangleIcon className="w-5 h-5" />}
-            className="w-full font-semibold"
-          >
-            ออกจากระบบ
-          </Button>
-        </div>
-      </aside>
+        </aside>
+      )}
 
       {/* Mobile Sidebar Overlay */}
-      {isSidebarOpen && (
+      {!hideSidebar && isSidebarOpen && (
         <div
           className="lg:hidden z-50 fixed inset-0 bg-black/50 backdrop-blur-sm"
           onClick={() => setIsSidebarOpen(false)}
@@ -163,124 +167,128 @@ export default function DashboardLayout({
       )}
 
       {/* Mobile Sidebar */}
-      <aside
-        className={`lg:hidden fixed inset-y-0 left-0 z-50 flex flex-col bg-zinc-900 border-r border-white/5 w-64 transform transition-transform duration-300 ${
-          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
-      >
-        {/* Sidebar Header */}
-        <div className="flex justify-between items-center p-6 border-white/5 border-b">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex justify-center items-center bg-red-600 rounded w-10 h-10 font-bold text-white">
-              MT
-            </div>
-            <span className="font-semibold text-white text-lg">
-              MUAYTHAI
-            </span>
-          </Link>
-          <Button
-            isIconOnly
-            variant="light"
-            onPress={() => setIsSidebarOpen(false)}
-          >
-            <XMarkIcon className="w-6 h-6 text-white" />
-          </Button>
-        </div>
-
-        {/* User Info */}
-        <div className="p-6 border-white/5 border-b">
-          <div className="flex items-center gap-3 mb-3">
-            <Avatar
-              size="md"
-              classNames={{
-                base: `bg-gradient-to-br ${
-                  roleColor === 'danger' ? 'from-red-600 to-red-700' :
-                  roleColor === 'secondary' ? 'from-purple-600 to-purple-700' :
-                  'from-blue-600 to-blue-700'
-                }`,
-              }}
-            />
-            <div className="flex-1 min-w-0">
-              <p className="font-semibold text-white text-sm truncate">
-                {userEmail?.split('@')[0] || 'ผู้ใช้'}
-              </p>
-              <p className="text-default-400 text-xs truncate">{userEmail}</p>
-            </div>
-          </div>
-          <Chip color={roleColor} variant="flat" size="sm" className="justify-center w-full">
-            {roleLabel}
-          </Chip>
-        </div>
-
-        {/* Navigation Menu */}
-        <nav className="flex-1 space-y-1 p-4 overflow-y-auto">
-          {menuItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = pathname === item.href;
-
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setIsSidebarOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-                  isActive
-                    ? 'bg-danger text-white font-semibold'
-                    : 'text-default-400 hover:bg-white/5 hover:text-white'
-                }`}
-              >
-                <Icon className="w-5 h-5" />
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* Partner Button */}
-        {showPartnerButton && (
-          <div className="px-4 pb-4">
+      {!hideSidebar && (
+        <aside
+          className={`lg:hidden fixed inset-y-0 left-0 z-50 flex flex-col bg-zinc-900 border-r border-white/5 w-64 transform transition-transform duration-300 ${
+            isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
+        >
+          {/* Sidebar Header */}
+          <div className="flex justify-between items-center p-6 border-white/5 border-b">
+            <Link href="/" className="flex items-center gap-2">
+              <div className="flex justify-center items-center bg-red-600 rounded w-10 h-10 font-bold text-white">
+                MT
+              </div>
+              <span className="font-semibold text-white text-lg">
+                MUAYTHAI
+              </span>
+            </Link>
             <Button
-              as={Link}
-              href="/partner/apply"
-              variant="flat"
-              color="secondary"
-              startContent={<BriefcaseIcon className="w-5 h-5" />}
-              className="w-full font-semibold"
+              isIconOnly
+              variant="light"
               onPress={() => setIsSidebarOpen(false)}
             >
-              สมัครพาร์ทเนอร์
+              <XMarkIcon className="w-6 h-6 text-white" />
             </Button>
           </div>
-        )}
 
-        {/* Logout Button */}
-        <div className="p-4 border-white/5 border-t">
-          <Button
-            onPress={handleLogout}
-            variant="flat"
-            color="danger"
-            startContent={<ArrowRightOnRectangleIcon className="w-5 h-5" />}
-            className="w-full font-semibold"
-          >
-            ออกจากระบบ
-          </Button>
-        </div>
-      </aside>
+          {/* User Info */}
+          <div className="p-6 border-white/5 border-b">
+            <div className="flex items-center gap-3 mb-3">
+              <Avatar
+                size="md"
+                classNames={{
+                  base: `bg-gradient-to-br ${
+                    roleColor === 'danger' ? 'from-red-600 to-red-700' :
+                    roleColor === 'secondary' ? 'from-purple-600 to-purple-700' :
+                    'from-blue-600 to-blue-700'
+                  }`,
+                }}
+              />
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-white text-sm truncate">
+                  {userEmail?.split('@')[0] || 'ผู้ใช้'}
+                </p>
+                <p className="text-default-400 text-xs truncate">{userEmail}</p>
+              </div>
+            </div>
+            <Chip color={roleColor} variant="flat" size="sm" className="justify-center w-full">
+              {roleLabel}
+            </Chip>
+          </div>
+
+          {/* Navigation Menu */}
+          <nav className="flex-1 space-y-1 p-4 overflow-y-auto">
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname === item.href;
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setIsSidebarOpen(false)}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                    isActive
+                      ? 'bg-danger text-white font-semibold'
+                      : 'text-default-400 hover:bg-white/5 hover:text-white'
+                  }`}
+                >
+                  <Icon className="w-5 h-5" />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* Partner Button */}
+          {showPartnerButton && (
+            <div className="px-4 pb-4">
+              <Button
+                as={Link}
+                href="/partner/apply"
+                variant="flat"
+                color="secondary"
+                startContent={<BriefcaseIcon className="w-5 h-5" />}
+                className="w-full font-semibold"
+                onPress={() => setIsSidebarOpen(false)}
+              >
+                สมัครพาร์ทเนอร์
+              </Button>
+            </div>
+          )}
+
+          {/* Logout Button */}
+          <div className="p-4 border-white/5 border-t">
+            <Button
+              onPress={handleLogout}
+              variant="flat"
+              color="danger"
+              startContent={<ArrowRightOnRectangleIcon className="w-5 h-5" />}
+              className="w-full font-semibold"
+            >
+              ออกจากระบบ
+            </Button>
+          </div>
+        </aside>
+      )}
 
       {/* Main Content */}
       <div className="flex flex-col flex-1 min-h-screen">
         {/* Top Bar - Mobile */}
-        <header className="lg:hidden flex justify-between items-center bg-zinc-900/50 backdrop-blur-xl px-4 py-4 border-white/5 border-b">
-          <Button
-            isIconOnly
-            variant="light"
-            onPress={() => setIsSidebarOpen(true)}
-          >
-            <Bars3Icon className="w-6 h-6 text-white" />
-          </Button>
-          <h1 className="font-bold text-white text-lg">{headerTitle}</h1>
-          <div className="w-10" /> {/* Spacer for centering */}
-        </header>
+        {!hideSidebar && (
+          <header className="lg:hidden flex justify-between items-center bg-zinc-900/50 backdrop-blur-xl px-4 py-4 border-white/5 border-b">
+            <Button
+              isIconOnly
+              variant="light"
+              onPress={() => setIsSidebarOpen(true)}
+            >
+              <Bars3Icon className="w-6 h-6 text-white" />
+            </Button>
+            <h1 className="font-bold text-white text-lg">{headerTitle}</h1>
+            <div className="w-10" /> {/* Spacer for centering */}
+          </header>
+        )}
 
         {/* Page Header */}
         <div className="bg-gradient-to-r from-red-950/20 to-transparent px-4 sm:px-6 lg:px-8 py-8 border-white/5 border-b">
