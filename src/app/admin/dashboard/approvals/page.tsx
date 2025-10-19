@@ -128,8 +128,13 @@ const ApplicationDetailModal = ({
     onClose={onClose}
     size="3xl"
     scrollBehavior="inside"
+    backdrop="blur"
+    classNames={{
+      backdrop: "bg-black/50 backdrop-blur-sm",
+      wrapper: "z-[100]",
+    }}
   >
-    <ModalContent>
+    <ModalContent className="bg-zinc-900 border border-zinc-700">
       {(closeModal) => (
         <>
           <ModalHeader>

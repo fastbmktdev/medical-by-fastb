@@ -262,7 +262,7 @@ function AdminDashboardContent() {
         userEmail={user?.email}
       >
         <div className="flex justify-center items-center py-20">
-          <div className="border-4 border-t-transparent border-red-600 rounded-full w-12 h-12 animate-spin"></div>
+          <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
         </div>
       </DashboardLayout>
     );
@@ -301,54 +301,6 @@ function AdminDashboardContent() {
           </CardBody>
         </Card>
       )}
-
-      {/* Statistics Cards */}
-      <section className="mb-8">
-        <h2 className="mb-6 font-bold text-white text-2xl">สถิติภาพรวม</h2>
-        <div className="gap-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-          {statisticsCards.map((stat, index) => {
-            const Icon = stat.icon;
-            return (
-              <Card
-                key={index}
-                as={Link}
-                href={stat.href}
-                isPressable
-                isHoverable
-                className={`bg-default-100/50 backdrop-blur-sm border-none ${
-                  stat.highlight ? 'ring-2 ring-warning' : ''
-                }`}
-              >
-                <CardBody className="gap-4">
-                  <div className="flex justify-between items-start">
-                    <div className={`bg-${stat.color} p-3 rounded-lg`}>
-                      <Icon className="w-6 h-6 text-white" />
-                    </div>
-                    {stat.change !== '-' && (
-                      <Chip
-                        size="sm"
-                        color="success"
-                        variant="flat"
-                        startContent={<ArrowTrendingUpIcon className="w-3 h-3" />}
-                      >
-                        {stat.change}
-                      </Chip>
-                    )}
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-white text-3xl">
-                      {stat.value}
-                    </h3>
-                    <p className="text-default-400 text-sm">
-                      {stat.title}
-                    </p>
-                  </div>
-                </CardBody>
-              </Card>
-            );
-          })}
-        </div>
-      </section>
 
       {/* Admin Tools */}
       <section className="mb-8">

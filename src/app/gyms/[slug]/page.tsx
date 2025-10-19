@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { use, useEffect, useState, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { Gym } from "@/types/database.types";
 import {
@@ -18,6 +18,267 @@ import {
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+// ---------------------------
+// Helper Components
+// ---------------------------
+function Breadcrumb({ gymName }: { gymName: string }) {
+  return (
+    <nav className="flex items-center gap-2 mb-3 text-sm">
+      <Link
+        href="/"
+        className="flex items-center gap-1 text-zinc-400 hover:text-white transition-colors"
+      >
+        <HomeIcon className="w-4 h-4" />
+        <span>หน้าแรก</span>
+      </Link>
+      <ChevronRightIcon className="w-4 h-4 text-zinc-600" />
+      <Link
+        href="/gyms"
+        className="text-zinc-400 hover:text-white transition-colors"
+      >
+        ค่ายมวย
+      </Link>
+      <ChevronRightIcon className="w-4 h-4 text-zinc-600" />
+      <span className="font-medium text-white">{gymName}</span>
+    </nav>
+  );
+}
+
+function BackButton() {
+  return (
+    <Link
+      href="/gyms"
+      className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
+    >
+      <ArrowLeftIcon className="w-5 h-5" />
+      <span>กลับไปหน้ารายการค่ายมวย</span>
+    </Link>
+  );
+}
+
+function GymHeader({ gym }: { gym: Gym }) {
+  return (
+    <div>
+      <div className="flex justify-start items-start mb-4">
+        <div>
+          <h1 className="mb-2 font-bold text-white text-4xl">
+            {gym.gym_name}
+          </h1>
+          {gym.gym_name_english && (
+            <p className="text-zinc-400 text-xl">{gym.gym_name_english}</p>
+          )}
+        </div>
+        {gym.rating && (
+          <div className="flex items-center gap-2 bg-zinc-800 px-4 py-2 rounded-lg">
+            <StarIcon className="fill-yellow-400 w-6 h-6 text-yellow-400" />
+            <span className="font-bold text-white text-2xl">
+              {gym.rating.toFixed(1)}
+            </span>
+          </div>
+        )}
+      </div>
+      {gym.gym_type && (
+        <span className="inline-block bg-red-600 px-3 py-1 rounded-full font-semibold text-white text-sm">
+          {gym.gym_type}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function GalleryPlaceholder() {
+  return (
+    <div className="flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-900 rounded-lg h-96">
+      <div className="text-center">
+        <div className="mb-4 text-zinc-600 text-9xl">🥊</div>
+        <p className="text-zinc-400">ภาพประกอบจะมาเร็วๆ นี้</p>
+      </div>
+    </div>
+  );
+}
+
+function AboutSection({ details }: { details?: string | null }) {
+  return (
+    <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
+      <h2 className="mb-4 font-bold text-white text-2xl">
+        เกี่ยวกับค่ายมวย
+      </h2>
+      <p className="text-zinc-300 leading-relaxed">
+        {details || "ไม่มีรายละเอียดเพิ่มเติม"}
+      </p>
+    </div>
+  );
+}
+
+function LocationSection({ location, mapUrl }: { location: string; mapUrl?: string | null }) {
+  return (
+    <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
+      <h2 className="mb-4 font-bold text-white text-2xl">
+        ที่อยู่และแผนที่
+      </h2>
+      <div className="flex items-start gap-3 mb-4">
+        <MapPinIcon className="flex-shrink-0 w-6 h-6 text-red-500" />
+        <p className="text-zinc-300">{location}</p>
+      </div>
+      {mapUrl && (
+        <a
+          href={mapUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 bg-zinc-700 hover:bg-zinc-600 px-4 py-2 rounded-lg text-white transition-colors"
+        >
+          <GlobeAltIcon className="w-5 h-5" />
+          <span>เปิดใน Google Maps</span>
+        </a>
+      )}
+    </div>
+  );
+}
+
+function ServicesSection({ services }: { services: string[] }) {
+  if (!services || services.length === 0) return null;
+
+  return (
+    <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
+      <h2 className="mb-4 font-bold text-white text-2xl">บริการ</h2>
+      <div className="flex flex-wrap gap-2">
+        {services.map((service, idx) => (
+          <span
+            key={idx}
+            className="bg-zinc-700 px-3 py-1 rounded-full text-zinc-300 text-sm"
+          >
+            {service}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ContactInfo({ gym }: { gym: Gym }) {
+  return (
+    <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
+      <h3 className="mb-4 font-bold text-white text-xl">ข้อมูลติดต่อ</h3>
+      <div className="space-y-4">
+        {gym.phone && (
+          <div className="flex items-start gap-3">
+            <PhoneIcon className="flex-shrink-0 mt-0.5 w-5 h-5 text-green-500" />
+            <div>
+              <p className="mb-1 text-zinc-400 text-xs">โทรศัพท์</p>
+              <a
+                href={`tel:${gym.phone}`}
+                className="text-zinc-300 hover:text-white transition-colors"
+              >
+                {gym.phone}
+              </a>
+            </div>
+          </div>
+        )}
+        {gym.email && (
+          <div className="flex items-start gap-3">
+            <EnvelopeIcon className="flex-shrink-0 mt-0.5 w-5 h-5 text-blue-500" />
+            <div>
+              <p className="mb-1 text-zinc-400 text-xs">อีเมล</p>
+              <a
+                href={`mailto:${gym.email}`}
+                className="text-zinc-300 hover:text-white break-all transition-colors"
+              >
+                {gym.email}
+              </a>
+            </div>
+          </div>
+        )}
+        {gym.website && (
+          <div className="flex items-start gap-3">
+            <GlobeAltIcon className="flex-shrink-0 mt-0.5 w-5 h-5 text-purple-500" />
+            <div>
+              <p className="mb-1 text-zinc-400 text-xs">เว็บไซต์</p>
+              <a
+                href={gym.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-zinc-300 hover:text-white break-all transition-colors"
+              >
+                {gym.website}
+              </a>
+            </div>
+          </div>
+        )}
+        {gym.socials && (
+          <div className="flex items-start gap-3">
+            <GlobeAltIcon className="flex-shrink-0 mt-0.5 w-5 h-5 text-purple-500" />
+            <div>
+              <p className="mb-1 text-zinc-400 text-xs">โซเชียลมีเดีย</p>
+              <p className="text-zinc-300">{gym.socials}</p>
+            </div>
+          </div>
+        )}
+        {gym.contact_name && (
+          <div className="pt-4 border-zinc-700 border-t">
+            <p className="mb-1 text-zinc-400 text-xs">ผู้ติดต่อ</p>
+            <p className="text-zinc-300">{gym.contact_name}</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function QuickInfo({ gym }: { gym: Gym }) {
+  return (
+    <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
+      <h3 className="mb-4 font-bold text-white text-xl">ข้อมูลทั่วไป</h3>
+      <div className="space-y-4">
+        {gym.rating && (
+          <div className="flex items-center gap-3">
+            <StarIcon className="w-5 h-5 text-yellow-400" />
+            <div>
+              <p className="text-zinc-400 text-xs">คะแนน</p>
+              <p className="font-semibold text-zinc-300">
+                {gym.rating.toFixed(1)} / 5.0
+              </p>
+            </div>
+          </div>
+        )}
+        <div className="flex items-center gap-3">
+          <ClockIcon className="w-5 h-5 text-blue-500" />
+          <div>
+            <p className="text-zinc-400 text-xs">เวลาทำการ</p>
+            <p className="text-zinc-300">จันทร์-เสาร์: 06:00-20:00</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <CurrencyDollarIcon className="w-5 h-5 text-green-500" />
+          <div>
+            <p className="text-zinc-400 text-xs">ราคา</p>
+            <p className="font-semibold text-zinc-300">ติดต่อสอบถาม</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CTABooking({ gymSlug }: { gymSlug: string }) {
+  return (
+    <div className="bg-gradient-to-r from-red-600 to-red-700 p-6 rounded-lg text-center">
+      <h3 className="mb-2 font-bold text-white text-xl">
+        ต้องการใช้บริการค่ายมวย
+      </h3>
+      <Link
+        href={`/gyms/${gymSlug}/booking`}
+        className="block bg-white hover:bg-zinc-100 px-6 py-3 rounded-lg w-full font-semibold text-red-600 transition-colors"
+      >
+        จองค่ายมวย
+      </Link>
+    </div>
+  );
+}
+
+// ---------------------------
+// Main Page
+// ---------------------------
+
 export default function GymDetailPage({
   params,
 }: {
@@ -25,28 +286,46 @@ export default function GymDetailPage({
 }) {
   const { slug } = use(params);
   const [gym, setGym] = useState<Gym | null>(null);
+  const [userRole, setUserRole] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const supabase = createClient();
 
-  useEffect(() => {
-    async function fetchGym() {
+  const fetchData = useCallback(async () => {
+    try {
+      // Fetch gym data
       const { data, error } = await supabase
-        .from('gyms')
-        .select('*')
-        .eq('slug', slug)
-        .eq('status', 'approved')
+        .from("gyms")
+        .select("*")
+        .eq("slug", slug)
+        .eq("status", "approved")
         .maybeSingle();
-
       if (error) {
-        console.error('Error fetching gym:', error);
+        console.error("Error fetching gym:", error);
       }
-
       setGym(data);
+
+      // Fetch user role
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        const { data: roleData } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", user.id)
+          .single();
+        setUserRole(roleData?.role || null);
+      }
+    } catch (err) {
+      console.error("Error fetching data:", err);
+    } finally {
       setIsLoading(false);
     }
-
-    fetchGym();
   }, [slug, supabase]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   if (isLoading) {
     return (
@@ -65,36 +344,8 @@ export default function GymDetailPage({
       {/* Breadcrumb & Back Button */}
       <div className="bg-zinc-800 border-zinc-700 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-7xl">
-          {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 mb-3 text-sm">
-            <Link
-              href="/"
-              className="flex items-center gap-1 text-zinc-400 hover:text-white transition-colors"
-            >
-              <HomeIcon className="w-4 h-4" />
-              <span>หน้าแรก</span>
-            </Link>
-            <ChevronRightIcon className="w-4 h-4 text-zinc-600" />
-            <Link
-              href="/gyms"
-              className="text-zinc-400 hover:text-white transition-colors"
-            >
-              ค่ายมวย
-            </Link>
-            <ChevronRightIcon className="w-4 h-4 text-zinc-600" />
-            <span className="font-medium text-white">
-              {gym.gym_name}
-            </span>
-          </nav>
-
-          {/* Back Button */}
-          <Link
-            href="/gyms"
-            className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
-          >
-            <ArrowLeftIcon className="w-5 h-5" />
-            <span>กลับไปหน้ารายการค่ายมวย</span>
-          </Link>
+          <Breadcrumb gymName={gym.gym_name} />
+          <BackButton />
         </div>
       </div>
 
@@ -103,273 +354,32 @@ export default function GymDetailPage({
           {/* Main Content */}
           <div className="space-y-8 lg:col-span-2">
             {/* Header */}
-            <div>
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <h1 className="mb-2 font-bold text-white text-4xl">
-                    {gym.gym_name}
-                  </h1>
-                  {gym.gym_name_english && (
-                    <p className="text-zinc-400 text-xl">
-                      {gym.gym_name_english}
-                    </p>
-                  )}
-                </div>
-                {gym.rating && (
-                  <div className="flex items-center gap-2 bg-zinc-800 px-4 py-2 rounded-lg">
-                    <StarIcon className="fill-yellow-400 w-6 h-6 text-yellow-400" />
-                    <span className="font-bold text-white text-2xl">
-                      {gym.rating.toFixed(1)}
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              {gym.gym_type && (
-                <span className="inline-block bg-red-600 px-3 py-1 rounded-full font-semibold text-white text-sm">
-                  {gym.gym_type}
-                </span>
-              )}
-            </div>
+            <GymHeader gym={gym} />
 
             {/* Image Gallery Placeholder */}
-            <div className="flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-900 rounded-lg h-96">
-              <div className="text-center">
-                <div className="mb-4 text-zinc-600 text-9xl">🥊</div>
-                <p className="text-zinc-400">ภาพประกอบจะมาเร็วๆ นี้</p>
-              </div>
-            </div>
+            <GalleryPlaceholder />
 
             {/* About */}
-            <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
-              <h2 className="mb-4 font-bold text-white text-2xl">
-                เกี่ยวกับค่ายมวย
-              </h2>
-              <p className="text-zinc-300 leading-relaxed">
-                {gym.gym_details || "ไม่มีรายละเอียดเพิ่มเติม"}
-              </p>
-            </div>
+            <AboutSection details={gym.gym_details} />
 
             {/* Location */}
-            <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
-              <h2 className="mb-4 font-bold text-white text-2xl">
-                ที่อยู่และแผนที่
-              </h2>
-              <div className="flex items-start gap-3 mb-4">
-                <MapPinIcon className="flex-shrink-0 w-6 h-6 text-red-500" />
-                <p className="text-zinc-300">{gym.location}</p>
-              </div>
-              {gym.map_url && (
-                <a
-                  href={gym.map_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-zinc-700 hover:bg-zinc-600 px-4 py-2 rounded-lg text-white transition-colors"
-                >
-                  <GlobeAltIcon className="w-5 h-5" />
-                  <span>เปิดใน Google Maps</span>
-                </a>
-              )}
-            </div>
+            <LocationSection location={gym.location} mapUrl={gym.map_url} />
 
             {/* Services */}
             {gym.services && gym.services.length > 0 && (
-              <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
-                <h2 className="mb-4 font-bold text-white text-2xl">
-                  บริการ
-                </h2>
-                <div className="flex flex-wrap gap-2">
-                  {gym.services.map((service, idx) => (
-                    <span
-                      key={idx}
-                      className="bg-zinc-700 px-3 py-1 rounded-full text-zinc-300 text-sm"
-                    >
-                      {service}
-                    </span>
-                  ))}
-                </div>
-              </div>
+              <ServicesSection services={gym.services} />
             )}
 
-            {/* Packages - Commented out until we have packages table */}
-            {/* {gym.packages && gym.packages.length > 0 && (
-              <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
-                <h2 className="mb-4 font-bold text-white text-2xl">
-                  แพ็คเกจการฝึกซ้อม
-                </h2>
-                <div className="space-y-4">
-                  {gym.packages.map((pkg) => (
-                    <div
-                      key={pkg.id}
-                      className="bg-zinc-900 p-4 border border-zinc-700 hover:border-red-500 rounded-lg transition-colors"
-                    >
-                      <div className="flex justify-between items-start mb-3">
-                        <div>
-                          <h3 className="mb-1 font-semibold text-white text-xl">
-                            {pkg.name}
-                          </h3>
-                          <p className="text-zinc-400 text-sm">
-                            {pkg.duration_days} วัน
-                          </p>
-                        </div>
-                        <div className="text-right">
-                          <p className="font-bold text-red-500 text-2xl">
-                            ฿{pkg.base_price.toLocaleString()}
-                          </p>
-                        </div>
-                      </div>
-                      {pkg.description && (
-                        <p className="mb-3 text-zinc-400 text-sm">
-                          {pkg.description}
-                        </p>
-                      )}
-                      {pkg.inclusions && pkg.inclusions.length > 0 && (
-                        <div className="space-y-2">
-                          {pkg.inclusions.map((inclusion, idx) => (
-                            <div
-                              key={idx}
-                              className="flex items-start gap-2 text-zinc-300 text-sm"
-                            >
-                              <CheckCircleIcon className="flex-shrink-0 w-5 h-5 text-green-500" />
-                              <span>{inclusion}</span>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )} */}
+            {/* --- Packages Section is commented out --- */}
           </div>
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
             <div className="top-4 sticky space-y-6">
-              {/* Contact Info */}
-              <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
-                <h3 className="mb-4 font-bold text-white text-xl">
-                  ข้อมูลติดต่อ
-                </h3>
-                <div className="space-y-4">
-                  {gym.phone && (
-                    <div className="flex items-start gap-3">
-                      <PhoneIcon className="flex-shrink-0 mt-0.5 w-5 h-5 text-green-500" />
-                      <div>
-                        <p className="mb-1 text-zinc-400 text-xs">
-                          โทรศัพท์
-                        </p>
-                        <a
-                          href={`tel:${gym.phone}`}
-                          className="text-zinc-300 hover:text-white transition-colors"
-                        >
-                          {gym.phone}
-                        </a>
-                      </div>
-                    </div>
-                  )}
-                  {gym.email && (
-                    <div className="flex items-start gap-3">
-                      <EnvelopeIcon className="flex-shrink-0 mt-0.5 w-5 h-5 text-blue-500" />
-                      <div>
-                        <p className="mb-1 text-zinc-400 text-xs">อีเมล</p>
-                        <a
-                          href={`mailto:${gym.email}`}
-                          className="text-zinc-300 hover:text-white break-all transition-colors"
-                        >
-                          {gym.email}
-                        </a>
-                      </div>
-                    </div>
-                  )}
-                  {gym.website && (
-                    <div className="flex items-start gap-3">
-                      <GlobeAltIcon className="flex-shrink-0 mt-0.5 w-5 h-5 text-purple-500" />
-                      <div>
-                        <p className="mb-1 text-zinc-400 text-xs">
-                          เว็บไซต์
-                        </p>
-                        <a
-                          href={gym.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-zinc-300 hover:text-white break-all transition-colors"
-                        >
-                          {gym.website}
-                        </a>
-                      </div>
-                    </div>
-                  )}
-                  {gym.socials && (
-                    <div className="flex items-start gap-3">
-                      <GlobeAltIcon className="flex-shrink-0 mt-0.5 w-5 h-5 text-purple-500" />
-                      <div>
-                        <p className="mb-1 text-zinc-400 text-xs">
-                          โซเชียลมีเดีย
-                        </p>
-                        <p className="text-zinc-300">{gym.socials}</p>
-                      </div>
-                    </div>
-                  )}
-                  {gym.contact_name && (
-                    <div className="pt-4 border-zinc-700 border-t">
-                      <p className="mb-1 text-zinc-400 text-xs">
-                        ผู้ติดต่อ
-                      </p>
-                      <p className="text-zinc-300">{gym.contact_name}</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Quick Info */}
-              <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
-                <h3 className="mb-4 font-bold text-white text-xl">
-                  ข้อมูลทั่วไป
-                </h3>
-                <div className="space-y-4">
-                  {gym.rating && (
-                    <div className="flex items-center gap-3">
-                      <StarIcon className="w-5 h-5 text-yellow-400" />
-                      <div>
-                        <p className="text-zinc-400 text-xs">คะแนน</p>
-                        <p className="font-semibold text-zinc-300">
-                          {gym.rating.toFixed(1)} / 5.0
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                  <div className="flex items-center gap-3">
-                    <ClockIcon className="w-5 h-5 text-blue-500" />
-                    <div>
-                      <p className="text-zinc-400 text-xs">เวลาทำการ</p>
-                      <p className="text-zinc-300">จันทร์-เสาร์: 06:00-20:00</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <CurrencyDollarIcon className="w-5 h-5 text-green-500" />
-                    <div>
-                      <p className="text-zinc-400 text-xs">ราคา</p>
-                      <p className="font-semibold text-zinc-300">
-                        ติดต่อสอบถาม
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* CTA */}
-              <div className="bg-gradient-to-r from-red-600 to-red-700 p-6 rounded-lg text-center">
-                <h3 className="mb-2 font-bold text-white text-xl">
-                  ต้องการใช้บริการค่ายมวย
-                </h3>
-                <Link
-                  href={`/gyms/${gym.slug}/booking`}
-                  className="block bg-white hover:bg-zinc-100 px-6 py-3 rounded-lg w-full font-semibold text-red-600 transition-colors"
-                >
-                  จองค่ายมวย
-                </Link>
-              </div>
+              <ContactInfo gym={gym} />
+              <QuickInfo gym={gym} />
+              {/* CTA - Hidden for Admin */}
+              {userRole !== "admin" && <CTABooking gymSlug={gym.slug ?? ""} />}
             </div>
           </div>
         </div>
@@ -377,4 +387,3 @@ export default function GymDetailPage({
     </div>
   );
 }
-

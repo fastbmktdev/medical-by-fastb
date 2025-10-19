@@ -12,6 +12,7 @@ import {
   ExclamationTriangleIcon,
   EyeIcon,
   EyeSlashIcon,
+  DevicePhoneMobileIcon,
 } from "@heroicons/react/24/outline";
 
 /**
@@ -21,6 +22,7 @@ interface SignupFormData {
   username: string;
   fullName: string;
   email: string;
+  phone: string;
   password: string;
   confirmPassword: string;
 }
@@ -32,6 +34,7 @@ interface FormErrors {
   username?: string;
   fullName?: string;
   email?: string;
+  phone?: string;
   password?: string;
   confirmPassword?: string;
   general?: string;
@@ -64,6 +67,7 @@ export default function SignupPage() {
     username: "",
     fullName: "",
     email: "",
+    phone: "",
     password: "",
     confirmPassword: "",
   });
@@ -134,6 +138,13 @@ export default function SignupPage() {
       newErrors.fullName = "กรุณากรอกชื่อ-นามสกุล";
     } else if (formData.fullName.trim().length < 2) {
       newErrors.fullName = "ชื่อต้องมีอย่างน้อย 2 ตัวอักษร";
+    }
+
+    // Phone validation
+    if (!formData.phone.trim()) {
+      newErrors.phone = "กรุณากรอกเบอร์โทรศัพท์";
+    } else if (!/^(0[6-9])\d{8}$/.test(formData.phone)) {
+      newErrors.phone = "รูปแบบเบอร์โทรศัพท์ไม่ถูกต้อง";
     }
 
     // Email validation
@@ -222,6 +233,7 @@ export default function SignupPage() {
           data: {
             username: formData.username,
             full_name: formData.fullName,
+            phone: formData.phone,
           },
           // Email confirmation URL
           emailRedirectTo: `${window.location.origin}/auth/callback`,
@@ -312,7 +324,7 @@ export default function SignupPage() {
     return (
       <div className="flex justify-center items-center bg-zinc-900 min-h-screen">
         <div className="text-center">
-          <div className="inline-block mb-4 border-4 border-t-transparent border-red-600 rounded-full w-16 h-16 animate-spin"></div>
+          <div className="inline-block mb-4 border-4 border-red-600 border-t-transparent rounded-full w-16 h-16 animate-spin"></div>
           <p className="text-zinc-300 text-lg">กำลังตรวจสอบ...</p>
         </div>
       </div>
@@ -329,9 +341,6 @@ export default function SignupPage() {
           <h1 className="mb-2 font-bold text-white text-4xl">
             สมัครสมาชิก
           </h1>
-          <p className="text-zinc-400 text-lg">
-            สร้างบัญชีใหม่เพื่อเริ่มต้นใช้งาน
-          </p>
         </div>
 
         {/* Signup Form */}
@@ -436,6 +445,37 @@ export default function SignupPage() {
                 <p className="flex items-center gap-1 mt-2 text-red-400 text-sm">
                   <ExclamationTriangleIcon className="w-4 h-4" />
                   {errors.email}
+                </p>
+              )}
+            </div>
+
+            {/* Phone Field */}
+            <div>
+              <label
+                htmlFor="phone"
+                className="block mb-2 font-medium text-zinc-300 text-sm"
+              >
+                เบอร์โทรศัพท์
+              </label>
+              <div className="relative">
+                <DevicePhoneMobileIcon className="top-3.5 left-3 absolute w-5 h-5 text-zinc-500" />
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  className={`w-full bg-zinc-700 border ${
+                    errors.phone ? "border-red-500" : "border-zinc-600"
+                  } rounded-lg px-4 py-3 pl-10 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent font-mono`}
+                  placeholder="0812345678"
+                  autoComplete="tel"
+                />
+              </div>
+              {errors.phone && (
+                <p className="flex items-center gap-1 mt-2 text-red-400 text-sm">
+                  <ExclamationTriangleIcon className="w-4 h-4" />
+                  {errors.phone}
                 </p>
               )}
             </div>

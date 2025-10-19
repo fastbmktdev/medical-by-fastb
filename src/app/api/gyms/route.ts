@@ -5,37 +5,17 @@
  * POST /api/gyms - Create new gym
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { withAdminAuth } from '@/lib/api/withAdminAuth';
 
-export async function GET() {
+const getGymsHandler = withAdminAuth(async (
+    _request, 
+    _context, 
+    _user
+) => {
   try {
     const supabase = await createClient();
-
-    // Get current user
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-    if (authError || !user) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
-
-    // Get user role
-    const { data: roleData } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', user.id)
-      .single();
-
-    // Check if user is admin
-    if (roleData?.role !== 'admin') {
-      return NextResponse.json(
-        { error: 'Forbidden - Admin access required' },
-        { status: 403 }
-      );
-    }
 
     // Fetch all gyms
     const { data: gyms, error } = await supabase
@@ -77,39 +57,21 @@ export async function GET() {
       { status: 500 }
     );
   }
-}
+});
+
+export { getGymsHandler as GET };
 
 /**
  * POST /api/gyms
  * สร้างยิมใหม่ (Admin only)
  */
-export async function POST(request: NextRequest) {
+const postGymHandler = withAdminAuth(async (
+    request, 
+    _context, 
+    user
+) => {
   try {
     const supabase = await createClient();
-
-    // ตรวจสอบ authentication
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-    if (authError || !user) {
-      return NextResponse.json(
-        { success: false, error: 'Unauthorized - กรุณาเข้าสู่ระบบ' },
-        { status: 401 }
-      );
-    }
-
-    // ตรวจสอบว่าเป็น admin หรือไม่
-    const { data: roleData, error: roleError } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', user.id)
-      .maybeSingle();
-
-    if (roleError || roleData?.role !== 'admin') {
-      return NextResponse.json(
-        { success: false, error: 'Forbidden - คุณไม่มีสิทธิ์เข้าถึง' },
-        { status: 403 }
-      );
-    }
 
     // อ่าน request body
     const body = await request.json();
@@ -233,5 +195,7 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-}
+});
+
+export { postGymHandler as POST };
 

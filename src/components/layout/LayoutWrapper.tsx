@@ -13,9 +13,9 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   const hideHeaderFooter = isAdminPage || isDashboardPage || isPartnerDashboard;
 
   return (
-    <div className="min-h-(calc(100vh_-_128px)) flex flex-col">
+    <div className="min-h-(calc(100vh_-_132px)) flex flex-col">
       {!hideHeaderFooter && <Header />}
-      <main className="flex-1 mt-16">{children}</main>
+      <main className="flex-1">{children}</main>
       {!hideHeaderFooter && <Footer />}
     </div>
   );

@@ -11,22 +11,27 @@ import {
   Button,
   Input,
   Avatar,
+  Chip,
 } from '@heroui/react';
 import {
-  HomeIcon,
   UserIcon,
   CalendarIcon,
   HeartIcon,
   BanknotesIcon,
   PencilIcon,
   ShieldCheckIcon,
+  CameraIcon,
+  CheckCircleIcon,
+  ClockIcon,
 } from '@heroicons/react/24/outline';
 import { User } from '@supabase/supabase-js';
+import { Toaster, toast } from 'react-hot-toast';
 
 function ProfileContent() {
   const supabase = createClient();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     displayName: '',
@@ -40,10 +45,16 @@ function ProfileContent() {
       setUser(user);
 
       if (user) {
-        // Load user profile data from user_metadata or database
+        // Load user profile data from profiles table
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('full_name, phone')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
         setFormData({
-          displayName: user.user_metadata?.display_name || '',
-          phone: user.user_metadata?.phone || '',
+          displayName: profile?.full_name || user.user_metadata?.full_name || user.user_metadata?.display_name || '',
+          phone: profile?.phone || user.user_metadata?.phone || '',
           address: user.user_metadata?.address || '',
         });
       }
@@ -63,21 +74,44 @@ function ProfileContent() {
   const handleSaveProfile = async () => {
     if (!user) return;
 
+    setIsSaving(true);
     try {
-      const { error } = await supabase.auth.updateUser({
+      // Update user metadata
+      const { error: authError } = await supabase.auth.updateUser({
         data: {
-          display_name: formData.displayName,
+          full_name: formData.displayName,
+          display_name: formData.displayName, // Keep both for compatibility
           phone: formData.phone,
           address: formData.address,
         }
       });
 
-      if (error) throw error;
+      if (authError) throw authError;
+
+      // Update profiles table
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({
+          full_name: formData.displayName,
+          phone: formData.phone,
+        })
+        .eq('user_id', user.id);
+
+      if (profileError) throw profileError;
 
       setIsEditing(false);
-      alert('บันทึกข้อมูลสำเร็จ!');
-    } catch {
-      alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+      toast.success('บันทึกข้อมูลสำเร็จ!', {
+        duration: 3000,
+        position: 'top-center',
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error('เกิดข้อผิดพลาดในการบันทึกข้อมูล', {
+        duration: 3000,
+        position: 'top-center',
+      });
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -93,7 +127,7 @@ function ProfileContent() {
         showPartnerButton={true}
       >
         <div className="flex justify-center items-center py-20">
-          <div className="border-4 border-t-transparent border-red-600 rounded-full w-12 h-12 animate-spin"></div>
+          <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
         </div>
       </DashboardLayout>
     );
@@ -109,33 +143,63 @@ function ProfileContent() {
       userEmail={user?.email}
       showPartnerButton={true}
     >
+      <Toaster />
+
       <div className="gap-6 grid grid-cols-1 lg:grid-cols-3">
         {/* Profile Summary */}
         <div className="lg:col-span-1">
-          <Card className="bg-default-100/50 backdrop-blur-sm border-none">
+          <Card className="bg-gradient-to-br from-zinc-800 to-zinc-900 backdrop-blur-sm border border-zinc-700">
             <CardBody className="items-center gap-4 py-8 text-center">
-              <Avatar
-                size="lg"
-                classNames={{
-                  base: "bg-gradient-to-br from-blue-600 to-blue-700 w-24 h-24",
-                }}
-              />
+              <div className="group relative">
+                <Avatar
+                  size="lg"
+                  src={user?.user_metadata?.avatar_url}
+                  classNames={{
+                    base: "bg-gradient-to-br from-blue-600 to-blue-700 w-32 h-32 ring-4 ring-zinc-700 ring-offset-2 ring-offset-zinc-900",
+                  }}
+                />
+                <button className="absolute inset-0 flex justify-center items-center bg-black/50 opacity-0 group-hover:opacity-100 backdrop-blur-sm rounded-full transition-opacity">
+                  <CameraIcon className="w-8 h-8 text-white" />
+                </button>
+              </div>
+              
               <div>
-                <h3 className="mb-1 font-bold text-white text-xl">
+                <h3 className="mb-1 font-bold text-white text-2xl">
                   {formData.displayName || user?.email?.split('@')[0] || 'ผู้ใช้'}
                 </h3>
-                <p className="mb-3 text-default-400 text-sm">{user?.email}</p>
+                <p className="mb-3 text-zinc-400 text-sm">{user?.email}</p>
+                <Chip
+                  color="success"
+                  variant="flat"
+                  size="sm"
+                  startContent={<CheckCircleIcon className="w-3 h-3" />}
+                >
+                  ใช้งานอยู่
+                </Chip>
               </div>
-              <div className="space-y-2 w-full">
-                <div className="flex justify-between items-center bg-white/5 px-4 py-2 rounded-lg">
-                  <span className="text-default-400 text-sm">สถานะบัญชี</span>
-                  <span className="font-semibold text-success text-sm">ใช้งานอยู่</span>
-                </div>
-                <div className="flex justify-between items-center bg-white/5 px-4 py-2 rounded-lg">
-                  <span className="text-default-400 text-sm">สมาชิกตั้งแต่</span>
-                  <span className="font-mono text-white text-sm">
-                    {user?.created_at ? new Date(user.created_at).toLocaleDateString('th-TH') : '-'}
+
+              <div className="space-y-3 pt-4 border-zinc-700 border-t w-full">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <ClockIcon className="w-4 h-4 text-zinc-400" />
+                    <span className="text-zinc-400 text-sm">สมาชิกตั้งแต่</span>
+                  </div>
+                  <span className="font-semibold text-white text-sm">
+                    {user?.created_at ? new Date(user.created_at).toLocaleDateString('th-TH', {
+                      year: 'numeric',
+                      month: 'short',
+                    }) : '-'}
                   </span>
+                </div>
+                
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <UserIcon className="w-4 h-4 text-zinc-400" />
+                    <span className="text-zinc-400 text-sm">ประเภทสมาชิก</span>
+                  </div>
+                  <Chip color="primary" variant="flat" size="sm">
+                    ผู้ใช้ทั่วไป
+                  </Chip>
                 </div>
               </div>
             </CardBody>
@@ -145,16 +209,20 @@ function ProfileContent() {
         {/* Profile Information */}
         <div className="space-y-6 lg:col-span-2">
           {/* Personal Information */}
-          <Card className="bg-default-100/50 backdrop-blur-sm border-none">
-            <CardHeader className="flex justify-between items-center">
-              <h3 className="font-bold text-white text-xl">ข้อมูลส่วนตัว</h3>
+          <Card className="bg-zinc-800/50 backdrop-blur-sm border border-zinc-700">
+            <CardHeader className="flex justify-between items-center border-zinc-700 border-b">
+              <div>
+                <h3 className="font-bold text-white text-xl">ข้อมูลส่วนตัว</h3>
+                <p className="text-zinc-400 text-sm">จัดการข้อมูลบัญชีของคุณ</p>
+              </div>
               {!isEditing ? (
                 <Button
                   size="sm"
                   color="primary"
-                  variant="flat"
+                  variant="shadow"
                   startContent={<PencilIcon className="w-4 h-4" />}
                   onPress={() => setIsEditing(true)}
+                  className="bg-gradient-to-r from-blue-600 to-blue-700"
                 >
                   แก้ไข
                 </Button>
@@ -164,6 +232,7 @@ function ProfileContent() {
                     size="sm"
                     variant="flat"
                     onPress={() => setIsEditing(false)}
+                    isDisabled={isSaving}
                   >
                     ยกเลิก
                   </Button>
@@ -171,73 +240,116 @@ function ProfileContent() {
                     size="sm"
                     color="primary"
                     onPress={handleSaveProfile}
+                    isLoading={isSaving}
+                    className="bg-gradient-to-r from-green-600 to-green-700"
                   >
-                    บันทึก
+                    {isSaving ? 'กำลังบันทึก...' : 'บันทึก'}
                   </Button>
                 </div>
               )}
             </CardHeader>
-            <CardBody className="gap-4">
+            <CardBody className="gap-6">
               {isEditing ? (
-                <div className="gap-4 grid grid-cols-1 md:grid-cols-2">
-                  <Input
-                    label="ชื่อแสดง"
-                    placeholder="กรอกชื่อแสดง"
-                    value={formData.displayName}
-                    onValueChange={(value) => setFormData({ ...formData, displayName: value })}
-                    classNames={{
-                      input: "text-white",
-                      label: "text-default-400",
-                    }}
-                  />
-                  <Input
-                    label="อีเมล"
-                    type="email"
-                    value={user?.email || ''}
-                    isReadOnly
-                    classNames={{
-                      input: "text-white",
-                      label: "text-default-400",
-                    }}
-                  />
-                  <Input
-                    label="เบอร์โทรศัพท์"
-                    placeholder="กรอกเบอร์โทรศัพท์"
-                    value={formData.phone}
-                    onValueChange={(value) => setFormData({ ...formData, phone: value })}
-                    classNames={{
-                      input: "text-white",
-                      label: "text-default-400",
-                    }}
-                  />
-                  <Input
-                    label="ที่อยู่"
-                    placeholder="กรอกที่อยู่"
-                    value={formData.address}
-                    onValueChange={(value) => setFormData({ ...formData, address: value })}
-                    className="md:col-span-2"
-                    classNames={{
-                      input: "text-white",
-                      label: "text-default-400",
-                    }}
-                  />
+                <div className="space-y-6">
+                  <div className="gap-6 grid grid-cols-1 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <label className="block font-medium text-white text-sm">
+                        ชื่อแสดง <span className="text-red-500">*</span>
+                      </label>
+                      <Input
+                        placeholder="กรอกชื่อแสดง"
+                        value={formData.displayName}
+                        onValueChange={(value) => setFormData({ ...formData, displayName: value })}
+                        variant="bordered"
+                        size="lg"
+                        classNames={{
+                          input: "text-white",
+                          inputWrapper: "bg-zinc-900/50 border-zinc-700 hover:border-zinc-600 focus-within:border-blue-500",
+                        }}
+                        startContent={
+                          <UserIcon className="flex-shrink-0 w-4 h-4 text-zinc-400" />
+                        }
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="block font-medium text-white text-sm">
+                        อีเมล
+                      </label>
+                      <Input
+                        type="email"
+                        value={user?.email || ''}
+                        isReadOnly
+                        variant="bordered"
+                        size="lg"
+                        classNames={{
+                          input: "text-white",
+                          inputWrapper: "bg-zinc-900/30 border-zinc-700 cursor-not-allowed",
+                        }}
+                        startContent={
+                          <span className="text-zinc-400">📧</span>
+                        }
+                      />
+                      <p className="text-zinc-500 text-xs">อีเมลไม่สามารถเปลี่ยนแปลงได้</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="block font-medium text-white text-sm">
+                      เบอร์โทรศัพท์
+                    </label>
+                    <Input
+                      placeholder="เช่น 081-234-5678"
+                      value={formData.phone}
+                      onValueChange={(value) => setFormData({ ...formData, phone: value })}
+                      variant="bordered"
+                      size="lg"
+                      classNames={{
+                        input: "text-white",
+                        inputWrapper: "bg-zinc-900/50 border-zinc-700 hover:border-zinc-600 focus-within:border-blue-500",
+                      }}
+                      startContent={
+                        <span className="text-zinc-400">📱</span>
+                      }
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="block font-medium text-white text-sm">
+                      ที่อยู่
+                    </label>
+                    <Input
+                      placeholder="กรอกที่อยู่ของคุณ"
+                      value={formData.address}
+                      onValueChange={(value) => setFormData({ ...formData, address: value })}
+                      variant="bordered"
+                      size="lg"
+                      classNames={{
+                        input: "text-white",
+                        inputWrapper: "bg-zinc-900/50 border-zinc-700 hover:border-zinc-600 focus-within:border-blue-500",
+                      }}
+                      startContent={
+                        <span className="text-zinc-400">📍</span>
+                      }
+                    />
+                  </div>
                 </div>
               ) : (
-                <div className="gap-4 grid grid-cols-1 md:grid-cols-2">
-                  <div>
-                    <p className="mb-1 text-default-400 text-sm">ชื่อแสดง</p>
-                    <p className="text-white">{formData.displayName || '-'}</p>
+                <div className="gap-6 grid grid-cols-1 md:grid-cols-2">
+                  <div className="bg-zinc-900/50 p-4 rounded-lg">
+                    <p className="mb-2 text-zinc-400 text-xs uppercase tracking-wide">ชื่อแสดง</p>
+                    <p className="font-semibold text-white">{formData.displayName || '-'}</p>
                   </div>
-                  <div>
-                    <p className="mb-1 text-default-400 text-sm">อีเมล</p>
+                  <div className="bg-zinc-900/50 p-4 rounded-lg">
+                    <p className="mb-2 text-zinc-400 text-xs uppercase tracking-wide">อีเมล</p>
                     <p className="font-mono text-white">{user?.email || '-'}</p>
                   </div>
-                  <div>
-                    <p className="mb-1 text-default-400 text-sm">เบอร์โทรศัพท์</p>
+                  <div className="bg-zinc-900/50 p-4 rounded-lg">
+                    <p className="mb-2 text-zinc-400 text-xs uppercase tracking-wide">เบอร์โทรศัพท์</p>
                     <p className="font-mono text-white">{formData.phone || '-'}</p>
                   </div>
-                  <div className="md:col-span-2">
-                    <p className="mb-1 text-default-400 text-sm">ที่อยู่</p>
+                  <div className="md:col-span-2 bg-zinc-900/50 p-4 rounded-lg">
+                    <p className="mb-2 text-zinc-400 text-xs uppercase tracking-wide">ที่อยู่</p>
                     <p className="text-white">{formData.address || '-'}</p>
                   </div>
                 </div>
@@ -246,16 +358,21 @@ function ProfileContent() {
           </Card>
 
           {/* Security Settings */}
-          <Card className="bg-default-100/50 backdrop-blur-sm border-none">
-            <CardHeader className="flex items-center gap-3">
-              <ShieldCheckIcon className="w-6 h-6 text-primary" />
-              <h3 className="font-bold text-white text-xl">ความปลอดภัย</h3>
+          <Card className="bg-zinc-800/50 backdrop-blur-sm border border-zinc-700">
+            <CardHeader className="flex items-center gap-3 border-zinc-700 border-b">
+              <div className="bg-blue-600/20 p-2 rounded-lg">
+                <ShieldCheckIcon className="w-5 h-5 text-blue-400" />
+              </div>
+              <div>
+                <h3 className="font-bold text-white text-xl">ความปลอดภัย</h3>
+                <p className="text-zinc-400 text-sm">ตั้งค่าความปลอดภัยของบัญชี</p>
+              </div>
             </CardHeader>
             <CardBody className="gap-4">
-              <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4">
-                <div>
+              <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 bg-zinc-900/50 hover:bg-zinc-900/70 p-4 rounded-lg transition-colors">
+                <div className="flex-1">
                   <p className="mb-1 font-semibold text-white">รหัสผ่าน</p>
-                  <p className="text-default-400 text-sm">
+                  <p className="text-zinc-400 text-sm">
                     แก้ไขล่าสุด: {user?.updated_at ? new Date(user.updated_at).toLocaleDateString('th-TH') : '-'}
                   </p>
                 </div>
@@ -263,20 +380,26 @@ function ProfileContent() {
                   size="sm"
                   color="primary"
                   variant="flat"
+                  className="min-w-[140px]"
                 >
                   เปลี่ยนรหัสผ่าน
                 </Button>
               </div>
-              <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 pt-4 border-white/5 border-t">
-                <div>
-                  <p className="mb-1 font-semibold text-white">การยืนยันตัวตนแบบสองชั้น</p>
-                  <p className="text-default-400 text-sm">
+              <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 bg-zinc-900/50 hover:bg-zinc-900/70 p-4 rounded-lg transition-colors">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <p className="font-semibold text-white">การยืนยันตัวตนแบบสองชั้น</p>
+                    <Chip size="sm" color="warning" variant="flat">เร็วๆ นี้</Chip>
+                  </div>
+                  <p className="text-zinc-400 text-sm">
                     เพิ่มความปลอดภัยให้กับบัญชีของคุณ
                   </p>
                 </div>
                 <Button
                   size="sm"
                   variant="flat"
+                  isDisabled
+                  className="min-w-[140px]"
                 >
                   เปิดใช้งาน
                 </Button>
@@ -285,22 +408,31 @@ function ProfileContent() {
           </Card>
 
           {/* Danger Zone */}
-          <Card className="bg-danger/5 backdrop-blur-sm border border-danger/30">
-            <CardHeader>
-              <h3 className="font-bold text-danger text-xl">โซนอันตราย</h3>
+          <Card className="bg-gradient-to-br from-red-950/50 to-red-900/30 backdrop-blur-sm border border-red-800/50">
+            <CardHeader className="border-red-800/50 border-b">
+              <div className="flex items-center gap-3">
+                <div className="bg-red-600/20 p-2 rounded-lg">
+                  <ShieldCheckIcon className="w-5 h-5 text-red-400" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-red-400 text-xl">โซนอันตราย</h3>
+                  <p className="text-zinc-400 text-sm">ดำเนินการด้วยความระมัดระวัง</p>
+                </div>
+              </div>
             </CardHeader>
             <CardBody className="gap-4">
-              <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4">
-                <div>
-                  <p className="mb-1 font-semibold text-white">ลบบัญชี</p>
-                  <p className="text-default-400 text-sm">
-                    การดำเนินการนี้ไม่สามารถย้อนกลับได้
+              <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 bg-red-950/30 hover:bg-red-950/50 p-4 border border-red-800/30 rounded-lg transition-colors">
+                <div className="flex-1">
+                  <p className="mb-1 font-semibold text-white">ลบบัญชีถาวร</p>
+                  <p className="text-zinc-400 text-sm">
+                    การดำเนินการนี้ไม่สามารถย้อนกลับได้ ข้อมูลทั้งหมดจะถูกลบอย่างถาวร
                   </p>
                 </div>
                 <Button
                   size="sm"
                   color="danger"
-                  variant="flat"
+                  variant="solid"
+                  className="min-w-[140px]"
                 >
                   ลบบัญชี
                 </Button>

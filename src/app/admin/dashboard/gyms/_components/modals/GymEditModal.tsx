@@ -145,7 +145,10 @@ export default function GymEditModal({
       onClose={onClose}
       size="3xl"
       scrollBehavior="inside"
+      backdrop="blur"
       classNames={{
+        backdrop: "bg-black/50 backdrop-blur-sm",
+        wrapper: "z-[100]",
         base: 'bg-zinc-900 border border-zinc-800',
         header: 'border-b border-zinc-800',
         body: 'py-6',

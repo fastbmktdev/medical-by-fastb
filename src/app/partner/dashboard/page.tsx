@@ -20,6 +20,14 @@ import {
   TableCell,
   Input,
   Textarea,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Select,
+  SelectItem,
+  useDisclosure,
 } from '@heroui/react';
 import {
   BuildingStorefrontIcon,
@@ -28,6 +36,7 @@ import {
   CalendarIcon,
   CurrencyDollarIcon,
   CheckCircleIcon,
+  CheckIcon,
   PencilIcon,
   EyeIcon,
   ArrowTrendingUpIcon,
@@ -35,9 +44,23 @@ import {
   BanknotesIcon,
   DocumentTextIcon,
   HomeIcon,
-  Cog6ToothIcon,
+  SparklesIcon,
+  PlusIcon,
+  TrashIcon,
+  XMarkIcon,
 } from '@heroicons/react/24/outline';
-import type { Gym } from '@/types/database.types';
+import { Toaster, toast } from 'react-hot-toast';
+import type { Gym, GymPackage } from '@/types/database.types';
+
+interface PackageFormData {
+  package_type: 'one_time' | 'package' | '';
+  name: string;
+  name_english: string;
+  description: string;
+  price: string;
+  duration_months: number | null;
+  features: string[];
+}
 
 /**
  * Partner Dashboard
@@ -61,6 +84,21 @@ function PartnerDashboardContent() {
     gym_details: '',
   });
 
+  // Package management states
+  const [packages, setPackages] = useState<GymPackage[]>([]);
+  const [editingPackage, setEditingPackage] = useState<GymPackage | null>(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [formData, setFormData] = useState<PackageFormData>({
+    package_type: '',
+    name: '',
+    name_english: '',
+    description: '',
+    price: '',
+    duration_months: null,
+    features: [],
+  });
+  const [featureInput, setFeatureInput] = useState('');
+
   useEffect(() => {
     async function loadData() {
       const { data: { user } } = await supabase.auth.getUser();
@@ -83,6 +121,9 @@ function PartnerDashboardContent() {
             location: gymData.location || '',
             gym_details: gymData.gym_details || '',
           });
+          
+          // Load packages
+          loadPackages();
         }
       }
 
@@ -90,6 +131,163 @@ function PartnerDashboardContent() {
     }
     loadData();
   }, [supabase]);
+
+  const loadPackages = async () => {
+    try {
+      const response = await fetch('/api/partner/packages');
+      const result = await response.json();
+
+      if (result.success) {
+        setPackages(result.data.packages);
+      }
+    } catch (error) {
+      console.error('Error loading packages:', error);
+    }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      package_type: '',
+      name: '',
+      name_english: '',
+      description: '',
+      price: '',
+      duration_months: null,
+      features: [],
+    });
+    setFeatureInput('');
+    setEditingPackage(null);
+  };
+
+  const handleOpenCreate = () => {
+    resetForm();
+    onOpen();
+  };
+
+  const handleOpenEdit = (pkg: GymPackage) => {
+    setEditingPackage(pkg);
+    setFormData({
+      package_type: pkg.package_type,
+      name: pkg.name,
+      name_english: pkg.name_english || '',
+      description: pkg.description || '',
+      price: pkg.price.toString(),
+      duration_months: pkg.duration_months ?? null,
+      features: pkg.features || [],
+    });
+    onOpen();
+  };
+
+  const handleAddFeature = () => {
+    if (featureInput.trim()) {
+      setFormData(prev => ({
+        ...prev,
+        features: [...prev.features, featureInput.trim()]
+      }));
+      setFeatureInput('');
+    }
+  };
+
+  const handleRemoveFeature = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      features: prev.features.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleSubmitPackage = async () => {
+    try {
+      if (!formData.package_type || !formData.name || !formData.price) {
+        toast.error('กรุณากรอกข้อมูลให้ครบถ้วน');
+        return;
+      }
+
+      if (formData.package_type === 'package' && !formData.duration_months) {
+        toast.error('กรุณาเลือกระยะเวลาแพ็คเกจ');
+        return;
+      }
+
+      const url = editingPackage
+        ? `/api/partner/packages/${editingPackage.id}`
+        : '/api/partner/packages';
+
+      const method = editingPackage ? 'PATCH' : 'POST';
+
+      const response = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          package_type: formData.package_type,
+          name: formData.name,
+          name_english: formData.name_english || null,
+          description: formData.description || null,
+          price: parseFloat(formData.price),
+          duration_months: formData.package_type === 'package' ? formData.duration_months : null,
+          features: formData.features,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast.success(result.message);
+        loadPackages();
+        onClose();
+        resetForm();
+      } else {
+        toast.error(result.error || 'เกิดข้อผิดพลาด');
+      }
+    } catch (error) {
+      console.error('Error saving package:', error);
+      toast.error('เกิดข้อผิดพลาดในการบันทึก');
+    }
+  };
+
+  const handleToggleActive = async (pkg: GymPackage) => {
+    try {
+      const response = await fetch(`/api/partner/packages/${pkg.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ is_active: !pkg.is_active }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast.success(pkg.is_active ? 'ปิดการใช้งานแพ็คเกจแล้ว' : 'เปิดใช้งานแพ็คเกจแล้ว');
+        loadPackages();
+      } else {
+        toast.error(result.error);
+      }
+    } catch (error) {
+      console.error('Error toggling package:', error);
+      toast.error('เกิดข้อผิดพลาด');
+    }
+  };
+
+  const handleDeletePackage = async (pkg: GymPackage) => {
+    if (!confirm(`คุณต้องการลบแพ็คเกจ "${pkg.name}" หรือไม่?`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/partner/packages/${pkg.id}`, {
+        method: 'DELETE',
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast.success('ลบแพ็คเกจสำเร็จ');
+        loadPackages();
+      } else {
+        toast.error(result.error);
+      }
+    } catch (error) {
+      console.error('Error deleting package:', error);
+      toast.error('เกิดข้อผิดพลาด');
+    }
+  };
 
   const handleSaveProfile = async () => {
     if (!gym) return;
@@ -111,9 +309,9 @@ function PartnerDashboardContent() {
 
       setGym(updatedGym);
       setIsEditing(false);
-      alert('บันทึกข้อมูลสำเร็จ!');
+      toast.success('บันทึกข้อมูลสำเร็จ!');
     } catch {
-      alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+      toast.error('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
     } finally {
       setIsSaving(false);
     }
@@ -121,12 +319,25 @@ function PartnerDashboardContent() {
 
   // Menu items for sidebar
   const menuItems: MenuItem[] = [
-    { label: 'ข้อมูลยิม', href: '/partner/dashboard/gym', icon: BuildingStorefrontIcon },
-    { label: 'ประวัติการจอง', href: '/partner/dashboard/bookings', icon: CalendarIcon },
-    { label: 'รายการธุรกรรม', href: '/partner/dashboard/transactions', icon: BanknotesIcon },
-    { label: 'สถิติ', href: '/partner/dashboard/analytics', icon: ChartBarIcon },
-    { label: 'ตั้งค่า', href: '/partner/dashboard/settings', icon: Cog6ToothIcon },
+    { label: 'Dashboard', href: '/partner/dashboard', icon: HomeIcon },
+    { label: 'รายการจอง', href: '/partner/bookings', icon: CalendarIcon },
+    { label: 'รายการธุรกรรม', href: '/partner/transactions', icon: BanknotesIcon },
+    { label: 'สถิติ', href: '/partner/analytics', icon: ChartBarIcon },
   ];
+
+  const oneTimePackages = packages.filter(p => p.package_type === 'one_time');
+  const subscriptionPackages = packages.filter(p => p.package_type === 'package');
+
+  // Shared classNames for form inputs
+  const inputClassNames = {
+    label: "text-white",
+    input: "text-white",
+  };
+
+  const selectClassNames = {
+    label: "text-white",
+    value: "text-white",
+  };
 
   const getStatusChip = (status?: string) => {
     const statusConfig = {
@@ -228,7 +439,7 @@ function PartnerDashboardContent() {
         userEmail={user?.email}
       >
         <div className="flex justify-center items-center py-20">
-          <div className="border-4 border-t-transparent border-red-600 rounded-full w-12 h-12 animate-spin"></div>
+          <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
         </div>
       </DashboardLayout>
     );
@@ -383,6 +594,7 @@ function PartnerDashboardContent() {
       roleColor="secondary"
       userEmail={user?.email}
     >
+      <Toaster />
       {/* Status & Quick Actions */}
       <section className="mb-8">
         <div className="flex sm:flex-row flex-col justify-between items-start gap-4 mb-6">
@@ -400,48 +612,6 @@ function PartnerDashboardContent() {
               ดูหน้ายิม
             </Button>
           </div>
-        </div>
-      </section>
-
-      {/* Statistics Cards */}
-      <section className="mb-8">
-        <h2 className="mb-6 font-bold text-white text-2xl">สถิติภาพรวม</h2>
-        <div className="gap-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-          {stats.map((stat, index) => {
-            const Icon = stat.icon;
-            return (
-              <Card
-                key={index}
-                className="bg-default-100/50 backdrop-blur-sm border-none"
-              >
-                <CardBody className="gap-4">
-                  <div className="flex justify-between items-start">
-                    <div className={`bg-${stat.color} p-3 rounded-lg`}>
-                      <Icon className="w-6 h-6 text-white" />
-                    </div>
-                    {stat.change !== '-' && (
-                      <Chip
-                        size="sm"
-                        color="success"
-                        variant="flat"
-                        startContent={<ArrowTrendingUpIcon className="w-3 h-3" />}
-                      >
-                        {stat.change}
-                      </Chip>
-                    )}
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-white text-2xl">
-                      {stat.value}
-                    </h3>
-                    <p className="text-default-400 text-sm">
-                      {stat.title}
-                    </p>
-                  </div>
-                </CardBody>
-              </Card>
-            );
-          })}
         </div>
       </section>
 
@@ -588,6 +758,208 @@ function PartnerDashboardContent() {
         </Card>
       </section>
 
+      {/* Package Management */}
+      <section className="mb-8">
+        <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 mb-6">
+          <div>
+            <h2 className="font-bold text-white text-2xl">จัดการแพ็คเกจและราคา</h2>
+            <p className="text-zinc-400 text-sm">ตั้งค่าแพ็คเกจสำหรับลูกค้าจอง</p>
+          </div>
+          <Button
+            color="secondary"
+            startContent={<PlusIcon className="w-5 h-5" />}
+            onPress={handleOpenCreate}
+          >
+            สร้างแพ็คเกจใหม่
+          </Button>
+        </div>
+
+        {/* One-time Packages */}
+        {oneTimePackages.length > 0 && (
+          <div className="mb-6">
+            <h3 className="mb-4 font-semibold text-zinc-300 text-lg">รายครั้ง</h3>
+            <div className="gap-4 grid md:grid-cols-2 lg:grid-cols-3">
+              {oneTimePackages.map((pkg) => (
+                <Card key={pkg.id} className="bg-zinc-800/50 border border-zinc-700">
+                  <CardHeader className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <h4 className="font-bold text-white">{pkg.name}</h4>
+                      {pkg.name_english && (
+                        <p className="text-zinc-400 text-sm">{pkg.name_english}</p>
+                      )}
+                    </div>
+                    <Chip
+                      color={pkg.is_active ? 'success' : 'default'}
+                      variant="flat"
+                      size="sm"
+                    >
+                      {pkg.is_active ? 'เปิด' : 'ปิด'}
+                    </Chip>
+                  </CardHeader>
+                  <CardBody className="gap-4">
+                    <div>
+                      <div className="font-bold text-red-500 text-2xl">
+                        ฿{pkg.price.toLocaleString()}
+                      </div>
+                      <div className="text-zinc-400 text-xs">ต่อครั้ง</div>
+                    </div>
+
+                    {pkg.description && (
+                      <p className="text-zinc-300 text-sm">{pkg.description}</p>
+                    )}
+
+                    {pkg.features && pkg.features.length > 0 && (
+                      <ul className="space-y-1">
+                        {pkg.features.map((feature, idx) => (
+                          <li key={idx} className="flex items-center gap-2 text-zinc-300 text-xs">
+                            <CheckIcon className="flex-shrink-0 w-3 h-3 text-green-500" />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    <div className="flex gap-2 pt-4 border-zinc-700 border-t">
+                      <Button
+                        size="sm"
+                        variant="flat"
+                        onPress={() => handleToggleActive(pkg)}
+                        className="flex-1"
+                      >
+                        {pkg.is_active ? 'ปิด' : 'เปิด'}
+                      </Button>
+                      <Button
+                        size="sm"
+                        color="secondary"
+                        variant="flat"
+                        isIconOnly
+                        onPress={() => handleOpenEdit(pkg)}
+                      >
+                        <PencilIcon className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        color="danger"
+                        variant="flat"
+                        isIconOnly
+                        onPress={() => handleDeletePackage(pkg)}
+                      >
+                        <TrashIcon className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </CardBody>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Subscription Packages */}
+        {subscriptionPackages.length > 0 && (
+          <div className="mb-6">
+            <h3 className="mb-4 font-semibold text-zinc-300 text-lg">แพ็คเกจรายเดือน</h3>
+            <div className="gap-4 grid md:grid-cols-2 lg:grid-cols-3">
+              {subscriptionPackages.map((pkg) => (
+                <Card key={pkg.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900 border border-zinc-700">
+                  <CardHeader className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <div className="inline-flex justify-center items-center bg-purple-600 mb-2 px-3 py-1 rounded-full font-semibold text-white text-xs">
+                        {pkg.duration_months} เดือน
+                      </div>
+                      <h4 className="font-bold text-white">{pkg.name}</h4>
+                      {pkg.name_english && (
+                        <p className="text-zinc-400 text-xs">{pkg.name_english}</p>
+                      )}
+                    </div>
+                    <Chip
+                      color={pkg.is_active ? 'success' : 'default'}
+                      variant="flat"
+                      size="sm"
+                    >
+                      {pkg.is_active ? 'เปิด' : 'ปิด'}
+                    </Chip>
+                  </CardHeader>
+                  <CardBody className="gap-4">
+                    <div className="text-center">
+                      <div className="font-bold text-purple-500 text-3xl">
+                        ฿{pkg.price.toLocaleString()}
+                      </div>
+                      <div className="text-zinc-400 text-xs">
+                        (฿{Math.round(pkg.price / (pkg.duration_months || 1)).toLocaleString()}/เดือน)
+                      </div>
+                    </div>
+
+                    {pkg.description && (
+                      <p className="text-zinc-300 text-sm text-center">{pkg.description}</p>
+                    )}
+
+                    {pkg.features && pkg.features.length > 0 && (
+                      <ul className="space-y-1">
+                        {pkg.features.map((feature, idx) => (
+                          <li key={idx} className="flex items-center gap-2 text-zinc-300 text-xs">
+                            <CheckIcon className="flex-shrink-0 w-3 h-3 text-green-500" />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    <div className="flex gap-2 pt-4 border-zinc-700 border-t">
+                      <Button
+                        size="sm"
+                        variant="flat"
+                        onPress={() => handleToggleActive(pkg)}
+                        className="flex-1"
+                      >
+                        {pkg.is_active ? 'ปิด' : 'เปิด'}
+                      </Button>
+                      <Button
+                        size="sm"
+                        color="secondary"
+                        variant="flat"
+                        isIconOnly
+                        onPress={() => handleOpenEdit(pkg)}
+                      >
+                        <PencilIcon className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        color="danger"
+                        variant="flat"
+                        isIconOnly
+                        onPress={() => handleDeletePackage(pkg)}
+                      >
+                        <TrashIcon className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </CardBody>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Empty State */}
+        {packages.length === 0 && (
+          <Card className="bg-zinc-800/50 border border-zinc-700">
+            <CardBody className="py-12 text-center">
+              <SparklesIcon className="mx-auto mb-4 w-12 h-12 text-zinc-600" />
+              <h3 className="mb-2 font-bold text-white text-lg">ยังไม่มีแพ็คเกจ</h3>
+              <p className="mb-4 text-zinc-400 text-sm">
+                สร้างแพ็คเกจแรกของคุณเพื่อให้ลูกค้าสามารถจองได้
+              </p>
+              <Button
+                color="secondary"
+                startContent={<PlusIcon className="w-5 h-5" />}
+                onPress={handleOpenCreate}
+              >
+                สร้างแพ็คเกจแรก
+              </Button>
+            </CardBody>
+          </Card>
+        )}
+      </section>
+
       {/* Recent Bookings */}
       <section className="mb-8">
         <div className="flex justify-between items-center mb-6">
@@ -710,6 +1082,152 @@ function PartnerDashboardContent() {
           </CardBody>
         </Card>
       </section>
+
+      {/* Package Modal */}
+      <Modal
+        isOpen={isOpen}
+        onClose={() => {
+          onClose();
+          resetForm();
+        }}
+        size="2xl"
+        scrollBehavior="inside"
+        backdrop="blur"
+        classNames={{
+          backdrop: "bg-black/50 backdrop-blur-sm",
+          wrapper: "z-[100]",
+        }}
+      >
+        <ModalContent className="bg-zinc-900 border border-zinc-700">
+          <ModalHeader className="text-white">
+            {editingPackage ? 'แก้ไขแพ็คเกจ' : 'สร้างแพ็คเกจใหม่'}
+          </ModalHeader>
+          <ModalBody>
+            <div className="space-y-4">
+              {/* Package Type */}
+              <Select
+                label="ประเภทแพ็คเกจ"
+                placeholder="เลือกประเภท"
+                selectedKeys={formData.package_type ? [formData.package_type] : []}
+                onChange={(e) => setFormData(prev => ({ ...prev, package_type: e.target.value as 'one_time' | 'package', duration_months: null }))}
+                isRequired
+                isDisabled={!!editingPackage}
+                classNames={selectClassNames}
+              >
+                <SelectItem key="one_time">รายครั้ง</SelectItem>
+                <SelectItem key="package">แพ็คเกจรายเดือน</SelectItem>
+              </Select>
+
+              {/* Duration (for packages only) */}
+              {formData.package_type === 'package' && (
+                <Select
+                  label="ระยะเวลา"
+                  placeholder="เลือกระยะเวลา"
+                  selectedKeys={formData.duration_months ? [formData.duration_months.toString()] : []}
+                  onChange={(e) => setFormData(prev => ({ ...prev, duration_months: parseInt(e.target.value) }))}
+                  isRequired
+                  classNames={selectClassNames}
+                >
+                  <SelectItem key="1">1 เดือน</SelectItem>
+                  <SelectItem key="3">3 เดือน</SelectItem>
+                  <SelectItem key="6">6 เดือน</SelectItem>
+                </Select>
+              )}
+
+              {/* Name */}
+              <Input
+                label="ชื่อแพ็คเกจ (ภาษาไทย)"
+                placeholder="เช่น: ฝึกรายครั้ง, แพ็คเกจ 3 เดือน"
+                value={formData.name}
+                onValueChange={(value) => setFormData(prev => ({ ...prev, name: value }))}
+                isRequired
+                classNames={inputClassNames}
+              />
+
+              {/* Name English */}
+              <Input
+                label="ชื่อแพ็คเกจ (ภาษาอังกฤษ)"
+                placeholder="เช่น: Single Session, 3 Months Package"
+                value={formData.name_english}
+                onValueChange={(value) => setFormData(prev => ({ ...prev, name_english: value }))}
+                classNames={inputClassNames}
+              />
+
+              {/* Price */}
+              <Input
+                type="number"
+                label="ราคา (บาท)"
+                placeholder="0"
+                value={formData.price}
+                onValueChange={(value) => setFormData(prev => ({ ...prev, price: value }))}
+                startContent={<span className="text-zinc-400">฿</span>}
+                isRequired
+                classNames={inputClassNames}
+              />
+
+              {/* Description */}
+              <Textarea
+                label="รายละเอียด"
+                placeholder="อธิบายรายละเอียดแพ็คเกจ..."
+                value={formData.description}
+                onValueChange={(value) => setFormData(prev => ({ ...prev, description: value }))}
+                minRows={3}
+                classNames={inputClassNames}
+              />
+
+              {/* Features */}
+              <div>
+                <label className="block mb-2 font-medium text-zinc-200 text-sm">
+                  คุณสมบัติ/สิทธิประโยชน์
+                </label>
+                <div className="flex gap-2 mb-2">
+                  <Input
+                    placeholder="เช่น: ฝึกได้ไม่จำกัด, ใช้อุปกรณ์ฟรี"
+                    value={featureInput}
+                    onValueChange={setFeatureInput}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleAddFeature();
+                      }
+                    }}
+                    classNames={inputClassNames}
+                  />
+                  <Button color="secondary" onPress={handleAddFeature}>
+                    เพิ่ม
+                  </Button>
+                </div>
+                {formData.features.length > 0 && (
+                  <div className="space-y-2">
+                    {formData.features.map((feature, idx) => (
+                      <div key={idx} className="flex justify-between items-center bg-zinc-700/50 px-3 py-2 rounded">
+                        <span className="text-white text-sm">{feature}</span>
+                        <Button
+                          size="sm"
+                          color="danger"
+                          variant="light"
+                          isIconOnly
+                          onPress={() => handleRemoveFeature(idx)}
+                        >
+                          <XMarkIcon className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="flat" onPress={() => { onClose(); resetForm(); }}>
+              ยกเลิก
+            </Button>
+            <Button color="secondary" onPress={handleSubmitPackage}>
+              {editingPackage ? 'บันทึก' : 'สร้างแพ็คเกจ'}
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </DashboardLayout>
   );
 }

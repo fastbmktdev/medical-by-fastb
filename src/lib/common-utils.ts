@@ -1,15 +1,3 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-/**
- * Merges Tailwind CSS classes conditionally.
- * @param inputs - Class values to merge.
- * @returns A merged class string.
- */
-export function cn(...inputs: ClassValue[]): string {
-  return twMerge(clsx(...inputs));
-}
-
 /**
  * Determines if a value is "empty".
  * Empty means: null, undefined, empty string, empty array, or empty object.
@@ -37,19 +25,4 @@ function isEmpty(value: unknown): boolean {
  */
 export function getValueOrDefault<T>(value: T, defaultValue: T): T {
   return isEmpty(value) ? defaultValue : value;
-}
-
-/**
- * Converts a string to a URL-friendly slug.
- * @param text - The text to slugify.
- * @returns The slugified string.
- */
-export function slugify(text: string): string {
-  return text
-    .toString()
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, "-")
-    .replace(/[^\w-]+/g, "")
-    .replace(/--+/g, "-");
 }

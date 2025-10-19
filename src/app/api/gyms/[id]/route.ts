@@ -6,50 +6,22 @@
  * DELETE /api/gyms/[id] - Delete gym
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-
-interface RouteContext {
-  params: Promise<{
-    id: string;
-  }>;
-}
+import { withAdminAuth } from '@/lib/api/withAdminAuth';
+import { NextRequest } from 'next/server';
 
 /**
  * GET /api/gyms/[id]
  * ดึงข้อมูลยิมเดี่ยว
  */
-export async function GET(
-  request: NextRequest,
-  context: RouteContext
-) {
+const getGymHandler = withAdminAuth<{ id: string }>(async (
+  _request,
+  context
+) => {
   try {
     const supabase = await createClient();
-    const { id } = await context.params;
-
-    // ตรวจสอบ authentication
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-    if (authError || !user) {
-      return NextResponse.json(
-        { success: false, error: 'Unauthorized - กรุณาเข้าสู่ระบบ' },
-        { status: 401 }
-      );
-    }
-
-    // ตรวจสอบว่าเป็น admin หรือไม่
-    const { data: roleData, error: roleError } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', user.id)
-      .maybeSingle();
-
-    if (roleError || roleData?.role !== 'admin') {
-      return NextResponse.json(
-        { success: false, error: 'Forbidden - คุณไม่มีสิทธิ์เข้าถึง' },
-        { status: 403 }
-      );
-    }
+    const { id } = context.params;
 
     // ดึงข้อมูล gym
     const { data: gym, error: gymError } = await supabase
@@ -81,45 +53,23 @@ export async function GET(
       { status: 500 }
     );
   }
-}
+});
+
+export { getGymHandler as GET };
+
 
 /**
  * PATCH /api/gyms/[id]
  * แก้ไขข้อมูลยิม
  */
-export async function PATCH(
-  request: NextRequest,
-  context: RouteContext
-) {
+const patchGymHandler = withAdminAuth<{ id: string }>(async (
+  request,
+  context
+) => {
   try {
     const supabase = await createClient();
-    const { id } = await context.params;
+    const { id } = context.params;
 
-    // ตรวจสอบ authentication
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-    if (authError || !user) {
-      return NextResponse.json(
-        { success: false, error: 'Unauthorized - กรุณาเข้าสู่ระบบ' },
-        { status: 401 }
-      );
-    }
-
-    // ตรวจสอบว่าเป็น admin หรือไม่
-    const { data: roleData, error: roleError } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', user.id)
-      .maybeSingle();
-
-    if (roleError || roleData?.role !== 'admin') {
-      return NextResponse.json(
-        { success: false, error: 'Forbidden - คุณไม่มีสิทธิ์เข้าถึง' },
-        { status: 403 }
-      );
-    }
-
-    // อ่าน request body
     const body = await request.json();
     const {
       gym_name,
@@ -213,7 +163,7 @@ export async function PATCH(
     // ตรวจสอบว่ายิมมีอยู่จริง
     const { data: existingGym, error: gymError } = await supabase
       .from('gyms')
-      .select('*')
+      .select('id')
       .eq('id', id)
       .maybeSingle();
 
@@ -248,14 +198,10 @@ export async function PATCH(
       .update(updateData)
       .eq('id', id)
       .select()
-      .maybeSingle();
+      .single();
 
     if (updateError) {
       throw updateError;
-    }
-
-    if (!updatedGym) {
-      throw new Error('ไม่สามารถอัพเดทข้อมูลได้');
     }
 
     return NextResponse.json({
@@ -275,48 +221,26 @@ export async function PATCH(
       { status: 500 }
     );
   }
-}
+});
+
+export { patchGymHandler as PATCH };
 
 /**
  * DELETE /api/gyms/[id]
  * ลบยิม
  */
-export async function DELETE(
-  request: NextRequest,
-  context: RouteContext
-) {
+const deleteGymHandler = withAdminAuth<{ id: string }>(async (
+  _request,
+  context
+) => {
   try {
     const supabase = await createClient();
-    const { id } = await context.params;
-
-    // ตรวจสอบ authentication
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-    if (authError || !user) {
-      return NextResponse.json(
-        { success: false, error: 'Unauthorized - กรุณาเข้าสู่ระบบ' },
-        { status: 401 }
-      );
-    }
-
-    // ตรวจสอบว่าเป็น admin หรือไม่
-    const { data: roleData, error: roleError } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', user.id)
-      .maybeSingle();
-
-    if (roleError || roleData?.role !== 'admin') {
-      return NextResponse.json(
-        { success: false, error: 'Forbidden - คุณไม่มีสิทธิ์เข้าถึง' },
-        { status: 403 }
-      );
-    }
+    const { id } = context.params;
 
     // ตรวจสอบว่ายิมมีอยู่จริง
     const { data: existingGym, error: gymError } = await supabase
       .from('gyms')
-      .select('*')
+      .select('id')
       .eq('id', id)
       .maybeSingle();
 
@@ -353,4 +277,6 @@ export async function DELETE(
       { status: 500 }
     );
   }
-}
+});
+
+export { deleteGymHandler as DELETE };

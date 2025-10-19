@@ -2,7 +2,7 @@
 
 import { use, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import type { Gym } from "@/types/database.types";
+import type { Gym, GymPackage } from "@/types/database.types";
 import type { User } from "@supabase/supabase-js";
 import {
   ArrowLeftIcon,
@@ -11,37 +11,36 @@ import {
   HomeIcon,
   UserIcon,
   CalendarIcon,
-  ClockIcon,
   CreditCardIcon,
+  SparklesIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { notFound, useRouter } from "next/navigation";
 
 // Booking Steps
 const STEPS = [
-  { id: 1, name: "ข้อมูลผู้จอง", icon: UserIcon },
-  { id: 2, name: "เลือกวันที่", icon: CalendarIcon },
-  { id: 3, name: "แพ็คเกจและบริการ", icon: ClockIcon },
-  { id: 4, name: "ชำระเงิน", icon: CreditCardIcon },
+  { id: 1, name: "เลือกแพ็คเกจ", icon: SparklesIcon },
+  { id: 2, name: "ข้อมูลผู้จอง", icon: UserIcon },
+  { id: 3, name: "ยืนยันและชำระเงิน", icon: CreditCardIcon },
 ];
 
 interface BookingFormData {
-  // Step 1: Personal Info
+  // Package selection
+  packageType: "one_time" | "package" | "";
+  selectedPackage: GymPackage | null;
+  
+  // Personal Info
   fullName: string;
   email: string;
   phone: string;
-  nationality: string;
   
-  // Step 2: Dates
-  checkInDate: string;
-  checkOutDate: string;
+  // Dates
+  startDate: string;
   
-  // Step 3: Package
-  packageType: string;
-  selectedServices: string[];
+  // Special requests
   specialRequests: string;
   
-  // Step 4: Payment
+  // Payment
   paymentMethod: string;
 }
 
@@ -54,6 +53,7 @@ export default function BookingPage({
   const router = useRouter();
   const [gym, setGym] = useState<Gym | null>(null);
   const [user, setUser] = useState<User | null>(null);
+  const [packages, setPackages] = useState<GymPackage[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [currentStep, setCurrentStep] = useState(1);
@@ -61,27 +61,24 @@ export default function BookingPage({
   const supabase = createClient();
 
   const [formData, setFormData] = useState<BookingFormData>({
+    packageType: "",
+    selectedPackage: null,
     fullName: "",
     email: "",
     phone: "",
-    nationality: "ไทย",
-    checkInDate: "",
-    checkOutDate: "",
-    packageType: "",
-    selectedServices: [],
+    startDate: "",
     specialRequests: "",
     paymentMethod: "",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // Check authentication
+  // Check authentication and load user profile
   useEffect(() => {
     async function checkAuth() {
       const { data: { user } } = await supabase.auth.getUser();
       
       if (!user) {
-        // Redirect to login with return URL
         const returnUrl = encodeURIComponent(`/gyms/${slug}/booking`);
         router.push(`/login?redirect=${returnUrl}`);
         return;
@@ -89,10 +86,21 @@ export default function BookingPage({
 
       setUser(user);
       
-      // Pre-fill user data if available
+      // Load user profile data from profiles table
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('full_name, phone')
+        .eq('user_id', user.id)
+        .maybeSingle();
+      
+      const fullName = profile?.full_name || user.user_metadata?.full_name || user.user_metadata?.display_name || "";
+      const phone = profile?.phone || user.user_metadata?.phone || "";
+      
       setFormData((prev) => ({
         ...prev,
+        fullName: fullName,
         email: user.email || "",
+        phone: phone,
       }));
       
       setIsCheckingAuth(false);
@@ -101,33 +109,51 @@ export default function BookingPage({
     checkAuth();
   }, [slug, router, supabase]);
 
-  // Fetch gym data
+  // Fetch gym and packages data
   useEffect(() => {
-    async function fetchGym() {
-      const { data, error } = await supabase
+    async function fetchData() {
+      // Fetch gym
+      const { data: gymData, error: gymError } = await supabase
         .from('gyms')
         .select('*')
         .eq('slug', slug)
         .eq('status', 'approved')
         .maybeSingle();
 
-      if (error) {
-        console.error('Error fetching gym:', error);
+      if (gymError || !gymData) {
+        console.error('Error fetching gym:', gymError);
+        setGym(null);
+        setIsLoading(false);
+        return;
       }
 
-      setGym(data);
+      setGym(gymData);
+
+      // Fetch packages for this gym
+      const { data: packagesData, error: packagesError } = await supabase
+        .from('gym_packages')
+        .select('*')
+        .eq('gym_id', gymData.id)
+        .eq('is_active', true)
+        .order('package_type', { ascending: true })
+        .order('duration_months', { ascending: true });
+
+      if (!packagesError && packagesData) {
+        setPackages(packagesData);
+      }
+
       setIsLoading(false);
     }
 
     if (!isCheckingAuth) {
-      fetchGym();
+      fetchData();
     }
   }, [slug, supabase, isCheckingAuth]);
 
   if (isCheckingAuth || isLoading) {
     return (
       <div className="flex justify-center items-center bg-zinc-900 min-h-screen">
-        <div className="border-4 border-t-transparent border-red-600 rounded-full w-12 h-12 animate-spin"></div>
+        <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
       </div>
     );
   }
@@ -136,18 +162,21 @@ export default function BookingPage({
     notFound();
   }
 
+  const oneTimePackages = packages.filter(p => p.package_type === 'one_time');
+  const subscriptionPackages = packages.filter(p => p.package_type === 'package');
+
   const validateStep = (step: number): boolean => {
     const newErrors: Record<string, string> = {};
 
     if (step === 1) {
+      if (!formData.selectedPackage) {
+        newErrors.package = "กรุณาเลือกแพ็คเกจ";
+      }
+    } else if (step === 2) {
       if (!formData.fullName.trim()) newErrors.fullName = "กรุณากรอกชื่อ-นามสกุล";
       if (!formData.email.trim()) newErrors.email = "กรุณากรอกอีเมล";
       if (!formData.phone.trim()) newErrors.phone = "กรุณากรอกเบอร์โทรศัพท์";
-    } else if (step === 2) {
-      if (!formData.checkInDate) newErrors.checkInDate = "กรุณาเลือกวันเข้าพัก";
-      if (!formData.checkOutDate) newErrors.checkOutDate = "กรุณาเลือกวันออก";
-    } else if (step === 3) {
-      if (!formData.packageType) newErrors.packageType = "กรุณาเลือกแพ็คเกจ";
+      if (!formData.startDate) newErrors.startDate = "กรุณาเลือกวันที่เริ่มต้น";
     }
 
     setErrors(newErrors);
@@ -165,32 +194,53 @@ export default function BookingPage({
   };
 
   const handleSubmit = async () => {
-    if (!validateStep(currentStep)) return;
+    if (!validateStep(currentStep) || !formData.selectedPackage) return;
 
     setIsSubmitting(true);
     try {
-      // TODO: Submit booking to API
-      console.log("Booking data:", {
-        ...formData,
-        userId: user?.id,
-        gymSlug: slug,
+      // Create booking via API
+      const response = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          gym_id: gym.id,
+          package_id: formData.selectedPackage.id,
+          customer_name: formData.fullName,
+          customer_email: formData.email,
+          customer_phone: formData.phone,
+          start_date: formData.startDate,
+          special_requests: formData.specialRequests,
+          payment_method: formData.paymentMethod,
+        }),
       });
-      
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'เกิดข้อผิดพลาดในการจอง');
+      }
+
       // Redirect to success page
-      router.push(`/gyms/${slug}/booking/success`);
+      router.push(`/gyms/${slug}/booking/success?booking=${result.data.id}`);
     } catch (error) {
       console.error("Error submitting booking:", error);
+      setErrors({ 
+        general: error instanceof Error ? error.message : "เกิดข้อผิดพลาดในการจอง กรุณาลองใหม่อีกครั้ง" 
+      });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const updateFormData = (field: keyof BookingFormData, value: string | string[]) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    setErrors((prev) => ({ ...prev, [field]: "" }));
+  const selectPackage = (pkg: GymPackage) => {
+    setFormData((prev) => ({
+      ...prev,
+      selectedPackage: pkg,
+      packageType: pkg.package_type,
+    }));
+    setErrors((prev) => ({ ...prev, package: "" }));
   };
 
   return (
@@ -198,7 +248,6 @@ export default function BookingPage({
       {/* Header with Breadcrumb */}
       <div className="bg-zinc-800 border-zinc-700 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-7xl">
-          {/* Breadcrumb */}
           <nav className="flex items-center gap-2 mb-3 text-sm">
             <Link href="/" className="flex items-center gap-1 text-zinc-400 hover:text-white transition-colors">
               <HomeIcon className="w-4 h-4" />
@@ -216,7 +265,6 @@ export default function BookingPage({
             <span className="font-medium text-white">จองค่ายมวย</span>
           </nav>
 
-          {/* Back Button */}
           <Link
             href={`/gyms/${slug}`}
             className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
@@ -283,14 +331,158 @@ export default function BookingPage({
             จอง {gym.gym_name}
           </h1>
           <p className="mb-8 text-zinc-400">
-            กรุณากรอกข้อมูลให้ครบถ้วนเพื่อดำเนินการจอง
+            เลือกแพ็คเกจที่เหมาะกับคุณ
           </p>
 
-          {/* Step 1: Personal Info */}
+          {/* General Error */}
+          {errors.general && (
+            <div className="bg-red-500/20 mb-6 p-4 border-2 border-red-500 rounded-lg">
+              <p className="text-red-400 text-sm">{errors.general}</p>
+            </div>
+          )}
+
+          {/* Step 1: Package Selection */}
           {currentStep === 1 && (
+            <div className="space-y-8">
+              <div>
+                <h2 className="mb-4 font-semibold text-white text-xl">เลือกประเภทการจอง</h2>
+                
+                {/* One-time Packages */}
+                {oneTimePackages.length > 0 && (
+                  <div className="mb-8">
+                    <h3 className="mb-4 font-semibold text-zinc-300 text-lg">รายครั้ง</h3>
+                    <div className="gap-4 grid md:grid-cols-2">
+                      {oneTimePackages.map((pkg) => (
+                        <button
+                          key={pkg.id}
+                          onClick={() => selectPackage(pkg)}
+                          className={`text-left bg-zinc-700 hover:bg-zinc-600 p-6 border-2 rounded-lg transition-all ${
+                            formData.selectedPackage?.id === pkg.id
+                              ? "border-red-500 ring-2 ring-red-500/50"
+                              : "border-zinc-600"
+                          }`}
+                        >
+                          <div className="flex justify-between items-start mb-3">
+                            <div>
+                              <h4 className="mb-1 font-bold text-white text-lg">{pkg.name}</h4>
+                              {pkg.name_english && (
+                                <p className="text-zinc-400 text-sm">{pkg.name_english}</p>
+                              )}
+                            </div>
+                            <div className="text-right">
+                              <div className="font-bold text-red-500 text-2xl">
+                                ฿{pkg.price.toLocaleString()}
+                              </div>
+                              <div className="text-zinc-400 text-xs">ต่อครั้ง</div>
+                            </div>
+                          </div>
+                          
+                          {pkg.description && (
+                            <p className="mb-4 text-zinc-300 text-sm">{pkg.description}</p>
+                          )}
+                          
+                          {pkg.features && pkg.features.length > 0 && (
+                            <ul className="space-y-2">
+                              {pkg.features.map((feature, idx) => (
+                                <li key={idx} className="flex items-center gap-2 text-zinc-300 text-sm">
+                                  <CheckIcon className="flex-shrink-0 w-4 h-4 text-green-500" />
+                                  <span>{feature}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Subscription Packages */}
+                {subscriptionPackages.length > 0 && (
+                  <div>
+                    <h3 className="mb-4 font-semibold text-zinc-300 text-lg">แพ็คเกจรายเดือน</h3>
+                    <div className="gap-4 grid md:grid-cols-3">
+                      {subscriptionPackages.map((pkg) => (
+                        <button
+                          key={pkg.id}
+                          onClick={() => selectPackage(pkg)}
+                          className={`text-left bg-gradient-to-br from-zinc-700 to-zinc-800 hover:from-zinc-600 hover:to-zinc-700 p-6 border-2 rounded-lg transition-all ${
+                            formData.selectedPackage?.id === pkg.id
+                              ? "border-red-500 ring-2 ring-red-500/50"
+                              : "border-zinc-600"
+                          }`}
+                        >
+                          <div className="mb-3 text-center">
+                            <div className="inline-flex justify-center items-center bg-red-600 mb-2 px-3 py-1 rounded-full font-semibold text-white text-xs">
+                              {pkg.duration_months} เดือน
+                            </div>
+                            <h4 className="mb-1 font-bold text-white text-lg">{pkg.name}</h4>
+                            {pkg.name_english && (
+                              <p className="text-zinc-400 text-xs">{pkg.name_english}</p>
+                            )}
+                          </div>
+                          
+                          <div className="mb-4 text-center">
+                            <div className="font-bold text-red-500 text-3xl">
+                              ฿{pkg.price.toLocaleString()}
+                            </div>
+                            <div className="text-zinc-400 text-xs">
+                              (฿{Math.round(pkg.price / (pkg.duration_months || 1)).toLocaleString()}/เดือน)
+                            </div>
+                          </div>
+                          
+                          {pkg.description && (
+                            <p className="mb-4 text-zinc-300 text-sm text-center">{pkg.description}</p>
+                          )}
+                          
+                          {pkg.features && pkg.features.length > 0 && (
+                            <ul className="space-y-2">
+                              {pkg.features.map((feature, idx) => (
+                                <li key={idx} className="flex items-center gap-2 text-zinc-300 text-xs">
+                                  <CheckIcon className="flex-shrink-0 w-3 h-3 text-green-500" />
+                                  <span>{feature}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {errors.package && (
+                  <p className="mt-4 text-red-400 text-sm">{errors.package}</p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Step 2: Personal Info */}
+          {currentStep === 2 && (
             <div className="space-y-6">
               <h2 className="font-semibold text-white text-xl">ข้อมูลผู้จอง</h2>
               
+              {/* Selected Package Summary */}
+              {formData.selectedPackage && (
+                <div className="bg-zinc-700/50 p-4 rounded-lg">
+                  <p className="mb-2 font-semibold text-white">แพ็คเกจที่เลือก:</p>
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="text-white">{formData.selectedPackage.name}</p>
+                      {formData.selectedPackage.duration_months && (
+                        <p className="text-zinc-400 text-sm">
+                          ระยะเวลา {formData.selectedPackage.duration_months} เดือน
+                        </p>
+                      )}
+                    </div>
+                    <div className="font-bold text-red-500 text-xl">
+                      ฿{formData.selectedPackage.price.toLocaleString()}
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div>
                 <label className="block mb-2 text-zinc-300 text-sm">
                   ชื่อ-นามสกุล <span className="text-red-500">*</span>
@@ -298,7 +490,7 @@ export default function BookingPage({
                 <input
                   type="text"
                   value={formData.fullName}
-                  onChange={(e) => updateFormData("fullName", e.target.value)}
+                  onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
                   className={`bg-zinc-700 px-4 py-3 border rounded-lg w-full text-white placeholder-zinc-500 focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:outline-none ${
                     errors.fullName ? "border-red-500" : "border-zinc-600"
                   }`}
@@ -316,7 +508,7 @@ export default function BookingPage({
                 <input
                   type="email"
                   value={formData.email}
-                  onChange={(e) => updateFormData("email", e.target.value)}
+                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                   className={`bg-zinc-700 px-4 py-3 border rounded-lg w-full text-white placeholder-zinc-500 focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:outline-none ${
                     errors.email ? "border-red-500" : "border-zinc-600"
                   }`}
@@ -334,7 +526,7 @@ export default function BookingPage({
                 <input
                   type="tel"
                   value={formData.phone}
-                  onChange={(e) => updateFormData("phone", e.target.value)}
+                  onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                   className={`bg-zinc-700 px-4 py-3 border rounded-lg w-full text-white placeholder-zinc-500 focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:outline-none ${
                     errors.phone ? "border-red-500" : "border-zinc-600"
                   }`}
@@ -347,128 +539,25 @@ export default function BookingPage({
 
               <div>
                 <label className="block mb-2 text-zinc-300 text-sm">
-                  สัญชาติ
-                </label>
-                <input
-                  type="text"
-                  value={formData.nationality}
-                  onChange={(e) => updateFormData("nationality", e.target.value)}
-                  className="bg-zinc-700 px-4 py-3 border border-zinc-600 focus:border-red-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white placeholder-zinc-500"
-                  placeholder="ไทย"
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Step 2: Dates */}
-          {currentStep === 2 && (
-            <div className="space-y-6">
-              <h2 className="font-semibold text-white text-xl">เลือกวันที่</h2>
-              
-              <div>
-                <label className="block mb-2 text-zinc-300 text-sm">
-                  วันเริ่มต้น <span className="text-red-500">*</span>
+                  วันที่เริ่มต้น <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="date"
-                  value={formData.checkInDate}
-                  onChange={(e) => updateFormData("checkInDate", e.target.value)}
+                  value={formData.startDate}
+                  onChange={(e) => setFormData(prev => ({ ...prev, startDate: e.target.value }))}
                   className={`bg-zinc-700 px-4 py-3 border rounded-lg w-full text-white focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:outline-none ${
-                    errors.checkInDate ? "border-red-500" : "border-zinc-600"
+                    errors.startDate ? "border-red-500" : "border-zinc-600"
                   }`}
                   min={new Date().toISOString().split('T')[0]}
                 />
-                {errors.checkInDate && (
-                  <p className="mt-1 text-red-400 text-sm">{errors.checkInDate}</p>
+                {errors.startDate && (
+                  <p className="mt-1 text-red-400 text-sm">{errors.startDate}</p>
                 )}
-              </div>
-
-              <div>
-                <label className="block mb-2 text-zinc-300 text-sm">
-                  วันสิ้นสุด <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="date"
-                  value={formData.checkOutDate}
-                  onChange={(e) => updateFormData("checkOutDate", e.target.value)}
-                  className={`bg-zinc-700 px-4 py-3 border rounded-lg w-full text-white focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:outline-none ${
-                    errors.checkOutDate ? "border-red-500" : "border-zinc-600"
-                  }`}
-                  min={formData.checkInDate || new Date().toISOString().split('T')[0]}
-                />
-                {errors.checkOutDate && (
-                  <p className="mt-1 text-red-400 text-sm">{errors.checkOutDate}</p>
-                )}
-              </div>
-
-              {formData.checkInDate && formData.checkOutDate && (
-                <div className="bg-zinc-700/50 p-4 rounded-lg">
-                  <p className="text-zinc-300 text-sm">
-                    ระยะเวลา: {Math.ceil((new Date(formData.checkOutDate).getTime() - new Date(formData.checkInDate).getTime()) / (1000 * 60 * 60 * 24))} วัน
+                {formData.selectedPackage?.package_type === 'package' && formData.selectedPackage.duration_months && formData.startDate && (
+                  <p className="mt-2 text-zinc-400 text-sm">
+                    สิ้นสุด: {new Date(new Date(formData.startDate).setMonth(new Date(formData.startDate).getMonth() + formData.selectedPackage.duration_months)).toLocaleDateString('th-TH')}
                   </p>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Step 3: Package */}
-          {currentStep === 3 && (
-            <div className="space-y-6">
-              <h2 className="font-semibold text-white text-xl">เลือกแพ็คเกจและบริการ</h2>
-              
-              <div>
-                <label className="block mb-2 text-zinc-300 text-sm">
-                  แพ็คเกจ <span className="text-red-500">*</span>
-                </label>
-                <div className="space-y-3">
-                  {["พื้นฐาน", "มาตรฐาน", "พรีเมียม"].map((pkg) => (
-                    <label
-                      key={pkg}
-                      className={`block bg-zinc-700 hover:bg-zinc-600 p-4 border rounded-lg cursor-pointer transition-all ${
-                        formData.packageType === pkg
-                          ? "border-red-500 bg-zinc-600"
-                          : "border-zinc-600"
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name="package"
-                        value={pkg}
-                        checked={formData.packageType === pkg}
-                        onChange={(e) => updateFormData("packageType", e.target.value)}
-                        className="mr-3"
-                      />
-                      <span className="font-semibold text-white">{pkg}</span>
-                    </label>
-                  ))}
-                </div>
-                {errors.packageType && (
-                  <p className="mt-1 text-red-400 text-sm">{errors.packageType}</p>
                 )}
-              </div>
-
-              <div>
-                <label className="block mb-2 text-zinc-300 text-sm">
-                  บริการเพิ่มเติม
-                </label>
-                <div className="space-y-2">
-                  {gym.services.map((service) => (
-                    <label key={service} className="flex items-center text-zinc-300">
-                      <input
-                        type="checkbox"
-                        checked={formData.selectedServices.includes(service)}
-                        onChange={(e) => {
-                          const newServices = e.target.checked
-                            ? [...formData.selectedServices, service]
-                            : formData.selectedServices.filter((s) => s !== service);
-                          updateFormData("selectedServices", newServices);
-                        }}
-                        className="mr-2"
-                      />
-                      {service}
-                    </label>
-                  ))}
-                </div>
               </div>
 
               <div>
@@ -477,7 +566,7 @@ export default function BookingPage({
                 </label>
                 <textarea
                   value={formData.specialRequests}
-                  onChange={(e) => updateFormData("specialRequests", e.target.value)}
+                  onChange={(e) => setFormData(prev => ({ ...prev, specialRequests: e.target.value }))}
                   className="bg-zinc-700 px-4 py-3 border border-zinc-600 focus:border-red-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white placeholder-zinc-500"
                   rows={4}
                   placeholder="มีความต้องการพิเศษอะไรเพิ่มเติมไหม?"
@@ -486,39 +575,11 @@ export default function BookingPage({
             </div>
           )}
 
-          {/* Step 4: Payment */}
-          {currentStep === 4 && (
+          {/* Step 3: Payment */}
+          {currentStep === 3 && (
             <div className="space-y-6">
-              <h2 className="font-semibold text-white text-xl">วิธีการชำระเงิน</h2>
+              <h2 className="font-semibold text-white text-xl">ยืนยันและชำระเงิน</h2>
               
-              <div className="space-y-3">
-                {[
-                  { value: "transfer", label: "โอนเงินผ่านธนาคาร" },
-                  { value: "promptpay", label: "พร้อมเพย์" },
-                  { value: "credit", label: "บัตรเครดิต/เดบิต" },
-                  { value: "onsite", label: "ชำระเงินที่ค่ายมวย" },
-                ].map((method) => (
-                  <label
-                    key={method.value}
-                    className={`block bg-zinc-700 hover:bg-zinc-600 p-4 border rounded-lg cursor-pointer transition-all ${
-                      formData.paymentMethod === method.value
-                        ? "border-red-500 bg-zinc-600"
-                        : "border-zinc-600"
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="payment"
-                      value={method.value}
-                      checked={formData.paymentMethod === method.value}
-                      onChange={(e) => updateFormData("paymentMethod", e.target.value)}
-                      className="mr-3"
-                    />
-                    <span className="text-white">{method.label}</span>
-                  </label>
-                ))}
-              </div>
-
               <div className="bg-zinc-700/50 p-6 rounded-lg">
                 <h3 className="mb-4 font-semibold text-white">สรุปการจอง</h3>
                 <div className="space-y-2 text-zinc-300 text-sm">
@@ -527,23 +588,61 @@ export default function BookingPage({
                     <span className="font-semibold text-white">{formData.fullName}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>วันที่:</span>
-                    <span className="font-semibold text-white">
-                      {formData.checkInDate} ถึง {formData.checkOutDate}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
                     <span>แพ็คเกจ:</span>
-                    <span className="font-semibold text-white">{formData.packageType}</span>
+                    <span className="font-semibold text-white">{formData.selectedPackage?.name}</span>
                   </div>
-                  {formData.selectedServices.length > 0 && (
+                  {formData.selectedPackage?.duration_months && (
                     <div className="flex justify-between">
-                      <span>บริการเพิ่มเติม:</span>
+                      <span>ระยะเวลา:</span>
                       <span className="font-semibold text-white">
-                        {formData.selectedServices.length} รายการ
+                        {formData.selectedPackage.duration_months} เดือน
                       </span>
                     </div>
                   )}
+                  <div className="flex justify-between">
+                    <span>วันที่เริ่มต้น:</span>
+                    <span className="font-semibold text-white">
+                      {new Date(formData.startDate).toLocaleDateString('th-TH')}
+                    </span>
+                  </div>
+                  <div className="flex justify-between pt-4 border-zinc-600 border-t">
+                    <span className="font-semibold text-lg">ยอดรวม:</span>
+                    <span className="font-bold text-red-500 text-2xl">
+                      ฿{formData.selectedPackage?.price.toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label className="block mb-3 font-medium text-white text-sm">
+                  วิธีการชำระเงิน
+                </label>
+                <div className="space-y-3">
+                  {[
+                    { value: "transfer", label: "โอนเงินผ่านธนาคาร" },
+                    { value: "promptpay", label: "พร้อมเพย์" },
+                    { value: "credit", label: "บัตรเครดิต/เดบิต" },
+                  ].map((method) => (
+                    <label
+                      key={method.value}
+                      className={`block bg-zinc-700 hover:bg-zinc-600 p-4 border rounded-lg cursor-pointer transition-all ${
+                        formData.paymentMethod === method.value
+                          ? "border-red-500 bg-zinc-600"
+                          : "border-zinc-600"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="payment"
+                        value={method.value}
+                        checked={formData.paymentMethod === method.value}
+                        onChange={(e) => setFormData(prev => ({ ...prev, paymentMethod: e.target.value }))}
+                        className="mr-3"
+                      />
+                      <span className="text-white">{method.label}</span>
+                    </label>
+                  ))}
                 </div>
               </div>
             </div>
@@ -569,7 +668,7 @@ export default function BookingPage({
             ) : (
               <button
                 onClick={handleSubmit}
-                disabled={isSubmitting}
+                disabled={isSubmitting || !formData.paymentMethod}
                 className="bg-green-600 hover:bg-green-700 disabled:opacity-50 px-8 py-3 rounded-lg font-semibold text-white transition-colors disabled:cursor-not-allowed"
               >
                 {isSubmitting ? "กำลังดำเนินการ..." : "ยืนยันการจอง"}
