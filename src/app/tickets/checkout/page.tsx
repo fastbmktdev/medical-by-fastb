@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { PaymentWrapper } from '@/components/features/payments';
 
-export default function TicketCheckoutPage() {
+function TicketCheckoutContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [clientSecret, setClientSecret] = useState<string | null>(null);
@@ -77,9 +77,9 @@ export default function TicketCheckoutPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="flex justify-center items-center bg-gray-50 min-h-screen">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <div className="mx-auto border-blue-600 border-b-2 rounded-full w-12 h-12 animate-spin"></div>
           <p className="mt-4 text-gray-600">กำลังโหลดระบบชำระเงิน...</p>
         </div>
       </div>
@@ -88,17 +88,17 @@ export default function TicketCheckoutPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6">
+      <div className="flex justify-center items-center bg-gray-50 p-4 min-h-screen">
+        <div className="bg-white shadow-lg p-6 rounded-lg w-full max-w-md">
           <div className="text-center">
-            <div className="text-red-600 text-5xl mb-4">⚠️</div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            <div className="mb-4 text-red-600 text-5xl">⚠️</div>
+            <h1 className="mb-2 font-bold text-gray-900 text-2xl">
               เกิดข้อผิดพลาด
             </h1>
-            <p className="text-gray-600 mb-6">{error}</p>
+            <p className="mb-6 text-gray-600">{error}</p>
             <button
               onClick={() => router.back()}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg text-white transition-colors"
             >
               กลับไปหน้าก่อนหน้า
             </button>
@@ -109,16 +109,16 @@ export default function TicketCheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto">
-        <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-6">
+    <div className="bg-gray-50 px-4 sm:px-6 lg:px-8 py-12 min-h-screen">
+      <div className="mx-auto max-w-2xl">
+        <div className="bg-white shadow-lg p-6 md:p-8 rounded-lg">
+          <h1 className="mb-6 font-bold text-gray-900 text-2xl">
             ชำระเงินค่าตั๋ว
           </h1>
 
           {/* Booking Summary */}
-          <div className="mb-8 p-4 bg-gray-50 rounded-lg">
-            <h2 className="text-lg font-semibold mb-3">รายละเอียดการจอง</h2>
+          <div className="bg-gray-50 mb-8 p-4 rounded-lg">
+            <h2 className="mb-3 font-semibold text-lg">รายละเอียดการจอง</h2>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-600">เลขที่การจอง:</span>
@@ -148,9 +148,9 @@ export default function TicketCheckoutPage() {
                 <span className="text-gray-600">จำนวนตั๋ว:</span>
                 <span className="font-medium">{ticketCount} ใบ</span>
               </div>
-              <div className="flex justify-between pt-2 border-t border-gray-200">
-                <span className="text-gray-900 font-semibold">ยอดรวม:</span>
-                <span className="text-blue-600 font-bold text-lg">
+              <div className="flex justify-between pt-2 border-gray-200 border-t">
+                <span className="font-semibold text-gray-900">ยอดรวม:</span>
+                <span className="font-bold text-blue-600 text-lg">
                   ฿{amount.toLocaleString('th-TH', { minimumFractionDigits: 2 })}
                 </span>
               </div>
@@ -169,5 +169,19 @@ export default function TicketCheckoutPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function TicketCheckoutPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex justify-center items-center bg-gray-50 min-h-screen">
+          <div className="border-blue-600 border-b-2 rounded-full w-12 h-12 animate-spin"></div>
+        </div>
+      }
+    >
+      <TicketCheckoutContent />
+    </Suspense>
   );
 }
