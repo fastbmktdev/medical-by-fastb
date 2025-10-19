@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import PaymentWrapper from '@/components/payments/PaymentWrapper';
+import { PaymentWrapper } from '@/components/features/payments';
 
 export default function TicketCheckoutPage() {
   const router = useRouter();

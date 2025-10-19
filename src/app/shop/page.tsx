@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { PRODUCTS } from "@/lib/data";
-import { Product } from "@/types/app.types";
+import { Product } from "@/types";
 import {
   MagnifyingGlassIcon,
   FunnelIcon,

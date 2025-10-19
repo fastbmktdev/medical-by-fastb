@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { createClient } from '@/lib/supabase/client';
-import RoleGuard from '@/components/auth/RoleGuard';
-import DashboardLayout, { MenuItem } from '@/components/layout/DashboardLayout';
+import { createClient } from '@/lib/database/supabase/client';
+import { RoleGuard } from '@/components/features/auth';
+import { DashboardLayout, type MenuItem } from '@/components/shared';
 import Link from 'next/link';
 import {
   Card,

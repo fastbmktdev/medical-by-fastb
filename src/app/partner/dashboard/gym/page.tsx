@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { createClient } from '@/lib/supabase/client';
-import RoleGuard from '@/components/auth/RoleGuard';
-import DashboardLayout, { MenuItem } from '@/components/layout/DashboardLayout';
+import { createClient } from '@/lib/database/supabase/client';
+import { RoleGuard } from '@/components/features/auth';
+import { DashboardLayout, type MenuItem } from '@/components/shared';
 import Image from 'next/image';
 import {
   Card,
@@ -29,7 +29,7 @@ import {
   PhoneIcon,
   EnvelopeIcon,
 } from '@heroicons/react/24/outline';
-import type { Gym } from '@/types/database.types';
+import type { Gym } from '@/types';
 
 function GymPageContent() {
   const supabase = createClient();

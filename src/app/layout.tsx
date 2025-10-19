@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Bai_Jamjuree } from "next/font/google";
 import "./globals.css";
-import LayoutWrapper from "@/components/layout/LayoutWrapper";
+import { LayoutWrapper, ErrorBoundary } from "@/components/shared";
 import { Providers } from "./providers";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 const baiJamjuree = Bai_Jamjuree({
   variable: "--font-bai-jamjuree",

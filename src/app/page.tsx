@@ -1,7 +1,4 @@
-import HeroSection from "@/components/sections/HeroSection";
-import QuickSearchBar from "@/components/sections/QuickSearchBar";
-import FeaturedSection from "@/components/sections/FeaturedSection";
-import LatestProducts from "@/components/sections/LatestProducts";
+import { HeroSection, QuickSearchBar, FeaturedSection, LatestProducts } from "@/components/features/sections";
 import { GYMS, EVENTS, PRODUCTS } from "@/lib/data";
 
 export default function Home() {

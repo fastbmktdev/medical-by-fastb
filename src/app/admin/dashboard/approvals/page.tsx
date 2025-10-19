@@ -2,10 +2,10 @@
 
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Toaster } from 'react-hot-toast';
-import { createClient } from '@/lib/supabase/client';
-import RoleGuard from '@/components/auth/RoleGuard';
-import DashboardLayout, { MenuItem } from '@/components/layout/DashboardLayout';
-import { showSuccessToast, showErrorToast } from '@/lib/toast';
+import { createClient } from '@/lib/database/supabase/client';
+import { RoleGuard } from '@/components/features/auth';
+import { DashboardLayout, type MenuItem } from '@/components/shared';
+import { showSuccessToast, showErrorToast } from '@/lib/utils';
 import {
   Card,
   CardBody,
@@ -41,7 +41,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { User } from '@supabase/supabase-js';
 import Image from 'next/image';
-import type { Gym } from '@/types/database.types';
+import type { Gym } from '@/types';
 
 // Utility Components
 

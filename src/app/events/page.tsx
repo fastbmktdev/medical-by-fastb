@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { EVENTS } from "@/lib/data";
-import { Event } from "@/types/app.types";
+import { Event } from "@/types";
 import {
   MagnifyingGlassIcon,
   FunnelIcon,

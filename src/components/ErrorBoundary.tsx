@@ -22,8 +22,8 @@ export class ErrorBoundary extends Component<Props, State> {
     return { hasError: true, error };
   }
 
-  componentDidCatch() {
-    // Silently catch errors
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('ErrorBoundary caught an error:', error, errorInfo);
   }
 
   render() {
@@ -33,11 +33,11 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="flex justify-center items-center bg-gray-50 min-h-screen">
-          <div className="bg-white shadow-lg p-6 rounded-lg w-full max-w-md text-center">
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-6 text-center">
             <div className="mb-4">
               <svg
-                className="mx-auto w-12 h-12 text-red-500"
+                className="mx-auto h-12 w-12 text-red-500"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -50,15 +50,15 @@ export class ErrorBoundary extends Component<Props, State> {
                 />
               </svg>
             </div>
-            <h2 className="mb-2 font-medium text-gray-900 text-lg">
+            <h2 className="text-lg font-medium text-gray-900 mb-2">
               เกิดข้อผิดพลาด
             </h2>
-            <p className="mb-4 text-gray-600">
+            <p className="text-gray-600 mb-4">
               มีบางอย่างผิดพลาด กรุณาลองใหม่อีกครั้ง
             </p>
             <button
               onClick={() => this.setState({ hasError: false, error: undefined })}
-              className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-md w-full text-white transition-colors"
+              className="w-full bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition-colors"
             >
               ลองใหม่
             </button>

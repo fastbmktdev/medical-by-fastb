@@ -1,11 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { 
-  PaperAirplaneIcon, 
-  CheckCircleIcon,
-  ExclamationTriangleIcon 
-} from "@heroicons/react/24/outline";
+import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -15,10 +11,6 @@ export default function ContactForm() {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<{
-    type: 'success' | 'error' | null;
-    message: string;
-  }>({ type: null, message: '' });
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -28,85 +20,26 @@ export default function ContactForm() {
       ...prev,
       [name]: value,
     }));
-    // Clear status when user starts typing
-    if (submitStatus.type) {
-      setSubmitStatus({ type: null, message: '' });
-    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setSubmitStatus({ type: null, message: '' });
 
-    try {
-      // Send to API
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+    // Simulate form submission
+    await new Promise((resolve) => setTimeout(resolve, 1500));
 
-      const data = await response.json();
-
-      if (data.success) {
-        // Success
-        setSubmitStatus({
-          type: 'success',
-          message: data.message || 'ส่งข้อความสำเร็จ! ทีมงานจะติดต่อกลับภายใน 24 ชั่วโมง',
-        });
-        
-        // Clear form
-        setFormData({
-          name: "",
-          email: "",
-          message: "",
-        });
-
-        // Auto-clear success message after 5 seconds
-        setTimeout(() => {
-          setSubmitStatus({ type: null, message: '' });
-        }, 5000);
-      } else {
-        // Error
-        setSubmitStatus({
-          type: 'error',
-          message: data.error || 'ไม่สามารถส่งข้อความได้ กรุณาลองใหม่อีกครั้ง',
-        });
-      }
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      setSubmitStatus({
-        type: 'error',
-        message: 'เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง',
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    alert("ส่งข้อความเรียบร้อยแล้ว! ทีมงานจะติดต่อกลับภายใน 24 ชั่วโมง");
+    setFormData({
+      name: "",
+      email: "",
+      message: "",
+    });
+    setIsSubmitting(false);
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 mx-auto max-w-md">
-      {/* Status Message */}
-      {submitStatus.type && (
-        <div
-          className={`flex items-center gap-3 p-4 rounded-lg ${
-            submitStatus.type === 'success'
-              ? 'bg-green-500/20 border border-green-500 text-green-400'
-              : 'bg-red-500/20 border border-red-500 text-red-400'
-          }`}
-        >
-          {submitStatus.type === 'success' ? (
-            <CheckCircleIcon className="flex-shrink-0 w-6 h-6" />
-          ) : (
-            <ExclamationTriangleIcon className="flex-shrink-0 w-6 h-6" />
-          )}
-          <p className="text-sm">{submitStatus.message}</p>
-        </div>
-      )}
-
       <div>
         <label
           htmlFor="name"

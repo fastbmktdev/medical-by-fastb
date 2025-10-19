@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { createClient } from '@/lib/supabase/client';
-import RoleGuard from '@/components/auth/RoleGuard';
-import DashboardLayout, { MenuItem } from '@/components/layout/DashboardLayout';
+import { createClient } from '@/lib/database/supabase/client';
+import { RoleGuard } from '@/components/features/auth';
+import { DashboardLayout, type MenuItem } from '@/components/shared';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -354,37 +354,6 @@ function PartnerDashboardContent() {
       </Chip>
     );
   };
-
-  const stats = [
-    {
-      title: 'การจองทั้งหมด',
-      value: '0',
-      change: '+0%',
-      icon: CalendarIcon,
-      color: 'primary',
-    },
-    {
-      title: 'ลูกค้าที่ใช้บริการ',
-      value: '0',
-      change: '+0%',
-      icon: UsersIcon,
-      color: 'success',
-    },
-    {
-      title: 'รายได้เดือนนี้',
-      value: '฿0',
-      change: '+0%',
-      icon: CurrencyDollarIcon,
-      color: 'warning',
-    },
-    {
-      title: 'คะแนนความพึงพอใจ',
-      value: '0.0',
-      change: '-',
-      icon: ChartBarIcon,
-      color: 'secondary',
-    },
-  ];
 
   // Mock booking data
   const mockBookings = [

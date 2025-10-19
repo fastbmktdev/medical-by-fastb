@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/database/supabase/server';
 import { User } from '@supabase/supabase-js';
 
 type AuthenticatedApiHandler<T> = (

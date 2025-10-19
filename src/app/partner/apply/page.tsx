@@ -16,10 +16,10 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Image from "next/image";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/database/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
-import TermsModal from "@/components/modals/TermsModal";
+import { TermsModal } from "@/components/features/modals";
 
 /**
  * Interface for partner application form data
