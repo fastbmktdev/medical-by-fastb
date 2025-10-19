@@ -1,8 +1,8 @@
 "use client";
 
 import { use, useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
-import type { Gym, GymPackage } from "@/types/database.types";
+import { createClient } from "@/lib/database/supabase/client";
+import type { Gym, GymPackage } from "@/types";
 import type { User } from "@supabase/supabase-js";
 import {
   ArrowLeftIcon,

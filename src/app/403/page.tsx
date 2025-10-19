@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
-import { getUserRole, UserRole, getDashboardPath } from "@/lib/auth-utils.client";
+import { createClient } from "@/lib/database/supabase/client";
+import { getUserRole, UserRole, getDashboardPath } from "@/lib/auth";
 import { ShieldExclamationIcon, ArrowLeftIcon, HomeIcon } from "@heroicons/react/24/outline";
 import { Card, CardBody, Button, Chip } from "@heroui/react";
 

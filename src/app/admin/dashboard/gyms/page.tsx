@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
-import { createClient } from '@/lib/supabase/client';
-import RoleGuard from '@/components/auth/RoleGuard';
-import DashboardLayout, { MenuItem } from '@/components/layout/DashboardLayout';
+import { createClient } from '@/lib/database/supabase/client';
+import { RoleGuard } from '@/components/features/auth';
+import { DashboardLayout, type MenuItem } from '@/components/shared';
 import {
   Card,
   CardBody,
@@ -35,15 +35,15 @@ import {
   TrashIcon,
 } from '@heroicons/react/24/outline';
 import { User } from '@supabase/supabase-js';
-import type { Gym } from '@/types/database.types';
+import type { Gym } from '@/types';
 import {
   GymStatsCards,
   GymDetailModal,
   GymEditModal,
   GymDeleteDialog,
-} from './_components';
-import { useGymManagement } from './_hooks';
-import { STATUS_CONFIG } from './_lib';
+  useGymManagement,
+  STATUS_CONFIG,
+} from '@/components/features/admin/gym-management';
 
 function AdminGymsContent() {
   const supabase = createClient();

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/database/supabase/server';
 
 /**
  * API endpoint to list users (for testing/admin purposes)

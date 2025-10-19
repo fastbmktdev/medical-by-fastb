@@ -3,7 +3,7 @@
  * ข้อมูล hardcode สำหรับแสดงผลในแอพพลิเคชั่น
  */
 
-import { Gym, Event, Product, TrainingPackage } from "@/types/app.types";
+import { Gym, Event, Product, TrainingPackage } from "@/types";
 
 // Training Packages
 export const PACKAGES: TrainingPackage[] = [

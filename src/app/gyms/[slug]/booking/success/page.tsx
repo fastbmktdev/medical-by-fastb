@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
-import type { Booking } from "@/types/database.types";
+import { createClient } from "@/lib/database/supabase/client";
+import type { Booking } from "@/types";
 import {
   CheckCircleIcon,
   CalendarIcon,

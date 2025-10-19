@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/database/supabase/client";
 import {
   EnvelopeIcon,
   ExclamationTriangleIcon,

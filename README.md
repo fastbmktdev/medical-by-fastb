@@ -144,107 +144,203 @@ Authentication พร้อมใช้งานทันที! ไปที่
 ```
 muaythai-next-postgres/
 ├── src/
-│   ├── actions/               # Backend - Server Actions
-│   │   └── todos.actions.ts
-│   ├── app/                    # Next.js App Router (Pages)
+│   ├── app/                    # Next.js App Router (Pages & API Routes)
+│   │   ├── (auth)/            # Auth pages (login, signup, reset-password)
+│   │   ├── (dashboard)/       # Dashboard pages (user, partner, admin)
+│   │   ├── (public)/          # Public pages (about, contact, faq, etc.)
+│   │   ├── api/               # API Routes
+│   │   │   ├── auth/          # Authentication endpoints
+│   │   │   ├── bookings/      # Booking endpoints
+│   │   │   ├── gyms/          # Gym endpoints
+│   │   │   ├── payments/      # Payment endpoints
+│   │   │   └── webhooks/      # Webhook handlers
+│   │   ├── gyms/              # Gym listing & detail pages
+│   │   ├── events/            # Event pages
+│   │   ├── shop/              # Shop pages
 │   │   ├── page.tsx           # หน้าแรก
-│   │   └── examples/          # ตัวอย่างการใช้งาน
-│   │       ├── todos/         # Todo CRUD Example
-│   │       └── auth/          # Authentication Example
-│   ├── components/            # Frontend - UI Components
-│   │   ├── todos/             # Todo components
-│   │   └── ui/                # Shared UI components
-│   ├── hooks/                 # Frontend - Custom React Hooks
-│   │   ├── useAuth.ts
-│   │   └── useTodos.ts
-│   ├── lib/                   # Backend - Core Libraries
-│   │   └── supabase/          # Supabase Configuration
-│   │       ├── client.ts      # Client-side Supabase
-│   │       ├── server.ts      # Server-side Supabase
-│   │       └── middleware.ts  # Middleware helper
-│   ├── services/              # Frontend - Business Logic
-│   │   └── auth.service.ts
+│   │   └── layout.tsx         # Root layout
+│   ├── components/            # React Components (organized by type)
+│   │   ├── ui/                # UI primitives (buttons, cards, dialogs)
+│   │   ├── shared/            # Shared components (header, footer, layout)
+│   │   └── features/          # Feature-specific components
+│   │       ├── auth/          # Authentication components
+│   │       ├── bookings/      # Booking components
+│   │       ├── gyms/          # Gym components
+│   │       ├── payments/      # Payment components
+│   │       ├── contact/       # Contact form
+│   │       ├── modals/        # Modal components
+│   │       ├── sections/      # Landing page sections
+│   │       └── admin/         # Admin components
+│   │           └── gym-management/  # Gym management UI
+│   ├── lib/                   # Core Libraries & Utilities
+│   │   ├── auth/              # Authentication utilities
+│   │   │   ├── client.ts      # Client-side auth
+│   │   │   └── server.ts      # Server-side auth
+│   │   ├── database/          # Database utilities
+│   │   │   └── supabase/      # Supabase configuration
+│   │   │       ├── client.ts  # Client-side Supabase
+│   │   │       ├── server.ts  # Server-side Supabase
+│   │   │       └── middleware.ts  # Middleware helper
+│   │   ├── api/               # API utilities & middleware
+│   │   ├── payments/          # Payment utilities (Stripe)
+│   │   ├── email/             # Email utilities (Resend)
+│   │   ├── utils/             # General utilities
+│   │   │   ├── cn.ts          # Class name utility
+│   │   │   ├── formatters.ts  # Data formatters
+│   │   │   ├── slug.ts        # Slug generation
+│   │   │   └── validators.ts  # Validation utilities
+│   │   ├── hooks/             # Custom React Hooks
+│   │   ├── constants.ts       # App constants
+│   │   └── data.ts            # Static data
+│   ├── services/              # Business Logic Layer
+│   │   ├── auth.service.ts    # Authentication service
+│   │   ├── gym.service.ts     # Gym service
+│   │   ├── booking.service.ts # Booking service
+│   │   └── payment.service.ts # Payment service
 │   ├── types/                 # TypeScript Type Definitions
-│   │   ├── auth.types.ts
-│   │   └── database.types.ts
+│   │   ├── app.types.ts       # App-wide types
+│   │   ├── auth.types.ts      # Authentication types
+│   │   ├── database.types.ts  # Database types
+│   │   └── api.types.ts       # API types
+│   ├── contexts/              # React Contexts
+│   │   ├── auth-context.tsx   # Auth context
+│   │   └── alert-context.tsx  # Alert context
 │   └── middleware.ts          # Next.js Middleware
-├── tests/                     # 🧪 E2E Testing (NEW!)
-│   ├── e2e/
+├── tests/                     # 🧪 E2E Testing
+│   ├── e2e/                   # E2E test files
 │   │   ├── helpers.ts         # Test helper functions
-│   │   └── auth-flow.spec.ts  # Main E2E test suite
+│   │   ├── auth-flow.spec.ts  # Auth flow tests
+│   │   ├── admin-gym-management.spec.ts  # Admin tests
+│   │   └── login-existing-users.spec.ts  # Login tests
 │   ├── screenshots/           # Auto-generated screenshots
 │   └── README.md              # Testing documentation
-├── docs/                      # Documentation
-│   ├── ARCHITECTURE.md
-│   ├── SETUP_GUIDE.md
-│   └── E2E_TESTING_QUICKSTART.md  # 🧪 Testing guide (NEW!)
+├── docs/                      # 📚 Documentation
+│   ├── setup/                 # Setup guides
+│   │   ├── DATABASE_SETUP.md
+│   │   ├── ENV_SETUP.md
+│   │   ├── SUPABASE_SETUP.md
+│   │   └── EMAIL_SETUP_GUIDE.md
+│   ├── features/              # Feature documentation
+│   │   ├── BOOKING_SYSTEM_GUIDE.md
+│   │   ├── PARTNER_APPLICATION_GUIDE.md
+│   │   └── ROLE_BASED_DASHBOARD_GUIDE.md
+│   ├── api/                   # API documentation
+│   │   └── STRIPE_API_REFERENCE.md
+│   ├── testing/               # Testing guides
+│   │   ├── E2E_TESTING_QUICKSTART.md
+│   │   └── RUN_TESTS.md
+│   ├── ARCHITECTURE.md        # Architecture overview
+│   └── CONTRIBUTING.md        # Contribution guide
+├── supabase/                  # Supabase Configuration
+│   ├── migrations/            # Database migrations
+│   └── config.toml            # Supabase config
+├── scripts/                   # Utility scripts
 ├── .env.local                 # Environment variables (สร้างเอง)
 ├── .env.example              # ตัวอย่าง environment variables
-├── playwright.config.ts       # 🧪 Playwright config (NEW!)
-├── RUN_TESTS.md              # 🧪 Step-by-step test guide (NEW!)
-├── TESTING_SUMMARY.md        # 🧪 Testing summary (NEW!)
+├── playwright.config.ts       # 🧪 Playwright config
+├── tsconfig.json             # TypeScript config (with path aliases)
 ├── package.json
 └── README.md
 ```
 
-> 💡 **ดูโครงสร้างโดยละเอียด**: อ่าน [ARCHITECTURE.md](./ARCHITECTURE.md) เพื่อเข้าใจการแยก frontend/backend และ data flow
+### 🎯 Path Aliases
+
+โปรเจกต์ใช้ path aliases เพื่อให้ import สะดวกขึ้น:
+
+```typescript
+// แทนที่จะใช้
+import { Button } from '../../../components/ui/button';
+
+// ใช้
+import { Button } from '@/components/ui';
+```
+
+**Path aliases ที่มี:**
+- `@/components/*` - Components
+- `@/lib/*` - Libraries & utilities
+- `@/types/*` - Type definitions
+- `@/services/*` - Business logic services
+- `@/contexts/*` - React contexts
+- `@/app/*` - App router pages & API
+
+> 💡 **ดูโครงสร้างโดยละเอียด**: อ่าน [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) เพื่อเข้าใจการแยก frontend/backend และ data flow
 
 ## 🔧 วิธีการใช้งาน
 
-### Client Component with Custom Hook
+### Client Component with Context
 
 ```tsx
 'use client';
 
-import { useTodos } from '@/hooks/useTodos';
-import { TodoList } from '@/components/todos/TodoList';
+import { useAuth } from '@/contexts';
+import { Button } from '@/components/ui';
 
-export default function TodosPage() {
-  const { todos, loading, addTodo, deleteTodo } = useTodos();
+export default function ProfilePage() {
+  const { user, signOut } = useAuth();
   
   return (
     <div>
-      {loading ? <p>Loading...</p> : <TodoList todos={todos} onDelete={deleteTodo} />}
+      <p>Welcome, {user?.email}</p>
+      <Button onClick={signOut}>Logout</Button>
     </div>
   );
 }
 ```
 
-### Server Component with Server Actions
+### Server Component with Service Layer
 
 ```tsx
-import { getTodos } from '@/actions/todos.actions';
+import { GymService } from '@/services';
+import { GymCard } from '@/components/features/gyms';
 
-export default async function TodosPage() {
-  const { data: todos, error } = await getTodos();
-  
-  return <div>{todos?.map(todo => <div key={todo.id}>{todo.task}</div>)}</div>;
-}
-```
-
-### Authentication with useAuth Hook
-
-```tsx
-'use client';
-
-import { useAuth } from '@/hooks/useAuth';
-
-export default function AuthPage() {
-  const { user, signIn, signOut } = useAuth();
+export default async function GymsPage() {
+  const gymService = new GymService();
+  const gyms = await gymService.getGyms();
   
   return (
     <div>
-      {user ? (
-        <button onClick={signOut}>Logout</button>
-      ) : (
-        <button onClick={() => signIn({ email, password })}>Login</button>
-      )}
+      {gyms.map(gym => <GymCard key={gym.id} gym={gym} />)}
     </div>
   );
 }
 ```
 
-> 💡 **เรียนรู้เพิ่มเติม**: อ่าน [ARCHITECTURE.md](./ARCHITECTURE.md) เพื่อดู patterns และ best practices
+### API Route with Service Layer
+
+```tsx
+// src/app/api/gyms/route.ts
+import { NextResponse } from 'next/server';
+import { GymService } from '@/services';
+
+export async function GET() {
+  try {
+    const gymService = new GymService();
+    const gyms = await gymService.getGyms();
+    return NextResponse.json(gyms);
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to fetch gyms' }, { status: 500 });
+  }
+}
+```
+
+### Using Utilities
+
+```tsx
+import { cn } from '@/lib/utils';
+import { formatCurrency } from '@/lib/utils';
+import { createClient } from '@/lib/database';
+
+// Class name utility
+const className = cn('base-class', isActive && 'active-class');
+
+// Format currency
+const price = formatCurrency(1000); // "฿1,000.00"
+
+// Database client
+const supabase = createClient();
+```
+
+> 💡 **เรียนรู้เพิ่มเติม**: อ่าน [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) เพื่อดู patterns และ best practices
 
 ## 🎨 การปรับแต่ง UI
 
@@ -290,11 +386,26 @@ npm run test:report       # View test report
 ## 📖 Resources & Documentation
 
 ### โปรเจกต์นี้
-- 📘 [ARCHITECTURE.md](./ARCHITECTURE.md) - โครงสร้างและ design patterns
-- 🚀 [SETUP_GUIDE.md](./SETUP_GUIDE.md) - คู่มือการติดตั้งโดยละเอียด
-- 🧪 [RUN_TESTS.md](./RUN_TESTS.md) - วิธีรัน E2E tests
-- 🤝 [CONTRIBUTING.md](./CONTRIBUTING.md) - วิธีการมีส่วนร่วม
-- 💾 [supabase-setup.sql](./supabase-setup.sql) - SQL สำหรับสร้าง database schema
+
+**Setup Guides:**
+- 🚀 [Database Setup](./docs/setup/DATABASE_SETUP.md) - การตั้งค่าฐานข้อมูล
+- ⚙️ [Environment Setup](./docs/setup/ENV_SETUP.md) - การตั้งค่า environment variables
+- 🔐 [Supabase Setup](./docs/setup/SUPABASE_SETUP.md) - การตั้งค่า Supabase
+- 📧 [Email Setup](./docs/setup/EMAIL_SETUP_GUIDE.md) - การตั้งค่าระบบอีเมล
+
+**Feature Guides:**
+- 📅 [Booking System](./docs/features/BOOKING_SYSTEM_GUIDE.md) - ระบบจองค่ายมวย
+- 🤝 [Partner Application](./docs/features/PARTNER_APPLICATION_GUIDE.md) - การสมัคร Partner
+- 👥 [Role-Based Dashboard](./docs/features/ROLE_BASED_DASHBOARD_GUIDE.md) - Dashboard แบ่งตาม role
+- 🏋️ [Gym Management](./docs/features/PARTNER_PACKAGE_MANAGEMENT_GUIDE.md) - การจัดการค่ายมวย
+
+**Testing:**
+- 🧪 [E2E Testing Quickstart](./docs/testing/E2E_TESTING_QUICKSTART.md) - เริ่มต้นทดสอบ E2E
+- 🎯 [Run Tests](./docs/testing/RUN_TESTS.md) - วิธีรัน tests
+
+**Architecture:**
+- 📘 [Architecture Overview](./docs/ARCHITECTURE.md) - โครงสร้างและ design patterns
+- 🤝 [Contributing Guide](./docs/CONTRIBUTING.md) - วิธีการมีส่วนร่วม
 
 ### External Resources
 - [Next.js Documentation](https://nextjs.org/docs)

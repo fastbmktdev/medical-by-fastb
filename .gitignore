@@ -54,3 +54,5 @@ supabase/.temp
 
 docs
 .kiro
+.claude
+.vscode

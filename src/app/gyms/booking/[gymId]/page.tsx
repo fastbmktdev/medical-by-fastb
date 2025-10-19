@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import PaymentWrapper from '@/components/payments/PaymentWrapper';
-import { createClient } from '@/lib/supabase/client';
+import { PaymentWrapper } from '@/components/features/payments';
+import { createClient } from '@/lib/database/supabase/client';
 
 interface BookingStep {
   id: number;

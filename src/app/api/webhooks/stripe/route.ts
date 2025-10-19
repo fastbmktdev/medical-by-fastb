@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
-import { stripe } from '@/lib/stripe';
-import { createClient } from '@/lib/supabase/server';
+import { stripe } from '@/lib/payments';
+import { createClient } from '@/lib/database/supabase/server';
 import Stripe from 'stripe';
 
 // Disable body parser to get raw body for signature verification

@@ -7,7 +7,7 @@
  */
 
 import { NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/database/supabase/server';
 import { NextRequest } from 'next/server';
 
 async function checkPackageOwnership(supabase: any, packageId: string, userId: string) {

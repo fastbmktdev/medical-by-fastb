@@ -1,4 +1,4 @@
-import ContactForm from "@/components/contact/ContactForm";
+import { ContactForm } from "@/components/features/contact";
 import { Award, ShieldCheck, Trophy } from "lucide-react";
 
 export default function AboutPage() {

@@ -6,8 +6,9 @@
  */
 
 import { NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/database/supabase/server';
 import { NextRequest } from 'next/server';
+import { getBookings, createBooking } from '@/services';
 
 /**
  * GET /api/bookings
@@ -28,27 +29,11 @@ export async function GET(_request: NextRequest) {
     }
 
     // ดึงรายการจอง
-    const { data: bookings, error: bookingsError } = await supabase
-      .from('bookings')
-      .select(`
-        *,
-        gyms:gym_id (
-          id,
-          gym_name,
-          gym_name_english,
-          slug
-        )
-      `)
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false });
-
-    if (bookingsError) {
-      throw bookingsError;
-    }
+    const bookings = await getBookings({ user_id: user.id });
 
     return NextResponse.json({
       success: true,
-      data: bookings || [],
+      data: bookings,
     });
 
   } catch (error) {
@@ -98,85 +83,17 @@ export async function POST(request: NextRequest) {
       payment_method,
     } = body;
 
-    // Validation
-    if (!gym_id || !package_id || !customer_name || !customer_email || !customer_phone || !start_date) {
-      return NextResponse.json(
-        { success: false, error: 'ข้อมูลไม่ครบถ้วน' },
-        { status: 400 }
-      );
-    }
-
-    // ดึงข้อมูล gym
-    const { data: gym, error: gymError } = await supabase
-      .from('gyms')
-      .select('id, gym_name, status')
-      .eq('id', gym_id)
-      .eq('status', 'approved')
-      .maybeSingle();
-
-    if (gymError || !gym) {
-      return NextResponse.json(
-        { success: false, error: 'ไม่พบค่ายมวยที่ต้องการ' },
-        { status: 404 }
-      );
-    }
-
-    // ดึงข้อมูล package
-    const { data: gymPackage, error: packageError } = await supabase
-      .from('gym_packages')
-      .select('*')
-      .eq('id', package_id)
-      .eq('gym_id', gym_id)
-      .eq('is_active', true)
-      .maybeSingle();
-
-    if (packageError || !gymPackage) {
-      return NextResponse.json(
-        { success: false, error: 'ไม่พบแพ็คเกจที่ต้องการ' },
-        { status: 404 }
-      );
-    }
-
-    // คำนวณ end_date สำหรับ package
-    let end_date = null;
-    if (gymPackage.package_type === 'package' && gymPackage.duration_months) {
-      const startDateObj = new Date(start_date);
-      const endDateObj = new Date(startDateObj);
-      endDateObj.setMonth(endDateObj.getMonth() + gymPackage.duration_months);
-      end_date = endDateObj.toISOString().split('T')[0];
-    }
-
-    // Generate booking number
-    const bookingNumber = `BK${new Date().getFullYear()}${String(new Date().getMonth() + 1).padStart(2, '0')}${String(Math.floor(Math.random() * 10000)).padStart(4, '0')}`;
-
-    // สร้างการจอง
-    const { data: booking, error: bookingError } = await supabase
-      .from('bookings')
-      .insert({
-        user_id: user.id,
-        gym_id: gym_id,
-        package_id: package_id,
-        booking_number: bookingNumber,
-        customer_name,
-        customer_email,
-        customer_phone,
-        start_date,
-        end_date,
-        price_paid: gymPackage.price,
-        package_name: gymPackage.name,
-        package_type: gymPackage.package_type,
-        duration_months: gymPackage.duration_months,
-        special_requests: special_requests || null,
-        payment_method: payment_method || null,
-        payment_status: 'pending',
-        status: 'pending',
-      })
-      .select()
-      .single();
-
-    if (bookingError) {
-      throw bookingError;
-    }
+    const booking = await createBooking({
+      user_id: user.id,
+      gym_id,
+      package_id,
+      customer_name,
+      customer_email,
+      customer_phone,
+      start_date,
+      special_requests,
+      payment_method,
+    });
 
     return NextResponse.json({
       success: true,
@@ -187,6 +104,30 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Error creating booking:', error);
+    
+    // Handle validation errors
+    if (error instanceof Error && 'errors' in error) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: error.message,
+          errors: (error as Error & { errors: string[] }).errors,
+        },
+        { status: 400 }
+      );
+    }
+
+    // Handle not found errors
+    if (error instanceof Error && (
+      error.message === 'ไม่พบค่ายมวยที่ต้องการ' ||
+      error.message === 'ไม่พบแพ็คเกจที่ต้องการ'
+    )) {
+      return NextResponse.json(
+        { success: false, error: error.message },
+        { status: 404 }
+      );
+    }
+
     return NextResponse.json(
       {
         success: false,

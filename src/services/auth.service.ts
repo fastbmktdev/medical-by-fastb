@@ -3,8 +3,8 @@
  * บริการด้าน Authentication (Client-side)
  */
 
-import { createClient } from '@/lib/supabase/client';
-import type { SignUpCredentials, SignInCredentials } from '@/types/auth.types';
+import { createClient } from '@/lib/database/supabase/client';
+import type { SignUpCredentials, SignInCredentials } from '@/types';
 
 /**
  * ลงทะเบียนผู้ใช้ใหม่
