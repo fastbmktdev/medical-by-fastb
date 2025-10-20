@@ -7,12 +7,12 @@
  * Usage: npx tsx reload-schema.ts
  */
 
-const SUPABASE_URL: string | undefined = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SUPABASE_URL: string | undefined = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_KEY: string | undefined = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
   console.error('❌ Missing environment variables:');
-  console.error('   - NEXT_PUBLIC_SUPABASE_URL');
+  console.error('   - SUPABASE_URL');
   console.error('   - SUPABASE_SERVICE_ROLE_KEY');
   process.exit(1);
 }
