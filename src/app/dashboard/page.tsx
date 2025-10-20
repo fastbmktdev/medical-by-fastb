@@ -80,38 +80,7 @@ function DashboardContent() {
     { label: 'ประวัติการเงิน', href: '/dashboard/transactions', icon: BanknotesIcon },
     { label: 'โปรไฟล์', href: '/dashboard/profile', icon: UserIcon },
   ];
-
-  const quickActions = [
-    {
-      title: 'ค้นหายิม',
-      description: 'ค้นหายิมมวยไทยใกล้คุณ',
-      icon: MapPinIcon,
-      href: '/gyms',
-      color: 'primary' as const,
-    },
-    {
-      title: 'จองคอร์ส',
-      description: 'จองคอร์สเทรนนิ่งกับยิมชั้นนำ',
-      icon: CalendarIcon,
-      href: '/gyms',
-      color: 'success' as const,
-    },
-    {
-      title: 'ช้อปสินค้า',
-      description: 'อุปกรณ์มวยไทยคุณภาพดี',
-      icon: ShoppingBagIcon,
-      href: '/shop',
-      color: 'secondary' as const,
-    },
-    {
-      title: 'รายการโปรด',
-      description: 'ดูยิมและสินค้าที่บันทึกไว้',
-      icon: HeartIcon,
-      href: '/dashboard/favorites',
-      color: 'danger' as const,
-    },
-  ];
-
+  
   // Mock booking data
   const mockBookings = [
     {

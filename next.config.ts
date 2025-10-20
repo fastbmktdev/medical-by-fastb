@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 const securityHeaders = [
   {
     key: 'Content-Security-Policy',
@@ -9,7 +11,7 @@ const securityHeaders = [
       style-src 'self' 'unsafe-inline';
       img-src 'self' data: blob: https:;
       font-src 'self';
-      connect-src 'self' *.supabase.co;
+      connect-src 'self' *.supabase.co ${isDevelopment ? 'http://127.0.0.1:54321 http://localhost:*' : ''};
       frame-ancestors 'self';
     `.replace(/\s{2,}/g, ' ').trim()
   },

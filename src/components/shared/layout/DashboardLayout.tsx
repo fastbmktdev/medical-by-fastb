@@ -55,7 +55,7 @@ export default function DashboardLayout({
       await signOut();
       router.push('/');
     } catch {
-      // Silently handle logout errors
+      alert("เกิดข้อผิดพลาดในการออกจากระบบ กรุณาลองใหม่อีกครั้ง");
     }
   };
 
