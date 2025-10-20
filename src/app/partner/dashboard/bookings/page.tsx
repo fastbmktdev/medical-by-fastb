@@ -172,7 +172,7 @@ function PartnerBookingsContent() {
         userEmail={user?.email}
       >
         <div className="flex justify-center items-center py-20">
-          <div className="border-4 border-t-transparent border-red-600 rounded-full w-12 h-12 animate-spin"></div>
+          <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
         </div>
       </DashboardLayout>
     );
@@ -187,41 +187,6 @@ function PartnerBookingsContent() {
       roleColor="secondary"
       userEmail={user?.email}
     >
-      {/* Stats Overview */}
-      <section className="mb-8">
-        <div className="gap-6 grid grid-cols-2 md:grid-cols-5">
-          <Card className="bg-default-100/50 backdrop-blur-sm border-none">
-            <CardBody>
-              <p className="mb-2 text-default-400 text-sm">ทั้งหมด</p>
-              <p className="font-bold text-white text-3xl">{stats.total}</p>
-            </CardBody>
-          </Card>
-          <Card className="bg-default-100/50 backdrop-blur-sm border-none">
-            <CardBody>
-              <p className="mb-2 text-default-400 text-sm">ยืนยันแล้ว</p>
-              <p className="font-bold text-success text-3xl">{stats.confirmed}</p>
-            </CardBody>
-          </Card>
-          <Card className="bg-default-100/50 backdrop-blur-sm border-none">
-            <CardBody>
-              <p className="mb-2 text-default-400 text-sm">รอยืนยัน</p>
-              <p className="font-bold text-warning text-3xl">{stats.pending}</p>
-            </CardBody>
-          </Card>
-          <Card className="bg-default-100/50 backdrop-blur-sm border-none">
-            <CardBody>
-              <p className="mb-2 text-default-400 text-sm">เสร็จสิ้น</p>
-              <p className="font-bold text-primary text-3xl">{stats.completed}</p>
-            </CardBody>
-          </Card>
-          <Card className="bg-default-100/50 backdrop-blur-sm border-none">
-            <CardBody>
-              <p className="mb-2 text-default-400 text-sm">ยกเลิก</p>
-              <p className="font-bold text-danger text-3xl">{stats.cancelled}</p>
-            </CardBody>
-          </Card>
-        </div>
-      </section>
 
       {/* Bookings Table */}
       <section>

@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(result);
   } catch (error) {
     console.error('Error creating payment intent:', error);
-    
+
     // Handle validation errors
     if (error instanceof Error && 'errors' in error) {
       return NextResponse.json(
@@ -50,8 +50,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Return more detailed error message in development
     return NextResponse.json(
-      { error: 'Internal server error' },
+      {
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : 'Unknown error',
+        stack: process.env.NODE_ENV === 'development' && error instanceof Error ? error.stack : undefined
+      },
       { status: 500 }
     );
   }

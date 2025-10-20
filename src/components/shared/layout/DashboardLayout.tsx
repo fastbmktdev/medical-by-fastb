@@ -51,12 +51,9 @@ export default function DashboardLayout({
   const router = useRouter();
 
   const handleLogout = async () => {
-    try {
-      await signOut();
-      router.push('/');
-    } catch {
-      alert("เกิดข้อผิดพลาดในการออกจากระบบ กรุณาลองใหม่อีกครั้ง");
-    }
+    await signOut();
+    router.push('/');
+    router.refresh();
   };
 
   const sidebarProps = {

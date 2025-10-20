@@ -4,7 +4,7 @@
  */
 
 import { createClient } from '@/lib/database/supabase/server';
-import { stripe, formatAmountForStripe, CURRENCY } from '@/lib/payments';
+import { stripe, formatAmountForStripe, CURRENCY, isStripeConfigured } from '@/lib/payments';
 
 export interface CreatePaymentIntentInput {
   user_id: string;
@@ -49,6 +49,10 @@ export async function getOrCreateStripeCustomer(
   userId: string,
   userEmail: string
 ): Promise<string> {
+  if (!stripe) {
+    throw new Error('Stripe is not configured. Please set STRIPE_SECRET_KEY environment variable.');
+  }
+
   const supabase = await createClient();
 
   // Check if user already has a Stripe customer ID
@@ -98,6 +102,11 @@ export async function generateOrderNumber(): Promise<string> {
 export async function createPaymentIntent(
   data: CreatePaymentIntentInput
 ): Promise<PaymentIntentResult> {
+  // Check if Stripe is configured
+  if (!stripe || !isStripeConfigured()) {
+    throw new Error('Stripe is not configured. Please set STRIPE_SECRET_KEY environment variable.');
+  }
+
   // Validate data
   const validationErrors = validatePaymentData(data);
   if (validationErrors.length > 0) {
@@ -111,15 +120,22 @@ export async function createPaymentIntent(
   // Get or create Stripe customer
   const stripeCustomerId = await getOrCreateStripeCustomer(data.user_id, data.user_email);
 
-  // Prepare metadata
+  // Prepare metadata - Stripe requires all values to be strings
   const paymentMetadata: Record<string, string> = {
     type: data.payment_type,
     userId: data.user_id,
     userEmail: data.user_email,
-    ...data.metadata,
   };
 
+  // Convert all metadata values to strings
+  if (data.metadata) {
+    Object.entries(data.metadata).forEach(([key, value]) => {
+      paymentMetadata[key] = String(value);
+    });
+  }
+
   // Create payment intent with Stripe
+  // Support multiple payment methods: card, alipay, promptpay
   const paymentIntent = await stripe.paymentIntents.create({
     amount: formatAmountForStripe(data.amount),
     currency: CURRENCY,
@@ -127,7 +143,9 @@ export async function createPaymentIntent(
     metadata: paymentMetadata,
     automatic_payment_methods: {
       enabled: true,
+      allow_redirects: 'always', // Required for Alipay and PromptPay
     },
+    payment_method_types: ['card', 'alipay', 'promptpay'], // Explicitly enable payment methods
   });
 
   // Generate order number

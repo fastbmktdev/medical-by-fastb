@@ -211,7 +211,7 @@ function TransactionsContent() {
         showPartnerButton={true}
       >
         <div className="flex justify-center items-center py-20">
-          <div className="border-4 border-t-transparent border-red-600 rounded-full w-12 h-12 animate-spin"></div>
+          <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
         </div>
       </DashboardLayout>
     );
@@ -227,42 +227,6 @@ function TransactionsContent() {
       userEmail={user?.email}
       showPartnerButton={true}
     >
-      {/* Stats Overview */}
-      <section className="mb-8">
-        <div className="gap-6 grid grid-cols-1 md:grid-cols-3">
-          <Card className="bg-gradient-to-br from-success-500 to-success-700 border-none">
-            <CardBody className="gap-2">
-              <p className="text-white/80 text-sm">ยอดคงเหลือ</p>
-              <p className="font-mono font-bold text-white text-3xl">฿{balance.toLocaleString()}</p>
-              <Button
-                size="sm"
-                className="bg-white/20 backdrop-blur-sm mt-2 text-white"
-                startContent={<PlusCircleIcon className="w-4 h-4" />}
-              >
-                เติมเงิน
-              </Button>
-            </CardBody>
-          </Card>
-          <Card className="bg-default-100/50 backdrop-blur-sm border-none">
-            <CardBody>
-              <p className="mb-2 text-default-400 text-sm">รายรับทั้งหมด</p>
-              <p className="font-mono font-bold text-success text-2xl">
-                +฿{totalIncome.toLocaleString()}
-              </p>
-              <p className="text-default-400 text-xs">จากการคืนเงินและเติมเงิน</p>
-            </CardBody>
-          </Card>
-          <Card className="bg-default-100/50 backdrop-blur-sm border-none">
-            <CardBody>
-              <p className="mb-2 text-default-400 text-sm">รายจ่ายทั้งหมด</p>
-              <p className="font-mono font-bold text-danger text-2xl">
-                -฿{totalExpense.toLocaleString()}
-              </p>
-              <p className="text-default-400 text-xs">จากการจองและซื้อสินค้า</p>
-            </CardBody>
-          </Card>
-        </div>
-      </section>
 
       {/* Transactions Table */}
       <section>

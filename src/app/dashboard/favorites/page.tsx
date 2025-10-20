@@ -15,7 +15,6 @@ import {
   Chip,
 } from '@heroui/react';
 import {
-  HomeIcon,
   UserIcon,
   CalendarIcon,
   HeartIcon,
@@ -31,8 +30,6 @@ interface FavoriteGym {
   id: string;
   name: string;
   location: string;
-  rating: number;
-  reviews: number;
   image: string;
   services: string[];
   priceRange: string;
@@ -65,8 +62,6 @@ function FavoritesContent() {
       id: '1',
       name: 'Tiger Muay Thai Gym',
       location: 'ภูเก็ต',
-      rating: 4.8,
-      reviews: 256,
       image: '/placeholder-gym.jpg',
       services: ['Private Class', 'คลาสกลุ่ม', 'Fitness'],
       priceRange: '฿300-฿800',
@@ -75,8 +70,6 @@ function FavoritesContent() {
       id: '2',
       name: 'Fairtex Training Center',
       location: 'กรุงเทพ',
-      rating: 4.7,
-      reviews: 189,
       image: '/placeholder-gym.jpg',
       services: ['Private Class', 'คลาสกลุ่ม'],
       priceRange: '฿400-฿1000',
@@ -95,7 +88,7 @@ function FavoritesContent() {
         showPartnerButton={true}
       >
         <div className="flex justify-center items-center py-20">
-          <div className="border-4 border-t-transparent border-red-600 rounded-full w-12 h-12 animate-spin"></div>
+          <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
         </div>
       </DashboardLayout>
     );
@@ -214,11 +207,6 @@ function FavoritesContent() {
                     <div className="flex items-center gap-2 mb-2">
                       <MapPinIcon className="w-4 h-4 text-default-400" />
                       <p className="text-default-400 text-sm">{gym.location}</p>
-                    </div>
-                    <div className="flex items-center gap-2 mb-3">
-                      <StarIcon className="fill-warning w-4 h-4 text-warning" />
-                      <span className="font-semibold text-white">{gym.rating}</span>
-                      <span className="text-default-400 text-sm">({gym.reviews} รีวิว)</span>
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-2 mb-2">

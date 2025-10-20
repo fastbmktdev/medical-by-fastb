@@ -8,6 +8,14 @@ import Stripe from 'stripe';
 export const runtime = 'nodejs';
 
 export async function POST(request: NextRequest) {
+  if (!stripe) {
+    console.error('Stripe is not configured');
+    return NextResponse.json(
+      { error: 'Stripe is not configured' },
+      { status: 500 }
+    );
+  }
+
   const body = await request.text();
   const signature = (await headers()).get('stripe-signature');
 
@@ -19,24 +27,41 @@ export async function POST(request: NextRequest) {
   }
 
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-  if (!webhookSecret) {
-    console.error('Missing STRIPE_WEBHOOK_SECRET');
-    return NextResponse.json(
-      { error: 'Webhook secret not configured' },
-      { status: 500 }
-    );
-  }
-
   let event: Stripe.Event;
 
-  try {
-    event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
-  } catch (err) {
-    console.error('Webhook signature verification failed:', err);
-    return NextResponse.json(
-      { error: 'Webhook signature verification failed' },
-      { status: 400 }
-    );
+  // For development: allow testing without webhook signature verification
+  // ⚠️ NEVER use this in production!
+  if (process.env.NODE_ENV === 'development' && !webhookSecret) {
+    console.warn('⚠️ Development mode: Webhook signature verification DISABLED');
+    console.warn('   For production, set STRIPE_WEBHOOK_SECRET in environment variables');
+    try {
+      event = JSON.parse(body) as Stripe.Event;
+    } catch (err) {
+      console.error('Failed to parse webhook event:', err);
+      return NextResponse.json(
+        { error: 'Invalid webhook payload' },
+        { status: 400 }
+      );
+    }
+  } else {
+    // Production mode: always verify webhook signature
+    if (!webhookSecret) {
+      console.error('Missing STRIPE_WEBHOOK_SECRET');
+      return NextResponse.json(
+        { error: 'Webhook secret not configured' },
+        { status: 500 }
+      );
+    }
+
+    try {
+      event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+    } catch (err) {
+      console.error('Webhook signature verification failed:', err);
+      return NextResponse.json(
+        { error: 'Webhook signature verification failed' },
+        { status: 400 }
+      );
+    }
   }
 
   const supabase = await createClient();

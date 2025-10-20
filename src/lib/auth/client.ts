@@ -26,6 +26,21 @@ export async function getUserRole(userId: string): Promise<UserRole> {
   if (error) {
     console.error('[getUserRole] Error fetching role:', error);
     
+    // PGRST116: No rows found - user has no role assigned
+    if (error.code === 'PGRST116') {
+      console.warn('[getUserRole] User has no role assigned. Logging out...');
+      
+      // Logout user
+      await supabase.auth.signOut();
+      
+      // Redirect to login
+      if (typeof window !== 'undefined') {
+        window.location.href = '/login?error=no_role';
+      }
+      
+      throw new Error('User role not found. Please contact administrator.');
+    }
+    
     // If error is 406 (Not Acceptable) or authentication-related, logout user
     if (error.code === 'PGRST301' || error.message.includes('406') || error.message.includes('JWT')) {
       console.warn('[getUserRole] Session invalid or RLS error. Logging out...');
@@ -46,7 +61,14 @@ export async function getUserRole(userId: string): Promise<UserRole> {
   }
 
   if (!data) {
-    return 'authenticated';
+    console.warn('[getUserRole] No data returned. Logging out...');
+    await supabase.auth.signOut();
+    
+    if (typeof window !== 'undefined') {
+      window.location.href = '/login?error=no_role';
+    }
+    
+    throw new Error('User role not found. Please contact administrator.');
   }
 
   return data.role as UserRole;

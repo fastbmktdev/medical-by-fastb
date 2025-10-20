@@ -1,14 +1,22 @@
 import Stripe from 'stripe';
 
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error('Missing STRIPE_SECRET_KEY environment variable');
+// Check if Stripe is configured
+const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || '';
+
+if (!STRIPE_SECRET_KEY) {
+  console.warn('⚠️ STRIPE_SECRET_KEY not found. Payment features will be disabled.');
 }
 
-// Initialize Stripe with the secret key
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2024-12-18.acacia',
-  typescript: true,
-});
+// Initialize Stripe with the secret key (or use a dummy key if not configured)
+export const stripe = STRIPE_SECRET_KEY 
+  ? new Stripe(STRIPE_SECRET_KEY, {
+      apiVersion: '2025-09-30.clover',
+      typescript: true,
+    })
+  : null;
+
+// Helper to check if Stripe is configured
+export const isStripeConfigured = () => !!STRIPE_SECRET_KEY;
 
 // Currency configuration
 export const CURRENCY = 'thb'; // Thai Baht

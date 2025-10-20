@@ -108,14 +108,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const { error } = await supabase.auth.signOut();
       
       if (error) {
-        throw error;
+        console.error('Logout error:', error);
+        // Don't throw - still clear local state
       }
-
-      // Clear state
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Don't throw - still clear local state
+    } finally {
+      // Always clear state regardless of API result
       setUser(null);
       setSession(null);
-    } catch (error) {
-      throw error;
     }
   };
 

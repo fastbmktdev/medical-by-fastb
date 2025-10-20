@@ -1,21 +1,22 @@
 export interface Gym {
-  id: number;
+  id: string;
   slug: string;
-  gymNameThai: string;
-  gymNameEnglish?: string;
-  address: string;
-  details?: string;
-  rating?: number;
-  latitude?: number;
-  longitude?: number;
-  mapUrl?: string;
-  socials?: string;
-  gymType?: string;
-  ownerName?: string;
-  ownerEmail?: string;
-  ownerPhone?: string;
-  photos?: string[];
+  gym_name: string;
+  gym_name_english?: string;
+  address?: string;
+  gym_details?: any;
+  gym_type?: string;
+  images?: string[];
   packages?: TrainingPackage[];
+  phone?: string;
+  email?: string;
+  website?: string;
+  socials?: string;
+  contact_name?: string;
+  location?: string;
+  map_url?: string;
+  services?: string[];
+  status?: string;
 }
 
 export interface TrainingPackage {

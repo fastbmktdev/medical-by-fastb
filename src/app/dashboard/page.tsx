@@ -46,11 +46,26 @@ interface GymApplication {
   created_at: string;
 }
 
+interface BookingWithGym {
+  id: string;
+  booking_number: string;
+  package_name: string;
+  start_date: string;
+  status: string;
+  payment_status: string;
+  price_paid: number;
+  gyms?: {
+    gym_name: string;
+    slug: string;
+  } | null;
+}
+
 function DashboardContent() {
   const supabase = createClient();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [gymApplication, setGymApplication] = useState<GymApplication | null>(null);
+  const [recentBookings, setRecentBookings] = useState<BookingWithGym[]>([]);
 
   useEffect(() => {
     async function loadUser() {
@@ -66,6 +81,35 @@ function DashboardContent() {
           .maybeSingle();
         
         setGymApplication(gymData);
+
+        // Fetch recent bookings
+        const { data: bookingsData } = await supabase
+          .from('bookings')
+          .select(`
+            id,
+            booking_number,
+            package_name,
+            start_date,
+            status,
+            payment_status,
+            price_paid,
+            gyms:gym_id (
+              gym_name,
+              slug
+            )
+          `)
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false })
+          .limit(3);
+
+        if (bookingsData) {
+          // Map the data to ensure gyms is a single object, not an array
+          const mappedBookings = bookingsData.map(booking => ({
+            ...booking,
+            gyms: Array.isArray(booking.gyms) ? booking.gyms[0] : booking.gyms
+          })) as BookingWithGym[];
+          setRecentBookings(mappedBookings);
+        }
       }
 
       setIsLoading(false);
@@ -80,28 +124,10 @@ function DashboardContent() {
     { label: 'ประวัติการเงิน', href: '/dashboard/transactions', icon: BanknotesIcon },
     { label: 'โปรไฟล์', href: '/dashboard/profile', icon: UserIcon },
   ];
-  
-  // Mock booking data
-  const mockBookings = [
-    {
-      id: '1',
-      gym: 'Tiger Muay Thai Gym',
-      service: 'Private Class',
-      date: '2024-10-25',
-      time: '10:00-11:00',
-      status: 'upcoming',
-      amount: '฿500',
-    },
-    {
-      id: '2',
-      gym: 'Fairtex Training Center',
-      service: 'คลาสกลุ่ม',
-      date: '2024-10-20',
-      time: '14:00-15:00',
-      status: 'completed',
-      amount: '฿300',
-    },
-  ];
+
+  // Calculate stats from real bookings
+  const upcomingBookings = recentBookings.filter(b => b.status === 'confirmed' || b.status === 'pending');
+  const totalBookings = recentBookings.length;
 
   if (isLoading) {
     return (
@@ -213,63 +239,6 @@ function DashboardContent() {
         </section>
       )}
 
-      {/* Stats Overview */}
-      <section className="mb-8">
-        <h2 className="mb-6 font-bold text-white text-2xl">สรุปภาพรวม</h2>
-        <div className="gap-6 grid grid-cols-1 md:grid-cols-3">
-          <Card className="bg-default-100/50 backdrop-blur-sm border-none">
-            <CardBody className="gap-3">
-              <div className="flex justify-between items-center">
-                <div className="bg-success p-3 rounded-lg">
-                  <CalendarIcon className="w-6 h-6 text-white" />
-                </div>
-                <Chip color="success" variant="flat" size="lg">
-                  2 รายการ
-                </Chip>
-              </div>
-              <div>
-                <h3 className="font-bold text-white text-2xl">การจองทั้งหมด</h3>
-                <p className="text-default-400 text-sm">1 กำลังจะมาถึง</p>
-              </div>
-            </CardBody>
-          </Card>
-
-          <Card className="bg-default-100/50 backdrop-blur-sm border-none">
-            <CardBody className="gap-3">
-              <div className="flex justify-between items-center">
-                <div className="bg-danger p-3 rounded-lg">
-                  <HeartIcon className="w-6 h-6 text-white" />
-                </div>
-                <Chip color="danger" variant="flat" size="lg">
-                  2 รายการ
-                </Chip>
-              </div>
-              <div>
-                <h3 className="font-bold text-white text-2xl">ยิมโปรด</h3>
-                <p className="text-default-400 text-sm">รายการที่บันทึกไว้</p>
-              </div>
-            </CardBody>
-          </Card>
-
-          <Card className="bg-default-100/50 backdrop-blur-sm border-none">
-            <CardBody className="gap-3">
-              <div className="flex justify-between items-center">
-                <div className="bg-warning p-3 rounded-lg">
-                  <BanknotesIcon className="w-6 h-6 text-white" />
-                </div>
-                <Chip color="success" variant="flat" size="lg">
-                  ฿2,000
-                </Chip>
-              </div>
-              <div>
-                <h3 className="font-bold text-white text-2xl">ยอดคงเหลือ</h3>
-                <p className="text-default-400 text-sm">ในกระเป๋าเงิน</p>
-              </div>
-            </CardBody>
-          </Card>
-        </div>
-      </section>
-
       {/* Recent Bookings */}
       <section>
         <div className="flex justify-between items-center mb-6">
@@ -294,26 +263,42 @@ function DashboardContent() {
               }}
             >
               <TableHeader>
+                <TableColumn>เลขที่การจอง</TableColumn>
                 <TableColumn>ยิม</TableColumn>
-                <TableColumn>บริการ</TableColumn>
+                <TableColumn>แพ็คเกจ</TableColumn>
                 <TableColumn>วันที่</TableColumn>
-                <TableColumn>เวลา</TableColumn>
+                <TableColumn>ยอดเงิน</TableColumn>
                 <TableColumn>สถานะ</TableColumn>
               </TableHeader>
-              <TableBody>
-                {mockBookings.slice(0, 3).map((booking) => (
+              <TableBody emptyContent="ยังไม่มีการจอง">
+                {recentBookings.map((booking) => (
                   <TableRow key={booking.id}>
-                    <TableCell className="font-semibold text-white">{booking.gym}</TableCell>
-                    <TableCell className="text-default-400">{booking.service}</TableCell>
-                    <TableCell className="text-default-400">{new Date(booking.date).toLocaleDateString('th-TH')}</TableCell>
-                    <TableCell className="text-default-400">{booking.time}</TableCell>
+                    <TableCell className="font-mono text-white text-sm">{booking.booking_number}</TableCell>
+                    <TableCell className="font-semibold text-white">{booking.gyms?.gym_name || 'N/A'}</TableCell>
+                    <TableCell className="text-default-400">{booking.package_name}</TableCell>
+                    <TableCell className="text-default-400">
+                      {new Date(booking.start_date).toLocaleDateString('th-TH', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                      })}
+                    </TableCell>
+                    <TableCell className="font-mono text-white">฿{Number(booking.price_paid).toLocaleString()}</TableCell>
                     <TableCell>
                       <Chip
                         size="sm"
-                        color={booking.status === 'upcoming' ? 'warning' : 'success'}
+                        color={
+                          booking.status === 'pending' ? 'default' :
+                          booking.status === 'confirmed' ? 'warning' :
+                          booking.status === 'completed' ? 'success' : 'danger'
+                        }
                         variant="flat"
                       >
-                        {booking.status === 'upcoming' ? 'กำลังจะมาถึง' : 'เสร็จสิ้น'}
+                        {
+                          booking.status === 'pending' ? 'รอดำเนินการ' :
+                          booking.status === 'confirmed' ? 'ยืนยันแล้ว' :
+                          booking.status === 'completed' ? 'เสร็จสิ้น' : 'ยกเลิก'
+                        }
                       </Chip>
                     </TableCell>
                   </TableRow>

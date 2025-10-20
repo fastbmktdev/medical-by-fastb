@@ -64,6 +64,10 @@ function LoginForm() {
       setErrors({
         general: 'Session หมดอายุหรือไม่ถูกต้อง กรุณาเข้าสู่ระบบใหม่',
       });
+    } else if (errorParam === 'no_role') {
+      setErrors({
+        general: 'บัญชีของคุณยังไม่ได้รับสิทธิ์เข้าใช้งาน กรุณาติดต่อผู้ดูแลระบบ',
+      });
     }
   }, [errorParam]);
 
@@ -235,7 +239,7 @@ function LoginForm() {
     return (
       <div className="flex justify-center items-center bg-zinc-900 min-h-screen">
         <div className="text-center">
-          <div className="inline-block mb-4 border-4 border-t-transparent border-red-600 rounded-full w-16 h-16 animate-spin"></div>
+          <div className="inline-block mb-4 border-4 border-red-600 border-t-transparent rounded-full w-16 h-16 animate-spin"></div>
           <p className="text-zinc-300 text-lg">กำลังตรวจสอบ...</p>
         </div>
       </div>
@@ -418,7 +422,7 @@ export default function LoginPage() {
       fallback={
         <div className="flex justify-center items-center bg-zinc-900 min-h-screen">
           <div className="text-center">
-            <div className="inline-block mb-4 border-4 border-t-transparent border-red-600 rounded-full w-16 h-16 animate-spin"></div>
+            <div className="inline-block mb-4 border-4 border-red-600 border-t-transparent rounded-full w-16 h-16 animate-spin"></div>
             <p className="text-zinc-300 text-lg">กำลังโหลด...</p>
           </div>
         </div>

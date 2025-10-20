@@ -74,19 +74,13 @@ export default function Header() {
    * Signs out user and redirects to home page
    */
   const handleLogout = async () => {
-    try {
-      setIsLoggingOut(true);
-      await signOut();
-      setUserMenuOpen(false);
-      setIsMobileMenuOpen(false);
-      router.push("/");
-      router.refresh();
-    } catch (error) {
-      console.error('Check error:', error);
-      alert("เกิดข้อผิดพลาดในการออกจากระบบ กรุณาลองใหม่อีกครั้ง");
-    } finally {
-      setIsLoggingOut(false);
-    }
+    setIsLoggingOut(true);
+    await signOut();
+    setUserMenuOpen(false);
+    setIsMobileMenuOpen(false);
+    setIsLoggingOut(false);
+    router.push("/");
+    router.refresh();
   };
 
   const navLinks: NavLink[] = [

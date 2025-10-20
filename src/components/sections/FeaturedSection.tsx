@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Gym, Event } from "@/types/app.types";
 import { MapPinIcon, CalendarIcon } from "@heroicons/react/24/solid";
+import { StarIcon } from "@heroicons/react/24/outline";
 
 interface FeaturedSectionProps {
   gyms: Gym[];
@@ -82,27 +83,20 @@ function GymCard({ gym }: { gym: Gym }) {
       <div className="group bg-zinc-800 hover:shadow-2xl hover:shadow-red-500/20 rounded-lg overflow-hidden transition-all">
         {/* Image */}
         <div className="relative flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-900 h-48">
-          <span className="text-6xl">🥊</span>
-          {gym.rating && (
-            <div className="top-2 right-2 absolute flex items-center gap-1 bg-black/50 px-2 py-1 rounded-full">
-              <span className="font-bold text-yellow-400 text-sm">
-                {gym.rating.toFixed(1)}
-              </span>
-            </div>
-          )}
+          <div className="text-zinc-600 text-6xl">🥊</div>
         </div>
 
         {/* Content */}
         <div className="p-4">
           <h3 className="mb-2 font-bold text-white group-hover:text-red-400 text-lg transition-colors">
-            {gym.gymNameThai}
+            {gym.gym_name}
           </h3>
-          {gym.gymNameEnglish && (
-            <p className="mb-3 text-zinc-400 text-sm">{gym.gymNameEnglish}</p>
+          {gym.gym_name_english && (
+            <p className="mb-3 text-zinc-400 text-sm">{gym.gym_name_english}</p>
           )}
           <div className="flex items-center gap-2 text-zinc-400 text-sm">
             <MapPinIcon className="w-4 h-4" />
-            <span className="truncate">{gym.address.split(",")[0]}</span>
+            <span className="truncate">{gym.address?.split(",")[0] || "Location not available"}</span>
           </div>
           <p className="mt-2 text-zinc-500 text-sm">
             {gym.packages && gym.packages.length > 0

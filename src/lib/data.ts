@@ -48,7 +48,6 @@ export const GYMS: Gym[] = [
     address: "6 Rama IV Road, Thung Maha Mek, Sathon, Bangkok 10120",
     details:
       "One of the most prestigious Muay Thai stadiums in Thailand. Training facility with world-class trainers.",
-    rating: 4.8,
     latitude: 13.7245,
     longitude: 100.5386,
     mapUrl: "https://maps.google.com/?q=13.7245,100.5386",
@@ -68,7 +67,6 @@ export const GYMS: Gym[] = [
     address: "221/12 Moo 1, Bang Pla, Bang Phli, Samut Prakan 10540",
     details:
       "World-renowned Muay Thai training camp. Fairtex has produced many champions.",
-    rating: 4.9,
     latitude: 13.5933,
     longitude: 100.7031,
     mapUrl: "https://maps.google.com/?q=13.5933,100.7031",
@@ -88,7 +86,6 @@ export const GYMS: Gym[] = [
     address: "7/11 Moo 5, Soi Ta-iad, Chalong, Phuket 83130",
     details:
       "Located in Phuket, Tiger Muay Thai is one of the largest and most famous training camps in the world.",
-    rating: 4.7,
     latitude: 7.8804,
     longitude: 98.3520,
     mapUrl: "https://maps.google.com/?q=7.8804,98.3520",
@@ -108,7 +105,6 @@ export const GYMS: Gym[] = [
     address: "123 Rama IV Road, Bangkok 10110",
     details:
       "Historic gym with a legacy of producing top fighters. Traditional training methods combined with modern facilities.",
-    rating: 4.6,
     latitude: 13.7563,
     longitude: 100.5018,
     mapUrl: "https://maps.google.com/?q=13.7563,100.5018",

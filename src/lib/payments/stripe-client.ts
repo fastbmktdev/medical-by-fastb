@@ -4,10 +4,10 @@ let stripePromise: Promise<Stripe | null>;
 
 export const getStripe = () => {
   if (!stripePromise) {
-    const key = process.env.STRIPE_PUBLISHABLE_KEY || process.env.STRIPE_PUBLISHABLE_KEY;
+    const key = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 
     if (!key) {
-      console.error('Missing STRIPE_PUBLISHABLE_KEY');
+      console.error('Missing NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY environment variable');
       return null;
     }
 

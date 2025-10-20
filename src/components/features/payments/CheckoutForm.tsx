@@ -25,11 +25,18 @@ export default function CheckoutForm({
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     if (!stripe || !elements) {
+      return;
+    }
+
+    // Validate phone number
+    if (!phoneNumber || phoneNumber.length < 9) {
+      setErrorMessage('กรุณากรอกเบอร์โทรศัพท์ที่ถูกต้อง');
       return;
     }
 
@@ -41,6 +48,11 @@ export default function CheckoutForm({
         elements,
         confirmParams: {
           return_url: returnUrl || `${window.location.origin}/payment/success`,
+          payment_method_data: {
+            billing_details: {
+              phone: phoneNumber,
+            },
+          },
         },
         redirect: 'if_required',
       });
@@ -64,11 +76,40 @@ export default function CheckoutForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <PaymentElement
-        options={{
-          layout: 'tabs',
-        }}
-      />
+      {/* Phone Number Field */}
+      <div>
+        <label
+          htmlFor="phone"
+          className="block text-sm font-medium text-gray-700 mb-2"
+        >
+          เบอร์โทรศัพท์ <span className="text-red-500">*</span>
+        </label>
+        <input
+          type="tel"
+          id="phone"
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+          placeholder="0812345678"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          required
+        />
+        <p className="mt-1 text-xs text-gray-500">
+          เบอร์โทรศัพท์สำหรับติดต่อกรณีมีปัญหา
+        </p>
+      </div>
+
+      {/* Payment Element */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          เลือกวิธีการชำระเงิน
+        </label>
+        <PaymentElement
+          options={{
+            layout: 'tabs',
+            paymentMethodOrder: ['card', 'alipay', 'promptpay'],
+          }}
+        />
+      </div>
 
       {errorMessage && (
         <div className="rounded-md bg-red-50 p-4">

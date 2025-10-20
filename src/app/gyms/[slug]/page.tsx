@@ -60,22 +60,12 @@ function GymHeader({ gym }: { gym: Gym }) {
   return (
     <div>
       <div className="flex justify-start items-start mb-4">
-        <div>
-          <h1 className="mb-2 font-bold text-white text-4xl">
+        <div className="flex sm:flex-row flex-col sm:items-center sm:gap-4">
+          <h1 className="font-bold text-white text-4xl sm:text-5xl tracking-tight">
             {gym.gym_name}
           </h1>
-          {gym.gym_name_english && (
-            <p className="text-zinc-400 text-xl">{gym.gym_name_english}</p>
-          )}
         </div>
-        {gym.rating && (
-          <div className="flex items-center gap-2 bg-zinc-800 px-4 py-2 rounded-lg">
-            <StarIcon className="fill-yellow-400 w-6 h-6 text-yellow-400" />
-            <span className="font-bold text-white text-2xl">
-              {gym.rating.toFixed(1)}
-            </span>
-          </div>
-        )}
+        <p className="mt-2 text-zinc-300 text-lg">{gym.gym_name_english}</p>
       </div>
       {gym.gym_type && (
         <span className="inline-block bg-red-600 px-3 py-1 rounded-full font-semibold text-white text-sm">
@@ -100,9 +90,7 @@ function GalleryPlaceholder() {
 function AboutSection({ details }: { details?: string | null }) {
   return (
     <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
-      <h2 className="mb-4 font-bold text-white text-2xl">
-        เกี่ยวกับค่ายมวย
-      </h2>
+      <h2 className="mb-4 font-bold text-white text-2xl">เกี่ยวกับค่ายมวย</h2>
       <p className="text-zinc-300 leading-relaxed">
         {details || "ไม่มีรายละเอียดเพิ่มเติม"}
       </p>
@@ -110,15 +98,19 @@ function AboutSection({ details }: { details?: string | null }) {
   );
 }
 
-function LocationSection({ location, mapUrl }: { location: string; mapUrl?: string | null }) {
+function LocationSection({
+  location,
+  mapUrl,
+}: {
+  location?: string;
+  mapUrl?: string | null;
+}) {
   return (
     <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
-      <h2 className="mb-4 font-bold text-white text-2xl">
-        ที่อยู่และแผนที่
-      </h2>
+      <h2 className="mb-4 font-bold text-white text-2xl">ที่อยู่และแผนที่</h2>
       <div className="flex items-start gap-3 mb-4">
         <MapPinIcon className="flex-shrink-0 w-6 h-6 text-red-500" />
-        <p className="text-zinc-300">{location}</p>
+        <p className="text-zinc-300">{location || "ไม่มีข้อมูลที่อยู่"}</p>
       </div>
       {mapUrl && (
         <a
@@ -229,17 +221,6 @@ function QuickInfo({ gym }: { gym: Gym }) {
     <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
       <h3 className="mb-4 font-bold text-white text-xl">ข้อมูลทั่วไป</h3>
       <div className="space-y-4">
-        {gym.rating && (
-          <div className="flex items-center gap-3">
-            <StarIcon className="w-5 h-5 text-yellow-400" />
-            <div>
-              <p className="text-zinc-400 text-xs">คะแนน</p>
-              <p className="font-semibold text-zinc-300">
-                {gym.rating.toFixed(1)} / 5.0
-              </p>
-            </div>
-          </div>
-        )}
         <div className="flex items-center gap-3">
           <ClockIcon className="w-5 h-5 text-blue-500" />
           <div>
@@ -330,7 +311,7 @@ export default function GymDetailPage({
   if (isLoading) {
     return (
       <div className="flex justify-center items-center bg-zinc-900 min-h-screen">
-        <div className="border-4 border-t-transparent border-red-600 rounded-full w-12 h-12 animate-spin"></div>
+        <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
       </div>
     );
   }
@@ -378,8 +359,10 @@ export default function GymDetailPage({
             <div className="top-4 sticky space-y-6">
               <ContactInfo gym={gym} />
               <QuickInfo gym={gym} />
-              {/* CTA - Hidden for Admin */}
-              {userRole !== "admin" && <CTABooking gymSlug={gym.slug ?? ""} />}
+              {/* CTA - Hidden for Admin and Partner */}
+              {userRole !== "admin" && userRole !== "partner" && (
+                <CTABooking gymSlug={gym.slug ?? ""} />
+              )}
             </div>
           </div>
         </div>

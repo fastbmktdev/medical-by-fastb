@@ -35,7 +35,6 @@ export interface Gym {
   services: string[];
   images: string[];
   status: 'pending' | 'approved' | 'rejected';
-  rating?: number;
   latitude?: number;
   longitude?: number;
   map_url?: string;

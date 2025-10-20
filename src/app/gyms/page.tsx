@@ -17,7 +17,6 @@ interface Gym {
   gym_name_english: string | null;
   address: string | null;
   gym_details: string | null;
-  rating: number | null;
   gym_type: string | null;
 }
 
@@ -34,9 +33,9 @@ export default function GymsPage() {
       try {
         const { data, error } = await supabase
           .from('gyms')
-          .select('id, slug, gym_name, gym_name_english, address, gym_details, rating, gym_type')
+          .select('id, slug, gym_name, gym_name_english, address, gym_details, gym_type')
           .eq('status', 'approved')
-          .order('rating', { ascending: false, nullsFirst: false });
+          .order('created_at', { ascending: false });
 
         if (error) {
           console.error('Error loading gyms:', error);
@@ -124,7 +123,7 @@ export default function GymsPage() {
         {/* Loading State */}
         {isLoading ? (
           <div className="flex justify-center items-center py-20">
-            <div className="border-4 border-t-transparent border-red-600 rounded-full w-12 h-12 animate-spin"></div>
+            <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
           </div>
         ) : (
           <>
@@ -173,14 +172,6 @@ function GymCard({ gym }: { gym: Gym }) {
       {/* Image Placeholder */}
       <div className="relative flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-900 h-48">
         <div className="text-zinc-600 text-6xl">🥊</div>
-        {gym.rating && gym.rating > 0 && (
-          <div className="top-2 right-2 absolute flex items-center gap-1 bg-black/50 px-2 py-1 rounded-full">
-            <StarIcon className="fill-yellow-400 w-4 h-4 text-yellow-400" />
-            <span className="font-bold text-white text-sm">
-              {gym.rating.toFixed(1)}
-            </span>
-          </div>
-        )}
       </div>
 
       <div className="p-6">

@@ -16,6 +16,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { notFound, useRouter } from "next/navigation";
+import { PaymentWrapper } from "@/components/features/payments";
 
 // Booking Steps
 const STEPS = [
@@ -58,6 +59,8 @@ export default function BookingPage({
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [isCreatingPayment, setIsCreatingPayment] = useState(false);
   const supabase = createClient();
 
   const [formData, setFormData] = useState<BookingFormData>({
@@ -183,9 +186,56 @@ export default function BookingPage({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (validateStep(currentStep)) {
+      // If moving to Step 3, create payment intent
+      if (currentStep === 2 && formData.selectedPackage) {
+        await createPaymentIntent();
+      }
       setCurrentStep((prev) => Math.min(prev + 1, STEPS.length));
+    }
+  };
+
+  const createPaymentIntent = async () => {
+    if (!formData.selectedPackage || !user) return;
+
+    setIsCreatingPayment(true);
+    try {
+      const response = await fetch('/api/payments/create-payment-intent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: formData.selectedPackage.price,
+          paymentType: 'gym_booking',
+          metadata: {
+            gymId: gym?.id,
+            gymName: gym?.gym_name,
+            packageId: formData.selectedPackage.id,
+            packageName: formData.selectedPackage.name,
+            customerName: formData.fullName,
+            customerPhone: formData.phone,
+            startDate: formData.startDate,
+          },
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.details || data.error || 'Failed to create payment intent');
+      }
+
+      setClientSecret(data.clientSecret);
+    } catch (error) {
+      console.error('Error creating payment intent:', error);
+      const errorMessage = error instanceof Error ? error.message : 'ไม่สามารถเริ่มการชำระเงินได้';
+      setErrors({
+        general: `เกิดข้อผิดพลาด: ${errorMessage}`
+      });
+    } finally {
+      setIsCreatingPayment(false);
     }
   };
 
@@ -579,13 +629,17 @@ export default function BookingPage({
           {currentStep === 3 && (
             <div className="space-y-6">
               <h2 className="font-semibold text-white text-xl">ยืนยันและชำระเงิน</h2>
-              
+
               <div className="bg-zinc-700/50 p-6 rounded-lg">
                 <h3 className="mb-4 font-semibold text-white">สรุปการจอง</h3>
                 <div className="space-y-2 text-zinc-300 text-sm">
                   <div className="flex justify-between">
                     <span>ชื่อผู้จอง:</span>
                     <span className="font-semibold text-white">{formData.fullName}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>เบอร์โทรศัพท์:</span>
+                    <span className="font-semibold text-white">{formData.phone}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>แพ็คเกจ:</span>
@@ -614,67 +668,70 @@ export default function BookingPage({
                 </div>
               </div>
 
-              <div>
-                <label className="block mb-3 font-medium text-white text-sm">
-                  วิธีการชำระเงิน
-                </label>
-                <div className="space-y-3">
-                  {[
-                    { value: "transfer", label: "โอนเงินผ่านธนาคาร" },
-                    { value: "promptpay", label: "พร้อมเพย์" },
-                    { value: "credit", label: "บัตรเครดิต/เดบิต" },
-                  ].map((method) => (
-                    <label
-                      key={method.value}
-                      className={`block bg-zinc-700 hover:bg-zinc-600 p-4 border rounded-lg cursor-pointer transition-all ${
-                        formData.paymentMethod === method.value
-                          ? "border-red-500 bg-zinc-600"
-                          : "border-zinc-600"
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name="payment"
-                        value={method.value}
-                        checked={formData.paymentMethod === method.value}
-                        onChange={(e) => setFormData(prev => ({ ...prev, paymentMethod: e.target.value }))}
-                        className="mr-3"
-                      />
-                      <span className="text-white">{method.label}</span>
-                    </label>
-                  ))}
+              {/* Stripe Payment Form */}
+              {isCreatingPayment ? (
+                <div className="flex justify-center items-center py-12">
+                  <div className="text-center">
+                    <div className="mx-auto border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+                    <p className="mt-4 text-zinc-400">กำลังโหลดระบบชำระเงิน...</p>
+                  </div>
                 </div>
-              </div>
+              ) : clientSecret ? (
+                <div>
+                  <h3 className="mb-4 font-semibold text-white">ชำระเงิน</h3>
+                  <PaymentWrapper
+                    clientSecret={clientSecret}
+                    returnUrl={`${process.env.NEXT_PUBLIC_APP_URL}/gyms/${slug}/booking/success`}
+                    onSuccess={(paymentIntentId) => {
+                      router.push(`/gyms/${slug}/booking/success?payment=${paymentIntentId}`);
+                    }}
+                    onError={(error) => {
+                      setErrors({ general: error });
+                    }}
+                  />
+                </div>
+              ) : (
+                <div className="bg-red-500/20 p-4 border-2 border-red-500 rounded-lg">
+                  <p className="text-red-400 text-sm">
+                    ไม่สามารถโหลดระบบชำระเงินได้ กรุณาลองใหม่อีกครั้ง
+                  </p>
+                </div>
+              )}
             </div>
           )}
 
-          {/* Navigation Buttons */}
-          <div className="flex justify-between items-center gap-4 mt-8 pt-6 border-zinc-700 border-t">
-            <button
-              onClick={handlePrevious}
-              disabled={currentStep === 1}
-              className="disabled:opacity-50 px-6 py-3 rounded-lg font-semibold text-zinc-400 hover:text-white transition-colors disabled:cursor-not-allowed"
-            >
-              ย้อนกลับ
-            </button>
+          {/* Navigation Buttons - Hidden on Step 3 (Payment handled by Stripe form) */}
+          {currentStep < 3 && (
+            <div className="flex justify-between items-center gap-4 mt-8 pt-6 border-zinc-700 border-t">
+              <button
+                onClick={handlePrevious}
+                disabled={currentStep === 1}
+                className="disabled:opacity-50 px-6 py-3 rounded-lg font-semibold text-zinc-400 hover:text-white transition-colors disabled:cursor-not-allowed"
+              >
+                ย้อนกลับ
+              </button>
 
-            {currentStep < STEPS.length ? (
               <button
                 onClick={handleNext}
-                className="bg-red-600 hover:bg-red-700 px-8 py-3 rounded-lg font-semibold text-white transition-colors"
+                disabled={isCreatingPayment}
+                className="bg-red-600 hover:bg-red-700 disabled:opacity-50 px-8 py-3 rounded-lg font-semibold text-white transition-colors disabled:cursor-not-allowed"
               >
-                ถัดไป
+                {isCreatingPayment ? "กำลังโหลด..." : "ถัดไป"}
               </button>
-            ) : (
+            </div>
+          )}
+
+          {/* Back button for Step 3 */}
+          {currentStep === 3 && (
+            <div className="flex justify-start mt-8 pt-6 border-zinc-700 border-t">
               <button
-                onClick={handleSubmit}
-                disabled={isSubmitting || !formData.paymentMethod}
-                className="bg-green-600 hover:bg-green-700 disabled:opacity-50 px-8 py-3 rounded-lg font-semibold text-white transition-colors disabled:cursor-not-allowed"
+                onClick={handlePrevious}
+                className="px-6 py-3 rounded-lg font-semibold text-zinc-400 hover:text-white transition-colors"
               >
-                {isSubmitting ? "กำลังดำเนินการ..." : "ยืนยันการจอง"}
+                ย้อนกลับ
               </button>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
