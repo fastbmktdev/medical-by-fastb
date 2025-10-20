@@ -146,7 +146,7 @@ function DashboardContent() {
         showPartnerButton={true}
       >
         <div className="flex justify-center items-center py-20">
-          <div className="border-4 border-t-transparent border-red-600 rounded-full w-12 h-12 animate-spin"></div>
+          <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
         </div>
       </DashboardLayout>
     );
@@ -243,51 +243,6 @@ function DashboardContent() {
           </Card>
         </section>
       )}
-
-      {/* Quick Actions */}
-      <section className="mb-8">
-        <h2 className="mb-6 font-bold text-white text-2xl">เมนูด่วน</h2>
-        <div className="gap-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-          {quickActions.map((action, index) => {
-            const Icon = action.icon;
-            return (
-              <Card
-                key={index}
-                as={Link}
-                href={action.href}
-                isPressable
-                isHoverable
-                className="bg-default-100/50 backdrop-blur-sm border-none"
-              >
-                <CardHeader className="flex-col items-start gap-3">
-                  <div className={`bg-${action.color} p-3 rounded-lg`}>
-                    <Icon className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white text-lg">
-                      {action.title}
-                    </h3>
-                    <p className="text-default-400 text-sm">
-                      {action.description}
-                    </p>
-                  </div>
-                </CardHeader>
-                <CardFooter>
-                  <Button
-                    size="sm"
-                    color={action.color}
-                    variant="flat"
-                    endContent={<ArrowRightIcon className="w-4 h-4" />}
-                    className="w-full"
-                  >
-                    เริ่มต้น
-                  </Button>
-                </CardFooter>
-              </Card>
-            );
-          })}
-        </div>
-      </section>
 
       {/* Stats Overview */}
       <section className="mb-8">
