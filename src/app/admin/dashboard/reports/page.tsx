@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/database/supabase/client';
 import { RoleGuard } from '@/components/features/auth';
-import { DashboardLayout, type MenuItem } from '@/components/shared';
+import { DashboardLayout } from '@/components/shared';
+import { adminMenuItems } from '@/components/features/admin/adminMenuItems';
 import {
   Card,
   CardBody,
@@ -14,10 +15,7 @@ import {
   UsersIcon,
   BuildingStorefrontIcon,
   ChartBarIcon,
-  ClockIcon,
   DocumentTextIcon,
-  Cog6ToothIcon,
-  HomeIcon,
   ArrowDownTrayIcon,
   DocumentChartBarIcon,
 } from '@heroicons/react/24/outline';
@@ -36,15 +34,6 @@ function AdminReportsContent() {
     }
     loadUser();
   }, [supabase]);
-
-  const menuItems: MenuItem[] = [
-    { label: 'จัดการผู้ใช้', href: '/admin/dashboard/users', icon: UsersIcon },
-    { label: 'จัดการยิม', href: '/admin/dashboard/gyms', icon: BuildingStorefrontIcon },
-    { label: 'อนุมัติยิม', href: '/admin/dashboard/approvals', icon: ClockIcon },
-    { label: 'รายงาน', href: '/admin/dashboard/reports', icon: DocumentTextIcon },
-    { label: 'สถิติ', href: '/admin/dashboard/analytics', icon: ChartBarIcon },
-    { label: 'ตั้งค่าระบบ', href: '/admin/dashboard/settings', icon: Cog6ToothIcon },
-  ];
 
   const reports: Array<{
     title: string;
@@ -81,7 +70,7 @@ function AdminReportsContent() {
   if (isLoading) {
     return (
       <DashboardLayout
-        menuItems={menuItems}
+        menuItems={adminMenuItems}
         headerTitle="รายงาน"
         headerSubtitle="ดาวน์โหลดรายงานต่างๆ ของระบบ"
         roleLabel="ผู้ดูแลระบบ"
@@ -97,7 +86,7 @@ function AdminReportsContent() {
 
   return (
     <DashboardLayout
-      menuItems={menuItems}
+      menuItems={adminMenuItems}
       headerTitle="รายงาน"
       headerSubtitle="ดาวน์โหลดรายงานต่างๆ ของระบบ"
       roleLabel="ผู้ดูแลระบบ"

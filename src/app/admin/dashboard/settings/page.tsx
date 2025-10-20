@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/database/supabase/client';
 import { RoleGuard } from '@/components/features/auth';
-import { DashboardLayout, type MenuItem } from '@/components/shared';
+import { DashboardLayout } from '@/components/shared';
+import { adminMenuItems } from '@/components/features/admin/adminMenuItems';
 import {
   Card,
   CardBody,
@@ -14,17 +15,11 @@ import {
   Textarea,
 } from '@heroui/react';
 import {
-  UsersIcon,
-  BuildingStorefrontIcon,
-  ChartBarIcon,
-  ClockIcon,
-  DocumentTextIcon,
-  Cog6ToothIcon,
-  HomeIcon,
   GlobeAltIcon,
   BellIcon,
   ShieldCheckIcon,
   CurrencyDollarIcon,
+  Cog6ToothIcon,
 } from '@heroicons/react/24/outline';
 import { User } from '@supabase/supabase-js';
 
@@ -44,19 +39,10 @@ function AdminSettingsContent() {
     loadUser();
   }, [supabase]);
 
-  const menuItems: MenuItem[] = [
-    { label: 'จัดการผู้ใช้', href: '/admin/dashboard/users', icon: UsersIcon },
-    { label: 'จัดการยิม', href: '/admin/dashboard/gyms', icon: BuildingStorefrontIcon },
-    { label: 'อนุมัติยิม', href: '/admin/dashboard/approvals', icon: ClockIcon },
-    { label: 'รายงาน', href: '/admin/dashboard/reports', icon: DocumentTextIcon },
-    { label: 'สถิติ', href: '/admin/dashboard/analytics', icon: ChartBarIcon },
-    { label: 'ตั้งค่าระบบ', href: '/admin/dashboard/settings', icon: Cog6ToothIcon },
-  ];
-
   if (isLoading) {
     return (
       <DashboardLayout
-        menuItems={menuItems}
+        menuItems={adminMenuItems}
         headerTitle="ตั้งค่าระบบ"
         headerSubtitle="จัดการการตั้งค่าทั่วไปของระบบ"
         roleLabel="ผู้ดูแลระบบ"
@@ -64,7 +50,7 @@ function AdminSettingsContent() {
         userEmail={user?.email}
       >
         <div className="flex justify-center items-center py-20">
-          <div className="border-4 border-t-transparent border-red-600 rounded-full w-12 h-12 animate-spin"></div>
+          <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
         </div>
       </DashboardLayout>
     );
@@ -72,7 +58,7 @@ function AdminSettingsContent() {
 
   return (
     <DashboardLayout
-      menuItems={menuItems}
+      menuItems={adminMenuItems}
       headerTitle="ตั้งค่าระบบ"
       headerSubtitle="จัดการการตั้งค่าทั่วไปของระบบ"
       roleLabel="ผู้ดูแลระบบ"

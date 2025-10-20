@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/database/supabase/client';
 import { RoleGuard } from '@/components/features/auth';
-import { DashboardLayout, type MenuItem } from '@/components/shared';
+import { DashboardLayout } from '@/components/shared';
+import { adminMenuItems } from '@/components/features/admin/adminMenuItems';
 import {
   Card,
   CardBody,
@@ -14,9 +15,6 @@ import {
   BuildingStorefrontIcon,
   ChartBarIcon,
   ClockIcon,
-  DocumentTextIcon,
-  Cog6ToothIcon,
-  HomeIcon,
   CurrencyDollarIcon,
   CalendarIcon,
   ArrowTrendingUpIcon,
@@ -37,19 +35,10 @@ function AdminAnalyticsContent() {
     loadUser();
   }, [supabase]);
 
-  const menuItems: MenuItem[] = [
-    { label: 'จัดการผู้ใช้', href: '/admin/dashboard/users', icon: UsersIcon },
-    { label: 'จัดการยิม', href: '/admin/dashboard/gyms', icon: BuildingStorefrontIcon },
-    { label: 'อนุมัติยิม', href: '/admin/dashboard/approvals', icon: ClockIcon },
-    { label: 'รายงาน', href: '/admin/dashboard/reports', icon: DocumentTextIcon },
-    { label: 'สถิติ', href: '/admin/dashboard/analytics', icon: ChartBarIcon },
-    { label: 'ตั้งค่าระบบ', href: '/admin/dashboard/settings', icon: Cog6ToothIcon },
-  ];
-
   if (isLoading) {
     return (
       <DashboardLayout
-        menuItems={menuItems}
+        menuItems={adminMenuItems}
         headerTitle="สถิติและการวิเคราะห์"
         headerSubtitle="ดูสถิติและการวิเคราะห์ของระบบ"
         roleLabel="ผู้ดูแลระบบ"
@@ -65,7 +54,7 @@ function AdminAnalyticsContent() {
 
   return (
     <DashboardLayout
-      menuItems={menuItems}
+      menuItems={adminMenuItems}
       headerTitle="สถิติและการวิเคราะห์"
       headerSubtitle="ดูสถิติและการวิเคราะห์ของระบบ"
       roleLabel="ผู้ดูแลระบบ"

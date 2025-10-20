@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/database/supabase/client';
 import { RoleGuard } from '@/components/features/auth';
-import { DashboardLayout, type MenuItem } from '@/components/shared';
+import { DashboardLayout } from '@/components/shared';
+import { adminMenuItems } from '@/components/features/admin/adminMenuItems';
 import {
   Card,
   CardBody,
@@ -18,13 +19,6 @@ import {
   Input,
 } from '@heroui/react';
 import {
-  UsersIcon,
-  BuildingStorefrontIcon,
-  ChartBarIcon,
-  ClockIcon,
-  DocumentTextIcon,
-  Cog6ToothIcon,
-  HomeIcon,
   MagnifyingGlassIcon,
   PencilIcon,
   TrashIcon,
@@ -64,15 +58,6 @@ function AdminUsersContent() {
     loadData();
   }, [supabase]);
 
-  const menuItems: MenuItem[] = [
-    { label: 'จัดการผู้ใช้', href: '/admin/dashboard/users', icon: UsersIcon },
-    { label: 'จัดการยิม', href: '/admin/dashboard/gyms', icon: BuildingStorefrontIcon },
-    { label: 'อนุมัติยิม', href: '/admin/dashboard/approvals', icon: ClockIcon },
-    { label: 'รายงาน', href: '/admin/dashboard/reports', icon: DocumentTextIcon },
-    { label: 'สถิติ', href: '/admin/dashboard/analytics', icon: ChartBarIcon },
-    { label: 'ตั้งค่าระบบ', href: '/admin/dashboard/settings', icon: Cog6ToothIcon },
-  ];
-
   const getRoleChip = (role: string) => {
     const roleConfig = {
       admin: { label: 'ผู้ดูแลระบบ', color: 'danger' as const },
@@ -92,7 +77,7 @@ function AdminUsersContent() {
   if (isLoading) {
     return (
       <DashboardLayout
-        menuItems={menuItems}
+        menuItems={adminMenuItems}
         headerTitle="จัดการผู้ใช้"
         headerSubtitle="ดูและจัดการผู้ใช้ทั้งหมดในระบบ"
         roleLabel="ผู้ดูแลระบบ"
@@ -108,7 +93,7 @@ function AdminUsersContent() {
 
   return (
     <DashboardLayout
-      menuItems={menuItems}
+      menuItems={adminMenuItems}
       headerTitle="จัดการผู้ใช้"
       headerSubtitle="ดูและจัดการผู้ใช้ทั้งหมดในระบบ"
       roleLabel="ผู้ดูแลระบบ"

@@ -4,7 +4,8 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { createClient } from '@/lib/database/supabase/client';
 import { RoleGuard } from '@/components/features/auth';
-import { DashboardLayout, type MenuItem } from '@/components/shared';
+import { DashboardLayout } from '@/components/shared';
+import { adminMenuItems } from '@/components/features/admin/adminMenuItems';
 import { showSuccessToast, showErrorToast } from '@/lib/utils';
 import {
   Card,
@@ -27,16 +28,9 @@ import {
   Input,
 } from '@heroui/react';
 import {
-  UsersIcon,
-  BuildingStorefrontIcon,
-  ChartBarIcon,
-  ClockIcon,
   CheckCircleIcon,
   XCircleIcon,
   EyeIcon,
-  DocumentTextIcon,
-  Cog6ToothIcon,
-  HomeIcon,
   MagnifyingGlassIcon,
 } from '@heroicons/react/24/outline';
 import { User } from '@supabase/supabase-js';
@@ -233,15 +227,6 @@ function formatDate(dateString: string) {
   });
 }
 
-const MENU_ITEMS: MenuItem[] = [
-  { label: 'จัดการผู้ใช้', href: '/admin/dashboard/users', icon: UsersIcon },
-  { label: 'จัดการยิม', href: '/admin/dashboard/gyms', icon: BuildingStorefrontIcon },
-  { label: 'อนุมัติยิม', href: '/admin/dashboard/approvals', icon: ClockIcon },
-  { label: 'รายงาน', href: '/admin/dashboard/reports', icon: DocumentTextIcon },
-  { label: 'สถิติ', href: '/admin/dashboard/analytics', icon: ChartBarIcon },
-  { label: 'ตั้งค่าระบบ', href: '/admin/dashboard/settings', icon: Cog6ToothIcon },
-];
-
 // Main Content
 
 function AdminApprovalsContent() {
@@ -319,7 +304,7 @@ function AdminApprovalsContent() {
 
   return (
     <DashboardLayout
-      menuItems={MENU_ITEMS}
+      menuItems={adminMenuItems}
       headerTitle="อนุมัติยิม"
       headerSubtitle={`มี ${applications.length} รายการที่รอการอนุมัติ`}
       roleLabel="ผู้ดูแลระบบ"

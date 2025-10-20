@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="th" className={`${baiJamjuree.variable} antialiased`}>
-      <body className="bg-zinc-800 text-zinc-50">
+      <body className="bg-background text-foreground">
         <Providers>
           <LayoutWrapper>
             <ErrorBoundary>{children}</ErrorBoundary>

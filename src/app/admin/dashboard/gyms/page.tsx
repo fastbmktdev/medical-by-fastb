@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { createClient } from '@/lib/database/supabase/client';
 import { RoleGuard } from '@/components/features/auth';
-import { DashboardLayout, type MenuItem } from '@/components/shared';
+import { DashboardLayout } from '@/components/shared';
+import { adminMenuItems } from '@/components/features/admin/adminMenuItems';
 import {
   Card,
   CardBody,
@@ -22,13 +23,6 @@ import {
   useDisclosure,
 } from '@heroui/react';
 import {
-  UsersIcon,
-  BuildingStorefrontIcon,
-  ChartBarIcon,
-  ClockIcon,
-  DocumentTextIcon,
-  Cog6ToothIcon,
-  HomeIcon,
   MagnifyingGlassIcon,
   EyeIcon,
   PencilIcon,
@@ -113,16 +107,6 @@ function AdminGymsContent() {
     }
   };
 
-  const menuItems: MenuItem[] = [
-    { label: 'ภาพรวม', href: '/admin/dashboard', icon: HomeIcon },
-    { label: 'จัดการผู้ใช้', href: '/admin/dashboard/users', icon: UsersIcon },
-    { label: 'จัดการยิม', href: '/admin/dashboard/gyms', icon: BuildingStorefrontIcon },
-    { label: 'อนุมัติยิม', href: '/admin/dashboard/approvals', icon: ClockIcon },
-    { label: 'รายงาน', href: '/admin/dashboard/reports', icon: DocumentTextIcon },
-    { label: 'สถิติ', href: '/admin/dashboard/analytics', icon: ChartBarIcon },
-    { label: 'ตั้งค่าระบบ', href: '/admin/dashboard/settings', icon: Cog6ToothIcon },
-  ];
-
   const getStatusChip = (status?: string) => {
     const config = STATUS_CONFIG[status || 'pending'];
 
@@ -136,7 +120,7 @@ function AdminGymsContent() {
   if (isLoading) {
     return (
       <DashboardLayout
-        menuItems={menuItems}
+        menuItems={adminMenuItems}
         headerTitle="จัดการยิม"
         headerSubtitle="ดูและจัดการยิมทั้งหมดในระบบ"
         roleLabel="ผู้ดูแลระบบ"
@@ -152,7 +136,7 @@ function AdminGymsContent() {
 
   return (
     <DashboardLayout
-      menuItems={menuItems}
+      menuItems={adminMenuItems}
       headerTitle="จัดการยิม"
       headerSubtitle="ดูและจัดการยิมทั้งหมดในระบบ"
       roleLabel="ผู้ดูแลระบบ"

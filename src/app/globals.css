@@ -3,8 +3,22 @@
 @import "leaflet/dist/leaflet.css";
 @import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 
-/* Uncomment to enable dark variant via custom selector */
-/* @custom-variant dark (&:is(.dark *)); */
+/* Corporate Identity Colors */
+:root {
+  --color-background: #F5EDED;
+  --color-foreground: #0F0F0F;
+  --color-primary: #D72323;
+  --color-secondary: #3E3636;
+  --color-text-light: #F5EDED;
+}
+
+.dark {
+  --color-background: #0F0F0F;
+  --color-foreground: #F5EDED;
+  --color-primary: #D72323;
+  --color-secondary: #3E3636;
+  --color-text-light: #F5EDED;
+}
 
 body {
   font-family: var(--font-bai-jamjuree);
@@ -31,12 +45,12 @@ button {
 }
 
 ::-webkit-scrollbar-track {
-  background: #393939;
+  background: var(--color-secondary);
   border-radius: 32px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #a80000;
+  background-color: var(--color-primary);
   border-radius: 100px;
 }
 
@@ -90,5 +104,6 @@ button {
 }
 
 .container {
-  @apply flex justify-center items-center bg-zinc-900 px-4 sm:px-6 lg:px-8 py-8 w-full max-w-[2560px] min-h-[calc(100vh_-_132px)];
+  @apply flex justify-center items-center px-4 sm:px-6 lg:px-8 py-8 w-full max-w-[2560px] min-h-[calc(100vh_-_132px)];
+  background-color: var(--color-background);
 }

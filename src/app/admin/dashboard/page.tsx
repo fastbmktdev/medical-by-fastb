@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/database/supabase/client';
 import { RoleGuard } from '@/components/features/auth';
-import { DashboardLayout, type MenuItem } from '@/components/shared';
+import { DashboardLayout } from '@/components/shared';
+import { adminMenuItems } from '@/components/features/admin/adminMenuItems';
 import Link from 'next/link';
 import {
   Card,
@@ -174,52 +175,6 @@ function AdminDashboardContent() {
     });
   };
 
-  // Menu items for sidebar
-  const menuItems: MenuItem[] = [
-    { label: 'จัดการผู้ใช้', href: '/admin/dashboard/users', icon: UsersIcon },
-    { label: 'จัดการยิม', href: '/admin/dashboard/gyms', icon: BuildingStorefrontIcon },
-    { label: 'อนุมัติยิม', href: '/admin/dashboard/approvals', icon: ClockIcon },
-    { label: 'รายงาน', href: '/admin/dashboard/reports', icon: DocumentTextIcon },
-    { label: 'สถิติ', href: '/admin/dashboard/analytics', icon: ChartBarIcon },
-    { label: 'ตั้งค่าระบบ', href: '/admin/dashboard/settings', icon: Cog6ToothIcon },
-  ];
-
-  const statisticsCards = [
-    {
-      title: 'ผู้ใช้ทั้งหมด',
-      value: stats.totalUsers.toString(),
-      change: '+0%',
-      icon: UsersIcon,
-      color: 'primary',
-      href: '/admin/dashboard/users',
-    },
-    {
-      title: 'ยิมทั้งหมด',
-      value: stats.totalGyms.toString(),
-      change: '+0%',
-      icon: BuildingStorefrontIcon,
-      color: 'success',
-      href: '/admin/dashboard/gyms',
-    },
-    {
-      title: 'รออนุมัติ',
-      value: stats.pendingApprovals.toString(),
-      change: '-',
-      icon: ClockIcon,
-      color: 'warning',
-      href: '/admin/dashboard/approvals',
-      highlight: stats.pendingApprovals > 0,
-    },
-    {
-      title: 'อนุมัติแล้ว',
-      value: stats.approvedGyms.toString(),
-      change: '+0%',
-      icon: CheckCircleIcon,
-      color: 'secondary',
-      href: '/admin/dashboard/gyms',
-    },
-  ];
-
   const adminTools = [
     {
       title: 'จัดการผู้ใช้',
@@ -242,19 +197,19 @@ function AdminDashboardContent() {
       href: '/admin/dashboard/reports',
       color: 'secondary',
     },
-    {
-      title: 'ตั้งค่าระบบ',
-      description: 'ตั้งค่าและปรับแต่งระบบ',
-      icon: Cog6ToothIcon,
-      href: '/admin/dashboard/settings',
-      color: 'danger',
-    },
+    // {
+    //   title: 'ตั้งค่าระบบ',
+    //   description: 'ตั้งค่าและปรับแต่งระบบ',
+    //   icon: Cog6ToothIcon,
+    //   href: '/admin/dashboard/settings',
+    //   color: 'danger',
+    // },
   ];
 
   if (isLoading) {
     return (
       <DashboardLayout
-        menuItems={menuItems}
+        menuItems={adminMenuItems}
         headerTitle="แดชบอร์ดผู้ดูแลระบบ"
         headerSubtitle="จัดการและควบคุมระบบทั้งหมด"
         roleLabel="ผู้ดูแลระบบ"
@@ -270,7 +225,7 @@ function AdminDashboardContent() {
 
   return (
     <DashboardLayout
-      menuItems={menuItems}
+      menuItems={adminMenuItems}
       headerTitle="แดชบอร์ดผู้ดูแลระบบ"
       headerSubtitle="จัดการและควบคุมระบบทั้งหมด"
       roleLabel="ผู้ดูแลระบบ"
