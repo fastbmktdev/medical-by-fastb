@@ -25,8 +25,6 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Select,
-  SelectItem,
   useDisclosure,
 } from '@heroui/react';
 import {
@@ -51,6 +49,9 @@ import {
 } from '@heroicons/react/24/outline';
 import { Toaster, toast } from 'react-hot-toast';
 import type { Gym, GymPackage } from '@/types/database.types';
+import { CustomInput } from '@/components/shared/CustomInput';
+import { CustomTextarea } from '@/components/shared/CustomTextarea';
+import { CustomSelect } from '@/components/shared/CustomSelect';
 
 interface PackageFormData {
   package_type: 'one_time' | 'package' | '';
@@ -327,17 +328,6 @@ function PartnerDashboardContent() {
 
   const oneTimePackages = packages.filter(p => p.package_type === 'one_time');
   const subscriptionPackages = packages.filter(p => p.package_type === 'package');
-
-  // Shared classNames for form inputs
-  const inputClassNames = {
-    label: "text-white",
-    input: "text-white",
-  };
-
-  const selectClassNames = {
-    label: "text-white",
-    value: "text-white",
-  };
 
   const getStatusChip = (status?: string) => {
     const statusConfig = {
@@ -623,37 +613,43 @@ function PartnerDashboardContent() {
           <CardBody className="gap-6">
             {isEditing ? (
               <div className="gap-4 grid grid-cols-1 md:grid-cols-2">
-                <Input
+                <CustomInput
+                  id="gym_name"
                   label="ชื่อยิม"
                   value={editFormData.gym_name}
-                  onValueChange={(value) => setEditFormData({ ...editFormData, gym_name: value })}
+                  onChange={(e) => setEditFormData({ ...editFormData, gym_name: e.target.value })}
                 />
-                <Input
+                <CustomInput
+                  id="contact_name"
                   label="ผู้ติดต่อ"
                   value={editFormData.contact_name}
-                  onValueChange={(value) => setEditFormData({ ...editFormData, contact_name: value })}
+                  onChange={(e) => setEditFormData({ ...editFormData, contact_name: e.target.value })}
                 />
-                <Input
+                <CustomInput
+                  id="phone"
                   label="โทรศัพท์"
                   value={editFormData.phone}
-                  onValueChange={(value) => setEditFormData({ ...editFormData, phone: value })}
+                  onChange={(e) => setEditFormData({ ...editFormData, phone: e.target.value })}
                 />
-                <Input
+                <CustomInput
+                  id="email"
                   label="อีเมล"
                   type="email"
                   value={editFormData.email}
-                  onValueChange={(value) => setEditFormData({ ...editFormData, email: value })}
+                  onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })}
                 />
-                <Textarea
+                <CustomTextarea
+                  id="location"
                   label="ที่อยู่"
                   value={editFormData.location}
-                  onValueChange={(value) => setEditFormData({ ...editFormData, location: value })}
+                  onChange={(e) => setEditFormData({ ...editFormData, location: e.target.value })}
                   className="md:col-span-2"
                 />
-                <Textarea
+                <CustomTextarea
+                  id="gym_details"
                   label="รายละเอียดยิม"
                   value={editFormData.gym_details || ''}
-                  onValueChange={(value) => setEditFormData({ ...editFormData, gym_details: value })}
+                  onChange={(e) => setEditFormData({ ...editFormData, gym_details: e.target.value })}
                   className="md:col-span-2"
                 />
               </div>
@@ -1074,74 +1070,73 @@ function PartnerDashboardContent() {
           <ModalBody>
             <div className="space-y-4">
               {/* Package Type */}
-              <Select
+              <CustomSelect
+                id="package_type"
                 label="ประเภทแพ็คเกจ"
-                placeholder="เลือกประเภท"
-                selectedKeys={formData.package_type ? [formData.package_type] : []}
+                value={formData.package_type}
                 onChange={(e) => setFormData(prev => ({ ...prev, package_type: e.target.value as 'one_time' | 'package', duration_months: null }))}
-                isRequired
-                isDisabled={!!editingPackage}
-                classNames={selectClassNames}
+                required
+                disabled={!!editingPackage}
               >
-                <SelectItem key="one_time">รายครั้ง</SelectItem>
-                <SelectItem key="package">แพ็คเกจรายเดือน</SelectItem>
-              </Select>
+                <option value="" disabled>เลือกประเภท</option>
+                <option value="one_time">รายครั้ง</option>
+                <option value="package">แพ็คเกจรายเดือน</option>
+              </CustomSelect>
 
               {/* Duration (for packages only) */}
               {formData.package_type === 'package' && (
-                <Select
+                <CustomSelect
+                  id="duration_months"
                   label="ระยะเวลา"
-                  placeholder="เลือกระยะเวลา"
-                  selectedKeys={formData.duration_months ? [formData.duration_months.toString()] : []}
+                  value={formData.duration_months?.toString() || ''}
                   onChange={(e) => setFormData(prev => ({ ...prev, duration_months: parseInt(e.target.value) }))}
-                  isRequired
-                  classNames={selectClassNames}
+                  required
                 >
-                  <SelectItem key="1">1 เดือน</SelectItem>
-                  <SelectItem key="3">3 เดือน</SelectItem>
-                  <SelectItem key="6">6 เดือน</SelectItem>
-                </Select>
+                  <option value="" disabled>เลือกระยะเวลา</option>
+                  <option value="1">1 เดือน</option>
+                  <option value="3">3 เดือน</option>
+                  <option value="6">6 เดือน</option>
+                </CustomSelect>
               )}
 
               {/* Name */}
-              <Input
+              <CustomInput
+                id="name"
                 label="ชื่อแพ็คเกจ (ภาษาไทย)"
                 placeholder="เช่น: ฝึกรายครั้ง, แพ็คเกจ 3 เดือน"
                 value={formData.name}
-                onValueChange={(value) => setFormData(prev => ({ ...prev, name: value }))}
-                isRequired
-                classNames={inputClassNames}
+                onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                required
               />
 
               {/* Name English */}
-              <Input
+              <CustomInput
+                id="name_english"
                 label="ชื่อแพ็คเกจ (ภาษาอังกฤษ)"
                 placeholder="เช่น: Single Session, 3 Months Package"
                 value={formData.name_english}
-                onValueChange={(value) => setFormData(prev => ({ ...prev, name_english: value }))}
-                classNames={inputClassNames}
+                onChange={(e) => setFormData(prev => ({ ...prev, name_english: e.target.value }))}
               />
 
               {/* Price */}
-              <Input
+              <CustomInput
+                id="price"
                 type="number"
                 label="ราคา (บาท)"
                 placeholder="0"
                 value={formData.price}
-                onValueChange={(value) => setFormData(prev => ({ ...prev, price: value }))}
-                startContent={<span className="text-zinc-400">฿</span>}
-                isRequired
-                classNames={inputClassNames}
+                onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.value }))}
+                required
               />
 
               {/* Description */}
-              <Textarea
+              <CustomTextarea
+                id="description"
                 label="รายละเอียด"
                 placeholder="อธิบายรายละเอียดแพ็คเกจ..."
                 value={formData.description}
-                onValueChange={(value) => setFormData(prev => ({ ...prev, description: value }))}
-                minRows={3}
-                classNames={inputClassNames}
+                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                rows={3}
               />
 
               {/* Features */}
@@ -1160,7 +1155,6 @@ function PartnerDashboardContent() {
                         handleAddFeature();
                       }
                     }}
-                    classNames={inputClassNames}
                   />
                   <Button color="secondary" onPress={handleAddFeature}>
                     เพิ่ม
