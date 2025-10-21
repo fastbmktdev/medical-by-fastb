@@ -4,7 +4,7 @@ export interface Gym {
   gym_name: string;
   gym_name_english?: string;
   address?: string;
-  gym_details?: any;
+  gym_details?: string;
   gym_type?: string;
   images?: string[];
   packages?: TrainingPackage[];
@@ -17,6 +17,8 @@ export interface Gym {
   map_url?: string;
   services?: string[];
   status?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface TrainingPackage {

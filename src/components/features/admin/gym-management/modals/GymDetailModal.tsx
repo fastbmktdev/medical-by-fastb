@@ -54,7 +54,7 @@ export default function GymDetailModal({
       classNames={{
         backdrop: "bg-black/50 backdrop-blur-sm",
         wrapper: "z-[100]",
-        base: 'bg-zinc-900 border border-zinc-800',
+        base: 'bg-zinc-950 border border-zinc-800',
         header: 'border-b border-zinc-800',
         body: 'py-6',
         footer: 'border-t border-zinc-800',
@@ -72,7 +72,7 @@ export default function GymDetailModal({
                 {/* Status */}
                 <div>
                   <p className="mb-2 text-default-400 text-sm">สถานะ</p>
-                  {getStatusChip(gym.status)}
+                  {getStatusChip(gym.status ?? 'pending')}
                 </div>
 
                 {/* Images Gallery */}

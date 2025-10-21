@@ -162,7 +162,7 @@ export default function BookingPage({
 
   if (isCheckingAuth || isLoading) {
     return (
-      <div className="flex justify-center items-center bg-zinc-900 min-h-screen">
+      <div className="flex justify-center items-center bg-zinc-950 min-h-screen">
         <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
       </div>
     );
@@ -291,7 +291,7 @@ export default function BookingPage({
   };
 
   return (
-    <div className="bg-zinc-900 min-h-screen">
+    <div className="bg-zinc-950 min-h-screen">
       {/* Header with Breadcrumb */}
       <div className="bg-zinc-800 border-zinc-700 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-7xl">

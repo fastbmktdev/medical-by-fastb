@@ -18,7 +18,7 @@ export default function FeaturedSection({
   const [activeTab, setActiveTab] = useState<"gyms" | "events">("gyms");
 
   return (
-    <section className="bg-zinc-900 py-16">
+    <section className="bg-zinc-950 py-16">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Header */}
         <div className="mb-12 text-center">
@@ -84,14 +84,6 @@ function GymCard({ gym }: { gym: Gym }) {
         {/* Image */}
         <div className="relative flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-900 h-48">
           <div className="text-zinc-600 text-6xl">🥊</div>
-          {gym.rating && (
-            <div className="top-2 right-2 absolute flex items-center gap-1 bg-black/50 px-2 py-1 rounded-full">
-              <StarIcon className="fill-yellow-400 w-4 h-4 text-yellow-400" />
-              <span className="font-bold text-white text-sm">
-                {gym.rating.toFixed(1)}
-              </span>
-            </div>
-          )}
         </div>
 
         {/* Content */}

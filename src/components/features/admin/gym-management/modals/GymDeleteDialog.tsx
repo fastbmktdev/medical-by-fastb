@@ -27,7 +27,7 @@ export default function GymDeleteDialog({
       classNames={{
         backdrop: "bg-black/50 backdrop-blur-sm",
         wrapper: "z-[100]",
-        base: 'bg-zinc-900 border border-zinc-800',
+        base: 'bg-zinc-950 border border-zinc-800',
         header: 'border-b border-zinc-800',
         body: 'py-6',
         footer: 'border-t border-zinc-800',
@@ -43,9 +43,9 @@ export default function GymDeleteDialog({
             <ModalBody>
               <div className="space-y-4">
                 <p className="text-white">
-                  คุณต้องการลบยิม <span className="font-semibold">"{gym.gym_name}"</span> ใช่หรือไม่?
+                  คุณต้องการลบยิม <span className="font-semibold">{gym.gym_name || ''}</span> ใช่หรือไม่?
                 </p>
-                <div className="flex items-start gap-2 bg-warning/10 p-3 border-l-4 border-warning rounded">
+                <div className="flex items-start gap-2 bg-warning/10 p-3 border-warning border-l-4 rounded">
                   <ExclamationTriangleIcon className="flex-shrink-0 mt-0.5 w-5 h-5 text-warning" />
                   <p className="text-default-300 text-sm">
                     การลบนี้ไม่สามารถย้อนกลับได้ ข้อมูลยิมทั้งหมดจะถูกลบออกจากระบบอย่างถาวร

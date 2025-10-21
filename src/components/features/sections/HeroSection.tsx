@@ -23,7 +23,7 @@ export default function HeroSection() {
       {/* Content */}
       <div className="z-10 relative mx-auto px-4 max-w-6xl text-center">
         <p className="mb-4 font-semibold text-red-500 text-sm md:text-base tracking-wider">
-          WELCOME TO MUAYTHAI NEXT
+          WELCOME TO THAIKICK MUAYTHAI
         </p>
         <h1 className="mb-6 font-bold text-white text-4xl md:text-6xl lg:text-7xl leading-tight">
           EVERY GREAT FIGHT STARTS<br />WITH A GREAT PREPARATION

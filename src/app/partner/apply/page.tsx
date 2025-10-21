@@ -461,9 +461,9 @@ export default function PartnerApplyPage() {
    */
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center bg-zinc-900 min-h-screen">
+      <div className="flex justify-center items-center bg-zinc-950 min-h-screen">
         <div className="text-center">
-          <div className="inline-block mb-4 border-4 border-t-transparent border-red-600 rounded-full w-16 h-16 animate-spin"></div>
+          <div className="inline-block mb-4 border-4 border-red-600 border-t-transparent rounded-full w-16 h-16 animate-spin"></div>
           <p className="text-zinc-300 text-lg">กำลังโหลด...</p>
         </div>
       </div>
@@ -475,7 +475,7 @@ export default function PartnerApplyPage() {
    */
   if (isSuccess) {
     return (
-      <div className="bg-zinc-900 min-h-screen">
+      <div className="bg-zinc-950 min-h-screen">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-16 max-w-3xl">
           <div className="bg-zinc-800 shadow-2xl p-8 md:p-12 rounded-2xl text-center">
             <div className="flex justify-center mb-6">
@@ -530,7 +530,7 @@ export default function PartnerApplyPage() {
     const status = statusColors[applicationStatus as keyof typeof statusColors] || statusColors.pending;
 
     return (
-      <div className="bg-zinc-900 min-h-screen">
+      <div className="bg-zinc-950 min-h-screen">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-16 max-w-4xl">
           <div className="bg-zinc-800 shadow-2xl p-8 md:p-12 rounded-2xl">
             <div className="flex items-center gap-4 mb-6">
@@ -631,7 +631,7 @@ export default function PartnerApplyPage() {
   }
 
   return (
-    <div className="bg-zinc-900 min-h-screen">
+    <div className="bg-zinc-950 min-h-screen">
       {/* Terms Modal */}
       <TermsModal
         isOpen={showTermsModal}

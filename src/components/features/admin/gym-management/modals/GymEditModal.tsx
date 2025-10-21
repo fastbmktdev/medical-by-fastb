@@ -57,7 +57,7 @@ export default function GymEditModal({
         location: gym.location || '',
         gym_details: gym.gym_details || '',
         services: gym.services || [],
-        status: gym.status || 'pending',
+        status: (gym.status as GymFormData['status']) || 'pending',
       });
       setErrors({});
     }
@@ -149,7 +149,7 @@ export default function GymEditModal({
       classNames={{
         backdrop: "bg-black/50 backdrop-blur-sm",
         wrapper: "z-[100]",
-        base: 'bg-zinc-900 border border-zinc-800',
+        base: 'bg-zinc-950 border border-zinc-800',
         header: 'border-b border-zinc-800',
         body: 'py-6',
         footer: 'border-t border-zinc-800',

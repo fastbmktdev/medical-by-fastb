@@ -10,7 +10,7 @@ interface LatestProductsProps {
 
 export default function LatestProducts({ products }: LatestProductsProps) {
   return (
-    <section className="bg-zinc-800 py-16">
+    <section className="py-16">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Header */}
         <div className="mb-12 text-center">
@@ -35,7 +35,7 @@ function ProductCard({ product }: { product: Product }) {
 
   return (
     <Link href={`/shop/${product.slug}`}>
-      <div className="group bg-zinc-900 hover:shadow-2xl hover:shadow-red-500/20 rounded-lg overflow-hidden transition-all">
+      <div className="group bg-zinc-950 hover:shadow-2xl hover:shadow-red-500/20 rounded-lg overflow-hidden transition-all">
         {/* Image */}
         <div className="relative flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-800 aspect-square">
           <span className="text-5xl md:text-6xl">🥊</span>

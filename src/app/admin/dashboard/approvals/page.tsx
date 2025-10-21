@@ -80,7 +80,7 @@ const ApplicationTable = ({
               <TableCell className="font-semibold text-white">{app.gym_name}</TableCell>
               <TableCell>{app.contact_name}</TableCell>
               <TableCell>{app.email}</TableCell>
-              <TableCell>{formatDate(app.created_at)}</TableCell>
+              <TableCell>{app.created_at ? formatDate(app.created_at) : '-'}</TableCell>
               <TableCell>
                 <div className="flex gap-2">
                   <Button
@@ -128,7 +128,7 @@ const ApplicationDetailModal = ({
       wrapper: "z-[100]",
     }}
   >
-    <ModalContent className="bg-zinc-900 border border-zinc-700">
+    <ModalContent className="bg-zinc-950 border border-zinc-700">
       {(closeModal) => (
         <>
           <ModalHeader>
@@ -137,11 +137,11 @@ const ApplicationDetailModal = ({
           <ModalBody>
             {application && (
               <div className="space-y-6">
-                {application.images?.length > 0 && (
+                {(application.images?.length ?? 0) > 0 && (
                   <div>
                     <p className="mb-3 text-default-400 text-sm">รูปภาพยิม</p>
                     <div className="gap-3 grid grid-cols-2 md:grid-cols-3">
-                      {application.images.map((image, index) => (
+                      {application.images?.map((image, index) => (
                         <div key={index} className="relative rounded-lg w-full h-40 overflow-hidden">
                           <Image
                             src={image}
@@ -163,11 +163,11 @@ const ApplicationDetailModal = ({
                     <p><strong>ที่อยู่:</strong> {application.location}</p>
                   </div>
                 </div>
-                {application.services?.length > 0 && (
+                {(application.services?.length ?? 0) > 0 && (
                   <div>
                     <h4 className="mb-3 font-semibold text-white">บริการที่มี</h4>
                     <div className="flex flex-wrap gap-2">
-                      {application.services.map((service, index) => (
+                      {application.services?.map((service, index) => (
                         <Chip key={index} color="primary" variant="flat">
                           {service}
                         </Chip>
@@ -271,8 +271,8 @@ function AdminApprovalsContent() {
     const query = searchQuery.toLowerCase();
     return applications.filter(app =>
       app.gym_name.toLowerCase().includes(query) ||
-      app.contact_name.toLowerCase().includes(query) ||
-      app.email.toLowerCase().includes(query)
+      app.contact_name?.toLowerCase().includes(query) ||
+      app.email?.toLowerCase().includes(query)
     );
   }, [applications, searchQuery]);
 

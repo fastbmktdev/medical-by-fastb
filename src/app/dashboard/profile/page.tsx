@@ -264,7 +264,7 @@ function ProfileContent() {
                         size="lg"
                         classNames={{
                           input: "text-white",
-                          inputWrapper: "bg-zinc-900/50 border-zinc-700 hover:border-zinc-600 focus-within:border-blue-500",
+                          inputWrapper: "bg-zinc-950/50 border-zinc-700 hover:border-zinc-600 focus-within:border-blue-500",
                         }}
                         startContent={
                           <UserIcon className="flex-shrink-0 w-4 h-4 text-zinc-400" />
@@ -284,7 +284,7 @@ function ProfileContent() {
                         size="lg"
                         classNames={{
                           input: "text-white",
-                          inputWrapper: "bg-zinc-900/30 border-zinc-700 cursor-not-allowed",
+                          inputWrapper: "bg-zinc-950/30 border-zinc-700 cursor-not-allowed",
                         }}
                         startContent={
                           <span className="text-zinc-400">📧</span>
@@ -306,7 +306,7 @@ function ProfileContent() {
                       size="lg"
                       classNames={{
                         input: "text-white",
-                        inputWrapper: "bg-zinc-900/50 border-zinc-700 hover:border-zinc-600 focus-within:border-blue-500",
+                        inputWrapper: "bg-zinc-950/50 border-zinc-700 hover:border-zinc-600 focus-within:border-blue-500",
                       }}
                       startContent={
                         <span className="text-zinc-400">📱</span>
@@ -326,7 +326,7 @@ function ProfileContent() {
                       size="lg"
                       classNames={{
                         input: "text-white",
-                        inputWrapper: "bg-zinc-900/50 border-zinc-700 hover:border-zinc-600 focus-within:border-blue-500",
+                        inputWrapper: "bg-zinc-950/50 border-zinc-700 hover:border-zinc-600 focus-within:border-blue-500",
                       }}
                       startContent={
                         <span className="text-zinc-400">📍</span>
@@ -336,19 +336,19 @@ function ProfileContent() {
                 </div>
               ) : (
                 <div className="gap-6 grid grid-cols-1 md:grid-cols-2">
-                  <div className="bg-zinc-900/50 p-4 rounded-lg">
+                  <div className="bg-zinc-950/50 p-4 rounded-lg">
                     <p className="mb-2 text-zinc-400 text-xs uppercase tracking-wide">ชื่อแสดง</p>
                     <p className="font-semibold text-white">{formData.displayName || '-'}</p>
                   </div>
-                  <div className="bg-zinc-900/50 p-4 rounded-lg">
+                  <div className="bg-zinc-950/50 p-4 rounded-lg">
                     <p className="mb-2 text-zinc-400 text-xs uppercase tracking-wide">อีเมล</p>
                     <p className="font-mono text-white">{user?.email || '-'}</p>
                   </div>
-                  <div className="bg-zinc-900/50 p-4 rounded-lg">
+                  <div className="bg-zinc-950/50 p-4 rounded-lg">
                     <p className="mb-2 text-zinc-400 text-xs uppercase tracking-wide">เบอร์โทรศัพท์</p>
                     <p className="font-mono text-white">{formData.phone || '-'}</p>
                   </div>
-                  <div className="md:col-span-2 bg-zinc-900/50 p-4 rounded-lg">
+                  <div className="md:col-span-2 bg-zinc-950/50 p-4 rounded-lg">
                     <p className="mb-2 text-zinc-400 text-xs uppercase tracking-wide">ที่อยู่</p>
                     <p className="text-white">{formData.address || '-'}</p>
                   </div>
@@ -369,7 +369,7 @@ function ProfileContent() {
               </div>
             </CardHeader>
             <CardBody className="gap-4">
-              <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 bg-zinc-900/50 hover:bg-zinc-900/70 p-4 rounded-lg transition-colors">
+              <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 bg-zinc-950/50 hover:bg-zinc-950/70 p-4 rounded-lg transition-colors">
                 <div className="flex-1">
                   <p className="mb-1 font-semibold text-white">รหัสผ่าน</p>
                   <p className="text-zinc-400 text-sm">
@@ -385,7 +385,7 @@ function ProfileContent() {
                   เปลี่ยนรหัสผ่าน
                 </Button>
               </div>
-              <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 bg-zinc-900/50 hover:bg-zinc-900/70 p-4 rounded-lg transition-colors">
+              <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 bg-zinc-950/50 hover:bg-zinc-950/70 p-4 rounded-lg transition-colors">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <p className="font-semibold text-white">การยืนยันตัวตนแบบสองชั้น</p>
