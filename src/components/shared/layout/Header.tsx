@@ -94,7 +94,7 @@ export default function Header() {
 
   const navLinks: NavLink[] = [
     { text: "ค่ายมวย", href: "/gyms" },
-    { text: "ตั๋วชกมวย", href: "/events" },
+    { text: "อีเวนต์", href: "/events" },
     { text: "โปรแกรม", href: "/fighter-program" },
     { text: "ร้านค้า", href: "/shop" },
     {
@@ -114,7 +114,7 @@ export default function Header() {
           <div className="flex justify-center items-center gap-8">
             <Link href="/" className="flex items-center gap-2">
               <span className="inline-flex justify-center items-center bg-red-600 rounded w-8 h-8 font-bold text-white">
-                TKM
+                TM
               </span>
               <span className="font-semibold text-base sm:text-lg">
                 THAIKICK MUAYTHAI
@@ -133,7 +133,7 @@ export default function Header() {
                       <ChevronDownIcon className="w-4 h-4" />
                     </button>
                     {isInfoMenuOpen && (
-                      <div className="right-0 absolute bg-zinc-800 shadow-lg mt-2 border border-white/10 rounded-md w-48">
+                      <div className="right-0 absolute bg-zinc-950 shadow-lg mt-2 border border-white/10 rounded-md w-48">
                         <div className="py-1">
                           {link.dropdown.map((item) => (
                             <Link
@@ -177,7 +177,7 @@ export default function Header() {
                   <ChevronDownIcon className="w-4 h-4" />
                 </button>
                 {isUserMenuOpen && (
-                  <div className="right-0 absolute bg-zinc-800 shadow-lg mt-2 border border-white/10 rounded-md w-56">
+                  <div className="right-0 absolute bg-zinc-950 shadow-lg mt-2 border border-white/10 rounded-md w-56">
                     <div className="py-1">
                       {/* User Info */}
                       <div className="px-4 py-2 border-white/10 border-b">
@@ -270,7 +270,7 @@ export default function Header() {
                 {currentLang}
               </button>
               {isLangDropdownOpen && (
-                <div className="right-0 absolute bg-zinc-800 shadow-lg mt-2 border border-white/10 rounded-md w-32">
+                <div className="right-0 absolute bg-zinc-950 shadow-lg mt-2 border border-white/10 rounded-md w-32">
                   <div className="py-1">
                     <button
                       onClick={() => {
@@ -373,7 +373,7 @@ export default function Header() {
               {user ? (
                 <div className="space-y-2">
                   {/* User Info */}
-                  <div className="bg-zinc-800 px-4 py-3 rounded">
+                  <div className="bg-zinc-950 px-4 py-3 rounded">
                     <p className="font-medium text-white text-sm truncate">
                       {user.user_metadata?.full_name || "ผู้ใช้งาน"}
                     </p>
@@ -393,7 +393,7 @@ export default function Header() {
                   {userRole && (
                     <Link
                       href={getDashboardPath(userRole)}
-                      className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded font-medium text-white text-sm transition-colors"
+                      className="flex items-center gap-2 bg-zinc-950 hover:bg-zinc-700 px-4 py-2 rounded font-medium text-white text-sm transition-colors"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {userRole === "admin" && (
@@ -413,7 +413,7 @@ export default function Header() {
                   {userRole === "authenticated" && !applicationStatus && (
                     <Link
                       href="/partner/apply"
-                      className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded font-medium text-white text-sm transition-colors"
+                      className="flex items-center gap-2 bg-zinc-950 hover:bg-zinc-700 px-4 py-2 rounded font-medium text-white text-sm transition-colors"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       <BuildingStorefrontIcon className="w-5 h-5" />
@@ -449,7 +449,7 @@ export default function Header() {
               ) : (
                 <Link
                   href="/login"
-                  className="flex justify-center items-center gap-2 bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded font-medium text-white text-sm transition-colors"
+                  className="flex justify-center items-center gap-2 bg-zinc-950 hover:bg-zinc-700 px-4 py-2 rounded font-medium text-white text-sm transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <UserCircleIcon className="w-5 h-5" />

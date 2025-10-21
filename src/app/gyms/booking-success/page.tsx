@@ -164,7 +164,7 @@ function BookingSuccessContent() {
   if (paymentStatus === 'failed' || error) {
     return (
       <div className="flex justify-center items-center bg-zinc-950 p-4 min-h-screen">
-        <div className="bg-zinc-800 shadow-xl p-8 border border-zinc-700 rounded-xl w-full max-w-2xl">
+        <div className="bg-zinc-950 shadow-xl p-8 border border-zinc-700 rounded-xl w-full max-w-2xl">
           <div className="mb-8 text-center">
             <div className="inline-flex justify-center items-center bg-red-600 mb-4 rounded-full w-20 h-20">
               <XCircleIcon className="w-12 h-12 text-white" />
@@ -193,7 +193,7 @@ function BookingSuccessContent() {
   if (paymentStatus === 'verifying') {
     return (
       <div className="flex justify-center items-center bg-zinc-950 p-4 min-h-screen">
-        <div className="bg-zinc-800 shadow-xl p-8 border border-zinc-700 rounded-xl w-full max-w-2xl">
+        <div className="bg-zinc-950 shadow-xl p-8 border border-zinc-700 rounded-xl w-full max-w-2xl">
           <div className="mb-8 text-center">
             <div className="inline-flex justify-center items-center bg-yellow-600 mb-4 rounded-full w-20 h-20">
               <ClockIcon className="w-12 h-12 text-white" />
@@ -218,7 +218,7 @@ function BookingSuccessContent() {
   // Payment Succeeded - Show success page
   return (
     <div className="flex justify-center items-center bg-zinc-950 p-4 min-h-screen">
-      <div className="bg-zinc-800 shadow-xl p-8 border border-zinc-700 rounded-xl w-full max-w-2xl">
+      <div className="bg-zinc-950 shadow-xl p-8 border border-zinc-700 rounded-xl w-full max-w-2xl">
         {/* Success Icon */}
         <div className="mb-8 text-center">
           <div className="inline-flex justify-center items-center bg-green-600 mb-4 rounded-full w-20 h-20">

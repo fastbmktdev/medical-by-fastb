@@ -148,7 +148,7 @@ function ProfileContent() {
       <div className="gap-6 grid grid-cols-1 lg:grid-cols-3">
         {/* Profile Summary */}
         <div className="lg:col-span-1">
-          <Card className="bg-gradient-to-br from-zinc-800 to-zinc-900 backdrop-blur-sm border border-zinc-700">
+          <Card className="bg-gradient-to-br from-zinc-800 to-zinc-950 backdrop-blur-sm border border-zinc-700">
             <CardBody className="items-center gap-4 py-8 text-center">
               <div className="group relative">
                 <Avatar
@@ -209,7 +209,7 @@ function ProfileContent() {
         {/* Profile Information */}
         <div className="space-y-6 lg:col-span-2">
           {/* Personal Information */}
-          <Card className="bg-zinc-800/50 backdrop-blur-sm border border-zinc-700">
+          <Card className="bg-zinc-950/50 backdrop-blur-sm border border-zinc-700">
             <CardHeader className="flex justify-between items-center border-zinc-700 border-b">
               <div>
                 <h3 className="font-bold text-white text-xl">ข้อมูลส่วนตัว</h3>
@@ -358,7 +358,7 @@ function ProfileContent() {
           </Card>
 
           {/* Security Settings */}
-          <Card className="bg-zinc-800/50 backdrop-blur-sm border border-zinc-700">
+          <Card className="bg-zinc-950/50 backdrop-blur-sm border border-zinc-700">
             <CardHeader className="flex items-center gap-3 border-zinc-700 border-b">
               <div className="bg-blue-600/20 p-2 rounded-lg">
                 <ShieldCheckIcon className="w-5 h-5 text-blue-400" />

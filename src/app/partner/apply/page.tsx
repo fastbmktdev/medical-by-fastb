@@ -477,7 +477,7 @@ export default function PartnerApplyPage() {
     return (
       <div className="bg-zinc-950 min-h-screen">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-16 max-w-3xl">
-          <div className="bg-zinc-800 shadow-2xl p-8 md:p-12 rounded-2xl text-center">
+          <div className="bg-zinc-950 shadow-2xl p-8 md:p-12 rounded-2xl text-center">
             <div className="flex justify-center mb-6">
               <CheckCircleIcon className="w-24 h-24 text-green-500" />
             </div>
@@ -532,7 +532,7 @@ export default function PartnerApplyPage() {
     return (
       <div className="bg-zinc-950 min-h-screen">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-16 max-w-4xl">
-          <div className="bg-zinc-800 shadow-2xl p-8 md:p-12 rounded-2xl">
+          <div className="bg-zinc-950 shadow-2xl p-8 md:p-12 rounded-2xl">
             <div className="flex items-center gap-4 mb-6">
               <ClockIcon className="w-12 h-12 text-blue-500" />
               <div>
@@ -641,7 +641,7 @@ export default function PartnerApplyPage() {
       />
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-red-900/20 to-zinc-900">
+      <div className="bg-gradient-to-br from-red-900/20 to-zinc-950">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-16 max-w-7xl">
           <div className="text-center">
             <h1 className="mb-4 font-bold text-white text-4xl md:text-5xl">
@@ -661,7 +661,7 @@ export default function PartnerApplyPage() {
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-3xl">
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Basic Information */}
-          <div className="bg-zinc-800 shadow-xl p-6 md:p-8 rounded-xl">
+          <div className="bg-zinc-950 shadow-xl p-6 md:p-8 rounded-xl">
             <h2 className="flex items-center gap-3 mb-6 font-semibold text-white text-2xl">
               <BuildingStorefrontIcon className="w-7 h-7 text-red-500" />
               ข้อมูลพื้นฐาน
@@ -876,7 +876,7 @@ export default function PartnerApplyPage() {
           </div>
 
           {/* Gym Details */}
-          <div className="bg-zinc-800 shadow-xl p-6 md:p-8 rounded-xl">
+          <div className="bg-zinc-950 shadow-xl p-6 md:p-8 rounded-xl">
             <h2 className="flex items-center gap-3 mb-6 font-semibold text-white text-2xl">
               <DocumentTextIcon className="w-7 h-7 text-blue-500" />
               ข้อมูลยิมเบื้องต้น
@@ -1000,7 +1000,7 @@ export default function PartnerApplyPage() {
           </div>
 
           {/* Terms & Conditions */}
-          <div className="bg-zinc-800 shadow-xl p-6 md:p-8 rounded-xl">
+          <div className="bg-zinc-950 shadow-xl p-6 md:p-8 rounded-xl">
             <label className="flex items-start gap-3 cursor-pointer">
               <input
                 type="checkbox"

@@ -74,7 +74,7 @@ const GymHeader = memo(function GymHeader({ gym }: { gym: Gym }) {
 
 const GalleryPlaceholder = memo(function GalleryPlaceholder() {
   return (
-    <div className="flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-900 rounded-lg h-96">
+    <div className="flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-950 rounded-lg h-96">
       <div className="text-center">
         <div className="mb-4 text-zinc-600 text-9xl">🥊</div>
         <p className="text-zinc-400">ภาพประกอบจะมาเร็วๆ นี้</p>
@@ -85,7 +85,7 @@ const GalleryPlaceholder = memo(function GalleryPlaceholder() {
 
 const AboutSection = memo(function AboutSection({ details }: { details?: string | null }) {
   return (
-    <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
+    <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
       <h2 className="mb-4 font-bold text-white text-2xl">เกี่ยวกับค่ายมวย</h2>
       <p className="text-zinc-300 leading-relaxed">
         {details || "ไม่มีรายละเอียดเพิ่มเติม"}
@@ -102,7 +102,7 @@ const LocationSection = memo(function LocationSection({
   mapUrl?: string | null;
 }) {
   return (
-    <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
+    <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
       <h2 className="mb-4 font-bold text-white text-2xl">ที่อยู่และแผนที่</h2>
       <div className="flex items-start gap-3 mb-4">
         <MapPinIcon className="flex-shrink-0 w-6 h-6 text-red-500" />
@@ -126,7 +126,7 @@ const LocationSection = memo(function LocationSection({
 const ServicesSection = memo(function ServicesSection({ services }: { services: string[] }) {
   if (!services?.length) return null;
   return (
-    <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
+    <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
       <h2 className="mb-4 font-bold text-white text-2xl">บริการ</h2>
       <div className="flex flex-wrap gap-2">
         {services.map((service, idx) => (
@@ -144,7 +144,7 @@ const ServicesSection = memo(function ServicesSection({ services }: { services: 
 
 const ContactInfo = memo(function ContactInfo({ gym }: { gym: Gym }) {
   return (
-    <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
+    <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
       <h3 className="mb-4 font-bold text-white text-xl">ข้อมูลติดต่อ</h3>
       <div className="space-y-4">
         {gym.phone && (
@@ -213,7 +213,7 @@ const ContactInfo = memo(function ContactInfo({ gym }: { gym: Gym }) {
 
 const QuickInfo = memo(function QuickInfo({ gym }: { gym: Gym }) {
   return (
-    <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
+    <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
       <h3 className="mb-4 font-bold text-white text-xl">ข้อมูลทั่วไป</h3>
       <div className="space-y-4">
         <div className="flex items-center gap-3">
@@ -314,7 +314,7 @@ export default function GymDetailPage({
 
   return (
     <div className="bg-zinc-950 min-h-screen">
-      <div className="bg-zinc-800 border-zinc-700 border-b">
+      <div className="bg-zinc-950 border-zinc-700 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-7xl">
           <Breadcrumb gymName={gym.gym_name} />
           <BackButton />

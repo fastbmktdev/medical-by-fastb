@@ -1,11 +1,14 @@
 import { HeroSection, QuickSearchBar, FeaturedSection, LatestProducts } from "@/components/features/sections";
+import Marquee from "@/components/ui/Marquee";
 import { GYMS, EVENTS, PRODUCTS } from "@/lib/data";
 
 export default function Home() {
   return (
-    <main className="mt-16">
+    <>
       {/* Hero Section with Video */}
       <HeroSection />
+      
+      <Marquee />
 
       {/* Quick Search Bar */}
       <QuickSearchBar />
@@ -15,6 +18,6 @@ export default function Home() {
 
       {/* Latest Products */}
       <LatestProducts products={PRODUCTS} />
-    </main>
+    </>
   );
 }

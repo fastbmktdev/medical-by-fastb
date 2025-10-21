@@ -119,7 +119,7 @@ function BookingSuccessContent() {
   if (error || !booking) {
     return (
       <div className="flex justify-center items-center bg-zinc-950 p-4 min-h-screen">
-        <div className="bg-zinc-800 shadow-xl p-8 border border-zinc-700 rounded-xl w-full max-w-md text-center">
+        <div className="bg-zinc-950 shadow-xl p-8 border border-zinc-700 rounded-xl w-full max-w-md text-center">
           <div className="inline-flex justify-center items-center bg-red-600 mb-4 rounded-full w-16 h-16">
             <ExclamationTriangleIcon className="w-8 h-8 text-white" />
           </div>
@@ -157,7 +157,7 @@ function BookingSuccessContent() {
         </div>
 
         {/* Booking Details Card */}
-        <div className="bg-zinc-800 shadow-xl mb-6 p-8 border border-zinc-700 rounded-xl">
+        <div className="bg-zinc-950 shadow-xl mb-6 p-8 border border-zinc-700 rounded-xl">
           <div className="mb-6 pb-6 border-zinc-700 border-b">
             <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 mb-4">
               <div>

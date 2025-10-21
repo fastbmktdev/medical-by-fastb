@@ -30,7 +30,7 @@ export default function TermsModal({ isOpen, onClose, onAccept, gymName }: Terms
 
   return (
     <div className="z-50 fixed inset-0 flex justify-center items-center bg-black/70 backdrop-blur-sm p-4 animate-fadeIn">
-      <div className="relative bg-zinc-800 shadow-2xl rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden animate-slideUp">
+      <div className="relative bg-zinc-950 shadow-2xl rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden animate-slideUp">
         {/* Header */}
         <div className="top-0 z-10 sticky bg-gradient-to-br from-red-900 to-red-700 px-6 py-5 border-red-600 border-b">
           <div className="flex justify-between items-center">
@@ -69,7 +69,7 @@ export default function TermsModal({ isOpen, onClose, onAccept, gymName }: Terms
                 </p>
 
                 <div className="space-y-4">
-                  <div className="bg-zinc-800 p-4 border-blue-500 border-l-4 rounded-lg">
+                  <div className="bg-zinc-950 p-4 border-blue-500 border-l-4 rounded-lg">
                     <h5 className="mb-2 font-semibold text-white">1. การยินยอม</h5>
                     <p className="text-zinc-300 text-sm leading-relaxed">
                       ผู้ใช้บริการ <span className="font-medium text-yellow-400">ให้ความยินยอมโดยชัดแจ้งและสมัครใจ</span> แก่{' '}
@@ -80,7 +80,7 @@ export default function TermsModal({ isOpen, onClose, onAccept, gymName }: Terms
                     </p>
                   </div>
 
-                  <div className="bg-zinc-800 p-4 border-green-500 border-l-4 rounded-lg">
+                  <div className="bg-zinc-950 p-4 border-green-500 border-l-4 rounded-lg">
                     <h5 className="mb-2 font-semibold text-white">2. วัตถุประสงค์และขอบเขต</h5>
                     <p className="text-zinc-300 text-sm leading-relaxed">
                       thaikickmuaythai.com มีสิทธิ{' '}
@@ -93,7 +93,7 @@ export default function TermsModal({ isOpen, onClose, onAccept, gymName }: Terms
                     </p>
                   </div>
 
-                  <div className="bg-zinc-800 p-4 border-purple-500 border-l-4 rounded-lg">
+                  <div className="bg-zinc-950 p-4 border-purple-500 border-l-4 rounded-lg">
                     <h5 className="mb-2 font-semibold text-white">3. การสละสิทธิ</h5>
                     <p className="text-zinc-300 text-sm leading-relaxed">
                       ผู้ใช้บริการตกลงว่าการยินยอมนี้เป็นการให้สิทธิ{' '}
@@ -104,7 +104,7 @@ export default function TermsModal({ isOpen, onClose, onAccept, gymName }: Terms
                     </p>
                   </div>
 
-                  <div className="bg-zinc-800 p-4 border-orange-500 border-l-4 rounded-lg">
+                  <div className="bg-zinc-950 p-4 border-orange-500 border-l-4 rounded-lg">
                     <h5 className="mb-2 font-semibold text-white">4. การคงอยู่ของสิทธิ</h5>
                     <p className="text-zinc-300 text-sm leading-relaxed">
                       สิทธิในการใช้สื่อตามมาตรานี้ จะ<span className="font-medium text-yellow-400">มีผลต่อเนื่องและไม่มีกำหนดเวลา</span>{' '}
@@ -123,7 +123,7 @@ export default function TermsModal({ isOpen, onClose, onAccept, gymName }: Terms
                   </svg>
                   ตัวอย่างการใช้งานสื่อ
                 </h4>
-                <div className="bg-zinc-800/50 p-4 rounded-lg">
+                <div className="bg-zinc-950/50 p-4 rounded-lg">
                   <p className="mb-3 text-zinc-300 text-sm leading-relaxed">
                     เมื่อคุณยอมรับเงื่อนไขนี้ thaikickmuaythai.com สามารถนำภาพ วิดีโอ และข้อมูลของคุณไปใช้ใน:
                   </p>
@@ -238,7 +238,7 @@ export default function TermsModal({ isOpen, onClose, onAccept, gymName }: Terms
           {/* Checkboxes Section */}
           <div className="space-y-4 bg-zinc-950 p-6 border-2 border-zinc-700 rounded-xl">
             {/* Main Terms Acceptance */}
-            <label className="group flex items-start gap-4 bg-zinc-800 p-4 border-2 border-zinc-700 hover:border-red-500 rounded-lg transition-all cursor-pointer">
+            <label className="group flex items-start gap-4 bg-zinc-950 p-4 border-2 border-zinc-700 hover:border-red-500 rounded-lg transition-all cursor-pointer">
               <input
                 type="checkbox"
                 checked={acceptedTerms}

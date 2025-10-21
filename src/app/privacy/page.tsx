@@ -291,7 +291,7 @@ export default function PrivacyPage() {
   return (
     <div className="bg-zinc-950 min-h-screen">
       {/* Header */}
-      <div className="bg-zinc-800 border-zinc-700 border-b">
+      <div className="bg-zinc-950 border-zinc-700 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
           <div className="text-center">
             <h1 className="mb-4 font-bold text-white text-4xl">นโยบายความเป็นส่วนตัว</h1>
@@ -307,7 +307,7 @@ export default function PrivacyPage() {
         <div className="flex lg:flex-row flex-col gap-8">
           {/* Table of Contents */}
           <div className="lg:w-1/4">
-            <div className="top-8 sticky bg-zinc-800 p-6 rounded-lg">
+            <div className="top-8 sticky bg-zinc-950 p-6 rounded-lg">
               <h3 className="mb-4 font-semibold text-white text-lg">สารบัญ</h3>
               <nav className="space-y-2">
                 {privacyData.map((section, index) => (
@@ -329,7 +329,7 @@ export default function PrivacyPage() {
 
           {/* Content */}
           <div className="lg:w-3/4">
-            <div className="bg-zinc-800 p-8 rounded-lg">
+            <div className="bg-zinc-950 p-8 rounded-lg">
               <h2 className="mb-6 font-bold text-white text-2xl">
                 {privacyData[activeSection].title}
               </h2>
@@ -345,7 +345,7 @@ export default function PrivacyPage() {
               <button
                 onClick={() => setActiveSection(Math.max(0, activeSection - 1))}
                 disabled={activeSection === 0}
-                className="bg-zinc-700 hover:bg-zinc-600 disabled:bg-zinc-800 px-6 py-2 rounded-lg font-medium text-white disabled:text-zinc-500 transition-colors disabled:cursor-not-allowed"
+                className="bg-zinc-700 hover:bg-zinc-600 disabled:bg-zinc-950 px-6 py-2 rounded-lg font-medium text-white disabled:text-zinc-500 transition-colors disabled:cursor-not-allowed"
               >
                 ← ก่อนหน้า
               </button>
@@ -355,7 +355,7 @@ export default function PrivacyPage() {
               <button
                 onClick={() => setActiveSection(Math.min(privacyData.length - 1, activeSection + 1))}
                 disabled={activeSection === privacyData.length - 1}
-                className="bg-zinc-700 hover:bg-zinc-600 disabled:bg-zinc-800 px-6 py-2 rounded-lg font-medium text-white disabled:text-zinc-500 transition-colors disabled:cursor-not-allowed"
+                className="bg-zinc-700 hover:bg-zinc-600 disabled:bg-zinc-950 px-6 py-2 rounded-lg font-medium text-white disabled:text-zinc-500 transition-colors disabled:cursor-not-allowed"
               >
                 ถัดไป →
               </button>
@@ -364,7 +364,7 @@ export default function PrivacyPage() {
         </div>
 
         {/* Contact Section */}
-        <div className="bg-zinc-800 mt-16 p-8 rounded-lg text-center">
+        <div className="bg-zinc-950 mt-16 p-8 rounded-lg text-center">
           <h3 className="mb-4 font-semibold text-white text-xl">มีคำถามเกี่ยวกับความเป็นส่วนตัว?</h3>
           <p className="mb-6 text-zinc-400">
             ทีมงานของเราพร้อมให้คำปรึกษาและตอบคำถามเกี่ยวกับการปกป้องข้อมูลส่วนบุคคล

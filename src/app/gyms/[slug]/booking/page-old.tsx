@@ -215,7 +215,7 @@ export default function BookingPage({
   return (
     <div className="bg-zinc-950 min-h-screen">
       {/* Header with Breadcrumb */}
-      <div className="bg-zinc-800 border-zinc-700 border-b">
+      <div className="bg-zinc-950 border-zinc-700 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-7xl">
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 mb-3 text-sm">
@@ -247,7 +247,7 @@ export default function BookingPage({
       </div>
 
       {/* Progress Steps */}
-      <div className="bg-zinc-800/50 py-8">
+      <div className="bg-zinc-950/50 py-8">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
           <div className="flex justify-between items-center">
             {STEPS.map((step, index) => {
@@ -297,7 +297,7 @@ export default function BookingPage({
 
       {/* Form Content */}
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-4xl">
-        <div className="bg-zinc-800 shadow-xl p-8 border border-zinc-700 rounded-xl">
+        <div className="bg-zinc-950 shadow-xl p-8 border border-zinc-700 rounded-xl">
           <h1 className="mb-2 font-bold text-white text-3xl">
             จอง {gym.gym_name}
           </h1>

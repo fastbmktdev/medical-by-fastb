@@ -37,7 +37,7 @@ export default function FeaturedSection({
             className={`px-8 py-3 rounded-lg font-semibold transition-colors ${
               activeTab === "gyms"
                 ? "bg-red-600 text-white"
-                : "bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
+                : "bg-zinc-950 text-zinc-300 hover:bg-zinc-700"
             }`}
           >
             Recommended Camps
@@ -47,7 +47,7 @@ export default function FeaturedSection({
             className={`px-8 py-3 rounded-lg font-semibold transition-colors ${
               activeTab === "events"
                 ? "bg-red-600 text-white"
-                : "bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
+                : "bg-zinc-950 text-zinc-300 hover:bg-zinc-700"
             }`}
           >
             Upcoming Events
@@ -80,9 +80,9 @@ export default function FeaturedSection({
 function GymCard({ gym }: { gym: Gym }) {
   return (
     <Link href={`/gyms/${gym.slug}`}>
-      <div className="group bg-zinc-800 hover:shadow-2xl hover:shadow-red-500/20 rounded-lg overflow-hidden transition-all">
+      <div className="group bg-zinc-950 hover:shadow-2xl hover:shadow-red-500/20 rounded-lg overflow-hidden transition-all">
         {/* Image */}
-        <div className="relative flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-900 h-48">
+        <div className="relative flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-950 h-48">
           <div className="text-zinc-600 text-6xl">🥊</div>
         </div>
 
@@ -119,9 +119,9 @@ function EventCard({ event }: { event: Event }) {
 
   return (
     <Link href={`/events/${event.slug}`}>
-      <div className="group bg-zinc-800 hover:shadow-2xl hover:shadow-red-500/20 rounded-lg overflow-hidden transition-all">
+      <div className="group bg-zinc-950 hover:shadow-2xl hover:shadow-red-500/20 rounded-lg overflow-hidden transition-all">
         {/* Image */}
-        <div className="relative flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-900 h-48">
+        <div className="relative flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-950 h-48">
           <span className="text-6xl">🥊</span>
         </div>
 

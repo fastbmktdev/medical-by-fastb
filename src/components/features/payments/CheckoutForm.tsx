@@ -224,11 +224,11 @@ export default function CheckoutForm({
               }`}>
                 {paymentError.title}
               </h3>
-              <p className="text-white text-sm mb-3">
+              <p className="mb-3 text-white text-sm">
                 {paymentError.message}
               </p>
               {paymentError.suggestion && (
-                <div className="bg-zinc-800/50 p-3 rounded-md mb-3">
+                <div className="bg-zinc-950/50 mb-3 p-3 rounded-md">
                   <p className="text-zinc-300 text-xs">
                     💡 <strong>คำแนะนำ:</strong> {paymentError.suggestion}
                   </p>

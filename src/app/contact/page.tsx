@@ -87,7 +87,7 @@ export default function ContactPage() {
   return (
     <div className="bg-zinc-950 min-h-screen">
       {/* Header */}
-      <div className="bg-zinc-800 border-zinc-700 border-b">
+      <div className="bg-zinc-950 border-zinc-700 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
           <div className="text-center">
             <h1 className="mb-4 font-bold text-white text-4xl">ติดต่อเรา</h1>
@@ -161,7 +161,7 @@ export default function ContactPage() {
 
           {/* Contact Form */}
           <div className="lg:col-span-2">
-            <div className="bg-zinc-800 p-8 rounded-lg">
+            <div className="bg-zinc-950 p-8 rounded-lg">
               <h2 className="mb-6 font-bold text-white text-2xl">ส่งข้อความถึงเรา</h2>
               
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -291,7 +291,7 @@ export default function ContactPage() {
         {/* Map Section */}
         <div className="mt-16">
           <h2 className="mb-6 font-bold text-white text-2xl text-center">แผนที่สำนักงาน</h2>
-          <div className="bg-zinc-800 p-8 rounded-lg">
+          <div className="bg-zinc-950 p-8 rounded-lg">
             <div className="flex justify-center items-center bg-zinc-700 rounded-lg aspect-video">
               <div className="text-center">
                 <MapPinIcon className="mx-auto mb-4 w-16 h-16 text-zinc-500" />

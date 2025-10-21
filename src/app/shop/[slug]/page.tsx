@@ -39,7 +39,7 @@ export default function ProductDetailPage({
   return (
     <div className="bg-zinc-950 min-h-screen">
       {/* Back Button */}
-      <div className="bg-zinc-800 border-zinc-700 border-b">
+      <div className="bg-zinc-950 border-zinc-700 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-7xl">
           <Link
             href="/shop"
@@ -55,7 +55,7 @@ export default function ProductDetailPage({
         <div className="gap-12 grid grid-cols-1 lg:grid-cols-2">
           {/* Product Images */}
           <div>
-            <div className="flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-900 mb-4 rounded-lg aspect-square">
+            <div className="flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-950 mb-4 rounded-lg aspect-square">
               <div className="text-center">
                 <div className="mb-4 text-zinc-600 text-9xl">🥊</div>
                 <p className="text-zinc-400">ภาพสินค้าจะมาเร็วๆ นี้</p>
@@ -154,7 +154,7 @@ export default function ProductDetailPage({
                     onChange={(e) =>
                       handleQuantityChange(parseInt(e.target.value) || 1)
                     }
-                    className="bg-zinc-800 px-4 py-2 border border-zinc-700 rounded-lg w-20 font-semibold text-white text-center"
+                    className="bg-zinc-950 px-4 py-2 border border-zinc-700 rounded-lg w-20 font-semibold text-white text-center"
                   />
                   <button
                     onClick={() => handleQuantityChange(quantity + 1)}
@@ -188,17 +188,17 @@ export default function ProductDetailPage({
 
             {/* Features */}
             <div className="gap-4 grid grid-cols-1 sm:grid-cols-3 mt-8">
-              <div className="bg-zinc-800 p-4 border border-zinc-700 rounded-lg text-center">
+              <div className="bg-zinc-950 p-4 border border-zinc-700 rounded-lg text-center">
                 <TruckIcon className="mx-auto mb-2 w-8 h-8 text-blue-500" />
                 <p className="font-semibold text-white text-sm">จัดส่งฟรี</p>
                 <p className="text-zinc-400 text-xs">สั่งซื้อขั้นต่ำ 1000฿</p>
               </div>
-              <div className="bg-zinc-800 p-4 border border-zinc-700 rounded-lg text-center">
+              <div className="bg-zinc-950 p-4 border border-zinc-700 rounded-lg text-center">
                 <ShieldCheckIcon className="mx-auto mb-2 w-8 h-8 text-green-500" />
                 <p className="font-semibold text-white text-sm">รับประกัน</p>
                 <p className="text-zinc-400 text-xs">รับประกัน 30 วัน</p>
               </div>
-              <div className="bg-zinc-800 p-4 border border-zinc-700 rounded-lg text-center">
+              <div className="bg-zinc-950 p-4 border border-zinc-700 rounded-lg text-center">
                 <CheckCircleIcon className="mx-auto mb-2 w-8 h-8 text-purple-500" />
                 <p className="font-semibold text-white text-sm">ของแท้</p>
                 <p className="text-zinc-400 text-xs">สินค้าแท้ 100%</p>
@@ -219,9 +219,9 @@ export default function ProductDetailPage({
                 <Link
                   key={relatedProduct.id}
                   href={`/shop/${relatedProduct.slug}`}
-                  className="group bg-zinc-800 hover:shadow-lg hover:shadow-red-500/20 border border-zinc-700 hover:border-red-500 rounded-lg overflow-hidden transition-all"
+                  className="group bg-zinc-950 hover:shadow-lg hover:shadow-red-500/20 border border-zinc-700 hover:border-red-500 rounded-lg overflow-hidden transition-all"
                 >
-                  <div className="flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-900 aspect-square">
+                  <div className="flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-950 aspect-square">
                     <div className="text-zinc-600 text-5xl">🥊</div>
                   </div>
                   <div className="p-3">

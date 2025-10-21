@@ -82,9 +82,9 @@ export default function FighterProgramPage() {
   ];
 
   return (
-    <div className="bg-gradient-to-br from-red-900/20 to-zinc-900 min-h-screen">
+    <div className="bg-gradient-to-br from-red-900/20 to-zinc-950 min-h-screen">
       {/* Hero Section */}
-      <div className="mx-auto px-4 sm:px-6 lg:px-8 py-16 max-w-7xl">
+      <div className="mx-auto mt-16 px-4 sm:px-6 lg:px-8 py-16 max-w-7xl">
         <div className="text-center">
           <h1 className="mb-6 font-bold text-white text-4xl md:text-6xl">
             โปรแกรมนักมวย
@@ -104,7 +104,7 @@ export default function FighterProgramPage() {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="bg-zinc-800 border-zinc-700 border-b">
+      <div className="bg-zinc-950 border-zinc-700 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
           <nav className="flex space-x-8">
             {[
@@ -170,7 +170,7 @@ export default function FighterProgramPage() {
               {benefits.map((benefit, index) => (
                 <div
                   key={index}
-                  className="bg-zinc-800 p-6 rounded-lg text-center"
+                  className="bg-zinc-950 p-6 rounded-lg text-center"
                 >
                   <div className="flex justify-center mb-4">{benefit.icon}</div>
                   <h3 className="mb-3 font-semibold text-white text-xl">
@@ -220,7 +220,7 @@ export default function FighterProgramPage() {
                 <h3 className="mb-4 font-semibold text-white text-2xl">
                   ระบบแต้มสะสม
                 </h3>
-                <div className="bg-zinc-800 p-6 rounded-lg">
+                <div className="bg-zinc-950 p-6 rounded-lg">
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
                       <span className="text-zinc-300">ฝึกซ้อม 1 ครั้ง</span>
