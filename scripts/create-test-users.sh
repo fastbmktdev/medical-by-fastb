@@ -2,10 +2,40 @@
 
 # Script to create test users via Supabase Admin API
 # This ensures passwords are hashed correctly
+# 
+# Usage:
+#   Local:      ./create-test-users.sh
+#   Production: SUPABASE_URL=<url> SUPABASE_ANON_KEY=<key> SUPABASE_SERVICE_ROLE_KEY=<key> ./create-test-users.sh
 
-SUPABASE_URL="http://127.0.0.1:54321"
-ANON_KEY="REMOVED_SECRET"
-SERVICE_ROLE_KEY="REMOVED_SECRET"
+# Read from environment variables or use local defaults
+SUPABASE_URL="${SUPABASE_URL:-http://127.0.0.1:54321}"
+ANON_KEY="${SUPABASE_ANON_KEY:-REMOVED_SECRET}"
+SERVICE_ROLE_KEY="${SUPABASE_SERVICE_ROLE_KEY:-REMOVED_SECRET}"
+
+# Detect environment
+if [[ "$SUPABASE_URL" == *"127.0.0.1"* ]] || [[ "$SUPABASE_URL" == *"localhost"* ]]; then
+  ENVIRONMENT="LOCAL"
+else
+  ENVIRONMENT="PRODUCTION"
+fi
+
+echo "================================================"
+echo "Environment: $ENVIRONMENT"
+echo "Supabase URL: $SUPABASE_URL"
+echo "================================================"
+
+# Confirmation prompt for production
+if [ "$ENVIRONMENT" = "PRODUCTION" ]; then
+  echo ""
+  echo "⚠️  WARNING: You are about to create test users in PRODUCTION!"
+  echo ""
+  read -p "Are you sure you want to continue? (type 'yes' to confirm): " confirmation
+  if [ "$confirmation" != "yes" ]; then
+    echo "Operation cancelled."
+    exit 0
+  fi
+  echo ""
+fi
 
 echo "Creating test users..."
 
@@ -46,13 +76,13 @@ curl -X POST "${SUPABASE_URL}/auth/v1/admin/users" \
   }' 2>&1 | jq -r '.id // "Error: \(.)"'
 
 # Partner users
-echo "Creating partner1..."
+echo "Creating partner..."
 curl -X POST "${SUPABASE_URL}/auth/v1/admin/users" \
   -H "apikey: ${ANON_KEY}" \
   -H "Authorization: Bearer ${SERVICE_ROLE_KEY}" \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "partner1@muaythai.com",
+    "email": "partner@muaythai.com",
     "password": "password123",
     "email_confirm": true,
     "phone": "+66834567890",
