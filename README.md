@@ -1,27 +1,47 @@
-# Muaythai Next.js + Supabase
+<div align="center">
+  <h1>Muay Thai Next.js + Supabase</h1>
+  <p>
+    แพลตฟอร์มสำหรับจองค่ายมวย พัฒนาด้วย Next.js, Supabase, และ Stripe
+  </p>
+</div>
 
-โปรเจกต์ Full-Stack ที่ใช้ Next.js 15 กับ Supabase (PostgreSQL) พร้อมใช้งานทันที
+---
 
-## 🚀 เทคโนโลยีที่ใช้
+## 🌟 ภาพรวม
 
-- **Frontend**: Next.js 15 (App Router)
-- **Backend**: Supabase (PostgreSQL Database, Authentication, Real-time)
-- **Styling**: Tailwind CSS
-- **Language**: TypeScript
-- **Package Manager**: npm
+**Muay Thai Next** คือโปรเจกต์ Full-Stack ที่สร้างขึ้นเพื่อเป็นแพลตฟอร์มสำหรับผู้ที่สนใจมวยไทยในการค้นหาและจองค่ายมวยทั่วประเทศ มาพร้อมกับระบบหลังบ้านที่ครบครันสำหรับเจ้าของค่ายมวย (Partner) และผู้ดูแลระบบ (Admin)
 
-## 📋 ข้อกำหนดเบื้องต้น
+โปรเจกต์นี้ใช้เทคโนโลยีสมัยใหม่และมีโครงสร้างที่สามารถนำไปต่อยอดได้ง่าย เหมาะสำหรับนักพัฒนาที่ต้องการเรียนรู้การสร้างเว็บแอปพลิเคชันด้วย Next.js และ Supabase
 
-- Node.js 18+ 
-- npm หรือ yarn
-- บัญชี Supabase (ฟรี) - [สมัครที่นี่](https://app.supabase.com)
+## ✨ ฟีเจอร์หลัก
 
-## 🛠️ การติดตั้ง
+-   👤 **ระบบสมาชิก (Authentication)**: สมัครสมาชิก, เข้าสู่ระบบ, ยืนยันอีเมล และจัดการโปรไฟล์
+-   🥋 **ระบบจัดการค่ายมวย (Gym Management)**: สำหรับ Partner เพื่อเพิ่มและจัดการข้อมูลค่ายมวย, แพ็คเกจ และราคา
+-   📅 **ระบบการจอง (Booking System)**: ผู้ใช้สามารถค้นหา, ดูรายละเอียด และจองแพ็คเกจค่ายมวย
+-   💳 **ระบบชำระเงิน (Payment Gateway)**: เชื่อมต่อกับ Stripe เพื่อรับชำระเงินออนไลน์
+-   👑 **ระบบจัดการสิทธิ์ (Role-Based Access)**: แบ่งสิทธิ์การเข้าถึง 3 ระดับ:
+    -   **User**: ผู้ใช้งานทั่วไป
+    -   **Partner**: เจ้าของค่ายมวย
+    -   **Admin**: ผู้ดูแลระบบ
+-   📊 **แดชบอร์ด (Dashboards)**: หน้าแดชบอร์ดที่ปรับเปลี่ยนตามสิทธิ์ของผู้ใช้
+-   📧 **ระบบอีเมล (Email Integration)**: ส่งอีเมลยืนยันการสมัคร, การจอง และการรีเซ็ตรหัสผ่านผ่าน Resend
+
+## 🛠️ เทคโนโลยีที่ใช้
+
+-   **Framework**: Next.js 15 (App Router)
+-   **Backend & Database**: Supabase (PostgreSQL, Auth, Storage)
+-   **Styling**: Tailwind CSS
+-   **Payment**: Stripe
+-   **Email**: Resend
+-   **Testing**: Playwright (E2E Testing)
+-   **Language**: TypeScript
+
+## 🚀 เริ่มต้นใช้งาน
 
 ### 1. Clone โปรเจกต์
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/your-username/muaythai-next-postgres.git
 cd muaythai-next-postgres
 ```
 
@@ -31,473 +51,61 @@ cd muaythai-next-postgres
 npm install
 ```
 
-### 3. ตั้งค่า Supabase
+### 3. ตั้งค่า Environment Variables
 
-#### 3.1 สร้าง Supabase Project
-
-1. ไปที่ [Supabase Dashboard](https://app.supabase.com)
-2. คลิก "New Project"
-3. เลือก Organization (หรือสร้างใหม่)
-4. กรอกข้อมูล:
-   - **Name**: ชื่อโปรเจกต์ของคุณ
-   - **Database Password**: รหัสผ่านที่คุณจะจำได้
-   - **Region**: เลือกใกล้กับคุณมากที่สุด (เช่น Southeast Asia)
-   - **Pricing Plan**: Free (0 USD)
-5. คลิก "Create new project" และรอสักครู่
-
-#### 3.2 คัดลอก API Keys
-
-1. ในหน้า Project Dashboard ไปที่เมนูซ้าย
-2. คลิก **Settings** (⚙️) > **API**
-3. คัดลอกค่าเหล่านี้:
-   - **Project URL** (ในส่วน Configuration)
-   - **anon public** key (ในส่วน Project API keys)
-
-#### 3.3 สร้างไฟล์ Environment Variables
-
-สร้างไฟล์ `.env.local` ในโฟลเดอร์ root:
+คัดลอกไฟล์ `.env.example` ไปยัง `.env.local` และตั้งค่าตัวแปรที่จำเป็น เช่น Supabase URL, Anon Key, และ Stripe Keys
 
 ```bash
-# คัดลอกจาก .env.example
 cp .env.example .env.local
 ```
 
-จากนั้นแก้ไขไฟล์ `.env.local`:
+> 📚 **ดูคำแนะนำการตั้งค่าโดยละเอียดได้ที่:**
+>
+> -   [คู่มือการตั้งค่า Supabase](./docs/setup/SUPABASE_SETUP.md)
+> -   [คู่มือการตั้งค่า Stripe](./docs/setup/STRIPE_SETUP_GUIDE.md)
+> -   [คู่มือการตั้งค่า Email (Resend)](./docs/setup/EMAIL_SETUP_GUIDE.md)
 
-```env
-SUPABASE_URL=https://your-project-id.supabase.co
-NEXT_PUBLIC_NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
-```
+### 4. Setup Supabase Database
 
-### 4. รันโปรเจกต์
+เข้าไปที่โปรเจกต์ Supabase ของคุณ และรัน SQL script จากไฟล์ `supabase/migrations` เพื่อสร้างตารางและความสัมพันธ์ที่จำเป็น
+
+> 📚 **ดูคำแนะนำการตั้งค่าฐานข้อมูลได้ที่:** [Database Setup Guide](./docs/setup/DATABASE_SETUP.md)
+
+### 5. รันโปรเจกต์
 
 ```bash
 npm run dev
 ```
 
-เปิดเบราว์เซอร์ที่ [http://localhost:3000](http://localhost:3000)
+เปิดเบราว์เซอร์และไปที่ [http://localhost:3000](http://localhost:3000)
 
-## 📚 ตัวอย่างการใช้งาน
+## 🧪 การทดสอบ (E2E Testing)
 
-### 1. Todo App (CRUD Operations)
+โปรเจกต์นี้มี E2E tests ที่เขียนด้วย Playwright เพื่อทดสอบ flow การทำงานหลักของระบบ เช่น การสมัครสมาชิก, การจอง, และการจัดการโดย Admin
 
-#### สร้างตาราง `todos` ใน Supabase
+**วิธีรันเทส:**
 
-1. ไปที่ Supabase Dashboard
-2. เลือก **SQL Editor** ในเมนูซ้าย
-3. คลิก "+ New query"
-4. คัดลอกและรัน SQL นี้:
-
-```sql
--- สร้างตาราง todos
-create table todos (
-  id bigint generated by default as identity primary key,
-  task text not null,
-  is_complete boolean default false,
-  created_at timestamp with time zone default timezone('utc'::text, now()) not null
-);
-
--- เปิดใช้งาน Row Level Security
-alter table todos enable row level security;
-
--- Policy: ให้ทุกคนอ่านได้
-create policy "Anyone can read todos"
-  on todos for select
-  to public
-  using (true);
-
--- Policy: ให้ทุกคนเพิ่มได้
-create policy "Anyone can insert todos"
-  on todos for insert
-  to public
-  with check (true);
-
--- Policy: ให้ทุกคนแก้ไขได้
-create policy "Anyone can update todos"
-  on todos for update
-  to public
-  using (true);
-
--- Policy: ให้ทุกคนลบได้
-create policy "Anyone can delete todos"
-  on todos for delete
-  to public
-  using (true);
-```
-
-5. คลิก "Run" หรือกด `Cmd/Ctrl + Enter`
-6. ไปที่ [http://localhost:3000/examples/todos](http://localhost:3000/examples/todos)
-
-### 2. Authentication
-
-Authentication พร้อมใช้งานทันที! ไปที่:
-- [http://localhost:3000/examples/auth](http://localhost:3000/examples/auth)
-
-**หมายเหตุ**: ในโหมด development Supabase จะส่งอีเมลยืนยัน หากต้องการทดสอบโดยไม่ยืนยันอีเมล:
-
-1. ไปที่ Supabase Dashboard
-2. **Authentication** > **Settings**
-3. ปิด "Enable email confirmations"
-
-## 📁 โครงสร้างโปรเจกต์
-
-```
-muaythai-next-postgres/
-├── src/
-│   ├── app/                    # Next.js App Router (Pages & API Routes)
-│   │   ├── (auth)/            # Auth pages (login, signup, reset-password)
-│   │   ├── (dashboard)/       # Dashboard pages (user, partner, admin)
-│   │   ├── (public)/          # Public pages (about, contact, faq, etc.)
-│   │   ├── api/               # API Routes
-│   │   │   ├── auth/          # Authentication endpoints
-│   │   │   ├── bookings/      # Booking endpoints
-│   │   │   ├── gyms/          # Gym endpoints
-│   │   │   ├── payments/      # Payment endpoints
-│   │   │   └── webhooks/      # Webhook handlers
-│   │   ├── gyms/              # Gym listing & detail pages
-│   │   ├── events/            # Event pages
-│   │   ├── shop/              # Shop pages
-│   │   ├── page.tsx           # หน้าแรก
-│   │   └── layout.tsx         # Root layout
-│   ├── components/            # React Components (organized by type)
-│   │   ├── ui/                # UI primitives (buttons, cards, dialogs)
-│   │   ├── shared/            # Shared components (header, footer, layout)
-│   │   └── features/          # Feature-specific components
-│   │       ├── auth/          # Authentication components
-│   │       ├── bookings/      # Booking components
-│   │       ├── gyms/          # Gym components
-│   │       ├── payments/      # Payment components
-│   │       ├── contact/       # Contact form
-│   │       ├── modals/        # Modal components
-│   │       ├── sections/      # Landing page sections
-│   │       └── admin/         # Admin components
-│   │           └── gym-management/  # Gym management UI
-│   ├── lib/                   # Core Libraries & Utilities
-│   │   ├── auth/              # Authentication utilities
-│   │   │   ├── client.ts      # Client-side auth
-│   │   │   └── server.ts      # Server-side auth
-│   │   ├── database/          # Database utilities
-│   │   │   └── supabase/      # Supabase configuration
-│   │   │       ├── client.ts  # Client-side Supabase
-│   │   │       ├── server.ts  # Server-side Supabase
-│   │   │       └── middleware.ts  # Middleware helper
-│   │   ├── api/               # API utilities & middleware
-│   │   ├── payments/          # Payment utilities (Stripe)
-│   │   ├── email/             # Email utilities (Resend)
-│   │   ├── utils/             # General utilities
-│   │   │   ├── cn.ts          # Class name utility
-│   │   │   ├── formatters.ts  # Data formatters
-│   │   │   ├── slug.ts        # Slug generation
-│   │   │   └── validators.ts  # Validation utilities
-│   │   ├── hooks/             # Custom React Hooks
-│   │   ├── constants.ts       # App constants
-│   │   └── data.ts            # Static data
-│   ├── services/              # Business Logic Layer
-│   │   ├── auth.service.ts    # Authentication service
-│   │   ├── gym.service.ts     # Gym service
-│   │   ├── booking.service.ts # Booking service
-│   │   └── payment.service.ts # Payment service
-│   ├── types/                 # TypeScript Type Definitions
-│   │   ├── app.types.ts       # App-wide types
-│   │   ├── auth.types.ts      # Authentication types
-│   │   ├── database.types.ts  # Database types
-│   │   └── api.types.ts       # API types
-│   ├── contexts/              # React Contexts
-│   │   ├── auth-context.tsx   # Auth context
-│   │   └── alert-context.tsx  # Alert context
-│   └── middleware.ts          # Next.js Middleware
-├── tests/                     # 🧪 E2E Testing
-│   ├── e2e/                   # E2E test files
-│   │   ├── helpers.ts         # Test helper functions
-│   │   ├── auth-flow.spec.ts  # Auth flow tests
-│   │   ├── admin-gym-management.spec.ts  # Admin tests
-│   │   └── login-existing-users.spec.ts  # Login tests
-│   ├── screenshots/           # Auto-generated screenshots
-│   └── README.md              # Testing documentation
-├── docs/                      # 📚 Documentation
-│   ├── setup/                 # Setup guides
-│   │   ├── DATABASE_SETUP.md
-│   │   ├── ENV_SETUP.md
-│   │   ├── SUPABASE_SETUP.md
-│   │   └── EMAIL_SETUP_GUIDE.md
-│   ├── features/              # Feature documentation
-│   │   ├── BOOKING_SYSTEM_GUIDE.md
-│   │   ├── PARTNER_APPLICATION_GUIDE.md
-│   │   └── ROLE_BASED_DASHBOARD_GUIDE.md
-│   ├── api/                   # API documentation
-│   │   └── STRIPE_API_REFERENCE.md
-│   ├── testing/               # Testing guides
-│   │   ├── E2E_TESTING_QUICKSTART.md
-│   │   └── RUN_TESTS.md
-│   ├── ARCHITECTURE.md        # Architecture overview
-│   └── CONTRIBUTING.md        # Contribution guide
-├── supabase/                  # Supabase Configuration
-│   ├── migrations/            # Database migrations
-│   └── config.toml            # Supabase config
-├── scripts/                   # Utility scripts
-├── .env.local                 # Environment variables (สร้างเอง)
-├── .env.example              # ตัวอย่าง environment variables
-├── playwright.config.ts       # 🧪 Playwright config
-├── tsconfig.json             # TypeScript config (with path aliases)
-├── package.json
-└── README.md
-```
-
-### 🎯 Path Aliases
-
-โปรเจกต์ใช้ path aliases เพื่อให้ import สะดวกขึ้น:
-
-```typescript
-// แทนที่จะใช้
-import { Button } from '../../../components/ui/button';
-
-// ใช้
-import { Button } from '@/components/ui';
-```
-
-**Path aliases ที่มี:**
-- `@/components/*` - Components
-- `@/lib/*` - Libraries & utilities
-- `@/types/*` - Type definitions
-- `@/services/*` - Business logic services
-- `@/contexts/*` - React contexts
-- `@/app/*` - App router pages & API
-
-> 💡 **ดูโครงสร้างโดยละเอียด**: อ่าน [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) เพื่อเข้าใจการแยก frontend/backend และ data flow
-
-## 🔧 วิธีการใช้งาน
-
-### Client Component with Context
-
-```tsx
-'use client';
-
-import { useAuth } from '@/contexts';
-import { Button } from '@/components/ui';
-
-export default function ProfilePage() {
-  const { user, signOut } = useAuth();
-  
-  return (
-    <div>
-      <p>Welcome, {user?.email}</p>
-      <Button onClick={signOut}>Logout</Button>
-    </div>
-  );
-}
-```
-
-### Server Component with Service Layer
-
-```tsx
-import { GymService } from '@/services';
-import { GymCard } from '@/components/features/gyms';
-
-export default async function GymsPage() {
-  const gymService = new GymService();
-  const gyms = await gymService.getGyms();
-  
-  return (
-    <div>
-      {gyms.map(gym => <GymCard key={gym.id} gym={gym} />)}
-    </div>
-  );
-}
-```
-
-### API Route with Service Layer
-
-```tsx
-// src/app/api/gyms/route.ts
-import { NextResponse } from 'next/server';
-import { GymService } from '@/services';
-
-export async function GET() {
-  try {
-    const gymService = new GymService();
-    const gyms = await gymService.getGyms();
-    return NextResponse.json(gyms);
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch gyms' }, { status: 500 });
-  }
-}
-```
-
-### Using Utilities
-
-```tsx
-import { cn } from '@/lib/utils';
-import { formatCurrency } from '@/lib/utils';
-import { createClient } from '@/lib/database';
-
-// Class name utility
-const className = cn('base-class', isActive && 'active-class');
-
-// Format currency
-const price = formatCurrency(1000); // "฿1,000.00"
-
-// Database client
-const supabase = createClient();
-```
-
-> 💡 **เรียนรู้เพิ่มเติม**: อ่าน [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) เพื่อดู patterns และ best practices
-
-## 🎨 การปรับแต่ง UI
-
-โปรเจกต์นี้ใช้ Tailwind CSS คุณสามารถแก้ไข:
-
-- **สี**: แก้ไขใน `tailwind.config.ts`
-- **Font**: แก้ไขใน `src/app/layout.tsx`
-- **Global CSS**: แก้ไขใน `src/app/globals.css`
-
-## 🧪 E2E Automation Testing (NEW!)
-
-โปรเจกต์นี้มีระบบ automation testing สำหรับทดสอบ authentication flow ทั้ง 3 roles:
-
-### ✅ Test Coverage
-- **User Signup & Login** - ทดสอบการสมัครสมาชิกและเข้าสู่ระบบ
-- **Partner Application** - ทดสอบการสมัครเป็น Partner และส่งข้อมูลค่ายมวย
-- **Admin Approval** - ทดสอบการอนุมัติค่ายมวยโดย Admin
-- **Role-based Access** - ตรวจสอบว่าแต่ละ role เข้าถึง dashboard ที่ถูกต้อง
-
-### 🚀 Quick Start
 ```bash
-# Terminal 1: Start dev server
-npm run dev
+# รันเทสทั้งหมด (Headless Mode)
+npm run test:e2e
 
-# Terminal 2: Run tests in UI mode
+# รันเทสพร้อมเปิด UI ของ Playwright
 npm run test:e2e:ui
 ```
 
-### 📚 Testing Documentation
-- 🎬 [RUN_TESTS.md](./RUN_TESTS.md) - วิธีรัน tests แบบ step-by-step
-- 🚀 [E2E_TESTING_QUICKSTART.md](./docs/E2E_TESTING_QUICKSTART.md) - Quick start guide
-- 📖 [tests/README.md](./tests/README.md) - Full testing documentation
-- 📋 [TESTING_SUMMARY.md](./TESTING_SUMMARY.md) - สรุปการติดตั้ง
+> 📚 **อ่านเพิ่มเติมเกี่ยวกับการทดสอบได้ที่:** [E2E Testing Quickstart](./docs/testing/E2E_TESTING_QUICKSTART.md)
 
-### 🎯 Test Commands
-```bash
-npm run test:e2e          # Run tests (headless)
-npm run test:e2e:ui       # Run with Playwright UI
-npm run test:e2e:debug    # Debug mode
-npm run test:report       # View test report
-```
+## 📖 เอกสารประกอบ
 
-## 📖 Resources & Documentation
+-   [**ภาพรวมสถาปัตยกรรม (Architecture Overview)**](./docs/ARCHITECTURE.md): อธิบายโครงสร้างโปรเจกต์, การออกแบบ และ data flow
+-   [**คู่มือฟีเจอร์ (Feature Guides)**](./docs/features/README.md): รายละเอียดการทำงานของแต่ละฟีเจอร์
+-   [**คู่มือการติดตั้ง (Setup Guides)**](./docs/setup/README.md): รวมคู่มือการตั้งค่าทั้งหมด
+-   [**แนวทางการ Contribute (Contributing Guide)**](./docs/CONTRIBUTING.md): สำหรับผู้ที่ต้องการมีส่วนร่วมในการพัฒนา
 
-### โปรเจกต์นี้
+## 🤝 การมีส่วนร่วม
 
-**Setup Guides:**
-- 🚀 [Database Setup](./docs/setup/DATABASE_SETUP.md) - การตั้งค่าฐานข้อมูล
-- ⚙️ [Environment Setup](./docs/setup/ENV_SETUP.md) - การตั้งค่า environment variables
-- 🔐 [Supabase Setup](./docs/setup/SUPABASE_SETUP.md) - การตั้งค่า Supabase
-- 📧 [Email Setup](./docs/setup/EMAIL_SETUP_GUIDE.md) - การตั้งค่าระบบอีเมล
+เรายินดีรับการมีส่วนร่วมจากทุกคน! หากคุณมีข้อเสนอแนะ, พบเจอปัญหา, หรือต้องการเพิ่มฟีเจอร์ใหม่ๆ สามารถเปิด Issue หรือส่ง Pull Request ได้เลย
 
-**Feature Guides:**
-- 📅 [Booking System](./docs/features/BOOKING_SYSTEM_GUIDE.md) - ระบบจองค่ายมวย
-- 🤝 [Partner Application](./docs/features/PARTNER_APPLICATION_GUIDE.md) - การสมัคร Partner
-- 👥 [Role-Based Dashboard](./docs/features/ROLE_BASED_DASHBOARD_GUIDE.md) - Dashboard แบ่งตาม role
-- 🏋️ [Gym Management](./docs/features/PARTNER_PACKAGE_MANAGEMENT_GUIDE.md) - การจัดการค่ายมวย
+## 📄 License
 
-**Testing:**
-- 🧪 [E2E Testing Quickstart](./docs/testing/E2E_TESTING_QUICKSTART.md) - เริ่มต้นทดสอบ E2E
-- 🎯 [Run Tests](./docs/testing/RUN_TESTS.md) - วิธีรัน tests
-
-**Architecture:**
-- 📘 [Architecture Overview](./docs/ARCHITECTURE.md) - โครงสร้างและ design patterns
-- 🤝 [Contributing Guide](./docs/CONTRIBUTING.md) - วิธีการมีส่วนร่วม
-
-### External Resources
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Supabase Documentation](https://supabase.com/docs)
-- [Playwright Documentation](https://playwright.dev) - 🧪 E2E Testing Framework
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-- [TypeScript Documentation](https://www.typescriptlang.org/docs)
-
-## 🔒 Security Best Practices
-
-### Row Level Security (RLS)
-
-Supabase ใช้ PostgreSQL Row Level Security เพื่อความปลอดภัย:
-
-```sql
--- ตัวอย่าง: เฉพาะเจ้าของสามารถแก้ไขข้อมูลของตัวเองได้
-create policy "Users can update own data"
-  on table_name for update
-  to authenticated
-  using (auth.uid() = user_id);
-```
-
-### Environment Variables
-
-- ห้ามเปิดเผยไฟล์ `.env.local`
-- ใช้ `NEXT_PUBLIC_` prefix เฉพาะตัวแปรที่ปลอดภัยต่อการเปิดเผยในฝั่ง client
-- เก็บ Service Role Key ไว้ในเซิร์ฟเวอร์เท่านั้น (ไม่ควรใช้ในฝั่ง client)
-
-## 🚀 การ Deploy
-
-### Deploy บน Vercel (แนะนำ)
-
-1. Push โค้ดขึ้น GitHub
-2. ไปที่ [Vercel](https://vercel.com)
-3. Import repository
-4. เพิ่ม Environment Variables:
-   - `SUPABASE_URL`
-   - `NEXT_PUBLIC_NEXT_PUBLIC_NEXT_PUBLIC_NEXT_PUBLIC_NEXT_PUBLIC_NEXT_PUBLIC_NEXT_PUBLIC_NEXT_PUBLIC_NEXT_PUBLIC_SUPABASE_ANON_KEY`
-5. Deploy!
-
-### ตรวจสอบก่อน Deploy
-
-```bash
-# Build โปรเจกต์
-npm run build
-
-# ทดสอบ production build
-npm start
-```
-
-## 🐛 Troubleshooting
-
-### ปัญหา: "Error fetching user role: {}"
-
-**สาเหตุ**: ตาราง `user_roles` และ `gyms` ยังไม่ได้ถูกสร้างในฐานข้อมูล
-
-**แก้ไข**: 
-1. รัน `npm run check-db` เพื่อดูว่าตารางไหนหายไป
-2. ดูคู่มือแก้ไขด่วนใน `QUICK_DATABASE_FIX.md`
-3. หรือรัน SQL migration ที่ `supabase/migrations/partner_application_setup.sql` ใน Supabase SQL Editor
-
-### ปัญหา: "relation does not exist"
-
-**สาเหตุ**: ยังไม่ได้สร้างตารางในฐานข้อมูล
-
-**แก้ไข**: รัน SQL ใน Supabase SQL Editor (ดูในส่วนตัวอย่างการใช้งาน)
-
-### ปัญหา: "Invalid API key"
-
-**สาเหตุ**: ค่าใน `.env.local` ไม่ถูกต้อง
-
-**แก้ไข**: 
-1. ตรวจสอบค่าใน Supabase Dashboard > Settings > API
-2. แก้ไขไฟล์ `.env.local`
-3. Restart dev server
-
-### ปัญหา: Auth ไม่ทำงาน
-
-**สาเหตุ**: Email confirmation เปิดอยู่
-
-**แก้ไข**: 
-1. Supabase Dashboard > Authentication > Settings
-2. ปิด "Enable email confirmations" (เฉพาะ development)
-
-## 📝 License
-
-MIT License - สามารถนำไปใช้ได้ตามต้องการ
-
-## 🤝 Contributing
-
-ยินดีรับ Pull Requests และ Issues!
-
----
-
-สร้างด้วย ❤️ โดยใช้ Next.js และ Supabase
+โปรเจกต์นี้อยู่ภายใต้ [MIT License](./LICENSE)
