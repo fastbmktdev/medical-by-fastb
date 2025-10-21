@@ -3,7 +3,7 @@ import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 export default function ProductNotFound() {
   return (
-    <div className="flex justify-center items-center bg-zinc-900 px-4 min-h-screen">
+    <div className="flex justify-center items-center bg-zinc-950 px-4 min-h-screen">
       <div className="text-center">
         <ExclamationTriangleIcon className="mx-auto mb-6 w-20 h-20 text-yellow-500" />
         <h1 className="mb-4 font-bold text-white text-4xl">

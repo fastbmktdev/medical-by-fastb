@@ -1,11 +1,10 @@
 "use client";
 
-import { use, useEffect, useState, useCallback } from "react";
+import { use, useEffect, useState, useCallback, memo } from "react";
 import { createClient } from "@/lib/database/supabase/client";
 import type { Gym } from "@/types";
 import {
   MapPinIcon,
-  StarIcon,
   PhoneIcon,
   EnvelopeIcon,
   GlobeAltIcon,
@@ -18,10 +17,7 @@ import {
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-// ---------------------------
-// Helper Components
-// ---------------------------
-function Breadcrumb({ gymName }: { gymName: string }) {
+const Breadcrumb = memo(function Breadcrumb({ gymName }: { gymName: string }) {
   return (
     <nav className="flex items-center gap-2 mb-3 text-sm">
       <Link
@@ -42,9 +38,9 @@ function Breadcrumb({ gymName }: { gymName: string }) {
       <span className="font-medium text-white">{gymName}</span>
     </nav>
   );
-}
+});
 
-function BackButton() {
+const BackButton = memo(function BackButton() {
   return (
     <Link
       href="/gyms"
@@ -54,12 +50,12 @@ function BackButton() {
       <span>กลับไปหน้ารายการค่ายมวย</span>
     </Link>
   );
-}
+});
 
-function GymHeader({ gym }: { gym: Gym }) {
+const GymHeader = memo(function GymHeader({ gym }: { gym: Gym }) {
   return (
     <div>
-      <div className="flex justify-start items-start mb-4">
+      <div className="flex justify-start items-end gap-3 mb-4">
         <div className="flex sm:flex-row flex-col sm:items-center sm:gap-4">
           <h1 className="font-bold text-white text-4xl sm:text-5xl tracking-tight">
             {gym.gym_name}
@@ -74,31 +70,31 @@ function GymHeader({ gym }: { gym: Gym }) {
       )}
     </div>
   );
-}
+});
 
-function GalleryPlaceholder() {
+const GalleryPlaceholder = memo(function GalleryPlaceholder() {
   return (
-    <div className="flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-900 rounded-lg h-96">
+    <div className="flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-950 rounded-lg h-96">
       <div className="text-center">
         <div className="mb-4 text-zinc-600 text-9xl">🥊</div>
         <p className="text-zinc-400">ภาพประกอบจะมาเร็วๆ นี้</p>
       </div>
     </div>
   );
-}
+});
 
-function AboutSection({ details }: { details?: string | null }) {
+const AboutSection = memo(function AboutSection({ details }: { details?: string | null }) {
   return (
-    <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
+    <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
       <h2 className="mb-4 font-bold text-white text-2xl">เกี่ยวกับค่ายมวย</h2>
       <p className="text-zinc-300 leading-relaxed">
         {details || "ไม่มีรายละเอียดเพิ่มเติม"}
       </p>
     </div>
   );
-}
+});
 
-function LocationSection({
+const LocationSection = memo(function LocationSection({
   location,
   mapUrl,
 }: {
@@ -106,7 +102,7 @@ function LocationSection({
   mapUrl?: string | null;
 }) {
   return (
-    <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
+    <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
       <h2 className="mb-4 font-bold text-white text-2xl">ที่อยู่และแผนที่</h2>
       <div className="flex items-start gap-3 mb-4">
         <MapPinIcon className="flex-shrink-0 w-6 h-6 text-red-500" />
@@ -125,18 +121,17 @@ function LocationSection({
       )}
     </div>
   );
-}
+});
 
-function ServicesSection({ services }: { services: string[] }) {
-  if (!services || services.length === 0) return null;
-
+const ServicesSection = memo(function ServicesSection({ services }: { services: string[] }) {
+  if (!services?.length) return null;
   return (
-    <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
+    <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
       <h2 className="mb-4 font-bold text-white text-2xl">บริการ</h2>
       <div className="flex flex-wrap gap-2">
         {services.map((service, idx) => (
           <span
-            key={idx}
+            key={service + idx}
             className="bg-zinc-700 px-3 py-1 rounded-full text-zinc-300 text-sm"
           >
             {service}
@@ -145,11 +140,11 @@ function ServicesSection({ services }: { services: string[] }) {
       </div>
     </div>
   );
-}
+});
 
-function ContactInfo({ gym }: { gym: Gym }) {
+const ContactInfo = memo(function ContactInfo({ gym }: { gym: Gym }) {
   return (
-    <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
+    <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
       <h3 className="mb-4 font-bold text-white text-xl">ข้อมูลติดต่อ</h3>
       <div className="space-y-4">
         {gym.phone && (
@@ -214,11 +209,11 @@ function ContactInfo({ gym }: { gym: Gym }) {
       </div>
     </div>
   );
-}
+});
 
-function QuickInfo({ gym }: { gym: Gym }) {
+const QuickInfo = memo(function QuickInfo({ gym }: { gym: Gym }) {
   return (
-    <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
+    <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
       <h3 className="mb-4 font-bold text-white text-xl">ข้อมูลทั่วไป</h3>
       <div className="space-y-4">
         <div className="flex items-center gap-3">
@@ -238,9 +233,9 @@ function QuickInfo({ gym }: { gym: Gym }) {
       </div>
     </div>
   );
-}
+});
 
-function CTABooking({ gymSlug }: { gymSlug: string }) {
+const CTABooking = memo(function CTABooking({ gymSlug }: { gymSlug: string }) {
   return (
     <div className="bg-gradient-to-r from-red-600 to-red-700 p-6 rounded-lg text-center">
       <h3 className="mb-2 font-bold text-white text-xl">
@@ -254,11 +249,7 @@ function CTABooking({ gymSlug }: { gymSlug: string }) {
       </Link>
     </div>
   );
-}
-
-// ---------------------------
-// Main Page
-// ---------------------------
+});
 
 export default function GymDetailPage({
   params,
@@ -273,7 +264,6 @@ export default function GymDetailPage({
 
   const fetchData = useCallback(async () => {
     try {
-      // Fetch gym data
       const { data, error } = await supabase
         .from("gyms")
         .select("*")
@@ -285,7 +275,6 @@ export default function GymDetailPage({
       }
       setGym(data);
 
-      // Fetch user role
       const {
         data: { user },
       } = await supabase.auth.getUser();
@@ -310,7 +299,7 @@ export default function GymDetailPage({
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center bg-zinc-900 min-h-screen">
+      <div className="flex justify-center items-center bg-zinc-950 min-h-screen">
         <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
       </div>
     );
@@ -318,12 +307,14 @@ export default function GymDetailPage({
 
   if (!gym) {
     notFound();
+    return null;
   }
 
+  const showBookingCTA = userRole !== "admin" && userRole !== "partner";
+
   return (
-    <div className="bg-zinc-900 min-h-screen">
-      {/* Breadcrumb & Back Button */}
-      <div className="bg-zinc-800 border-zinc-700 border-b">
+    <div className="bg-zinc-950 min-h-screen">
+      <div className="bg-zinc-950 border-zinc-700 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-7xl">
           <Breadcrumb gymName={gym.gym_name} />
           <BackButton />
@@ -332,37 +323,18 @@ export default function GymDetailPage({
 
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
         <div className="gap-8 grid grid-cols-1 lg:grid-cols-3">
-          {/* Main Content */}
           <div className="space-y-8 lg:col-span-2">
-            {/* Header */}
             <GymHeader gym={gym} />
-
-            {/* Image Gallery Placeholder */}
             <GalleryPlaceholder />
-
-            {/* About */}
             <AboutSection details={gym.gym_details} />
-
-            {/* Location */}
             <LocationSection location={gym.location} mapUrl={gym.map_url} />
-
-            {/* Services */}
-            {gym.services && gym.services.length > 0 && (
-              <ServicesSection services={gym.services} />
-            )}
-
-            {/* --- Packages Section is commented out --- */}
+            <ServicesSection services={gym.services || []} />
           </div>
-
-          {/* Sidebar */}
           <div className="lg:col-span-1">
             <div className="top-4 sticky space-y-6">
               <ContactInfo gym={gym} />
               <QuickInfo gym={gym} />
-              {/* CTA - Hidden for Admin and Partner */}
-              {userRole !== "admin" && userRole !== "partner" && (
-                <CTABooking gymSlug={gym.slug ?? ""} />
-              )}
+              {showBookingCTA && <CTABooking gymSlug={gym.slug ?? ""} />}
             </div>
           </div>
         </div>

@@ -18,7 +18,7 @@ export default function FeaturedSection({
   const [activeTab, setActiveTab] = useState<"gyms" | "events">("gyms");
 
   return (
-    <section className="bg-zinc-900 py-16">
+    <section className="bg-zinc-950 py-16">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Header */}
         <div className="mb-12 text-center">
@@ -37,7 +37,7 @@ export default function FeaturedSection({
             className={`px-8 py-3 rounded-lg font-semibold transition-colors ${
               activeTab === "gyms"
                 ? "bg-red-600 text-white"
-                : "bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
+                : "bg-zinc-950 text-zinc-300 hover:bg-zinc-700"
             }`}
           >
             Recommended Camps
@@ -47,7 +47,7 @@ export default function FeaturedSection({
             className={`px-8 py-3 rounded-lg font-semibold transition-colors ${
               activeTab === "events"
                 ? "bg-red-600 text-white"
-                : "bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
+                : "bg-zinc-950 text-zinc-300 hover:bg-zinc-700"
             }`}
           >
             Upcoming Events
@@ -80,18 +80,10 @@ export default function FeaturedSection({
 function GymCard({ gym }: { gym: Gym }) {
   return (
     <Link href={`/gyms/${gym.slug}`}>
-      <div className="group bg-zinc-800 hover:shadow-2xl hover:shadow-red-500/20 rounded-lg overflow-hidden transition-all">
+      <div className="group bg-zinc-950 hover:shadow-2xl hover:shadow-red-500/20 rounded-lg overflow-hidden transition-all">
         {/* Image */}
-        <div className="relative flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-900 h-48">
+        <div className="relative flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-950 h-48">
           <div className="text-zinc-600 text-6xl">🥊</div>
-          {gym.rating && (
-            <div className="top-2 right-2 absolute flex items-center gap-1 bg-black/50 px-2 py-1 rounded-full">
-              <StarIcon className="fill-yellow-400 w-4 h-4 text-yellow-400" />
-              <span className="font-bold text-white text-sm">
-                {gym.rating.toFixed(1)}
-              </span>
-            </div>
-          )}
         </div>
 
         {/* Content */}
@@ -127,9 +119,9 @@ function EventCard({ event }: { event: Event }) {
 
   return (
     <Link href={`/events/${event.slug}`}>
-      <div className="group bg-zinc-800 hover:shadow-2xl hover:shadow-red-500/20 rounded-lg overflow-hidden transition-all">
+      <div className="group bg-zinc-950 hover:shadow-2xl hover:shadow-red-500/20 rounded-lg overflow-hidden transition-all">
         {/* Image */}
-        <div className="relative flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-900 h-48">
+        <div className="relative flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-950 h-48">
           <span className="text-6xl">🥊</span>
         </div>
 

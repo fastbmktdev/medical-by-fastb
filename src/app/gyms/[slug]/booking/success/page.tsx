@@ -107,7 +107,7 @@ function BookingSuccessContent() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center bg-zinc-900 min-h-screen">
+      <div className="flex justify-center items-center bg-zinc-950 min-h-screen">
         <div className="text-center">
           <div className="inline-block mb-4 border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
           <p className="text-zinc-300">กำลังโหลดข้อมูล...</p>
@@ -118,8 +118,8 @@ function BookingSuccessContent() {
 
   if (error || !booking) {
     return (
-      <div className="flex justify-center items-center bg-zinc-900 p-4 min-h-screen">
-        <div className="bg-zinc-800 shadow-xl p-8 border border-zinc-700 rounded-xl w-full max-w-md text-center">
+      <div className="flex justify-center items-center bg-zinc-950 p-4 min-h-screen">
+        <div className="bg-zinc-950 shadow-xl p-8 border border-zinc-700 rounded-xl w-full max-w-md text-center">
           <div className="inline-flex justify-center items-center bg-red-600 mb-4 rounded-full w-16 h-16">
             <ExclamationTriangleIcon className="w-8 h-8 text-white" />
           </div>
@@ -141,7 +141,7 @@ function BookingSuccessContent() {
   }
 
   return (
-    <div className="bg-zinc-900 min-h-screen">
+    <div className="bg-zinc-950 min-h-screen">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-3xl">
         {/* Success Message */}
         <div className="mb-8 text-center">
@@ -157,7 +157,7 @@ function BookingSuccessContent() {
         </div>
 
         {/* Booking Details Card */}
-        <div className="bg-zinc-800 shadow-xl mb-6 p-8 border border-zinc-700 rounded-xl">
+        <div className="bg-zinc-950 shadow-xl mb-6 p-8 border border-zinc-700 rounded-xl">
           <div className="mb-6 pb-6 border-zinc-700 border-b">
             <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 mb-4">
               <div>
@@ -322,7 +322,7 @@ export default function BookingSuccessPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex justify-center items-center bg-zinc-900 min-h-screen">
+        <div className="flex justify-center items-center bg-zinc-950 min-h-screen">
           <div className="inline-block border-4 border-red-600 border-t-transparent rounded-full w-16 h-16 animate-spin"></div>
         </div>
       }

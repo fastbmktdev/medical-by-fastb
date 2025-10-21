@@ -178,7 +178,7 @@ function DashboardContent() {
                   <p className="mb-4 text-zinc-300 text-lg">
                     คำขอสมัครของคุณสำหรับ <strong className="text-yellow-400">{gymApplication.gym_name}</strong> กำลังรอการตรวจสอบจากทีมงาน
                   </p>
-                  <div className="bg-zinc-800/50 mb-4 p-4 border border-zinc-700 rounded-lg">
+                  <div className="bg-zinc-950/50 mb-4 p-4 border border-zinc-700 rounded-lg">
                     <p className="mb-2 text-white text-sm">📅 ส่งคำขอเมื่อ: <span className="font-mono text-zinc-300">{new Date(gymApplication.created_at).toLocaleDateString('th-TH', { 
                       year: 'numeric', 
                       month: 'long', 

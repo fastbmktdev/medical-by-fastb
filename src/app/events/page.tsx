@@ -53,13 +53,13 @@ export default function EventsPage() {
   );
 
   return (
-    <div className="bg-zinc-900 min-h-screen">
+    <div className="bg-zinc-950 min-h-screen">
       {/* Header */}
-      <div className="bg-zinc-800 border-zinc-700 border-b">
+      <div className="bg-zinc-950 border-zinc-700 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
           <div className="text-center">
             <h1 className="mb-4 font-bold text-white text-4xl">
-              ตั๋วชกมวย & อีเวนต์
+              อีเวนต์
             </h1>
             <p className="mx-auto max-w-3xl text-zinc-300 text-xl">
               จองตั๋วชมการแข่งขันมวยชั้นนำทั่วประเทศไทย
@@ -80,7 +80,7 @@ export default function EventsPage() {
                 placeholder="ค้นหาอีเวนต์..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-zinc-800 py-3 pr-4 pl-10 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white placeholder-zinc-400"
+                className="bg-zinc-950 py-3 pr-4 pl-10 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white placeholder-zinc-400"
               />
             </div>
 
@@ -90,7 +90,7 @@ export default function EventsPage() {
               <select
                 value={selectedCity}
                 onChange={(e) => setSelectedCity(e.target.value)}
-                className="bg-zinc-800 py-3 pr-4 pl-10 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white appearance-none cursor-pointer"
+                className="bg-zinc-950 py-3 pr-4 pl-10 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white appearance-none cursor-pointer"
               >
                 <option value="all">จังหวัด/เมืองทั้งหมด</option>
                 {cities
@@ -115,7 +115,7 @@ export default function EventsPage() {
                 className={`p-2 rounded-lg transition-colors ${
                   viewMode === "list"
                     ? "bg-red-600 text-white"
-                    : "bg-zinc-800 text-zinc-400 hover:text-white"
+                    : "bg-zinc-950 text-zinc-400 hover:text-white"
                 }`}
                 aria-label="List view"
               >
@@ -126,7 +126,7 @@ export default function EventsPage() {
                 className={`p-2 rounded-lg transition-colors ${
                   viewMode === "grid"
                     ? "bg-red-600 text-white"
-                    : "bg-zinc-800 text-zinc-400 hover:text-white"
+                    : "bg-zinc-950 text-zinc-400 hover:text-white"
                 }`}
                 aria-label="Grid view"
               >
@@ -191,7 +191,7 @@ function EventCard({
 
   if (viewMode === "list") {
     return (
-      <div className="group bg-zinc-800 hover:shadow-lg hover:shadow-red-500/20 p-6 border border-zinc-700 hover:border-red-500 rounded-lg transition-all">
+      <div className="group bg-zinc-950 hover:shadow-lg hover:shadow-red-500/20 p-6 border border-zinc-700 hover:border-red-500 rounded-lg transition-all">
         <div className="flex sm:flex-row flex-col justify-between items-start gap-4">
           <div className="flex-1">
             <h3 className="mb-2 font-bold text-white group-hover:text-red-400 text-xl transition-colors">
@@ -233,9 +233,9 @@ function EventCard({
 
   // Grid view
   return (
-    <div className="group bg-zinc-800 hover:shadow-2xl hover:shadow-red-500/30 border border-zinc-700 hover:border-red-500 rounded-lg overflow-hidden transition-all duration-300">
+    <div className="group bg-zinc-950 hover:shadow-2xl hover:shadow-red-500/30 border border-zinc-700 hover:border-red-500 rounded-lg overflow-hidden transition-all duration-300">
       {/* Image Placeholder */}
-      <div className="relative flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-900 h-48">
+      <div className="relative flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-950 h-48">
         <div className="text-zinc-600 text-6xl">🥊</div>
         {event.price && (
           <div className="top-2 right-2 absolute flex items-center gap-1 bg-black/50 px-3 py-1 rounded-full">

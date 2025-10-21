@@ -35,9 +35,9 @@ export default function ShopPage() {
   });
 
   return (
-    <div className="bg-zinc-900 min-h-screen">
+    <div className="bg-zinc-950 min-h-screen">
       {/* Header */}
-      <div className="bg-zinc-800 border-zinc-700 border-b">
+      <div className="bg-zinc-950 border-zinc-700 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
           <div className="text-center">
             <h1 className="mb-4 font-bold text-white text-4xl">ร้านค้า</h1>
@@ -60,7 +60,7 @@ export default function ShopPage() {
                 placeholder="ค้นหาสินค้า..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-zinc-800 py-3 pr-4 pl-10 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white placeholder-zinc-400"
+                className="bg-zinc-950 py-3 pr-4 pl-10 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white placeholder-zinc-400"
               />
             </div>
 
@@ -70,7 +70,7 @@ export default function ShopPage() {
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="bg-zinc-800 py-3 pr-4 pl-10 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white appearance-none cursor-pointer"
+                className="bg-zinc-950 py-3 pr-4 pl-10 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white appearance-none cursor-pointer"
               >
                 <option value="all">หมวดหมู่ทั้งหมด</option>
                 {categories
@@ -124,9 +124,9 @@ function ProductCard({ product }: { product: Product }) {
 
   return (
     <Link href={`/shop/${product.slug}`}>
-      <div className="group bg-zinc-800 hover:shadow-2xl hover:shadow-red-500/30 border border-zinc-700 hover:border-red-500 rounded-lg overflow-hidden transition-all duration-300">
+      <div className="group bg-zinc-950 hover:shadow-2xl hover:shadow-red-500/30 border border-zinc-700 hover:border-red-500 rounded-lg overflow-hidden transition-all duration-300">
         {/* Image Placeholder */}
-        <div className="relative flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-900 aspect-square">
+        <div className="relative flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-950 aspect-square">
           <div className="text-zinc-600 text-7xl">🥊</div>
           {isOutOfStock && (
             <div className="top-2 right-2 absolute bg-red-600 px-3 py-1 rounded-full">

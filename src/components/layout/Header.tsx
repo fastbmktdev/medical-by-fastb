@@ -25,7 +25,7 @@ export default function Header() {
 
   const navLinks: NavLink[] = [
     { text: "ค่ายมวย", href: "/gyms" },
-    { text: "ตั๋วชกมวย", href: "/events" },
+    { text: "อีเวนต์", href: "/events" },
     { text: "โปรแกรม", href: "/fighter-program" },
     { text: "ร้านค้า", href: "/shop" },
     {
@@ -39,16 +39,16 @@ export default function Header() {
   ];
 
   return (
-    <header className="top-0 z-[5000] sticky bg-background/60 supports-[backdrop-filter]:bg-background/60 backdrop-blur border-white/10 border-b h-16">
+    <header className="top-0 z-[5000] sticky bg-zinc-950/60 supports-[backdrop-filter]:bg-zinc-950/60 backdrop-blur border-white/10 border-b h-16">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <div className="flex justify-between items-center h-16">
           <div className="flex justify-center items-center gap-8">
             <Link href="/" className="flex items-center gap-2">
               <span className="inline-flex justify-center items-center bg-red-600 rounded w-8 h-8 font-bold text-white">
-                MT
+                TM
               </span>
               <span className="font-semibold text-base sm:text-lg">
-                MUAYTHAI NEXT
+                THAIKICK MUAYTHAI
               </span>
             </Link>
 
@@ -64,7 +64,7 @@ export default function Header() {
                       <ChevronDownIcon className="w-4 h-4" />
                     </button>
                     {isInfoMenuOpen && (
-                      <div className="right-0 absolute bg-zinc-800 shadow-lg mt-2 border border-white/10 rounded-md w-48">
+                      <div className="right-0 absolute bg-zinc-950 shadow-lg mt-2 border border-white/10 rounded-md w-48">
                         <div className="py-1">
                           {link.dropdown.map((item) => (
                             <Link
@@ -94,7 +94,6 @@ export default function Header() {
           </div>
 
           <div className="flex items-center gap-2">
-
             {/* Language Switcher */}
             <div className="relative">
               <button
@@ -104,7 +103,7 @@ export default function Header() {
                 {currentLang}
               </button>
               {isLangDropdownOpen && (
-                <div className="right-0 absolute bg-zinc-800 shadow-lg mt-2 border border-white/10 rounded-md w-32">
+                <div className="right-0 absolute bg-zinc-950 shadow-lg mt-2 border border-white/10 rounded-md w-32">
                   <div className="py-1">
                     <button
                       onClick={() => {
@@ -169,7 +168,7 @@ export default function Header() {
       </div>
 
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-background/80 border-white/10 border-t">
+        <div className="md:hidden bg-zinc-950/80 border-white/10 border-t">
           <div className="gap-4 grid mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-7xl text-sm">
             {navLinks.map((link) =>
               link.dropdown ? (
@@ -205,7 +204,7 @@ export default function Header() {
             <div className="pt-4 border-white/10 border-t">
               <Link
                 href="/login"
-                className="flex justify-center items-center gap-2 bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded font-medium text-white text-sm transition-colors"
+                className="flex justify-center items-center gap-2 bg-zinc-950 hover:bg-zinc-700 px-4 py-2 rounded font-medium text-white text-sm transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <svg

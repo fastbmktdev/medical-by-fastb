@@ -467,7 +467,7 @@ function PartnerDashboardContent() {
             </div>
 
             {/* Gym Information */}
-            <div className="space-y-4 bg-zinc-800 p-6 rounded-lg">
+            <div className="space-y-4 bg-zinc-950 p-6 rounded-lg">
               <h2 className="mb-4 font-semibold text-white text-xl">ข้อมูลที่ส่งมา</h2>
 
               <div className="gap-4 grid grid-cols-1 md:grid-cols-2">
@@ -745,7 +745,7 @@ function PartnerDashboardContent() {
             <h3 className="mb-4 font-semibold text-zinc-300 text-lg">รายครั้ง</h3>
             <div className="gap-4 grid md:grid-cols-2 lg:grid-cols-3">
               {oneTimePackages.map((pkg) => (
-                <Card key={pkg.id} className="bg-zinc-800/50 border border-zinc-700">
+                <Card key={pkg.id} className="bg-zinc-950/50 border border-zinc-700">
                   <CardHeader className="flex justify-between items-start">
                     <div className="flex-1">
                       <h4 className="font-bold text-white">{pkg.name}</h4>
@@ -825,7 +825,7 @@ function PartnerDashboardContent() {
             <h3 className="mb-4 font-semibold text-zinc-300 text-lg">แพ็คเกจรายเดือน</h3>
             <div className="gap-4 grid md:grid-cols-2 lg:grid-cols-3">
               {subscriptionPackages.map((pkg) => (
-                <Card key={pkg.id} className="bg-gradient-to-br from-zinc-800 to-zinc-900 border border-zinc-700">
+                <Card key={pkg.id} className="bg-gradient-to-br from-zinc-800 to-zinc-950 border border-zinc-700">
                   <CardHeader className="flex justify-between items-start">
                     <div className="flex-1">
                       <div className="inline-flex justify-center items-center bg-purple-600 mb-2 px-3 py-1 rounded-full font-semibold text-white text-xs">
@@ -906,7 +906,7 @@ function PartnerDashboardContent() {
 
         {/* Empty State */}
         {packages.length === 0 && (
-          <Card className="bg-zinc-800/50 border border-zinc-700">
+          <Card className="bg-zinc-950/50 border border-zinc-700">
             <CardBody className="py-12 text-center">
               <SparklesIcon className="mx-auto mb-4 w-12 h-12 text-zinc-600" />
               <h3 className="mb-2 font-bold text-white text-lg">ยังไม่มีแพ็คเกจ</h3>
@@ -1063,7 +1063,7 @@ function PartnerDashboardContent() {
           wrapper: "z-[100]",
         }}
       >
-        <ModalContent className="bg-zinc-900 border border-zinc-700">
+        <ModalContent className="bg-zinc-950 border border-zinc-700">
           <ModalHeader className="text-white">
             {editingPackage ? 'แก้ไขแพ็คเกจ' : 'สร้างแพ็คเกจใหม่'}
           </ModalHeader>

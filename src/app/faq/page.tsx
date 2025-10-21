@@ -150,9 +150,9 @@ export default function FAQPage() {
   const selectedCategoryData = faqData.find(cat => cat.category === activeCategory);
 
   return (
-    <div className="bg-zinc-900 min-h-screen">
+    <div className="bg-zinc-950 min-h-screen">
       {/* Header */}
-      <div className="bg-zinc-800 border-zinc-700 border-b">
+      <div className="bg-zinc-950 border-zinc-700 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
           <div className="text-center">
             <h1 className="mb-4 font-bold text-white text-4xl">คำถามที่พบบ่อย</h1>
@@ -167,7 +167,7 @@ export default function FAQPage() {
         <div className="flex lg:flex-row flex-col gap-8">
           {/* Categories Sidebar */}
           <div className="lg:w-1/4">
-            <div className="top-8 sticky bg-zinc-800 p-6 rounded-lg">
+            <div className="top-8 sticky bg-zinc-950 p-6 rounded-lg">
               <h3 className="mb-4 font-semibold text-white text-lg">หมวดหมู่</h3>
               <nav className="space-y-2">
                 {categories.map((category) => (
@@ -189,7 +189,7 @@ export default function FAQPage() {
 
           {/* FAQ Content */}
           <div className="lg:w-3/4">
-            <div className="bg-zinc-800 p-8 rounded-lg">
+            <div className="bg-zinc-950 p-8 rounded-lg">
               <h2 className="mb-6 font-bold text-white text-2xl">{activeCategory}</h2>
               
               <div className="space-y-4">
@@ -229,7 +229,7 @@ export default function FAQPage() {
             </div>
 
             {/* Contact Support */}
-            <div className="bg-zinc-800 mt-8 p-8 rounded-lg text-center">
+            <div className="bg-zinc-950 mt-8 p-8 rounded-lg text-center">
               <h3 className="mb-4 font-semibold text-white text-xl">ไม่พบคำตอบที่ต้องการ?</h3>
               <p className="mb-6 text-zinc-400">
                 ทีมงานของเราพร้อมให้ความช่วยเหลือและตอบคำถามเพิ่มเติม

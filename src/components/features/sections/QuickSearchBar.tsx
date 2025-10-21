@@ -27,9 +27,9 @@ export default function QuickSearchBar() {
   };
 
   return (
-    <div className="z-20 relative">
+    <div className="z-20 relative mt-8">
       <div className="mx-auto px-4 max-w-5xl">
-        <div className="bg-zinc-800 shadow-2xl p-6 rounded-2xl">
+        <div className="bg-zinc-950 shadow-2xl p-6 border border-zinc-800 rounded-2xl">
           {/* Categories */}
           <div className="flex gap-2 mb-6 overflow-x-auto">
             {categories.map((category) => (

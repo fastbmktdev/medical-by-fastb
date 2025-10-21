@@ -39,9 +39,9 @@ export default function EventDetailPage({
   });
 
   return (
-    <div className="bg-zinc-900 min-h-screen">
+    <div className="bg-zinc-950 min-h-screen">
       {/* Back Button */}
-      <div className="bg-zinc-800 border-zinc-700 border-b">
+      <div className="bg-zinc-950 border-zinc-700 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-7xl">
           <Link
             href="/events"
@@ -63,11 +63,11 @@ export default function EventDetailPage({
                 {event.name}
               </h1>
               <div className="flex flex-wrap gap-4">
-                <div className="flex items-center gap-2 bg-zinc-800 px-4 py-2 rounded-lg">
+                <div className="flex items-center gap-2 bg-zinc-950 px-4 py-2 rounded-lg">
                   <CalendarIcon className="w-5 h-5 text-blue-500" />
                   <span className="text-white">{formattedDate}</span>
                 </div>
-                <div className="flex items-center gap-2 bg-zinc-800 px-4 py-2 rounded-lg">
+                <div className="flex items-center gap-2 bg-zinc-950 px-4 py-2 rounded-lg">
                   <ClockIcon className="w-5 h-5 text-green-500" />
                   <span className="text-white">{formattedTime}</span>
                 </div>
@@ -75,7 +75,7 @@ export default function EventDetailPage({
             </div>
 
             {/* Image Gallery Placeholder */}
-            <div className="flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-900 rounded-lg h-96">
+            <div className="flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-950 rounded-lg h-96">
               <div className="text-center">
                 <div className="mb-4 text-zinc-600 text-9xl">🥊</div>
                 <p className="text-zinc-400">ภาพประกอบจะมาเร็วๆ นี้</p>
@@ -83,7 +83,7 @@ export default function EventDetailPage({
             </div>
 
             {/* About Event */}
-            <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
+            <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
               <h2 className="flex items-center gap-2 mb-4 font-bold text-white text-2xl">
                 <InformationCircleIcon className="w-6 h-6 text-blue-500" />
                 รายละเอียดอีเวนต์
@@ -117,13 +117,13 @@ export default function EventDetailPage({
             </div>
 
             {/* Location */}
-            <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
+            <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
               <h2 className="flex items-center gap-2 mb-4 font-bold text-white text-2xl">
                 <MapPinIcon className="w-6 h-6 text-red-500" />
                 สถานที่จัดงาน
               </h2>
               <p className="mb-4 text-zinc-300 text-lg">{event.location}</p>
-              <div className="bg-zinc-900 p-4 border border-zinc-700 rounded-lg">
+              <div className="bg-zinc-950 p-4 border border-zinc-700 rounded-lg">
                 <div className="flex justify-center items-center h-48">
                   <div className="text-center">
                     <MapPinIcon className="mx-auto mb-2 w-12 h-12 text-zinc-600" />
@@ -134,7 +134,7 @@ export default function EventDetailPage({
             </div>
 
             {/* Important Info */}
-            <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
+            <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
               <h2 className="mb-4 font-bold text-white text-2xl">
                 ข้อมูลสำคัญ
               </h2>
@@ -165,7 +165,7 @@ export default function EventDetailPage({
           <div className="lg:col-span-1">
             <div className="top-4 sticky space-y-6">
               {/* Ticket Info */}
-              <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
+              <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
                 <h3 className="flex items-center gap-2 mb-4 font-bold text-white text-xl">
                   <TicketIcon className="w-6 h-6 text-green-500" />
                   ข้อมูลตั๋ว
@@ -196,7 +196,7 @@ export default function EventDetailPage({
               </div>
 
               {/* Quick Info */}
-              <div className="bg-zinc-800 p-6 border border-zinc-700 rounded-lg">
+              <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
                 <h3 className="mb-4 font-bold text-white text-xl">
                   ข้อมูลด่วน
                 </h3>

@@ -146,7 +146,7 @@ export default function ResetPasswordPage() {
     return (
       <div className="container">
         <div className="w-full max-w-md">
-          <div className="bg-zinc-800 shadow-2xl p-8 rounded-2xl text-center">
+          <div className="bg-zinc-950 shadow-2xl p-8 rounded-2xl text-center">
             <div className="flex justify-center mb-6">
               <CheckCircleIcon className="w-24 h-24 text-green-500" />
             </div>
@@ -190,7 +190,7 @@ export default function ResetPasswordPage() {
         </div>
 
         {/* Reset Password Form */}
-        <div className="bg-zinc-800 shadow-2xl p-8 rounded-2xl">
+        <div className="bg-zinc-950 shadow-2xl p-8 rounded-2xl">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* General Error Message */}
             {errors.general && (

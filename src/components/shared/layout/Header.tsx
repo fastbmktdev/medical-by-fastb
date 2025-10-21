@@ -3,16 +3,21 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { 
-  ChevronDownIcon, 
-  UserCircleIcon, 
+import {
+  ChevronDownIcon,
+  UserCircleIcon,
   ArrowRightOnRectangleIcon,
   HomeIcon,
   BuildingStorefrontIcon,
   ShieldCheckIcon,
 } from "@heroicons/react/24/outline";
 import { useAuth } from "@/contexts";
-import { getUserRole, UserRole, getDashboardPath, ROLE_NAMES } from "@/lib/auth/client";
+import {
+  getUserRole,
+  UserRole,
+  getDashboardPath,
+  ROLE_NAMES,
+} from "@/lib/auth/client";
 
 type NavLink =
   | {
@@ -29,10 +34,10 @@ type NavLink =
 export default function Header() {
   // Router for navigation
   const router = useRouter();
-  
+
   // Authentication context
   const { user, signOut } = useAuth();
-  
+
   // UI state
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLangDropdownOpen, setLangDropdownOpen] = useState(false);
@@ -41,7 +46,9 @@ export default function Header() {
   const [currentLang, setCurrentLang] = useState("TH");
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [userRole, setUserRole] = useState<UserRole | null>(null);
-  const [applicationStatus, setApplicationStatus] = useState<string | null>(null);
+  const [applicationStatus, setApplicationStatus] = useState<string | null>(
+    null
+  );
 
   /**
    * Fetch user role and application status when user changes
@@ -53,13 +60,15 @@ export default function Header() {
         setUserRole(role);
 
         // Check if user has a gym application and its status
-        const supabase = (await import('@/lib/database/supabase/client')).createClient();
+        const supabase = (
+          await import("@/lib/database/supabase/client")
+        ).createClient();
         const { data: gymData } = await supabase
-          .from('gyms')
-          .select('status')
-          .eq('user_id', user.id)
+          .from("gyms")
+          .select("status")
+          .eq("user_id", user.id)
           .maybeSingle();
-        
+
         setApplicationStatus(gymData?.status || null);
       } else {
         setUserRole(null);
@@ -85,7 +94,7 @@ export default function Header() {
 
   const navLinks: NavLink[] = [
     { text: "ค่ายมวย", href: "/gyms" },
-    { text: "ตั๋วชกมวย", href: "/events" },
+    { text: "อีเวนต์", href: "/events" },
     { text: "โปรแกรม", href: "/fighter-program" },
     { text: "ร้านค้า", href: "/shop" },
     {
@@ -99,16 +108,16 @@ export default function Header() {
   ];
 
   return (
-    <header className="top-0 z-[5000] fixed bg-background/60 supports-[backdrop-filter]:bg-background/60 backdrop-blur border-white/10 border-b w-screen h-16">
+    <header className="top-0 z-[5000] fixed bg-zinc-950/40 supports-[backdrop-filter]:bg-zinc-950/60 backdrop-blur border-white/10 border-b w-screen h-16 text-zinc-50">
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex justify-center items-center gap-8">
             <Link href="/" className="flex items-center gap-2">
               <span className="inline-flex justify-center items-center bg-red-600 rounded w-8 h-8 font-bold text-white">
-                MT
+                TM
               </span>
               <span className="font-semibold text-base sm:text-lg">
-                MUAYTHAI NEXT
+                THAIKICK MUAYTHAI
               </span>
             </Link>
 
@@ -124,7 +133,7 @@ export default function Header() {
                       <ChevronDownIcon className="w-4 h-4" />
                     </button>
                     {isInfoMenuOpen && (
-                      <div className="right-0 absolute bg-zinc-800 shadow-lg mt-2 border border-white/10 rounded-md w-48">
+                      <div className="right-0 absolute bg-zinc-950 shadow-lg mt-2 border border-white/10 rounded-md w-48">
                         <div className="py-1">
                           {link.dropdown.map((item) => (
                             <Link
@@ -168,7 +177,7 @@ export default function Header() {
                   <ChevronDownIcon className="w-4 h-4" />
                 </button>
                 {isUserMenuOpen && (
-                  <div className="right-0 absolute bg-zinc-800 shadow-lg mt-2 border border-white/10 rounded-md w-56">
+                  <div className="right-0 absolute bg-zinc-950 shadow-lg mt-2 border border-white/10 rounded-md w-56">
                     <div className="py-1">
                       {/* User Info */}
                       <div className="px-4 py-2 border-white/10 border-b">
@@ -194,15 +203,21 @@ export default function Header() {
                           className="flex items-center gap-2 hover:bg-white/5 px-4 py-2 text-white/80 text-sm"
                           onClick={() => setUserMenuOpen(false)}
                         >
-                          {userRole === 'admin' && <ShieldCheckIcon className="w-4 h-4" />}
-                          {userRole === 'partner' && <BuildingStorefrontIcon className="w-4 h-4" />}
-                          {userRole === 'authenticated' && <HomeIcon className="w-4 h-4" />}
+                          {userRole === "admin" && (
+                            <ShieldCheckIcon className="w-4 h-4" />
+                          )}
+                          {userRole === "partner" && (
+                            <BuildingStorefrontIcon className="w-4 h-4" />
+                          )}
+                          {userRole === "authenticated" && (
+                            <HomeIcon className="w-4 h-4" />
+                          )}
                           แดชบอร์ด
                         </Link>
                       )}
 
                       {/* Apply for Partner - Show only for authenticated users without pending/approved application */}
-                      {userRole === 'authenticated' && !applicationStatus && (
+                      {userRole === "authenticated" && !applicationStatus && (
                         <Link
                           href="/partner/apply"
                           className="flex items-center gap-2 hover:bg-white/5 px-4 py-2 text-white/80 text-sm"
@@ -212,13 +227,16 @@ export default function Header() {
                           สมัคร Partner
                         </Link>
                       )}
-                      
+
                       {/* Show Application Status if pending */}
-                      {userRole === 'authenticated' && applicationStatus === 'pending' && (
-                        <div className="px-4 py-2 border-white/10 border-t">
-                          <p className="text-yellow-400 text-xs">📋 รอการอนุมัติ Partner</p>
-                        </div>
-                      )}
+                      {userRole === "authenticated" &&
+                        applicationStatus === "pending" && (
+                          <div className="px-4 py-2 border-white/10 border-t">
+                            <p className="text-yellow-400 text-xs">
+                              📋 รอการอนุมัติ Partner
+                            </p>
+                          </div>
+                        )}
 
                       {/* Logout */}
                       <button
@@ -252,7 +270,7 @@ export default function Header() {
                 {currentLang}
               </button>
               {isLangDropdownOpen && (
-                <div className="right-0 absolute bg-zinc-800 shadow-lg mt-2 border border-white/10 rounded-md w-32">
+                <div className="right-0 absolute bg-zinc-950 shadow-lg mt-2 border border-white/10 rounded-md w-32">
                   <div className="py-1">
                     <button
                       onClick={() => {
@@ -317,7 +335,7 @@ export default function Header() {
       </div>
 
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-background/80 border-white/10 border-t">
+        <div className="md:hidden bg-zinc-950/80 border-white/10 border-t">
           <div className="gap-4 grid mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-7xl text-sm">
             {navLinks.map((link) =>
               link.dropdown ? (
@@ -355,7 +373,7 @@ export default function Header() {
               {user ? (
                 <div className="space-y-2">
                   {/* User Info */}
-                  <div className="bg-zinc-800 px-4 py-3 rounded">
+                  <div className="bg-zinc-950 px-4 py-3 rounded">
                     <p className="font-medium text-white text-sm truncate">
                       {user.user_metadata?.full_name || "ผู้ใช้งาน"}
                     </p>
@@ -375,21 +393,27 @@ export default function Header() {
                   {userRole && (
                     <Link
                       href={getDashboardPath(userRole)}
-                      className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded font-medium text-white text-sm transition-colors"
+                      className="flex items-center gap-2 bg-zinc-950 hover:bg-zinc-700 px-4 py-2 rounded font-medium text-white text-sm transition-colors"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
-                      {userRole === 'admin' && <ShieldCheckIcon className="w-5 h-5" />}
-                      {userRole === 'partner' && <BuildingStorefrontIcon className="w-5 h-5" />}
-                      {userRole === 'authenticated' && <HomeIcon className="w-5 h-5" />}
+                      {userRole === "admin" && (
+                        <ShieldCheckIcon className="w-5 h-5" />
+                      )}
+                      {userRole === "partner" && (
+                        <BuildingStorefrontIcon className="w-5 h-5" />
+                      )}
+                      {userRole === "authenticated" && (
+                        <HomeIcon className="w-5 h-5" />
+                      )}
                       <span>แดชบอร์ด</span>
                     </Link>
                   )}
 
                   {/* Apply for Partner - Show only for authenticated users without pending/approved application */}
-                  {userRole === 'authenticated' && !applicationStatus && (
+                  {userRole === "authenticated" && !applicationStatus && (
                     <Link
                       href="/partner/apply"
-                      className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded font-medium text-white text-sm transition-colors"
+                      className="flex items-center gap-2 bg-zinc-950 hover:bg-zinc-700 px-4 py-2 rounded font-medium text-white text-sm transition-colors"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       <BuildingStorefrontIcon className="w-5 h-5" />
@@ -398,12 +422,17 @@ export default function Header() {
                   )}
 
                   {/* Show Application Status if pending */}
-                  {userRole === 'authenticated' && applicationStatus === 'pending' && (
-                    <div className="bg-yellow-500/20 px-4 py-3 border border-yellow-500/30 rounded">
-                      <p className="font-medium text-white text-sm">📋 รอการอนุมัติ Partner</p>
-                      <p className="mt-1 text-yellow-400 text-xs">ทีมงานกำลังตรวจสอบข้อมูล</p>
-                    </div>
-                  )}
+                  {userRole === "authenticated" &&
+                    applicationStatus === "pending" && (
+                      <div className="bg-yellow-500/20 px-4 py-3 border border-yellow-500/30 rounded">
+                        <p className="font-medium text-white text-sm">
+                          📋 รอการอนุมัติ Partner
+                        </p>
+                        <p className="mt-1 text-yellow-400 text-xs">
+                          ทีมงานกำลังตรวจสอบข้อมูล
+                        </p>
+                      </div>
+                    )}
 
                   {/* Logout Button */}
                   <button
@@ -412,13 +441,15 @@ export default function Header() {
                     className="flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 disabled:bg-red-400 px-4 py-2 rounded w-full font-medium text-white text-sm transition-colors"
                   >
                     <ArrowRightOnRectangleIcon className="w-5 h-5" />
-                    <span>{isLoggingOut ? "กำลังออกจากระบบ..." : "ออกจากระบบ"}</span>
+                    <span>
+                      {isLoggingOut ? "กำลังออกจากระบบ..." : "ออกจากระบบ"}
+                    </span>
                   </button>
                 </div>
               ) : (
                 <Link
                   href="/login"
-                  className="flex justify-center items-center gap-2 bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded font-medium text-white text-sm transition-colors"
+                  className="flex justify-center items-center gap-2 bg-zinc-950 hover:bg-zinc-700 px-4 py-2 rounded font-medium text-white text-sm transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <UserCircleIcon className="w-5 h-5" />
