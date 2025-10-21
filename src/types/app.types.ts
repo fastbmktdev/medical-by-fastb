@@ -54,6 +54,19 @@ export interface Product {
   images?: string[];
 }
 
+export interface Article {
+  id: number;
+  slug: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  author: string;
+  date: string;
+  category: string;
+  image?: string;
+  tags?: string[];
+}
+
 export interface ApiResponse<T> {
   data: T | null;
   error: string | null;

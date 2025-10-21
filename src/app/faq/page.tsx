@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 const faqData = [
   {
@@ -151,17 +152,10 @@ export default function FAQPage() {
 
   return (
     <div className="bg-zinc-950 min-h-screen">
-      {/* Header */}
-      <div className="bg-zinc-950 border-zinc-700 border-b">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
-          <div className="text-center">
-            <h1 className="mb-4 font-bold text-white text-4xl">คำถามที่พบบ่อย</h1>
-            <p className="mx-auto max-w-3xl text-zinc-300 text-xl">
-              ค้นหาคำตอบสำหรับคำถามที่พบบ่อยเกี่ยวกับการใช้งานแพลตฟอร์มของเรา
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageHeader 
+        title="คำถามที่พบบ่อย" 
+        description="ค้นหาคำตอบสำหรับคำถามที่พบบ่อยเกี่ยวกับการใช้งานแพลตฟอร์มของเรา"
+      />
 
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
         <div className="flex lg:flex-row flex-col gap-8">

@@ -10,6 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 export default function ShopPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -36,17 +37,10 @@ export default function ShopPage() {
 
   return (
     <div className="bg-zinc-950 min-h-screen">
-      {/* Header */}
-      <div className="bg-zinc-950 border-zinc-700 border-b">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
-          <div className="text-center">
-            <h1 className="mb-4 font-bold text-white text-4xl">ร้านค้า</h1>
-            <p className="mx-auto max-w-3xl text-zinc-300 text-xl">
-              อุปกรณ์และเครื่องแต่งกายมวยไทยคุณภาพสูง
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageHeader 
+        title="ร้านค้า" 
+        description="อุปกรณ์และเครื่องแต่งกายมวยไทยคุณภาพสูง"
+      />
 
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
         {/* Search and Filter */}

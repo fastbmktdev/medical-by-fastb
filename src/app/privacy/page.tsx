@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 const privacyData = [
   {
@@ -290,17 +291,12 @@ export default function PrivacyPage() {
 
   return (
     <div className="bg-zinc-950 min-h-screen">
-      {/* Header */}
-      <div className="bg-zinc-950 border-zinc-700 border-b">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
-          <div className="text-center">
-            <h1 className="mb-4 font-bold text-white text-4xl">นโยบายความเป็นส่วนตัว</h1>
-            <p className="mx-auto max-w-3xl text-zinc-300 text-xl">
-              วิธีการที่เรารวบรวม ใช้ และปกป้องข้อมูลส่วนบุคคลของคุณ
-            </p>
-            <p className="mt-4 text-zinc-400">อัปเดตล่าสุด: 1 มกราคม 2567</p>
-          </div>
-        </div>
+      <PageHeader 
+        title="นโยบายความเป็นส่วนตัว" 
+        description="วิธีการที่เรารวบรวม ใช้ และปกป้องข้อมูลส่วนบุคคลของคุณ"
+      />
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 pt-4 max-w-7xl">
+        <p className="text-zinc-400 text-center">อัปเดตล่าสุด: 1 มกราคม 2567</p>
       </div>
 
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">

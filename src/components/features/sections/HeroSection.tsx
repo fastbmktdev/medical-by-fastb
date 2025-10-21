@@ -58,7 +58,7 @@ function Overlay() {
 
 function HeroContent() {
   return (
-    <div className="z-10 relative flex flex-col justify-center items-center mx-auto px-4 max-w-7xl h-[calc(100vh-128px)] text-center">
+    <div className="z-10 relative flex flex-col justify-center items-center mx-auto px-4 max-w-7xl h-[calc(100vh_-_116px)] text-center">
       <p className="mb-4 font-semibold text-red-500 text-sm md:text-base tracking-wider">
         {HERO_HEADINGS.subheading}
       </p>

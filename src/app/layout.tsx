@@ -3,6 +3,7 @@ import { Bai_Jamjuree } from "next/font/google";
 import "./globals.css";
 import { LayoutWrapper, ErrorBoundary } from "@/components/shared";
 import { Providers } from "./providers";
+import FixedBackground from "@/components/ui/FixedBackground";
 
 const baiJamjuree = Bai_Jamjuree({
   variable: "--font-bai-jamjuree",
@@ -24,6 +25,7 @@ export default function RootLayout({
   return (
     <html lang="th" className={`${baiJamjuree.variable} antialiased`}>
       <body className="bg-zinc-950 text-foreground">
+        <FixedBackground />
         <Providers>
           <LayoutWrapper>
             <ErrorBoundary>{children}</ErrorBoundary>

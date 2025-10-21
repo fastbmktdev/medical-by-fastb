@@ -7,6 +7,7 @@ export { default as Header } from './layout/Header';
 export { default as LayoutWrapper } from './layout/LayoutWrapper';
 export { default as SidebarContent } from './layout/SidebarContent';
 export { ErrorBoundary, useAsyncError } from './ErrorBoundary';
+export { PageHeader } from './PageHeader';
 
 // Re-export types
 export type { MenuItem } from './layout/DashboardLayout';

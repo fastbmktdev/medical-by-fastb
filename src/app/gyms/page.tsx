@@ -9,6 +9,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { Button } from "@heroui/react";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 interface Gym {
   id: string;
@@ -76,18 +77,11 @@ export default function GymsPage() {
   ];
 
   return (
-    <div className="bg-zinc-950 mt-16 min-h-screen">
-      {/* Header */}
-      <div className="bg-zinc-950 border-zinc-700 border-b">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8 py-16 max-w-7xl">
-          <div className="py-4 text-center">
-            <h1 className="mb-4 font-bold text-white text-4xl">ค่ายมวยไทย</h1>
-            <p className="mx-auto max-w-3xl text-zinc-300 text-xl">
-              ค้นหาและจองค่ายมวยไทยที่เหมาะกับคุณ จากค่ายชั้นนำทั่วประเทศไทย
-            </p>
-          </div>
-        </div>
-      </div>
+    <div className="bg-zinc-950 min-h-screen">
+      <PageHeader 
+        title="ค่ายมวยไทย" 
+        description="ค้นหาและจองค่ายมวยไทยที่เหมาะกับคุณ จากค่ายชั้นนำทั่วประเทศไทย"
+      />
 
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
         {/* Search and Filter */}

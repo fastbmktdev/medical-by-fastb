@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 const termsData = [
   {
@@ -189,17 +190,12 @@ export default function TermsPage() {
 
   return (
     <div className="bg-zinc-950 min-h-screen">
-      {/* Header */}
-      <div className="bg-zinc-950 border-zinc-700 border-b">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
-          <div className="text-center">
-            <h1 className="mb-4 font-bold text-white text-4xl">ข้อกำหนดการใช้งาน</h1>
-            <p className="mx-auto max-w-3xl text-zinc-300 text-xl">
-              ข้อกำหนดและเงื่อนไขการใช้งานเว็บไซต์และบริการของ THAIKICK MUAYTHAI
-            </p>
-            <p className="mt-4 text-zinc-400">อัปเดตล่าสุด: 1 มกราคม 2567</p>
-          </div>
-        </div>
+      <PageHeader 
+        title="ข้อกำหนดการใช้งาน" 
+        description="ข้อกำหนดและเงื่อนไขการใช้งานเว็บไซต์และบริการของ THAIKICK MUAYTHAI"
+      />
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 pt-4 max-w-7xl">
+        <p className="text-zinc-400 text-center">อัปเดตล่าสุด: 1 มกราคม 2567</p>
       </div>
 
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
