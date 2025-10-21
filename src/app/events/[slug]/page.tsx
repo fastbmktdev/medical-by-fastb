@@ -39,7 +39,7 @@ export default function EventDetailPage({
   });
 
   return (
-    <div className="bg-zinc-900 min-h-screen">
+    <div className="bg-zinc-950 min-h-screen">
       {/* Back Button */}
       <div className="bg-zinc-800 border-zinc-700 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-7xl">
@@ -123,7 +123,7 @@ export default function EventDetailPage({
                 สถานที่จัดงาน
               </h2>
               <p className="mb-4 text-zinc-300 text-lg">{event.location}</p>
-              <div className="bg-zinc-900 p-4 border border-zinc-700 rounded-lg">
+              <div className="bg-zinc-950 p-4 border border-zinc-700 rounded-lg">
                 <div className="flex justify-center items-center h-48">
                   <div className="text-center">
                     <MapPinIcon className="mx-auto mb-2 w-12 h-12 text-zinc-600" />

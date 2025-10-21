@@ -70,7 +70,7 @@ export default function DashboardLayout({
     <div className="flex bg-gradient-to-br from-zinc-950 to-zinc-900 min-h-screen">
       {/* Sidebar - Desktop */}
       {!hideSidebar && (
-        <aside className="hidden top-0 lg:sticky lg:flex flex-col bg-zinc-900/50 backdrop-blur-xl border-white/5 border-r w-64 h-screen max-h-screen">
+        <aside className="hidden top-0 lg:sticky lg:flex flex-col bg-zinc-950/50 backdrop-blur-xl border-white/5 border-r w-64 h-screen max-h-screen">
           <SidebarContent {...sidebarProps} />
         </aside>
       )}
@@ -86,7 +86,7 @@ export default function DashboardLayout({
       {/* Mobile Sidebar */}
       {!hideSidebar && (
         <aside
-          className={`lg:hidden fixed inset-y-0 left-0 z-50 flex flex-col bg-zinc-900 border-r border-white/5 w-64 transform transition-transform duration-300 ${
+          className={`lg:hidden fixed inset-y-0 left-0 z-50 flex flex-col bg-zinc-950 border-r border-white/5 w-64 transform transition-transform duration-300 ${
             isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
           }`}
         >
@@ -102,7 +102,7 @@ export default function DashboardLayout({
       <div className="flex flex-col flex-1 min-h-screen">
         {/* Top Bar - Mobile */}
         {!hideSidebar && (
-          <header className="lg:hidden flex justify-between items-center bg-zinc-900/50 backdrop-blur-xl px-4 py-4 border-white/5 border-b">
+          <header className="lg:hidden flex justify-between items-center bg-zinc-950/50 backdrop-blur-xl px-4 py-4 border-white/5 border-b">
             <Button
               isIconOnly
               variant="light"

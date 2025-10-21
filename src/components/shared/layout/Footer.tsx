@@ -2,10 +2,10 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/10 h-16">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 text-sm text-white/70 flex flex-col sm:flex-row items-center justify-between gap-4 h-[inherit]">
+    <footer className="border-white/10 border-t h-16">
+      <div className="flex sm:flex-row flex-col justify-between items-center gap-4 mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-7xl h-[inherit] text-white/70 text-sm">
         <p>
-          © {new Date().getFullYear()} MUAYTHAI NEXT. All rights reserved.
+          © {new Date().getFullYear()} THAIKICK MUAYTHAI. All rights reserved.
         </p>
         <div className="flex items-center gap-4">
           <Link href="/about" className="hover:text-white">

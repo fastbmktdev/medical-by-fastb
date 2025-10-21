@@ -3,22 +3,29 @@
 @import "leaflet/dist/leaflet.css";
 @import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 
-/* Corporate Identity Colors */
-:root {
-  --color-background: #F5EDED;
-  --color-foreground: #0F0F0F;
-  --color-primary: #D72323;
-  --color-secondary: #3E3636;
-  --color-text-light: #F5EDED;
+@theme {
+  --background: #0F0F0F;
+  --foreground: #F5EDED;
+  --primary: #D72323;
+  --secondary: #3E3636;
 }
 
-.dark {
+/* Corporate Identity Colors */
+:root {
   --color-background: #0F0F0F;
   --color-foreground: #F5EDED;
   --color-primary: #D72323;
   --color-secondary: #3E3636;
   --color-text-light: #F5EDED;
 }
+
+/* .dark {
+  --color-background: #0F0F0F;
+  --color-foreground: #F5EDED;
+  --color-primary: #D72323;
+  --color-secondary: #3E3636;
+  --color-text-light: #F5EDED;
+} */
 
 body {
   font-family: var(--font-bai-jamjuree);

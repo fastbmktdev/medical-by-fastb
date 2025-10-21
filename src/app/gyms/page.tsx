@@ -68,7 +68,7 @@ export default function GymsPage() {
   const gymTypes = ["all", ...new Set(gyms.map((gym) => gym.gym_type).filter((type): type is string => Boolean(type)))];
 
   return (
-    <div className="bg-zinc-900 min-h-screen">
+    <div className="bg-zinc-950 min-h-screen">
       {/* Header */}
       <div className="bg-zinc-800 border-zinc-700 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-16 max-w-7xl">

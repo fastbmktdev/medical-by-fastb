@@ -11,7 +11,7 @@ const baiJamjuree = Bai_Jamjuree({
 });
 
 export const metadata: Metadata = {
-  title: "MUAYTHAI NEXT",
+  title: "THAIKICK",
   description:
     "แพลตฟอร์มสำหรับค้นหาและจองค่ายมวยชั้นนำ และซื้อตั๋วเวทีมวยทั่วประเทศไทย",
 };
@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="th" className={`${baiJamjuree.variable} antialiased`}>
-      <body className="bg-background text-foreground">
+      <body className="bg-zinc-950 text-foreground">
         <Providers>
           <LayoutWrapper>
             <ErrorBoundary>{children}</ErrorBoundary>

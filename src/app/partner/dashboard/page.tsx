@@ -1063,7 +1063,7 @@ function PartnerDashboardContent() {
           wrapper: "z-[100]",
         }}
       >
-        <ModalContent className="bg-zinc-900 border border-zinc-700">
+        <ModalContent className="bg-zinc-950 border border-zinc-700">
           <ModalHeader className="text-white">
             {editingPackage ? 'แก้ไขแพ็คเกจ' : 'สร้างแพ็คเกจใหม่'}
           </ModalHeader>

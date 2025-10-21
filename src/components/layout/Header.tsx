@@ -39,16 +39,16 @@ export default function Header() {
   ];
 
   return (
-    <header className="top-0 z-[5000] sticky bg-background/60 supports-[backdrop-filter]:bg-background/60 backdrop-blur border-white/10 border-b h-16">
+    <header className="top-0 z-[5000] sticky bg-zinc-950/60 supports-[backdrop-filter]:bg-zinc-950/60 backdrop-blur border-white/10 border-b h-16">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <div className="flex justify-between items-center h-16">
           <div className="flex justify-center items-center gap-8">
             <Link href="/" className="flex items-center gap-2">
               <span className="inline-flex justify-center items-center bg-red-600 rounded w-8 h-8 font-bold text-white">
-                MT
+                TKM
               </span>
               <span className="font-semibold text-base sm:text-lg">
-                MUAYTHAI NEXT
+                THAIKICK MUAYTHAI
               </span>
             </Link>
 
@@ -94,7 +94,6 @@ export default function Header() {
           </div>
 
           <div className="flex items-center gap-2">
-
             {/* Language Switcher */}
             <div className="relative">
               <button
@@ -169,7 +168,7 @@ export default function Header() {
       </div>
 
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-background/80 border-white/10 border-t">
+        <div className="md:hidden bg-zinc-950/80 border-white/10 border-t">
           <div className="gap-4 grid mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-7xl text-sm">
             {navLinks.map((link) =>
               link.dropdown ? (

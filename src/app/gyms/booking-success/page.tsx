@@ -151,7 +151,7 @@ function BookingSuccessContent() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center bg-zinc-900 min-h-screen">
+      <div className="flex justify-center items-center bg-zinc-950 min-h-screen">
         <div className="text-center">
           <div className="inline-block mb-4 border-4 border-red-600 border-t-transparent rounded-full w-16 h-16 animate-spin"></div>
           <p className="text-zinc-300 text-lg">กำลังตรวจสอบการชำระเงิน...</p>
@@ -163,7 +163,7 @@ function BookingSuccessContent() {
   // Payment Failed
   if (paymentStatus === 'failed' || error) {
     return (
-      <div className="flex justify-center items-center bg-zinc-900 p-4 min-h-screen">
+      <div className="flex justify-center items-center bg-zinc-950 p-4 min-h-screen">
         <div className="bg-zinc-800 shadow-xl p-8 border border-zinc-700 rounded-xl w-full max-w-2xl">
           <div className="mb-8 text-center">
             <div className="inline-flex justify-center items-center bg-red-600 mb-4 rounded-full w-20 h-20">
@@ -192,7 +192,7 @@ function BookingSuccessContent() {
   // Payment is still pending/verifying
   if (paymentStatus === 'verifying') {
     return (
-      <div className="flex justify-center items-center bg-zinc-900 p-4 min-h-screen">
+      <div className="flex justify-center items-center bg-zinc-950 p-4 min-h-screen">
         <div className="bg-zinc-800 shadow-xl p-8 border border-zinc-700 rounded-xl w-full max-w-2xl">
           <div className="mb-8 text-center">
             <div className="inline-flex justify-center items-center bg-yellow-600 mb-4 rounded-full w-20 h-20">
@@ -217,7 +217,7 @@ function BookingSuccessContent() {
 
   // Payment Succeeded - Show success page
   return (
-    <div className="flex justify-center items-center bg-zinc-900 p-4 min-h-screen">
+    <div className="flex justify-center items-center bg-zinc-950 p-4 min-h-screen">
       <div className="bg-zinc-800 shadow-xl p-8 border border-zinc-700 rounded-xl w-full max-w-2xl">
         {/* Success Icon */}
         <div className="mb-8 text-center">
@@ -338,7 +338,7 @@ export default function GymBookingSuccessPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex justify-center items-center bg-zinc-900 min-h-screen">
+        <div className="flex justify-center items-center bg-zinc-950 min-h-screen">
           <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
         </div>
       }
