@@ -15,6 +15,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { PageHeader } from "@/components/shared/PageHeader";
+import { EventCard } from "@/components/ui/cards/EventCard";
 
 type ViewMode = "list" | "grid";
 
@@ -157,122 +158,6 @@ export default function EventsPage() {
             ))}
           </div>
         )}
-      </div>
-    </div>
-  );
-}
-
-function EventCard({
-  event,
-  viewMode,
-}: {
-  event: Event;
-  viewMode: ViewMode;
-}) {
-  const eventDate = new Date(event.date);
-  const formattedDate = eventDate.toLocaleDateString("th-TH", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-  const formattedTime = eventDate.toLocaleTimeString("th-TH", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
-  if (viewMode === "list") {
-    return (
-      <div className="group bg-zinc-950 hover:shadow-lg hover:shadow-red-500/20 p-6 border border-zinc-700 hover:border-red-500 rounded-lg transition-all">
-        <div className="flex sm:flex-row flex-col justify-between items-start gap-4">
-          <div className="flex-1">
-            <h3 className="mb-2 font-bold text-white group-hover:text-red-400 text-xl transition-colors">
-              {event.name}
-            </h3>
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-zinc-300 text-sm">
-                <MapPinIcon className="flex-shrink-0 w-4 h-4 text-red-500" />
-                <span>{event.location}</span>
-              </div>
-              <div className="flex items-center gap-2 text-zinc-300 text-sm">
-                <CalendarIcon className="flex-shrink-0 w-4 h-4 text-blue-500" />
-                <span>{formattedDate}</span>
-              </div>
-              <div className="flex items-center gap-2 text-zinc-300 text-sm">
-                <ClockIcon className="flex-shrink-0 w-4 h-4 text-green-500" />
-                <span>{formattedTime}</span>
-              </div>
-            </div>
-          </div>
-          <div className="flex gap-2 w-full sm:w-auto">
-            <Link
-              href={`/events/${event.slug}`}
-              className="sm:flex-initial flex-1 bg-zinc-700 hover:bg-zinc-600 px-4 py-2 rounded-lg font-semibold text-white text-sm text-center transition-colors"
-            >
-              ดูรายละเอียด
-            </Link>
-            <Link
-              href={`/events/${event.slug}`}
-              className="sm:flex-initial flex-1 bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg font-semibold text-white text-sm text-center transition-colors"
-            >
-              จองตั๋ว
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Grid view
-  return (
-    <div className="group bg-zinc-950 hover:shadow-2xl hover:shadow-red-500/30 border border-zinc-700 hover:border-red-500 rounded-lg overflow-hidden transition-all duration-300">
-      {/* Image Placeholder */}
-      <div className="relative flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-950 h-48">
-        <div className="text-zinc-600 text-6xl">🥊</div>
-        {event.price && (
-          <div className="top-2 right-2 absolute flex items-center gap-1 bg-black/50 px-3 py-1 rounded-full">
-            <TicketIcon className="w-4 h-4 text-green-400" />
-            <span className="font-bold text-white text-sm">
-              ฿{event.price.toLocaleString()}
-            </span>
-          </div>
-        )}
-      </div>
-
-      <div className="p-6">
-        <h3 className="mb-3 font-bold text-white group-hover:text-red-400 text-xl transition-colors">
-          {event.name}
-        </h3>
-
-        <div className="space-y-2 mb-4">
-          <div className="flex items-start gap-2 text-zinc-300 text-sm">
-            <MapPinIcon className="flex-shrink-0 mt-0.5 w-4 h-4 text-red-500" />
-            <span className="line-clamp-1">{event.location}</span>
-          </div>
-          <div className="flex items-center gap-2 text-zinc-300 text-sm">
-            <CalendarIcon className="flex-shrink-0 w-4 h-4 text-blue-500" />
-            <span className="line-clamp-1">{formattedDate}</span>
-          </div>
-          <div className="flex items-center gap-2 text-zinc-300 text-sm">
-            <ClockIcon className="flex-shrink-0 w-4 h-4 text-green-500" />
-            <span>{formattedTime}</span>
-          </div>
-        </div>
-
-        <div className="flex gap-2">
-          <Link
-            href={`/events/${event.slug}`}
-            className="flex-1 bg-zinc-700 hover:bg-zinc-600 py-2 rounded-lg font-semibold text-white text-sm text-center transition-colors"
-          >
-            ดูรายละเอียด
-          </Link>
-          <Link
-            href={`/events/${event.slug}`}
-            className="flex-1 bg-red-600 hover:bg-red-700 py-2 rounded-lg font-semibold text-white text-sm text-center transition-colors"
-          >
-            จองตั๋ว
-          </Link>
-        </div>
       </div>
     </div>
   );

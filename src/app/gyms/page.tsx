@@ -10,6 +10,7 @@ import {
 import Link from "next/link";
 import { Button } from "@heroui/react";
 import { PageHeader } from "@/components/shared/PageHeader";
+import { GymCard } from "@/components/ui/cards/GymCard";
 
 interface Gym {
   id: string;
@@ -161,57 +162,6 @@ export default function GymsPage() {
             )}
           </>
         )}
-      </div>
-    </div>
-  );
-}
-
-function GymCard({ gym }: { gym: Gym }) {
-  return (
-    <div className="group bg-zinc-950 hover:shadow-2xl hover:shadow-red-500/30 border border-zinc-700 hover:border-red-500 rounded-lg overflow-hidden transition-all duration-300">
-      {/* Image Placeholder */}
-      <div className="relative flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-950 h-48">
-        <div className="text-zinc-600 text-6xl">🥊</div>
-      </div>
-
-      <div className="p-6">
-        {/* Gym Name */}
-        <h3 className="mb-2 font-bold text-white group-hover:text-red-400 text-xl transition-colors">
-          {gym.gym_name}
-        </h3>
-        {gym.gym_name_english && (
-          <p className="mb-3 text-zinc-400 text-sm">{gym.gym_name_english}</p>
-        )}
-
-        {/* Location */}
-        {gym.address && (
-          <div className="flex items-start gap-2 mb-4 text-zinc-300">
-            <MapPinIcon className="flex-shrink-0 mt-0.5 w-5 h-5 text-red-500" />
-            <span className="text-sm line-clamp-2">{gym.address}</span>
-          </div>
-        )}
-
-        {/* Details */}
-        {gym.gym_details && (
-          <p className="mb-4 text-zinc-400 text-sm line-clamp-3">
-            {gym.gym_details}
-          </p>
-        )}
-
-        {/* CTA */}
-        <div className="flex justify-between items-center pt-4 border-zinc-700 border-t">
-          <div>
-            {gym.gym_type && (
-              <p className="text-zinc-400 text-xs">{gym.gym_type}</p>
-            )}
-          </div>
-          <Link
-            href={`/gyms/${gym.slug}`}
-            className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg font-semibold text-white text-sm transition-colors"
-          >
-            ดูรายละเอียด
-          </Link>
-        </div>
       </div>
     </div>
   );
