@@ -8,7 +8,11 @@
     "start": "next start",
     "lint": "next lint",
     "build:placeholder": "SUPABASE_URL=https://placeholder.supabase.co NEXT_PUBLIC_SUPABASE_ANON_KEY=placeholder npm run build",
-    "check-db": "node scripts/check-database.mjs",
+    "check-db": "node scripts/database-utilities.js",
+    "db:check": "node scripts/database-utilities.js check",
+    "db:partners": "node scripts/database-utilities.js partners",
+    "db:slugs": "node scripts/database-utilities.js slugs",
+    "db:utils": "node scripts/database-utilities.js all",
     "db:reset": "supabase db reset",
     "db:seed": "supabase db reset",
     "db:migrate": "supabase migration up",
@@ -19,7 +23,12 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug",
     "test:e2e:headed": "playwright test --headed",
-    "test:report": "playwright show-report"
+    "test:report": "playwright show-report",
+    "test:scripts": "node tests/scripts/run-all-tests.js",
+    "test:scripts:admin": "node tests/scripts/run-all-tests.js --admin",
+    "test:scripts:database": "node tests/scripts/run-all-tests.js --database",
+    "test:scripts:setup": "node tests/scripts/run-all-tests.js --setup",
+    "test:scripts:storage": "node tests/scripts/run-all-tests.js --storage"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",

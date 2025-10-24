@@ -1,12 +1,14 @@
--- Create storage bucket for gym images
--- Run this in Supabase SQL Editor if the gym-images bucket is missing
+-- Setup gym-images storage bucket
+-- Run this in Supabase Studio SQL Editor
 
 -- Create the bucket
 INSERT INTO storage.buckets (id, name, public)
 VALUES ('gym-images', 'gym-images', true)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (id) DO UPDATE SET
+  public = true,
+  updated_at = NOW();
 
--- Storage policies for gym-images bucket
+-- Create storage policies
 CREATE POLICY "Authenticated users can upload gym images"
   ON storage.objects FOR INSERT
   WITH CHECK (
@@ -22,6 +24,7 @@ CREATE POLICY "Users can update their own gym images"
   ON storage.objects FOR UPDATE
   USING (
     bucket_id = 'gym-images'
+    AND auth.uid() IS NOT NULL
     AND auth.uid()::text = (storage.foldername(name))[1]
   );
 
@@ -29,6 +32,16 @@ CREATE POLICY "Users can delete their own gym images"
   ON storage.objects FOR DELETE
   USING (
     bucket_id = 'gym-images'
+    AND auth.uid() IS NOT NULL
     AND auth.uid()::text = (storage.foldername(name))[1]
   );
 
+-- Verify bucket creation
+SELECT 
+  id,
+  name,
+  public,
+  created_at,
+  updated_at
+FROM storage.buckets 
+WHERE id = 'gym-images';
