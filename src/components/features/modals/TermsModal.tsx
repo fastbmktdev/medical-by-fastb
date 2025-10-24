@@ -217,7 +217,7 @@ export default function TermsModal({ isOpen, onClose, onAccept, gymName }: Terms
           </div>
 
           {/* Gym-specific Terms */}
-          <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 mb-6 p-6 border-2 border-red-600 rounded-xl">
+          <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 mb-6 p-6 border border-red-600 rounded-xl">
             <h3 className="flex items-center gap-2 mb-4 font-bold text-white text-xl">
               <span className="bg-red-500 rounded-full w-2 h-2 animate-pulse"></span>
               เงื่อนไขสำหรับ: <span className="text-red-400">{gymName}</span>
@@ -236,9 +236,9 @@ export default function TermsModal({ isOpen, onClose, onAccept, gymName }: Terms
           </div>
 
           {/* Checkboxes Section */}
-          <div className="space-y-4 bg-zinc-950 p-6 border-2 border-zinc-700 rounded-xl">
+          <div className="space-y-4 bg-zinc-950 p-6 border border-zinc-700 rounded-xl">
             {/* Main Terms Acceptance */}
-            <label className="group flex items-start gap-4 bg-zinc-950 p-4 border-2 border-zinc-700 hover:border-red-500 rounded-lg transition-all cursor-pointer">
+            <label className="group flex items-start gap-4 bg-zinc-950 p-4 border border-zinc-700 hover:border-red-500 rounded-lg transition-all cursor-pointer">
               <input
                 type="checkbox"
                 checked={acceptedTerms}
@@ -256,7 +256,7 @@ export default function TermsModal({ isOpen, onClose, onAccept, gymName }: Terms
             </label>
 
             {/* Marketing Consent */}
-            <label className="group flex items-start gap-4 bg-gradient-to-br from-red-900/20 to-orange-900/20 p-4 border-2 border-red-700 hover:border-red-500 rounded-lg transition-all cursor-pointer">
+            <label className="group flex items-start gap-4 bg-gradient-to-br from-red-900/20 to-orange-900/20 p-4 border border-red-700 hover:border-red-500 rounded-lg transition-all cursor-pointer">
               <input
                 type="checkbox"
                 checked={marketingConsent}
@@ -289,7 +289,7 @@ export default function TermsModal({ isOpen, onClose, onAccept, gymName }: Terms
 
           {/* Warning if terms not accepted */}
           {!acceptedTerms && (
-            <div className="bg-yellow-900/20 mt-4 p-4 border-2 border-yellow-600 rounded-lg">
+            <div className="bg-yellow-900/20 mt-4 p-4 border border-yellow-600 rounded-lg">
               <div className="flex items-start gap-3">
                 <svg className="flex-shrink-0 mt-0.5 w-6 h-6 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />

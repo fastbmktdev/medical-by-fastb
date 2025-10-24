@@ -205,7 +205,7 @@ export default function CheckoutForm({
 
       {/* Error Display */}
       {paymentError && (
-        <div className={`rounded-lg border-2 p-6 ${
+        <div className={`rounded-lg border p-6 ${
           paymentError.retryable
             ? 'bg-yellow-600/10 border-yellow-600/50'
             : 'bg-red-600/10 border-red-600/50'

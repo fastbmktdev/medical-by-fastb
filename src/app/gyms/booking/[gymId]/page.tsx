@@ -423,7 +423,7 @@ export default function GymBookingPage() {
                   <div
                     key={pkg.id}
                     onClick={() => setSelectedPackage(pkg)}
-                    className={`cursor-pointer border-2 rounded-lg p-6 transition-all ${
+                    className={`cursor-pointer border rounded-lg p-6 transition-all ${
                       selectedPackage?.id === pkg.id
                         ? 'border-blue-600 bg-blue-50'
                         : 'border-gray-200 hover:border-blue-300'

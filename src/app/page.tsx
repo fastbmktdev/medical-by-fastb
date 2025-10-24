@@ -8,10 +8,11 @@ export default function Home() {
       {/* Hero Section with Video */}
       <HeroSection />
       
+      <Marquee />
+      
       {/* News Banner */}
       <NewsBanner />
       
-      <Marquee />
 
       {/* Quick Search Bar */}
       <QuickSearchBar />

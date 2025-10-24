@@ -454,7 +454,7 @@ function PartnerDashboardContent() {
         <div className="mx-auto max-w-4xl">
           <div className="space-y-6">
             {/* Status Header */}
-            <div className="bg-gradient-to-br from-yellow-900/20 to-zinc-800 p-8 border-2 border-yellow-600 rounded-2xl text-center">
+            <div className="bg-gradient-to-br from-yellow-900/20 to-zinc-800 p-8 border border-yellow-600 rounded-2xl text-center">
               <div className="flex justify-center mb-4">
                 <ClockIcon className="w-20 h-20 text-yellow-500 animate-pulse" />
               </div>

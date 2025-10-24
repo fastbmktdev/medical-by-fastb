@@ -198,7 +198,7 @@ export default function AffiliateDashboardPage() {
       <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
         <div className="container mx-auto px-4 py-16">
           <div className="text-center">
-            <div className="border-2 border-white border-t-transparent rounded-full w-8 h-8 animate-spin mx-auto mb-4"></div>
+            <div className="border border-white border-t-transparent rounded-full w-8 h-8 animate-spin mx-auto mb-4"></div>
             <p className="text-zinc-300">กำลังโหลดข้อมูล...</p>
           </div>
         </div>

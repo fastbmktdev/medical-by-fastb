@@ -189,7 +189,7 @@ export default function PaymentMethods({
               <div
                 key={method.id}
                 onClick={() => method.available && handleMethodSelect(method.id)}
-                className={`p-6 rounded-lg border-2 cursor-pointer transition-all ${
+                className={`p-6 rounded-lg border cursor-pointer transition-all ${
                   method.available
                     ? 'border-zinc-600 hover:border-red-500 bg-zinc-700 hover:bg-zinc-600'
                     : 'border-zinc-700 bg-zinc-800 opacity-50 cursor-not-allowed'

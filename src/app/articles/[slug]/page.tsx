@@ -3,6 +3,7 @@
 import { use } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { ARTICLES } from "@/lib/data";
 import {
   CalendarIcon,
@@ -10,7 +11,23 @@ import {
   TagIcon,
   ArrowLeftIcon,
   ChevronRightIcon,
+  ShareIcon,
+  BookmarkIcon,
 } from "@heroicons/react/24/outline";
+
+// Helper function to get appropriate image based on category
+function getArticleImage(category: string) {
+  const imageMap: { [key: string]: string } = {
+    ประวัติศาสตร์: "/assets/images/bg-main.jpg",
+    เทคนิค: "/assets/images/fallback-img.jpg",
+    สุขภาพ: "/assets/images/bg-main.jpg",
+    บุคคล: "/assets/images/fallback-img.jpg",
+    อุปกรณ์: "/assets/images/bg-main.jpg",
+    โภชนาการ: "/assets/images/fallback-img.jpg",
+    ข่าวสาร: "/assets/images/bg-main.jpg",
+  };
+  return imageMap[category] || "/assets/images/bg-main.jpg";
+}
 
 export default function ArticleDetailPage({
   params,
@@ -30,16 +47,19 @@ export default function ArticleDetailPage({
   ).slice(0, 3);
 
   return (
-    <div className="bg-zinc-950 min-h-screen text-white">
+    <div className="bg-transparent min-h-screen text-white mt-16">
       {/* Breadcrumb & Back Button */}
-      <div className="bg-zinc-900 border-zinc-800 border-b">
+      <div className="border-zinc-800 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-4xl">
           <div className="flex items-center gap-2 mb-4 text-zinc-400 text-sm">
             <Link href="/" className="hover:text-white transition-colors">
               หน้าแรก
             </Link>
             <ChevronRightIcon className="w-4 h-4" />
-            <Link href="/articles" className="hover:text-white transition-colors">
+            <Link
+              href="/articles"
+              className="hover:text-white transition-colors"
+            >
               บทความ
             </Link>
             <ChevronRightIcon className="w-4 h-4" />
@@ -70,33 +90,64 @@ export default function ArticleDetailPage({
         </h1>
 
         {/* Meta Information */}
-        <div className="flex md:flex-row flex-col gap-4 mb-8 pb-8 border-zinc-800 border-b text-zinc-400 text-sm">
-          <div className="flex items-center gap-2">
-            <UserIcon className="w-5 h-5" />
-            <span>{article.author}</span>
+        <div className="flex md:flex-row flex-col gap-4 mb-8 pb-8 border-zinc-800 border-b">
+          <div className="flex flex-wrap gap-4 text-zinc-400 text-sm">
+            <div className="flex items-center gap-2">
+              <UserIcon className="w-5 h-5" />
+              <span>{article.author}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CalendarIcon className="w-5 h-5" />
+              <span>
+                {new Date(article.date).toLocaleDateString("th-TH", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </span>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <CalendarIcon className="w-5 h-5" />
-            <span>
-              {new Date(article.date).toLocaleDateString("th-TH", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </span>
+
+          {/* Action Buttons */}
+          <div className="flex items-center gap-3 ml-auto">
+            <button className="flex items-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors text-zinc-300 text-sm">
+              <ShareIcon className="w-4 h-4" />
+              แชร์
+            </button>
+            <button className="flex items-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors text-zinc-300 text-sm">
+              <BookmarkIcon className="w-4 h-4" />
+              บันทึก
+            </button>
           </div>
         </div>
 
-        {/* Featured Image Placeholder */}
-        <div className="relative bg-zinc-800 mb-8 rounded-xl w-full h-64 md:h-96 overflow-hidden">
-          <div className="flex justify-center items-center w-full h-full">
-            <span className="text-8xl">🥊</span>
+        {/* Featured Image */}
+        <div className="relative mb-8 rounded-xl w-full h-64 md:h-96 overflow-hidden">
+          <Image
+            src={getArticleImage(article.category)}
+            alt={article.title}
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+          <div className="absolute bottom-4 left-4 right-4">
+            <div className="bg-black/50 backdrop-blur-sm rounded-lg p-4">
+              <h2 className="text-white font-bold text-xl mb-2">
+                {article.title}
+              </h2>
+              <p className="text-zinc-200 text-sm line-clamp-2">
+                {article.excerpt}
+              </p>
+            </div>
           </div>
         </div>
 
         {/* Excerpt */}
         <div className="bg-zinc-900 mb-8 p-6 border-zinc-800 border-l-4 border-l-red-600 rounded-r-lg">
-          <p className="text-zinc-300 text-lg leading-relaxed">{article.excerpt}</p>
+          <p className="text-zinc-300 text-lg leading-relaxed">
+            {article.excerpt}
+          </p>
         </div>
 
         {/* Content */}
@@ -130,7 +181,9 @@ export default function ArticleDetailPage({
       {relatedArticles.length > 0 && (
         <div className="bg-zinc-900 mt-12 py-12 border-zinc-800 border-t">
           <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-            <h2 className="mb-8 font-bold text-white text-2xl">บทความที่เกี่ยวข้อง</h2>
+            <h2 className="mb-8 font-bold text-white text-2xl">
+              บทความที่เกี่ยวข้อง
+            </h2>
             <div className="gap-6 grid grid-cols-1 md:grid-cols-3">
               {relatedArticles.map((related) => (
                 <Link
@@ -138,17 +191,29 @@ export default function ArticleDetailPage({
                   href={`/articles/${related.slug}`}
                   className="group bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-lg overflow-hidden transition-all"
                 >
-                  <div className="relative bg-zinc-700 w-full h-32">
-                    <div className="flex justify-center items-center w-full h-full">
-                      <span className="text-4xl">🥊</span>
+                  <div className="relative w-full h-32">
+                    <Image
+                      src={getArticleImage(related.category)}
+                      alt={related.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <div className="absolute top-2 right-2">
+                      <span className="bg-red-600 px-2 py-1 rounded-full font-semibold text-white text-xs">
+                        {related.category}
+                      </span>
                     </div>
                   </div>
                   <div className="p-4">
                     <h3 className="mb-2 font-semibold text-white group-hover:text-red-500 line-clamp-2 transition-colors">
                       {related.title}
                     </h3>
-                    <p className="text-zinc-500 text-xs">
+                    <p className="text-zinc-500 text-xs mb-2">
                       {new Date(related.date).toLocaleDateString("th-TH")}
+                    </p>
+                    <p className="text-zinc-400 text-xs line-clamp-2">
+                      {related.excerpt}
                     </p>
                   </div>
                 </Link>
@@ -160,4 +225,3 @@ export default function ArticleDetailPage({
     </div>
   );
 }
-

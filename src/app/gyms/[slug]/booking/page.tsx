@@ -383,7 +383,7 @@ export default function BookingPage({
 
           {/* General Error */}
           {errors.general && (
-            <div className="bg-red-500/20 mb-6 p-4 border-2 border-red-500 rounded-lg">
+            <div className="bg-red-500/20 mb-6 p-4 border border-red-500 rounded-lg">
               <p className="text-red-400 text-sm">{errors.general}</p>
             </div>
           )}
@@ -403,7 +403,7 @@ export default function BookingPage({
                         <button
                           key={pkg.id}
                           onClick={() => selectPackage(pkg)}
-                          className={`text-left bg-zinc-700 hover:bg-zinc-600 p-6 border-2 rounded-lg transition-all ${
+                          className={`text-left bg-zinc-700 hover:bg-zinc-600 p-6 border rounded-lg transition-all ${
                             formData.selectedPackage?.id === pkg.id
                               ? "border-red-500 ring-2 ring-red-500/50"
                               : "border-zinc-600"
@@ -453,7 +453,7 @@ export default function BookingPage({
                         <button
                           key={pkg.id}
                           onClick={() => selectPackage(pkg)}
-                          className={`text-left bg-gradient-to-br from-zinc-700 to-zinc-800 hover:from-zinc-600 hover:to-zinc-700 p-6 border-2 rounded-lg transition-all ${
+                          className={`text-left bg-gradient-to-br from-zinc-700 to-zinc-800 hover:from-zinc-600 hover:to-zinc-700 p-6 border rounded-lg transition-all ${
                             formData.selectedPackage?.id === pkg.id
                               ? "border-red-500 ring-2 ring-red-500/50"
                               : "border-zinc-600"
@@ -689,7 +689,7 @@ export default function BookingPage({
                   />
                 </div>
               ) : (
-                <div className="bg-red-500/20 p-4 border-2 border-red-500 rounded-lg">
+                <div className="bg-red-500/20 p-4 border border-red-500 rounded-lg">
                   <p className="text-red-400 text-sm">
                     ไม่สามารถโหลดระบบชำระเงินได้ กรุณาลองใหม่อีกครั้ง
                   </p>

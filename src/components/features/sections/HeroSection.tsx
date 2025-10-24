@@ -33,7 +33,7 @@ const CTA_BUTTONS = [
     href: "/fighter-program",
     label: "Fighter Application",
     className:
-      "hover:bg-white px-8 py-4 border-2 border-white rounded-lg w-full sm:w-auto font-semibold text-white hover:text-zinc-900 transition-colors",
+      "hover:bg-white px-8 py-4 border border-white rounded-lg w-full sm:w-auto font-semibold text-white hover:text-zinc-900 transition-colors",
   },
 ];
 
@@ -65,7 +65,7 @@ function HeroContent() {
       <h1 className="mb-6 font-bold text-white text-4xl md:text-6xl lg:text-7xl leading-18">
         {HERO_HEADINGS.heading}
       </h1>
-      <p className="mb-4 text-zinc-300 text-xl md:text-2xl">
+      <p className="text-zinc-300 text-xl md:text-2xl">
         {HERO_HEADINGS.slogan}
       </p>
       <p className="mx-auto mb-12 max-w-3xl text-zinc-400 text-base md:text-lg">

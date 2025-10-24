@@ -129,7 +129,7 @@ export function BadgeCollection({ badges, showAll = true, className = '' }: Badg
           return (
             <div
               key={badge.id}
-              className={`relative bg-white rounded-lg border-2 p-4 transition-all duration-200 hover:shadow-lg ${
+              className={`relative bg-white rounded-lg border p-4 transition-all duration-200 hover:shadow-lg ${
                 isEarned 
                   ? 'border-green-300 bg-green-50' 
                   : 'border-gray-200 hover:border-blue-300'

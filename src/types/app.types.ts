@@ -65,6 +65,7 @@ export interface Article {
   category: string;
   image?: string;
   tags?: string[];
+  isNew?: boolean;
 }
 
 export interface ApiResponse<T> {

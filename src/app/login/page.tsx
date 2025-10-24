@@ -264,7 +264,7 @@ function LoginForm() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* General Error Message */}
             {errors.general && (
-              <div className="bg-red-500/20 p-4 border-2 border-red-500 rounded-lg">
+              <div className="bg-red-500/20 p-4 border border-red-500 rounded-lg">
                 <div className="flex items-center gap-3">
                   <ExclamationTriangleIcon className="flex-shrink-0 w-6 h-6 text-red-400" />
                   <p className="text-red-400 text-sm">{errors.general}</p>
@@ -363,7 +363,7 @@ function LoginForm() {
             >
               {isLoading ? (
                 <>
-                  <div className="border-2 border-white border-t-transparent rounded-full w-6 h-6 animate-spin"></div>
+                  <div className="border border-white border-t-transparent rounded-full w-6 h-6 animate-spin"></div>
                   กำลังเข้าสู่ระบบ...
                 </>
               ) : (

@@ -39,7 +39,7 @@ export default function EventDetailPage({
   });
 
   return (
-    <div className="bg-zinc-950 min-h-screen">
+    <div className="bg-zinc-950 min-h-screen mt-16">
       {/* Back Button */}
       <div className="bg-zinc-950 border-zinc-700 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-7xl">

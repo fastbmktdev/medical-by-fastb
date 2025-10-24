@@ -543,7 +543,7 @@ export default function PartnerApplyPage() {
               </div>
             </div>
 
-            <div className={`${status.bg} border-2 ${status.border} rounded-lg p-6 mb-8`}>
+            <div className={`${status.bg} border ${status.border} rounded-lg p-6 mb-8`}>
               <div className="flex items-center gap-3 mb-2">
                 <div className={`w-3 h-3 rounded-full ${status.border.replace('border-', 'bg-')} animate-pulse`}></div>
                 <p className="font-semibold text-zinc-300 text-lg">
@@ -941,7 +941,7 @@ export default function PartnerApplyPage() {
                   รองรับไฟล์: JPG, PNG (ขนาดไม่เกิน 5MB ต่อไฟล์)
                 </p>
                 
-                <label className="flex flex-col items-center gap-3 bg-zinc-700 hover:bg-zinc-600 p-6 border-2 border-zinc-600 border-dashed rounded-lg transition-colors cursor-pointer">
+                <label className="flex flex-col items-center gap-3 bg-zinc-700 hover:bg-zinc-600 p-6 border border-zinc-600 border-dashed rounded-lg transition-colors cursor-pointer">
                   <PhotoIcon className="w-12 h-12 text-zinc-400" />
                   <span className="text-zinc-300 text-sm">
                     คลิกเพื่อเลือกไฟล์ หรือลากไฟล์มาวาง
@@ -1032,7 +1032,7 @@ export default function PartnerApplyPage() {
 
           {/* Submit Error Display */}
           {submitError && (
-            <div className="bg-red-500/20 p-4 border-2 border-red-500 rounded-lg">
+            <div className="bg-red-500/20 p-4 border border-red-500 rounded-lg">
               <div className="flex items-center gap-3">
                 <ExclamationTriangleIcon className="flex-shrink-0 w-6 h-6 text-red-400" />
                 <div>

@@ -125,23 +125,24 @@ export default function Header() {
             <nav className="hidden md:flex items-center gap-6 text-sm">
               {navLinks.map((link) =>
                 link.dropdown ? (
-                  <div key={link.text} className="relative">
-                    <button
-                      onClick={() => setInfoMenuOpen((o) => !o)}
-                      className="flex items-center gap-1 hover:text-red-500 transition-colors"
-                    >
+                  <div 
+                    key={link.text} 
+                    className="relative"
+                    onMouseEnter={() => setInfoMenuOpen(true)}
+                    onMouseLeave={() => setInfoMenuOpen(false)}
+                  >
+                    <div className="flex items-center gap-1 hover:text-red-500 transition-colors cursor-pointer">
                       {link.text}
                       <ChevronDownIcon className="w-4 h-4" />
-                    </button>
+                    </div>
                     {isInfoMenuOpen && (
-                      <div className="right-0 absolute bg-zinc-950 shadow-lg mt-2 border border-white/10 rounded-md w-48">
+                      <div className="right-0 absolute bg-zinc-950 shadow-lg mt-2 border border-white/10 rounded-md w-48 z-50">
                         <div className="py-1">
                           {link.dropdown.map((item) => (
                             <Link
                               key={item.href}
                               href={item.href}
                               className="block hover:bg-white/5 px-4 py-2 text-white/80 text-sm"
-                              onClick={() => setInfoMenuOpen(false)}
                             >
                               {item.text}
                             </Link>
@@ -166,19 +167,20 @@ export default function Header() {
           <div className="flex items-center gap-2">
             {/* User Menu (Desktop) */}
             {user ? (
-              <div className="hidden md:block relative">
-                <button
-                  onClick={() => setUserMenuOpen((o) => !o)}
-                  className="flex items-center gap-2 hover:bg-white/5 px-3 border border-white/20 rounded h-10 transition-colors"
-                >
+              <div 
+                className="hidden md:block relative"
+                onMouseEnter={() => setUserMenuOpen(true)}
+                onMouseLeave={() => setUserMenuOpen(false)}
+              >
+                <div className="flex items-center gap-2 hover:bg-white/5 px-3 border border-white/20 rounded h-10 transition-colors cursor-pointer">
                   <UserCircleIcon className="w-5 h-5" />
                   <span className="max-w-[100px] text-sm truncate">
                     {user.user_metadata?.full_name || user.email?.split("@")[0]}
                   </span>
                   <ChevronDownIcon className="w-4 h-4" />
-                </button>
+                </div>
                 {isUserMenuOpen && (
-                  <div className="right-0 absolute bg-zinc-950 shadow-lg mt-2 border border-white/10 rounded-md w-56">
+                  <div className="right-0 absolute bg-zinc-950 shadow-lg mt-2 border border-white/10 rounded-md w-56 z-50">
                     <div className="py-1">
                       {/* User Info */}
                       <div className="px-4 py-2 border-white/10 border-b">
@@ -202,7 +204,6 @@ export default function Header() {
                         <Link
                           href={getDashboardPath(userRole)}
                           className="flex items-center gap-2 hover:bg-white/5 px-4 py-2 text-white/80 text-sm"
-                          onClick={() => setUserMenuOpen(false)}
                         >
                           {userRole === "admin" && (
                             <ShieldCheckIcon className="w-4 h-4" />
@@ -222,7 +223,6 @@ export default function Header() {
                         <Link
                           href="/partner/apply"
                           className="flex items-center gap-2 hover:bg-white/5 px-4 py-2 text-white/80 text-sm"
-                          onClick={() => setUserMenuOpen(false)}
                         >
                           <BuildingStorefrontIcon className="w-4 h-4" />
                           สมัคร Partner
@@ -263,39 +263,31 @@ export default function Header() {
             )}
 
             {/* Language Switcher */}
-            <div className="relative">
-              <button
-                onClick={() => setLangDropdownOpen((o) => !o)}
-                className="hidden md:inline-flex justify-center items-center hover:bg-white/5 border border-white/20 rounded w-12 h-10 font-semibold text-sm"
-              >
+            <div 
+              className="relative"
+              onMouseEnter={() => setLangDropdownOpen(true)}
+              onMouseLeave={() => setLangDropdownOpen(false)}
+            >
+              <div className="hidden md:inline-flex justify-center items-center hover:bg-white/5 border border-white/20 rounded w-12 h-10 font-semibold text-sm cursor-pointer">
                 {currentLang}
-              </button>
+              </div>
               {isLangDropdownOpen && (
-                <div className="right-0 absolute bg-zinc-950 shadow-lg mt-2 border border-white/10 rounded-md w-32">
+                <div className="right-0 absolute bg-zinc-950 shadow-lg mt-2 border border-white/10 rounded-md w-32 z-50">
                   <div className="py-1">
                     <button
-                      onClick={() => {
-                        setCurrentLang("TH");
-                        setLangDropdownOpen(false);
-                      }}
+                      onClick={() => setCurrentLang("TH")}
                       className="block hover:bg-white/5 px-4 py-2 w-full text-white/80 text-sm text-left"
                     >
                       ไทย (TH)
                     </button>
                     <button
-                      onClick={() => {
-                        setCurrentLang("EN");
-                        setLangDropdownOpen(false);
-                      }}
+                      onClick={() => setCurrentLang("EN")}
                       className="block hover:bg-white/5 px-4 py-2 w-full text-white/80 text-sm text-left"
                     >
                       English (EN)
                     </button>
                     <button
-                      onClick={() => {
-                        setCurrentLang("JP");
-                        setLangDropdownOpen(false);
-                      }}
+                      onClick={() => setCurrentLang("JP")}
                       className="block hover:bg-white/5 px-4 py-2 w-full text-white/80 text-sm text-left"
                     >
                       日本語 (JP)
