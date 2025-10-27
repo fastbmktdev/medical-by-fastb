@@ -22,7 +22,6 @@ import {
 import {
   ShareIcon,
   UserPlusIcon,
-  CurrencyDollarIcon,
   TrophyIcon,
   LinkIcon,
   ClipboardDocumentIcon,
@@ -47,7 +46,7 @@ interface ReferralHistory {
 
 export default function AffiliatePage() {
   const { user } = useAuth();
-  const { userStats } = useGamification();
+  // const { userStats } = useGamification();
   const supabase = createClient();
   
   const [affiliateCode, setAffiliateCode] = useState('');
@@ -59,7 +58,7 @@ export default function AffiliatePage() {
     conversionRate: 0
   });
   const [referralHistory, setReferralHistory] = useState<ReferralHistory[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (user) {

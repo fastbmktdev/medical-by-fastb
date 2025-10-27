@@ -9,11 +9,7 @@ import { NextResponse } from 'next/server';
 import { withAdminAuth } from '@/lib/api/withAdminAuth';
 import { getGyms, createGym } from '@/services';
 
-const getGymsHandler = withAdminAuth(async (
-    _request, 
-    _context, 
-    _user
-) => {
+const getGymsHandler = withAdminAuth(async () => {
   try {
     const gyms = await getGyms();
 

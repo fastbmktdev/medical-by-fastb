@@ -8,9 +8,7 @@ import { GamificationWidget } from '@/components/features/gamification/Gamificat
 import Link from 'next/link';
 import {
   Card,
-  CardHeader,
   CardBody,
-  CardFooter,
   Button,
   Chip,
   Table,
@@ -24,8 +22,6 @@ import {
   HomeIcon,
   UserIcon,
   CalendarIcon,
-  MapPinIcon,
-  ShoppingBagIcon,
   HeartIcon,
   ArrowRightIcon,
   BanknotesIcon,
@@ -129,8 +125,8 @@ function DashboardContent() {
   ];
 
   // Calculate stats from real bookings
-  const upcomingBookings = recentBookings.filter(b => b.status === 'confirmed' || b.status === 'pending');
-  const totalBookings = recentBookings.length;
+  // const upcomingBookings = recentBookings.filter(b => b.status === 'confirmed' || b.status === 'pending');
+  // const totalBookings = recentBookings.length;
 
   if (isLoading) {
     return (

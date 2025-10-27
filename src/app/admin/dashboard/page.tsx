@@ -9,16 +9,9 @@ import Link from 'next/link';
 import {
   Card,
   CardBody,
-  CardHeader,
   Button,
   Chip,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   useDisclosure,
-  Spinner,
 } from '@heroui/react';
 import {
   UsersIcon,
@@ -26,19 +19,9 @@ import {
   ChartBarIcon,
   ClockIcon,
   CheckCircleIcon,
-  ArrowTrendingUpIcon,
-  Cog6ToothIcon,
-  DocumentTextIcon,
-  HomeIcon,
   ChevronRightIcon,
-  XCircleIcon,
-  EyeIcon,
-  PhoneIcon,
-  EnvelopeIcon,
-  MapPinIcon,
 } from '@heroicons/react/24/outline';
 import { User } from '@supabase/supabase-js';
-import Image from 'next/image';
 
 interface Stats {
   totalUsers: number;
@@ -82,7 +65,6 @@ function AdminDashboardContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [pendingApplications, setPendingApplications] = useState<GymApplication[]>([]);
   const [selectedApplication, setSelectedApplication] = useState<GymApplication | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const loadData = async () => {
@@ -126,54 +108,7 @@ function AdminDashboardContent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleViewApplication = (application: GymApplication) => {
-    setSelectedApplication(application);
-    onOpen();
-  };
 
-  const handleUpdateStatus = async (status: 'approved' | 'denied') => {
-    if (!selectedApplication) return;
-
-    setIsProcessing(true);
-    try {
-      const response = await fetch(`/api/partner-applications/${selectedApplication.id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ status }),
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        // Reload data to update counts
-        await loadData();
-        onClose();
-        
-        // Show success message
-        alert(`${status === 'approved' ? 'อนุมัติ' : 'ปฏิเสธ'}ใบสมัครสำเร็จ`);
-      } else {
-        alert('เกิดข้อผิดพลาด: ' + result.error);
-      }
-    } catch (error) {
-      console.error('Error updating status:', error);
-      alert('เกิดข้อผิดพลาดในการอัพเดทสถานะ');
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('th-TH', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
 
   const adminTools = [
     {
