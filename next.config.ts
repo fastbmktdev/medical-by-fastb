@@ -61,6 +61,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  outputFileTracingRoot: __dirname,
   async headers() {
     return [
       {

@@ -376,17 +376,17 @@ export default function SignupPage() {
   const passwordStrength = getPasswordStrength(formData.password);
 
   return (
-    <div className="container">
-      <div className="space-y-8 w-full max-w-md">
+    <div className="min-h-[calc(100vh-128px)] flex items-center justify-center py-8">
+      <div className="w-full max-w-md">
         {/* Header */}
-        <div className="text-center">
-          <h1 className="mb-2 font-bold text-white text-4xl">
+        <div className="text-center mb-6">
+          <h1 className="mb-2 font-bold text-white text-3xl">
             สมัครสมาชิก
           </h1>
         </div>
 
         {/* Signup Form */}
-        <div className="bg-zinc-950 shadow-2xl p-8 rounded-2xl">
+        <div className="bg-zinc-950 shadow-2xl p-6 rounded-2xl max-h-[calc(100vh-200px)] overflow-y-auto">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* General Error Message */}
             {errors.general && (
@@ -664,7 +664,7 @@ export default function SignupPage() {
           </form>
 
           {/* Login Link */}
-          <div className="mt-6 text-center">
+          <div className="mt-4 text-center">
             <p className="text-zinc-400 text-sm">
               มีบัญชีอยู่แล้ว?{" "}
               <Link
@@ -678,7 +678,7 @@ export default function SignupPage() {
         </div>
 
         {/* Back to Home Link */}
-        <div className="text-center">
+        <div className="text-center mt-4">
           <Link
             href="/"
             className="text-zinc-500 hover:text-zinc-400 text-sm transition-colors"

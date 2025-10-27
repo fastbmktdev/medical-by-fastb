@@ -144,9 +144,9 @@ export default function ResetPasswordPage() {
    */
   if (isSuccess) {
     return (
-      <div className="container">
+      <div className="min-h-[calc(100vh-128px)] flex items-center justify-center py-8">
         <div className="w-full max-w-md">
-          <div className="bg-zinc-950 shadow-2xl p-8 rounded-2xl text-center">
+          <div className="bg-zinc-950 shadow-2xl p-6 rounded-2xl text-center">
             <div className="flex justify-center mb-6">
               <CheckCircleIcon className="w-24 h-24 text-green-500" />
             </div>
@@ -177,20 +177,20 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <div className="container">
-      <div className="space-y-8 w-full max-w-md">
+    <div className="min-h-[calc(100vh-128px)] flex items-center justify-center py-8">
+      <div className="w-full max-w-md">
         {/* Header */}
-        <div className="text-center">
-          <h1 className="mb-2 font-bold text-white text-4xl">
+        <div className="text-center mb-6">
+          <h1 className="mb-2 font-bold text-white text-3xl">
             รีเซ็ตรหัสผ่าน
           </h1>
-          <p className="text-zinc-400 text-lg">
+          <p className="text-zinc-400 text-base">
             กรอกอีเมลของคุณเพื่อรับลิงก์รีเซ็ตรหัสผ่าน
           </p>
         </div>
 
         {/* Reset Password Form */}
-        <div className="bg-zinc-950 shadow-2xl p-8 rounded-2xl">
+        <div className="bg-zinc-950 shadow-2xl p-6 rounded-2xl">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* General Error Message */}
             {errors.general && (
@@ -258,7 +258,7 @@ export default function ResetPasswordPage() {
           </form>
 
           {/* Back to Login Link */}
-          <div className="mt-6 text-center">
+          <div className="mt-4 text-center">
             <Link
               href="/login"
               className="inline-flex items-center gap-2 font-semibold text-red-500 hover:text-red-400 transition-colors"
@@ -270,7 +270,7 @@ export default function ResetPasswordPage() {
         </div>
 
         {/* Help Text */}
-        <div className="text-center">
+        <div className="text-center mt-4">
           <p className="text-zinc-500 text-sm">
             ยังไม่มีบัญชี?{" "}
             <Link
