@@ -247,20 +247,20 @@ function LoginForm() {
   }
 
   return (
-    <div className="container">
-      <div className="space-y-8 w-full max-w-md">
+    <div className="min-h-[calc(100vh-128px)] flex items-center justify-center py-8">
+      <div className="w-full max-w-md">
         {/* Header */}
-        <div className="text-center">
-          <h1 className="mb-2 font-bold text-white text-4xl">
+        <div className="text-center mb-6">
+          <h1 className="mb-2 font-bold text-white text-3xl">
             เข้าสู่ระบบ
           </h1>
-          <p className="text-zinc-400 text-lg">
+          <p className="text-zinc-400 text-base">
             ยินดีต้อนรับกลับมา
           </p>
         </div>
 
         {/* Login Form */}
-        <div className="bg-zinc-950 shadow-2xl p-8 rounded-2xl">
+        <div className="bg-zinc-950 shadow-2xl p-6 rounded-2xl">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* General Error Message */}
             {errors.general && (
@@ -348,7 +348,7 @@ function LoginForm() {
             {/* Forgot Password Link */}
             <div className="flex justify-end">
               <Link
-                href="/reset-password"
+                href="/forget-password"
                 className="text-red-500 hover:text-red-400 text-sm transition-colors"
               >
                 ลืมรหัสผ่าน?
@@ -376,7 +376,7 @@ function LoginForm() {
           </form>
 
           {/* Sign Up Link */}
-          <div className="mt-6 text-center">
+          <div className="mt-4 text-center">
             <p className="text-zinc-400 text-sm">
               ยังไม่มีบัญชี?{" "}
               <Link
@@ -390,7 +390,7 @@ function LoginForm() {
         </div>
 
         {/* Back to Home Link */}
-        <div className="text-center">
+        <div className="text-center mt-4">
           <Link
             href="/"
             className="text-zinc-500 hover:text-zinc-400 text-sm transition-colors"
