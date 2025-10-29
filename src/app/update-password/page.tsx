@@ -72,6 +72,13 @@ function UpdatePasswordForm() {
         if (!session) {
           // User is not authenticated, redirect to login
           router.push("/login?redirect=/update-password");
+        } else {
+          // Check if this is a password reset session
+          const { data: { user } } = await supabase.auth.getUser();
+          if (user && user.app_metadata?.provider === 'email') {
+            // This is likely a password reset session
+            console.log('Password reset session detected');
+          }
         }
       } catch {
         // Error occurred during authentication check

@@ -9,6 +9,7 @@ import {
   ArrowLeftIcon,
 } from "@heroicons/react/24/outline";
 import AuthLayout from "@/components/shared/layout/AuthLayout";
+import { Button } from "@/components/shared";
 
 interface ForgetPasswordFormData {
   email: string;
@@ -148,12 +149,15 @@ function ForgetPasswordPageContent() {
               (ตรวจสอบในโฟลเดอร์ Spam หากไม่พบ)
             </p>
           </div>
-          <Link
-            href="/login"
-            className="inline-block bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg font-semibold text-white transition-colors"
+          <Button
+            asChild
+            variant="primary"
+            size="lg"
           >
-            กลับไปยังหน้าเข้าสู่ระบบ
-          </Link>
+            <Link href="/login">
+              กลับไปยังหน้าเข้าสู่ระบบ
+            </Link>
+          </Button>
         </div>
       </AuthLayout>
     );
@@ -209,30 +213,28 @@ function ForgetPasswordPageContent() {
           )}
         </div>
 
-        <button
+        <Button
           type="submit"
           disabled={isLoading}
-          className="flex justify-center items-center gap-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 disabled:from-zinc-600 disabled:to-zinc-700 shadow-lg hover:shadow-xl hover:shadow-red-500/25 px-6 py-3 rounded-xl w-full font-bold text-white text-base transition-all duration-200 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
+          loading={isLoading}
+          loadingText="กำลังส่งอีเมล..."
+          fullWidth
+          size="lg"
         >
-          {isLoading ? (
-            <>
-              <div className="border border-white border-t-transparent rounded-full w-6 h-6 animate-spin"></div>
-              กำลังส่งอีเมล...
-            </>
-          ) : (
-            "ส่งลิงก์รีเซ็ตรหัสผ่าน"
-          )}
-        </button>
+          ส่งลิงก์รีเซ็ตรหัสผ่าน
+        </Button>
       </form>
 
       <div className="mt-6 text-center">
-        <Link
-          href="/login"
-          className="inline-flex items-center gap-2 font-semibold text-red-500 hover:text-red-400 transition-colors"
+        <Button
+          asChild
+          variant="link"
+          leftIcon={<ArrowLeftIcon className="w-4 h-4" />}
         >
-          <ArrowLeftIcon className="w-4 h-4" />
-          กลับไปยังหน้าเข้าสู่ระบบ
-        </Link>
+          <Link href="/login">
+            กลับไปยังหน้าเข้าสู่ระบบ
+          </Link>
+        </Button>
       </div>
 
       <div className="text-center mt-4">
