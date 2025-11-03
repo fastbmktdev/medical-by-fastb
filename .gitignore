@@ -126,5 +126,3 @@ cleanup-files.sh
 
 # keep docs but ignore generated documentation
 # docs/ is commented out since it contains important documentation
-*storybook.log
-storybook-static
