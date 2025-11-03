@@ -43,6 +43,11 @@ export { ErrorDisplay } from './feedback/ErrorDisplay';
 export { ErrorBoundary } from './feedback/ErrorBoundary';
 export { ErrorBoundary as UIErrorBoundary } from './ui/ErrorBoundary';
 
+// === NEW SHARED COMPONENTS ===
+export { FavoriteButton } from './FavoriteButton';
+export { NotificationBell } from './NotificationBell';
+export { NotificationList } from './NotificationList';
+
 // === TYPE EXPORTS ===
 // Component Types
 export type { ButtonProps } from '@/components/design-system/primitives/Button';
