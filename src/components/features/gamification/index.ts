@@ -30,6 +30,5 @@ export * from './shared';
 export type {
   Badge,
   Challenge,
-  UserProgress,
   LeaderboardEntry,
 } from '@/types/gamification.types';

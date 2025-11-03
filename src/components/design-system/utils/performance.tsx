@@ -12,9 +12,9 @@ import React, { memo, useMemo, useCallback, useState, useEffect, useRef, Depende
 export function createMemoComponent<T extends React.ComponentType<Record<string, unknown>>>(
   Component: T,
   displayName?: string,
-  areEqual?: (prevProps: React.ComponentProps<T>, nextProps: React.ComponentProps<T>) => boolean
+  areEqual?: (prevProps: Readonly<React.ComponentProps<T>>, nextProps: Readonly<React.ComponentProps<T>>) => boolean
 ): T {
-  const MemoComponent = memo(Component, areEqual) as T;
+  const MemoComponent = memo(Component as React.FunctionComponent<React.ComponentProps<T>>, areEqual) as unknown as T;
   
   if (displayName) {
     MemoComponent.displayName = `Memo(${displayName})`;
@@ -163,7 +163,7 @@ export const performance = {
         };
       });
 
-      return <Component {...props} />;
+      return React.createElement(Component, props as unknown as React.ComponentProps<T>);
     };
 
     MonitoredComponent.displayName = `Monitored(${componentName})`;

@@ -10,7 +10,7 @@ import { ResponsiveValue } from '@/components/design-system/types/variants';
  * 
  * Props for the Container component with responsive max-width and padding options.
  */
-export interface ContainerProps extends LayoutComponentProps {
+export interface ContainerProps extends Omit<LayoutComponentProps, 'padding' | 'maxWidth'> {
   /**
    * Maximum width of the container
    */
@@ -165,15 +165,18 @@ export const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
       className
     );
 
+    // Type assertion to avoid complex union type inference
+    const ComponentWithProps = Component as React.ElementType;
+    
     return (
-      <Component
+      <ComponentWithProps
         ref={ref}
         className={containerClasses}
         data-testid={testId}
-        {...props}
+        {...(props as React.ComponentPropsWithoutRef<typeof Component>)}
       >
         {children}
-      </Component>
+      </ComponentWithProps>
     );
   }
 );

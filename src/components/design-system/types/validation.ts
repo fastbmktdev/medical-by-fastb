@@ -106,7 +106,7 @@ export const validateComponentProps = <T>(
   
   // Validate each prop according to schema
   Object.entries(schema).forEach(([propName, rules]) => {
-    if (!rules) return;
+    if (!rules || !Array.isArray(rules)) return;
     
     const propValue = (props as Record<string, unknown>)[propName];
     

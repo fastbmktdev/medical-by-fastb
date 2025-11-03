@@ -124,10 +124,19 @@ export function migrateInputProps(
   // Map icon prop to leftIcon
   const migratedProps: BaseInputProps = {
     ...otherProps,
+    name: (otherProps as { name?: string }).name || 'input', // Required in new system - default fallback
     label: '', // Required in new system - will need to be provided
     leftIcon: icon,
-    onChange: onChange ? (e) => onChange(e.target.value) : undefined,
+    onChange: onChange ? (value: unknown, event?: React.ChangeEvent<HTMLElement>) => {
+      if (typeof value === 'string') {
+        onChange(value);
+      }
+    } : undefined,
   };
+  
+  if (!(otherProps as { name?: string }).name) {
+    warnings.push('Input "name" prop is required in new system - default value provided');
+  }
   
   if (icon) {
     warnings.push('Input "icon" prop mapped to "leftIcon"');
@@ -291,9 +300,12 @@ export function validateMigratedProps<T>(
       break;
       
     case 'Input':
-      const inputProps = props as BaseInputProps;
+      const inputProps = props as unknown as BaseInputProps;
       if (!inputProps.label) {
         errors.push('Input: Missing required "label" prop');
+      }
+      if (!inputProps.name) {
+        errors.push('Input: Missing required "name" prop');
       }
       break;
       
@@ -318,9 +330,9 @@ export function validateMigratedProps<T>(
 /**
  * Log migration information in development
  */
-export function logMigrationInfo(
+export function logMigrationInfo<T>(
   componentName: string,
-  result: MigrationResult<Record<string, unknown>>
+  result: MigrationResult<T>
 ): void {
   if (process.env.NODE_ENV !== 'development') return;
   
@@ -344,7 +356,7 @@ export function logMigrationInfo(
 /**
  * Create a migration wrapper component
  */
-export function createMigrationWrapper<T, U>(
+export function createMigrationWrapper<T, U extends Record<string, unknown>>(
   NewComponent: React.ComponentType<U>,
   migrationFn: (props: T) => MigrationResult<U>,
   componentName: string

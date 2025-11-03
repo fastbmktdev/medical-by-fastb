@@ -124,7 +124,9 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         }, [formatValue, precision]);
 
         // Validate number constraints
-        const validateNumber = React.useCallback((num: number | undefined): string | undefined => {
+        const validateNumber = React.useCallback((value: unknown): string | undefined => {
+            const num = typeof value === 'number' ? value : undefined;
+            
             if (num === undefined) {
                 return undefined;
             }
@@ -141,10 +143,11 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         }, [min, max, onValidate]);
 
         // Handle input change
-        const handleChange = (inputValue: string, event?: React.ChangeEvent<HTMLInputElement>) => {
-            setInternalValue(inputValue);
+        const handleChange = (inputValue: unknown, event?: React.ChangeEvent<HTMLElement>) => {
+            const stringValue = typeof inputValue === 'string' ? inputValue : '';
+            setInternalValue(stringValue);
 
-            const numericValue = parseNumber(inputValue);
+            const numericValue = parseNumber(stringValue);
             onChange?.(numericValue, event as React.ChangeEvent<HTMLInputElement>);
         };
 
@@ -205,7 +208,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                 type="text"
                 inputMode="numeric"
                 value={internalValue}
-                onChange={handleChange as (e: React.ChangeEvent<HTMLInputElement>) => void}
+                onChange={handleChange}
                 onValidate={validateNumber}
                 rightIcon={stepperButtons}
                 {...props}

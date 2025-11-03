@@ -1,3 +1,5 @@
+import React from 'react';
+
 /**
  * Optimized Export Utilities
  * 
@@ -24,11 +26,16 @@ export function createOptimizedExports<T extends Record<string, unknown>>(
 
   Object.entries(components).forEach(([key, Component]) => {
     if (typeof Component === 'function') {
-      let OptimizedComponent = Component;
-
-      if (memo && Component.$$typeof !== Symbol.for('react.memo')) {
-        OptimizedComponent = React.memo(Component);
-        OptimizedComponent.displayName = `Memo(${Component.displayName || Component.name || key})`;
+      // Type assertion for React component
+      const ReactComponent = Component as React.ComponentType<any>;
+      
+      // Check if component is already memoized using type assertion
+      const componentWithTypeof = ReactComponent as React.ComponentType<any> & { $$typeof?: symbol };
+      
+      let OptimizedComponent: React.ComponentType<any> = ReactComponent;
+      if (memo && componentWithTypeof.$$typeof !== Symbol.for('react.memo')) {
+        OptimizedComponent = React.memo(ReactComponent);
+        OptimizedComponent.displayName = `Memo(${ReactComponent.displayName || Component.name || key})`;
       }
 
       if (lazy) {
@@ -36,9 +43,9 @@ export function createOptimizedExports<T extends Record<string, unknown>>(
         // This is more complex and would require build-time optimization
       }
 
-      optimizedComponents[key as keyof T] = OptimizedComponent;
+      (optimizedComponents as any)[key] = OptimizedComponent;
     } else {
-      optimizedComponents[key as keyof T] = Component;
+      (optimizedComponents as any)[key] = Component;
     }
   });
 
@@ -79,6 +86,3 @@ export const bundleAnalysis = {
     return {};
   },
 };
-
-// Import React for memo
-import React from 'react';

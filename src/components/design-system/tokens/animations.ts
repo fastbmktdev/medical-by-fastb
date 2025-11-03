@@ -165,26 +165,30 @@ export const animations = {
     modal: {
       overlay: {
         enter: {
-          duration: animations.duration.normal,
-          easing: animations.easing.easeOut,
-          ...animations.patterns.fadeIn,
+          duration: duration.normal,
+          easing: easing.easeOut,
+          from: { opacity: '0' },
+          to: { opacity: '1' },
         },
         exit: {
-          duration: animations.duration.fast,
-          easing: animations.easing.easeIn,
-          ...animations.patterns.fadeOut,
+          duration: duration.fast,
+          easing: easing.easeIn,
+          from: { opacity: '1' },
+          to: { opacity: '0' },
         },
       },
       content: {
         enter: {
-          duration: animations.duration.slow,
-          easing: animations.easing.default,
-          ...animations.patterns.scaleIn,
+          duration: duration.slow,
+          easing: easing.default,
+          from: { opacity: '0', transform: 'scale(0.95)' },
+          to: { opacity: '1', transform: 'scale(1)' },
         },
         exit: {
-          duration: animations.duration.normal,
-          easing: animations.easing.easeIn,
-          ...animations.patterns.scaleOut,
+          duration: duration.normal,
+          easing: easing.easeIn,
+          from: { opacity: '1', transform: 'scale(1)' },
+          to: { opacity: '0', transform: 'scale(0.95)' },
         },
       },
     },
@@ -192,8 +196,8 @@ export const animations = {
     // Card animations
     card: {
       hover: {
-        duration: animations.duration.normal,
-        easing: animations.easing.default,
+        duration: duration.normal,
+        easing: easing.default,
         transform: 'translateY(-2px)',
         boxShadow: '0 10px 25px rgba(0, 0, 0, 0.15)',
       },
@@ -202,28 +206,30 @@ export const animations = {
     // Input animations
     input: {
       focus: {
-        duration: animations.duration.normal,
-        easing: animations.easing.default,
+        duration: duration.normal,
+        easing: easing.default,
       },
       error: {
-        duration: animations.duration.fast,
-        easing: animations.easing.bounce,
+        duration: duration.fast,
+        easing: easing.bounce,
       },
     },
     
     // Loading animations
     loading: {
       spinner: {
-        duration: animations.duration.slowest,
-        easing: animations.easing.linear,
+        duration: duration.slowest,
+        easing: easing.linear,
         iterationCount: 'infinite',
-        ...animations.patterns.spin,
+        from: { transform: 'rotate(0deg)' },
+        to: { transform: 'rotate(360deg)' },
       },
       pulse: {
-        duration: animations.duration.slower,
-        easing: animations.easing.easeInOut,
+        duration: duration.slower,
+        easing: easing.easeInOut,
         iterationCount: 'infinite',
-        ...animations.patterns.pulse,
+        '0%, 100%': { opacity: '1' },
+        '50%': { opacity: '0.5' },
       },
     },
   },
@@ -232,26 +238,26 @@ export const animations = {
   transitions: {
     // All properties
     all: {
-      fast: `all ${animations.duration.fast} ${animations.easing.default}`,
-      normal: `all ${animations.duration.normal} ${animations.easing.default}`,
-      slow: `all ${animations.duration.slow} ${animations.easing.default}`,
+      fast: `all ${duration.fast} ${easing.default}`,
+      normal: `all ${duration.normal} ${easing.default}`,
+      slow: `all ${duration.slow} ${easing.default}`,
     },
     
     // Specific properties
     opacity: {
-      fast: `opacity ${animations.duration.fast} ${animations.easing.default}`,
-      normal: `opacity ${animations.duration.normal} ${animations.easing.default}`,
-      slow: `opacity ${animations.duration.slow} ${animations.easing.default}`,
+      fast: `opacity ${duration.fast} ${easing.default}`,
+      normal: `opacity ${duration.normal} ${easing.default}`,
+      slow: `opacity ${duration.slow} ${easing.default}`,
     },
     transform: {
-      fast: `transform ${animations.duration.fast} ${animations.easing.default}`,
-      normal: `transform ${animations.duration.normal} ${animations.easing.default}`,
-      slow: `transform ${animations.duration.slow} ${animations.easing.default}`,
+      fast: `transform ${duration.fast} ${easing.default}`,
+      normal: `transform ${duration.normal} ${easing.default}`,
+      slow: `transform ${duration.slow} ${easing.default}`,
     },
     colors: {
-      fast: `background-color ${animations.duration.fast} ${animations.easing.default}, border-color ${animations.duration.fast} ${animations.easing.default}, color ${animations.duration.fast} ${animations.easing.default}`,
-      normal: `background-color ${animations.duration.normal} ${animations.easing.default}, border-color ${animations.duration.normal} ${animations.easing.default}, color ${animations.duration.normal} ${animations.easing.default}`,
-      slow: `background-color ${animations.duration.slow} ${animations.easing.default}, border-color ${animations.duration.slow} ${animations.easing.default}, color ${animations.duration.slow} ${animations.easing.default}`,
+      fast: `background-color ${duration.fast} ${easing.default}, border-color ${duration.fast} ${easing.default}, color ${duration.fast} ${easing.default}`,
+      normal: `background-color ${duration.normal} ${easing.default}, border-color ${duration.normal} ${easing.default}, color ${duration.normal} ${easing.default}`,
+      slow: `background-color ${duration.slow} ${easing.default}, border-color ${duration.slow} ${easing.default}, color ${duration.slow} ${easing.default}`,
     },
   },
 } as const;

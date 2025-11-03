@@ -16,6 +16,12 @@ export { typography, typographyVariables, getFontSize, getTextStyle } from './ty
 export { spacing, semanticSpacing, spacingVariables, getSpacing, getSemanticSpacing } from './spacing';
 export { animations, animationVariables, getDuration, getEasing, getTransition } from './animations';
 
+// Import for internal use
+import { colors, colorVariables } from './colors';
+import { typography, typographyVariables } from './typography';
+import { spacing, spacingVariables } from './spacing';
+import { animationVariables, animations } from './animations';
+
 // Combined theme tokens
 export const tokens = {
   colors,

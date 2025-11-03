@@ -10,36 +10,36 @@ import { ResponsiveValue, SpacingVariant } from '@/components/design-system/type
  * 
  * Props for the Grid component with responsive columns and spacing.
  */
-export interface GridProps extends LayoutComponentProps {
+export interface GridProps extends Omit<LayoutComponentProps, 'gap' | 'padding' | 'margin' | 'maxWidth' | 'centered'> {
   /**
    * Number of columns in the grid
    */
-  cols?: ResponsiveValue<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12>;
+  cols?: ResponsiveValue<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | undefined>;
   
   /**
    * Gap between grid items
    */
-  gap?: ResponsiveValue<SpacingVariant>;
+  gap?: ResponsiveValue<SpacingVariant | undefined>;
   
   /**
    * Row gap (if different from column gap)
    */
-  rowGap?: ResponsiveValue<SpacingVariant>;
+  rowGap?: ResponsiveValue<SpacingVariant | number | undefined>;
   
   /**
    * Column gap (if different from row gap)
    */
-  colGap?: ResponsiveValue<SpacingVariant>;
+  colGap?: ResponsiveValue<SpacingVariant | number | undefined>;
   
   /**
    * Auto-fit columns with minimum width
    */
-  autoFit?: ResponsiveValue<'xs' | 'sm' | 'md' | 'lg' | 'xl'>;
+  autoFit?: ResponsiveValue<'xs' | 'sm' | 'md' | 'lg' | 'xl' | undefined>;
   
   /**
    * Auto-fill columns with minimum width
    */
-  autoFill?: ResponsiveValue<'xs' | 'sm' | 'md' | 'lg' | 'xl'>;
+  autoFill?: ResponsiveValue<'xs' | 'sm' | 'md' | 'lg' | 'xl' | undefined>;
   
   /**
    * Dense grid packing
@@ -72,7 +72,7 @@ const getColsClasses = (cols: number): string => {
 /**
  * Get gap classes
  */
-const getGapClasses = (gap: SpacingVariant): string => {
+const getGapClasses = (gap: SpacingVariant | number): string => {
   const gapMap: Record<SpacingVariant, string> = {
     'none': 'gap-0',
     'xs': 'gap-1',      // 4px
@@ -84,13 +84,13 @@ const getGapClasses = (gap: SpacingVariant): string => {
     '3xl': 'gap-16',    // 64px
   };
   
-  return gapMap[gap] || 'gap-4';
+  return gapMap[gap as SpacingVariant] || 'gap-4';
 };
 
 /**
  * Get row gap classes
  */
-const getRowGapClasses = (gap: SpacingVariant): string => {
+const getRowGapClasses = (gap: SpacingVariant | number): string => {
   const gapMap: Record<SpacingVariant, string> = {
     'none': 'gap-y-0',
     'xs': 'gap-y-1',
@@ -102,13 +102,13 @@ const getRowGapClasses = (gap: SpacingVariant): string => {
     '3xl': 'gap-y-16',
   };
   
-  return gapMap[gap] || 'gap-y-4';
+  return gapMap[gap as SpacingVariant] || 'gap-y-4';
 };
 
 /**
  * Get column gap classes
  */
-const getColGapClasses = (gap: SpacingVariant): string => {
+const getColGapClasses = (gap: SpacingVariant | number): string => {
   const gapMap: Record<SpacingVariant, string> = {
     'none': 'gap-x-0',
     'xs': 'gap-x-1',
@@ -120,13 +120,13 @@ const getColGapClasses = (gap: SpacingVariant): string => {
     '3xl': 'gap-x-16',
   };
   
-  return gapMap[gap] || 'gap-x-4';
+  return gapMap[gap as SpacingVariant] || 'gap-x-4';
 };
 
 /**
  * Get auto-fit classes
  */
-const getAutoFitClasses = (size: string): string => {
+const getAutoFitClasses = (size: 'xs' | 'sm' | 'md' | 'lg' | 'xl'): string => {
   const sizeMap: Record<string, string> = {
     'xs': 'grid-cols-[repeat(auto-fit,minmax(16rem,1fr))]',  // 256px
     'sm': 'grid-cols-[repeat(auto-fit,minmax(20rem,1fr))]',  // 320px
@@ -141,7 +141,7 @@ const getAutoFitClasses = (size: string): string => {
 /**
  * Get auto-fill classes
  */
-const getAutoFillClasses = (size: string): string => {
+const getAutoFillClasses = (size: 'xs' | 'sm' | 'md' | 'lg' | 'xl'): string => {
   const sizeMap: Record<string, string> = {
     'xs': 'grid-cols-[repeat(auto-fill,minmax(16rem,1fr))]',
     'sm': 'grid-cols-[repeat(auto-fill,minmax(20rem,1fr))]',
@@ -156,35 +156,35 @@ const getAutoFillClasses = (size: string): string => {
 /**
  * Get responsive classes for a responsive value
  */
-const getResponsiveClasses = <T extends string | number>(
+const getResponsiveClasses = <T extends string | number | undefined>(
   value: ResponsiveValue<T>,
-  getClasses: (val: T) => string
+  getClasses: (val: Exclude<T, undefined> | number) => string
 ): string => {
   if (typeof value === 'string' || typeof value === 'number') {
-    return getClasses(value);
+    return getClasses(value as Exclude<T, undefined> | number);
   }
   
   if (typeof value === 'object' && value !== null) {
     const classes: string[] = [];
     
     // Base value (mobile-first)
-    if (value.sm !== undefined) classes.push(getClasses(value.sm));
+    if (value.sm !== undefined) classes.push(getClasses(value.sm as Exclude<T, undefined> | number));
     
     // Responsive breakpoints
     if (value.md !== undefined) {
-      const baseClass = getClasses(value.md);
+      const baseClass = getClasses(value.md as Exclude<T, undefined> | number);
       classes.push(`md:${baseClass.replace(/^[a-z-]+:/, '')}`);
     }
     if (value.lg !== undefined) {
-      const baseClass = getClasses(value.lg);
+      const baseClass = getClasses(value.lg as Exclude<T, undefined> | number);
       classes.push(`lg:${baseClass.replace(/^[a-z-]+:/, '')}`);
     }
     if (value.xl !== undefined) {
-      const baseClass = getClasses(value.xl);
+      const baseClass = getClasses(value.xl as Exclude<T, undefined> | number);
       classes.push(`xl:${baseClass.replace(/^[a-z-]+:/, '')}`);
     }
     if (value['2xl'] !== undefined) {
-      const baseClass = getClasses(value['2xl']);
+      const baseClass = getClasses(value['2xl'] as Exclude<T, undefined> | number);
       classes.push(`2xl:${baseClass.replace(/^[a-z-]+:/, '')}`);
     }
     
@@ -246,12 +246,12 @@ export const Grid = React.forwardRef<HTMLDivElement, GridProps>(
     ref
   ) => {
     // Generate responsive classes
-    const colsClasses = cols ? getResponsiveClasses(cols, getColsClasses) : '';
-    const gapClasses = getResponsiveClasses(gap, getGapClasses);
-    const rowGapClasses = rowGap ? getResponsiveClasses(rowGap, getRowGapClasses) : '';
-    const colGapClasses = colGap ? getResponsiveClasses(colGap, getColGapClasses) : '';
-    const autoFitClasses = autoFit ? getResponsiveClasses(autoFit, getAutoFitClasses) : '';
-    const autoFillClasses = autoFill ? getResponsiveClasses(autoFill, getAutoFillClasses) : '';
+    const colsClasses = cols ? getResponsiveClasses(cols as ResponsiveValue<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | undefined>, getColsClasses) : '';
+    const gapClasses = getResponsiveClasses(gap as ResponsiveValue<SpacingVariant | undefined>, getGapClasses);
+    const rowGapClasses = rowGap ? getResponsiveClasses(rowGap as ResponsiveValue<SpacingVariant | number | undefined>, getRowGapClasses) : '';
+    const colGapClasses = colGap ? getResponsiveClasses(colGap as ResponsiveValue<SpacingVariant | number | undefined>, getColGapClasses) : '';
+    const autoFitClasses = autoFit ? getResponsiveClasses(autoFit as ResponsiveValue<'xs' | 'sm' | 'md' | 'lg' | 'xl' | undefined>, (val) => getAutoFitClasses(val as 'xs' | 'sm' | 'md' | 'lg' | 'xl')) : '';
+    const autoFillClasses = autoFill ? getResponsiveClasses(autoFill as ResponsiveValue<'xs' | 'sm' | 'md' | 'lg' | 'xl' | undefined>, (val) => getAutoFillClasses(val as 'xs' | 'sm' | 'md' | 'lg' | 'xl')) : '';
     
     const gridClasses = cn(
       // Base grid styles
@@ -272,15 +272,18 @@ export const Grid = React.forwardRef<HTMLDivElement, GridProps>(
       className
     );
 
-    return (
-      <Component
+    // Type assertion to avoid complex union type inference
+    const ComponentWithProps = Component as React.ElementType;
+
+      return (
+      <ComponentWithProps
         ref={ref}
         className={gridClasses}
         data-testid={testId}
-        {...props}
+        {...(props as React.ComponentPropsWithoutRef<typeof Component>)}
       >
         {children}
-      </Component>
+      </ComponentWithProps>
     );
   }
 );

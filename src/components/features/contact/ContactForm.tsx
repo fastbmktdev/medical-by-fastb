@@ -127,7 +127,11 @@ export function ContactForm({ onSubmit, className }: ContactFormProps = {}) {
         label="ชื่อ (Name)"
         type="text"
         value={formData.name}
-        onChange={(value) => setFormData(prev => ({ ...prev, name: value }))}
+        onChange={(value) => {
+          if (typeof value === 'string') {
+            setFormData(prev => ({ ...prev, name: value }));
+          }
+        }}
         required
         placeholder="กรอกชื่อของคุณ"
         disabled={isSubmitting}
@@ -138,7 +142,11 @@ export function ContactForm({ onSubmit, className }: ContactFormProps = {}) {
         label="อีเมล (Email)"
         type="email"
         value={formData.email}
-        onChange={(value) => setFormData(prev => ({ ...prev, email: value }))}
+        onChange={(value) => {
+          if (typeof value === 'string') {
+            setFormData(prev => ({ ...prev, email: value }));
+          }
+        }}
         required
         placeholder="your@email.com"
         disabled={isSubmitting}

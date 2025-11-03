@@ -206,7 +206,7 @@ export interface LayoutComponentProps extends BaseComponentProps {
   /**
    * Component HTML tag to render
    */
-  as?: keyof JSX.IntrinsicElements | React.ComponentType<Record<string, unknown>>;
+  as?: keyof React.JSX.IntrinsicElements | React.ComponentType<Record<string, unknown>>;
   
   /**
    * Whether to render as a flex container
