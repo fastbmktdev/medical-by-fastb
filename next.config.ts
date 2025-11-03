@@ -4,13 +4,13 @@ const isDevelopment = process.env.NODE_ENV === "development";
 
 function getContentSecurityPolicy(isDev: boolean): string {
   const connectSrc =
-    "connect-src 'self' *.supabase.co *.stripe.com" +
+    "connect-src 'self' *.supabase.co *.stripe.com https://vercel.live" +
     (isDev ? " http://127.0.0.1:54321 http://localhost:*" : "") +
     ";";
 
   return [
     "default-src 'self';",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://cdn.jsdelivr.net https://unpkg.com;",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://cdn.jsdelivr.net https://unpkg.com https://vercel.live;",
     "style-src 'self' 'unsafe-inline';",
     "img-src 'self' data: blob: https:;",
     "font-src 'self';",

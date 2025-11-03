@@ -272,6 +272,7 @@ export default function SignupPage() {
             general: `เกิดข้อผิดพลาด: ${error.message}`,
           });
         }
+        setIsLoading(false);
         return;
       }
 
@@ -281,6 +282,7 @@ export default function SignupPage() {
           setErrors({
             general: "อีเมลนี้ถูกใช้งานแล้ว กรุณาเข้าสู่ระบบ",
           });
+          setIsLoading(false);
           return;
         }
 
@@ -655,33 +657,33 @@ export default function SignupPage() {
               </p>
             )}
           </div>
-        </form>
-      </div>
 
-      <div className="pr-6 pt-4">
-        {/* Submit Button */}
-        <Button
-          type="submit"
-          disabled={isLoading}
-          loading={isLoading}
-          loadingText="กำลังสมัครสมาชิก..."
-          fullWidth
-          size="lg"
-        >
-          สมัครสมาชิก
-        </Button>
-        {/* Login Link */}
-        <div className="mt-6 text-center">
-          <p className="text-zinc-400 text-sm">
-            มีบัญชีอยู่แล้ว?{" "}
-            <Link
-              href="/login"
-              className="font-semibold text-red-500 hover:text-red-400 transition-colors"
+          {/* Submit Button */}
+          <div className="pr-6 pt-4">
+            <Button
+              type="submit"
+              disabled={isLoading}
+              loading={isLoading}
+              loadingText="กำลังสมัครสมาชิก..."
+              fullWidth
+              size="lg"
             >
-              เข้าสู่ระบบ
-            </Link>
-          </p>
-        </div>
+              สมัครสมาชิก
+            </Button>
+            {/* Login Link */}
+            <div className="mt-6 text-center">
+              <p className="text-zinc-400 text-sm">
+                มีบัญชีอยู่แล้ว?{" "}
+                <Link
+                  href="/login"
+                  className="font-semibold text-red-500 hover:text-red-400 transition-colors"
+                >
+                  เข้าสู่ระบบ
+                </Link>
+              </p>
+            </div>
+          </div>
+        </form>
       </div>
     </AuthLayout>
   );
