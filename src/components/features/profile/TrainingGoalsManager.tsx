@@ -5,7 +5,7 @@ import { Card, CardBody, CardHeader, Button, Input, Select, SelectItem, Progress
 import { PlusIcon, TrashIcon, PencilIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
 
-interface FitnessGoal {
+interface TrainingGoal {
   id: string;
   goal_type: string;
   title: string;
@@ -24,8 +24,8 @@ const GOAL_TYPES = [
   { value: 'custom', label: 'เป้าหมายอื่นๆ' },
 ];
 
-export function FitnessGoalsManager() {
-  const [goals, setGoals] = useState<FitnessGoal[]>([]);
+export function TrainingGoalsManager() {
+  const [goals, setGoals] = useState<TrainingGoal[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -118,7 +118,7 @@ export function FitnessGoalsManager() {
     }
   };
 
-  const handleToggleComplete = async (goal: FitnessGoal) => {
+  const handleToggleComplete = async (goal: TrainingGoal) => {
     try {
       const response = await fetch(`/api/users/goals/${goal.id}`, {
         method: 'PUT',
@@ -179,7 +179,7 @@ export function FitnessGoalsManager() {
                 }}
               >
                 {GOAL_TYPES.map(type => (
-                  <SelectItem key={type.value} value={type.value}>
+                  <SelectItem key={type.value}>
                     {type.label}
                   </SelectItem>
                 ))}

@@ -20,7 +20,7 @@ import {
   ProfilePictureUpload,
   BioEditor,
   SocialLinksEditor,
-  FitnessGoalsManager,
+  TrainingGoalsManager,
   TrainingHistoryView,
   AchievementsShowcase,
   PrivacySettingsPanel,
@@ -371,7 +371,7 @@ function ProfileContent() {
           {/* Fitness Goals */}
           <Card className="bg-zinc-950/50 backdrop-blur-sm border border-zinc-700">
             <CardBody>
-              <FitnessGoalsManager />
+              <TrainingGoalsManager />
             </CardBody>
           </Card>
 
