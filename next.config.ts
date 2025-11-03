@@ -64,9 +64,7 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: false,
   },
   // Exclude analysis tools from build completely
-  experimental: {
-    serverComponentsExternalPackages: ['chokidar'],
-  },
+  serverExternalPackages: ['chokidar'],
   // Exclude analysis tools from build
   webpack: (config, { isServer }) => {
     if (!isServer) {

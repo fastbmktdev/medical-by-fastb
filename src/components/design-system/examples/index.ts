@@ -6,6 +6,3 @@
  */
 
 export { DataTableExamples } from './DataTableExamples';
-
-// Export default for easy importing
-export { default as DataTableExamples } from './DataTableExamples';

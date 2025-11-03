@@ -20,13 +20,16 @@ export function PageLayout({
     pattern: 'bg-zinc-950 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-zinc-900 via-zinc-950 to-black',
   };
 
+  // Map boolean padding to Container's padding type
+  const containerPadding = padding ? 'md' : 'none';
+
   return (
     <div
       className={`min-h-screen ${backgroundClasses[background]} ${className}`}
       data-testid={testId}
       {...props}
     >
-      <Container maxWidth={maxWidth} padding={padding}>
+      <Container maxWidth={maxWidth} padding={containerPadding}>
         {/* Page Header */}
         {(title || description) && (
           <div className="py-8 border-b border-zinc-700 mb-8">

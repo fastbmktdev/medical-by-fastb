@@ -75,30 +75,36 @@ const columns: TableColumn<User>[] = [
   {
     key: 'role',
     title: 'Role',
-    render: (value) => (
-      <span className={`
-        px-2 py-1 rounded-full text-xs font-medium
-        ${value === 'admin' ? 'bg-brand-primary text-text-primary' : ''}
-        ${value === 'partner' ? 'bg-semantic-info text-text-primary' : ''}
-        ${value === 'user' ? 'bg-background-secondary text-text-secondary' : ''}
-      `}>
-        {value}
-      </span>
-    ),
+    render: (value) => {
+      const roleValue = String(value);
+      return (
+        <span className={`
+          px-2 py-1 rounded-full text-xs font-medium
+          ${roleValue === 'admin' ? 'bg-brand-primary text-text-primary' : ''}
+          ${roleValue === 'partner' ? 'bg-semantic-info text-text-primary' : ''}
+          ${roleValue === 'user' ? 'bg-background-secondary text-text-secondary' : ''}
+        `}>
+          {roleValue}
+        </span>
+      );
+    },
   },
   {
     key: 'status',
     title: 'Status',
-    render: (value) => (
-      <span className={`
-        px-2 py-1 rounded-full text-xs font-medium
-        ${value === 'active' ? 'bg-semantic-success text-text-primary' : ''}
-        ${value === 'inactive' ? 'bg-semantic-error text-text-primary' : ''}
-        ${value === 'pending' ? 'bg-semantic-warning text-text-primary' : ''}
-      `}>
-        {value}
-      </span>
-    ),
+    render: (value) => {
+      const statusValue = String(value);
+      return (
+        <span className={`
+          px-2 py-1 rounded-full text-xs font-medium
+          ${statusValue === 'active' ? 'bg-semantic-success text-text-primary' : ''}
+          ${statusValue === 'inactive' ? 'bg-semantic-error text-text-primary' : ''}
+          ${statusValue === 'pending' ? 'bg-semantic-warning text-text-primary' : ''}
+        `}>
+          {statusValue}
+        </span>
+      );
+    },
   },
   {
     key: 'lastLogin',
@@ -194,7 +200,7 @@ export const DataTableExamples: React.FC = () => {
             <p className="text-text-secondary">Table with custom empty message</p>
           </CardHeader>
           <CardContent>
-            <DataTable 
+            <DataTable
               columns={columns} 
               data={[]} 
               emptyText="No users found. Try adjusting your search criteria." 
@@ -209,7 +215,7 @@ export const DataTableExamples: React.FC = () => {
             <p className="text-text-secondary">Click on any row to see console output</p>
           </CardHeader>
           <CardContent>
-            <DataTable 
+            <DataTable
               columns={columns} 
               data={sampleUsers} 
               onRowClick={handleRowClick}
@@ -224,7 +230,7 @@ export const DataTableExamples: React.FC = () => {
             <p className="text-text-secondary">Table with sorting functionality</p>
           </CardHeader>
           <CardContent>
-            <DataTable 
+            <DataTable
               columns={columns} 
               data={sampleUsers}
               sortBy={sortBy}

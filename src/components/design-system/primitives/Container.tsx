@@ -10,7 +10,7 @@ import { ResponsiveValue } from '@/components/design-system/types/variants';
  * 
  * Props for the Container component with responsive max-width and padding options.
  */
-export interface ContainerProps extends LayoutComponentProps {
+export interface ContainerProps extends Omit<LayoutComponentProps, 'padding' | 'maxWidth'> {
   /**
    * Maximum width of the container
    */
@@ -116,12 +116,13 @@ export const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
       centered = true,
       padding = 'md',
       fluid = true,
-      as: Component = 'div',
+      as,
       testId,
       ...props
     },
     ref
   ) => {
+    const Component = (as || 'div') as keyof React.JSX.IntrinsicElements;
     // Generate responsive classes
     const maxWidthClasses = getResponsiveClasses(maxWidth, getMaxWidthClasses);
     const paddingClasses = getResponsiveClasses(padding, getPaddingClasses);
@@ -144,16 +145,16 @@ export const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
       className
     );
 
-    return (
-      <Component
-        ref={ref}
-        className={containerClasses}
-        data-testid={testId}
-        {...props}
-      >
-        {children}
-      </Component>
-    );
+    // Type assertion to avoid complex union type inference
+    // Cast props to any to bypass TypeScript's complex union type calculation
+    const componentProps = {
+      ref,
+      className: containerClasses,
+      'data-testid': testId,
+      ...props,
+    } as any;
+
+    return React.createElement(Component, componentProps, children);
   }
 );
 

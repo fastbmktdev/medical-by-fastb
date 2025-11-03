@@ -176,7 +176,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
         if (!isDisabled && onClick) {
-          onClick(event as React.MouseEvent<HTMLButtonElement>);
+          onClick(event as unknown as React.MouseEvent<HTMLButtonElement>);
         }
       }
       onKeyDown?.(event);

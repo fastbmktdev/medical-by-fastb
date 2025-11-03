@@ -48,6 +48,18 @@ const ConfirmationModalComponent = memo(function ConfirmationModal({
     }
   }, [confirmVariant]);
 
+  // Map confirmVariant to Button variant (Button doesn't support 'warning')
+  const buttonVariant = useMemo(() => {
+    switch (confirmVariant) {
+      case 'danger':
+        return 'danger';
+      case 'warning':
+        return 'primary'; // Map warning to primary for Button
+      default:
+        return 'primary';
+    }
+  }, [confirmVariant]);
+
   return (
     <Modal
       {...modalProps}
@@ -78,7 +90,7 @@ const ConfirmationModalComponent = memo(function ConfirmationModal({
             {cancelText}
           </Button>
           <Button
-            variant={confirmVariant}
+            variant={buttonVariant}
             onClick={onConfirm}
             loading={loading}
             className="sm:order-2"

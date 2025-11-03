@@ -134,7 +134,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
       if (isInteractive && !isDisabled) {
         if (event.key === 'Enter' || event.key === ' ') {
           event.preventDefault();
-          onClick?.(event as React.MouseEvent<HTMLDivElement>);
+          onClick?.(event as unknown as React.MouseEvent<HTMLDivElement>);
         }
       }
       onKeyDown?.(event);

@@ -7,7 +7,7 @@ import { Button } from '@/components/design-system/primitives/Button';
 import { EmptyState } from './EmptyState';
 import { DataTableProps, TableColumn } from './types';
 
-const DataTableComponent = memo(function DataTable<T = Record<string, unknown>>({
+function DataTableImpl<T = Record<string, unknown>>({
   columns,
   data,
   loading = false,
@@ -159,6 +159,9 @@ const DataTableComponent = memo(function DataTable<T = Record<string, unknown>>(
       </div>
     </div>
   );
-});
+}
 
-export { DataTableComponent as DataTable };
+const DataTableComponent = memo(DataTableImpl);
+
+// Properly typed export to preserve generics
+export const DataTable = DataTableComponent as <T = Record<string, unknown>>(props: DataTableProps<T>) => React.ReactElement;

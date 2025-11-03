@@ -5,6 +5,9 @@
  * Exports all design tokens, components, types, and utilities.
  */
 
+// Design Tokens - Import for internal use
+import { tokens, cssVariables } from './tokens';
+
 // Design Tokens - Specific exports for better tree-shaking
 export { 
   tokens, 
@@ -19,6 +22,11 @@ export {
   animationVariables,
 } from './tokens';
 
+export type {
+  DesignTokens,
+  CSSVariables,
+} from './tokens';
+
 // Theme Provider and Context - Specific exports
 export {
   ThemeProvider,
@@ -26,6 +34,11 @@ export {
   withTheme,
   ThemeConsumer,
   ThemeContext,
+} from './ThemeProvider';
+
+export type {
+  ThemeContextValue,
+  ThemeProviderProps,
 } from './ThemeProvider';
 
 // Types and Interfaces - Specific exports
@@ -41,10 +54,6 @@ export type {
   ResponsiveValue,
   ValidationResult,
   ValidationSchema,
-  DesignTokens,
-  CSSVariables,
-  ThemeContextValue,
-  ThemeProviderProps,
 } from './types';
 
 export {
