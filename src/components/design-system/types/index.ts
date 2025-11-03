@@ -10,6 +10,13 @@ export * from './component-props';
 export * from './variants';
 export * from './validation';
 
+// Import types needed for local type definitions
+import type {
+  ComponentSize,
+  ComponentColor,
+  AnimationVariant,
+} from './variants';
+
 // Re-export commonly used types for convenience
 export type {
   BaseComponentProps,
@@ -148,7 +155,7 @@ export type ComponentPropsWithoutRef<T extends React.ElementType> =
   React.ComponentPropsWithoutRef<T>;
 
 // Element type constraint
-export type ElementType = keyof JSX.IntrinsicElements | React.ComponentType<Record<string, unknown>>;
+export type ElementType = keyof React.JSX.IntrinsicElements | React.ComponentType<Record<string, unknown>>;
 
 // Render prop types
 export type RenderProp<T = Record<string, never>> = (props: T) => React.ReactNode;

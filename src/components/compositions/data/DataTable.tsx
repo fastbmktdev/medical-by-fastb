@@ -41,12 +41,17 @@ const DataTableComponent = memo(function DataTable<T = Record<string, unknown>>(
     if (!currentSortBy) return data;
 
     return [...data].sort((a, b) => {
-      const aValue = a[currentSortBy];
-      const bValue = b[currentSortBy];
+      const aRecord = a as Record<string, unknown>;
+      const bRecord = b as Record<string, unknown>;
+      const aValue = aRecord[currentSortBy];
+      const bValue = bRecord[currentSortBy];
 
       if (aValue === bValue) return 0;
 
-      const comparison = aValue < bValue ? -1 : 1;
+      // Convert to comparable values
+      const aStr = String(aValue ?? '');
+      const bStr = String(bValue ?? '');
+      const comparison = aStr < bStr ? -1 : aStr > bStr ? 1 : 0;
       return currentSortOrder === 'asc' ? comparison : -comparison;
     });
   }, [data, currentSortBy, currentSortOrder]);
@@ -142,8 +147,8 @@ const DataTableComponent = memo(function DataTable<T = Record<string, unknown>>(
                     data-testid={`${testId}-cell-${index}-${column.key}`}
                   >
                     {column.render
-                      ? column.render(record[column.key], record, index)
-                      : record[column.key]
+                      ? column.render((record as Record<string, unknown>)[column.key], record, index)
+                      : String((record as Record<string, unknown>)[column.key] ?? '')
                     }
                   </td>
                 ))}
