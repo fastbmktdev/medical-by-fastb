@@ -55,7 +55,7 @@ export const usePaymentData = (): UsePaymentDataResult => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
   const refreshPayments = async () => {
     setLoading(true);
