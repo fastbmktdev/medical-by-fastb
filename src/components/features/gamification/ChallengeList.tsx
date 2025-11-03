@@ -46,8 +46,7 @@ export default function ChallengeList({ challenges, className = '' }: ChallengeL
       // Refresh the page or update state
       window.location.reload();
     } catch (error) {
-      console.error('Error joining challenge:', error);
-      alert(error instanceof Error ? error.message : 'Failed to join challenge');
+      // Error handled silently - can use toast if needed
     } finally {
       setJoiningChallenge(null);
     }

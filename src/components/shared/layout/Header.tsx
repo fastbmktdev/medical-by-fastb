@@ -79,6 +79,27 @@ export default function Header() {
   }, [user]);
 
   /**
+   * Close user menu when clicking outside
+   */
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      const userMenu = target.closest('[data-user-menu]');
+      if (isUserMenuOpen && !userMenu) {
+        setUserMenuOpen(false);
+      }
+    };
+
+    if (isUserMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isUserMenuOpen]);
+
+  /**
    * Handle user logout
    * Signs out user and redirects to home page
    */
@@ -169,21 +190,23 @@ export default function Header() {
             {user ? (
               <div 
                 className="hidden md:block relative"
-                onMouseEnter={() => setUserMenuOpen(true)}
-                onMouseLeave={() => setUserMenuOpen(false)}
+                data-user-menu
               >
-                <div className="flex items-center gap-2 hover:bg-white/10 px-3 border border-white/20 rounded-lg h-10 transition-all duration-200 cursor-pointer group">
+                <button
+                  onClick={() => setUserMenuOpen(!isUserMenuOpen)}
+                  className="flex items-center gap-2 hover:bg-white/10 px-3 border border-white/20 rounded-lg h-10 transition-all duration-200 cursor-pointer group w-full"
+                  aria-label="User menu"
+                  aria-expanded={isUserMenuOpen}
+                >
                   <UserCircleIcon className="w-5 h-5 group-hover:text-red-400 transition-colors" />
                   <span className="max-w-[100px] text-sm truncate group-hover:text-white transition-colors">
                     {user.user_metadata?.full_name || user.email?.split("@")[0]}
                   </span>
-                  <ChevronDownIcon className={`w-4 h-4 transition-transform duration-200 ${isUserMenuOpen ? 'rotate-180' : ''}`} />
-                </div>
+                </button>
                 {isUserMenuOpen && (
                   <div 
-                    className="right-0 absolute bg-zinc-950/95 backdrop-blur-md shadow-2xl mt-2 border border-white/20 rounded-xl w-64 z-50 overflow-hidden"
-                    onMouseEnter={() => setUserMenuOpen(true)}
-                    onMouseLeave={() => setUserMenuOpen(false)}
+                    className="right-0 absolute bg-zinc-950/95 backdrop-blur-md shadow-2xl top-full mt-2 border border-white/20 rounded-xl w-64 z-50 overflow-hidden"
+                    data-user-menu
                   >
                     <div className="py-2">
                       {/* User Info */}
@@ -207,6 +230,7 @@ export default function Header() {
                       {userRole && (
                         <Link
                           href={getDashboardPath(userRole)}
+                          onClick={() => setUserMenuOpen(false)}
                           className="group flex items-center gap-3 hover:bg-gradient-to-r hover:from-red-500/10 hover:to-red-600/10 px-4 py-3 text-zinc-300 hover:text-white text-sm transition-all duration-200"
                         >
                           {userRole === "admin" && (
@@ -226,6 +250,7 @@ export default function Header() {
                       {userRole === "authenticated" && !applicationStatus && (
                         <Link
                           href="/partner/apply"
+                          onClick={() => setUserMenuOpen(false)}
                           className="group flex items-center gap-3 hover:bg-gradient-to-r hover:from-blue-500/10 hover:to-blue-600/10 px-4 py-3 text-zinc-300 hover:text-white text-sm transition-all duration-200"
                         >
                           <BuildingStorefrontIcon className="w-5 h-5 group-hover:text-blue-400 transition-colors" />

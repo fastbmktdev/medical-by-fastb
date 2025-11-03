@@ -24,12 +24,8 @@ export async function getUserRole(userId: string): Promise<UserRole> {
     .single();
 
   if (error) {
-    console.error('[getUserRole] Error fetching role:', error);
-    
     // PGRST116: No rows found - user has no role assigned
     if (error.code === 'PGRST116') {
-      console.warn('[getUserRole] User has no role assigned. Logging out...');
-      
       // Logout user
       await supabase.auth.signOut();
       
@@ -43,8 +39,6 @@ export async function getUserRole(userId: string): Promise<UserRole> {
     
     // If error is 406 (Not Acceptable) or authentication-related, logout user
     if (error.code === 'PGRST301' || error.message.includes('406') || error.message.includes('JWT')) {
-      console.warn('[getUserRole] Session invalid or RLS error. Logging out...');
-      
       // Logout user
       await supabase.auth.signOut();
       
@@ -61,7 +55,6 @@ export async function getUserRole(userId: string): Promise<UserRole> {
   }
 
   if (!data) {
-    console.warn('[getUserRole] No data returned. Logging out...');
     await supabase.auth.signOut();
     
     if (typeof window !== 'undefined') {

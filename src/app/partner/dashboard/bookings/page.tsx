@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/database/supabase/client';
 import { RoleGuard } from '@/components/features/auth';
 import { DashboardLayout, type MenuItem } from '@/components/shared';
+import { showErrorToast } from '@/lib/utils';
 import {
   Card,
   CardBody,
@@ -117,8 +118,7 @@ function PartnerBookingsContent() {
         setSelectedBooking({ ...selectedBooking, status: newStatus });
       }
     } catch (error) {
-      console.error('Error updating booking status:', error);
-      alert('เกิดข้อผิดพลาดในการอัพเดทสถานะ');
+      showErrorToast('เกิดข้อผิดพลาดในการอัพเดทสถานะ');
     }
   };
 

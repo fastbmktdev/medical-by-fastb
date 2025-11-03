@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { createClient } from '@/lib/database/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { Card, CardBody, CardHeader, Button, Chip, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Divider, Progress } from '@heroui/react';
+import { Card, CardBody, CardHeader, Button, Chip, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Divider, Progress, Tooltip } from '@heroui/react';
 import {
   ShareIcon,
   UserPlusIcon,
@@ -14,8 +14,13 @@ import {
   ChartBarIcon,
   GiftIcon,
   ArrowUpIcon,
-  ArrowDownIcon
+  ArrowDownIcon,
+  CheckCircleIcon,
+  SparklesIcon,
+  FireIcon
 } from '@heroicons/react/24/outline';
+import { showSuccessToast, showErrorToast } from '@/lib/utils';
+import { Loading } from '@/components/design-system/primitives/Loading';
 
 interface AffiliateStats {
   totalReferrals: number;
@@ -53,18 +58,29 @@ export default function AffiliateDashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   const generateAffiliateCode = useCallback(() => {
-    if (user) {
-      const code = `MT${user.id.slice(-8).toUpperCase()}`;
-      setAffiliateCode(code);
-      setAffiliateLink(`${window.location.origin}/signup?ref=${code}`);
-    }
+    if (!user) return;
+    const code = `MT${user.id.slice(-8).toUpperCase()}`;
+    setAffiliateCode(code);
+    setAffiliateLink(`${window.location.origin}/signup?ref=${code}`);
   }, [user]);
+
+  const calculateMonthlyGrowth = (referrals: any[], currentMonthReferrals: number) => {
+    const now = new Date();
+    const lastMonth = now.getMonth() === 0 ? 11 : now.getMonth() - 1;
+    const lastMonthReferrals = referrals.filter(ref => {
+      const refDate = new Date(ref.created_at);
+      return refDate.getMonth() === lastMonth && refDate.getFullYear() === now.getFullYear();
+    }).length;
+
+    return lastMonthReferrals > 0
+      ? Math.round(((currentMonthReferrals - lastMonthReferrals) / lastMonthReferrals) * 100)
+      : currentMonthReferrals > 0 ? 100 : 0;
+  };
 
   const loadAffiliateData = useCallback(async () => {
     if (!user) return;
 
     try {
-      // Load referral history
       const { data: referrals } = await supabase
         .from('points_history')
         .select('*')
@@ -72,49 +88,35 @@ export default function AffiliateDashboardPage() {
         .eq('action_type', 'referral')
         .order('created_at', { ascending: false });
 
-      if (referrals) {
-        setReferralHistory(referrals.map(ref => ({
-          id: ref.id,
-          referred_user_email: ref.action_description || 'Unknown',
-          status: 'rewarded' as const,
-          points_earned: ref.points,
-          created_at: ref.created_at,
-          source: 'Direct'
-        })));
+      if (!referrals) return;
 
-        // Calculate stats
-        const totalReferrals = referrals.length;
-        const totalEarnings = referrals.reduce((sum, ref) => sum + ref.points, 0);
-        
-        const currentMonth = new Date().getMonth();
-        const currentYear = new Date().getFullYear();
-        const currentMonthReferrals = referrals.filter(ref => {
-          const refDate = new Date(ref.created_at);
-          return refDate.getMonth() === currentMonth && refDate.getFullYear() === currentYear;
-        }).length;
+      setReferralHistory(referrals.map(ref => ({
+        id: ref.id,
+        referred_user_email: ref.action_description || 'Unknown',
+        status: 'rewarded' as const,
+        points_earned: ref.points,
+        created_at: ref.created_at,
+        source: 'Direct'
+      })));
 
-        // Calculate monthly growth
-        const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-        const lastMonthReferrals = referrals.filter(ref => {
-          const refDate = new Date(ref.created_at);
-          return refDate.getMonth() === lastMonth && refDate.getFullYear() === currentYear;
-        }).length;
+      const now = new Date();
+      const totalReferrals = referrals.length;
+      const totalEarnings = referrals.reduce((sum, ref) => sum + ref.points, 0);
+      const currentMonthReferrals = referrals.filter(ref => {
+        const refDate = new Date(ref.created_at);
+        return refDate.getMonth() === now.getMonth() && refDate.getFullYear() === now.getFullYear();
+      }).length;
 
-        const monthlyGrowth = lastMonthReferrals > 0 
-          ? Math.round(((currentMonthReferrals - lastMonthReferrals) / lastMonthReferrals) * 100)
-          : currentMonthReferrals > 0 ? 100 : 0;
-
-        setStats({
-          totalReferrals,
-          totalEarnings,
-          currentMonthReferrals,
-          conversionRate: totalReferrals > 0 ? Math.round((totalReferrals / 10) * 100) : 0,
-          monthlyGrowth,
-          topReferralSource: 'Direct'
-        });
-      }
+      setStats({
+        totalReferrals,
+        totalEarnings,
+        currentMonthReferrals,
+        conversionRate: totalReferrals > 0 ? Math.min(Math.round((totalReferrals / 10) * 100), 100) : 0,
+        monthlyGrowth: calculateMonthlyGrowth(referrals, currentMonthReferrals),
+        topReferralSource: 'Direct'
+      });
     } catch (error) {
-      console.error('Error loading affiliate data:', error);
+      // Error handled silently
     } finally {
       setIsLoading(false);
     }
@@ -127,323 +129,364 @@ export default function AffiliateDashboardPage() {
     }
   }, [user, generateAffiliateCode, loadAffiliateData]);
 
-  const copyToClipboard = async (text: string) => {
+  const copyToClipboard = async (text: string, label: string = '') => {
     try {
       await navigator.clipboard.writeText(text);
-      // You could add a toast notification here
+      showSuccessToast(`${label || 'เนื้อหา'} คัดลอกเรียบร้อยแล้ว!`);
     } catch (error) {
-      console.error('Failed to copy:', error);
+      showErrorToast('ไม่สามารถคัดลอกได้ กรุณาลองใหม่อีกครั้ง');
     }
+  };
+
+  const SOCIAL_SHARE_URLS: Record<string, (link: string, message: string) => string> = {
+    facebook: (link) => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}`,
+    twitter: (_, message) => `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}`,
+    line: (link) => `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(link)}`,
   };
 
   const shareOnSocial = (platform: string) => {
     const message = `🥊 เข้าร่วมแพลตฟอร์มมวยไทยกับฉัน! ใช้โค้ด ${affiliateCode} เพื่อรับสิทธิพิเศษ! ${affiliateLink}`;
-    
-    let url = '';
-    switch (platform) {
-      case 'facebook':
-        url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(affiliateLink)}`;
-        break;
-      case 'twitter':
-        url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}`;
-        break;
-      case 'line':
-        url = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(affiliateLink)}`;
-        break;
-    }
-    
-    if (url) {
-      window.open(url, '_blank', 'width=600,height=400');
-    }
+    const url = SOCIAL_SHARE_URLS[platform]?.(affiliateLink, message);
+    if (url) window.open(url, '_blank', 'width=600,height=400');
   };
+
+  const PageWrapper = ({ children }: { children: React.ReactNode }) => (
+    <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-red-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      </div>
+      <div className="container mx-auto px-4 py-16 relative z-10">{children}</div>
+    </div>
+  );
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
-        <div className="container mx-auto px-4 py-16">
-          <div className="text-center">
-            <h1 className="text-4xl font-bold mb-4">Affiliate Dashboard</h1>
-            <p className="text-zinc-300 text-xl mb-8">
-              กรุณาเข้าสู่ระบบเพื่อเข้าถึง Affiliate Dashboard
-            </p>
-            <Button 
-              color="primary" 
-              size="lg"
-              onClick={() => window.location.href = '/login'}
-            >
-              เข้าสู่ระบบ
-            </Button>
-          </div>
+      <PageWrapper>
+        <div className="text-center">
+          <h1 className="text-4xl font-bold mb-4">Affiliate Dashboard</h1>
+          <p className="text-zinc-300 text-xl mb-8">กรุณาเข้าสู่ระบบเพื่อเข้าถึง Affiliate Dashboard</p>
+          <Button color="primary" size="lg" onClick={() => window.location.href = '/login'}>เข้าสู่ระบบ</Button>
         </div>
-      </div>
+      </PageWrapper>
     );
   }
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
-        <div className="container mx-auto px-4 py-16">
-          <div className="text-center">
-            <div className="border border-white border-t-transparent rounded-full w-8 h-8 animate-spin mx-auto mb-4"></div>
-            <p className="text-zinc-300">กำลังโหลดข้อมูล...</p>
-          </div>
+      <PageWrapper>
+        <div className="text-center py-20">
+          <Loading variant="spinner" size="lg" text="กำลังโหลดข้อมูล..." centered />
         </div>
-      </div>
+      </PageWrapper>
     );
   }
 
+  const StatCard = ({ icon, value, label, growth, gradient }: { icon: React.ReactNode; value: string | number; label: string; growth?: number; gradient?: string }) => (
+    <Card className="bg-zinc-800/60 border-zinc-700/50 hover:border-zinc-600 transition-all duration-300 hover:shadow-xl hover:shadow-red-500/10 group backdrop-blur-sm">
+      <CardBody className="text-center p-6">
+        <div className="mb-3 transform group-hover:scale-110 transition-transform duration-300">
+          {icon}
+        </div>
+        <p className="text-3xl font-bold text-white mb-1">{value}</p>
+        <p className="text-zinc-400 text-sm">{label}</p>
+        {growth !== undefined && (
+          <div className="flex items-center justify-center mt-3">
+            {growth >= 0 ? (
+              <ArrowUpIcon className="w-4 h-4 text-green-400 mr-1" />
+            ) : (
+              <ArrowDownIcon className="w-4 h-4 text-red-400 mr-1" />
+            )}
+            <span className={`text-sm font-medium ${growth >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+              {growth >= 0 ? '+' : ''}{growth}%
+            </span>
+          </div>
+        )}
+      </CardBody>
+    </Card>
+  );
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
-      <div className="container mx-auto px-4 py-16">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">
-            📊 Affiliate Dashboard
-          </h1>
-          <p className="text-zinc-300 text-xl max-w-3xl mx-auto">
-            ติดตามผลงานและสถิติการแนะนำของคุณ
-          </p>
+    <PageWrapper>
+      {/* Header Section */}
+      <div className="text-center mb-12 animate-fade-in">
+        <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-red-500 to-orange-500 rounded-full mb-6 shadow-lg shadow-red-500/30">
+          <SparklesIcon className="w-10 h-10 text-white" />
         </div>
+        <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-white via-zinc-100 to-zinc-300 bg-clip-text text-transparent">
+          Affiliate Dashboard
+        </h1>
+        <p className="text-zinc-300 text-xl max-w-3xl mx-auto">
+          ติดตามผลงานและสถิติการแนะนำของคุณแบบเรียลไทม์
+        </p>
+      </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          <Card className="bg-zinc-800/50 border-zinc-700">
-            <CardBody className="text-center">
-              <UserPlusIcon className="w-8 h-8 text-blue-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-white">{stats.totalReferrals}</p>
-              <p className="text-zinc-400">ผู้แนะนำทั้งหมด</p>
-              <div className="flex items-center justify-center mt-2">
-                {stats.monthlyGrowth >= 0 ? (
-                  <ArrowUpIcon className="w-4 h-4 text-green-500 mr-1" />
-                ) : (
-                  <ArrowDownIcon className="w-4 h-4 text-red-500 mr-1" />
-                )}
-                <span className={`text-sm ${stats.monthlyGrowth >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                  {Math.abs(stats.monthlyGrowth)}%
-                </span>
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <StatCard 
+          icon={<UserPlusIcon className="w-10 h-10 text-blue-400 mx-auto" />} 
+          value={stats.totalReferrals} 
+          label="ผู้แนะนำทั้งหมด" 
+          growth={stats.monthlyGrowth}
+        />
+        <StatCard 
+          icon={<TrophyIcon className="w-10 h-10 text-yellow-400 mx-auto" />} 
+          value={stats.totalEarnings.toLocaleString('th-TH')} 
+          label="แต้มสะสมทั้งหมด"
+        />
+        <StatCard 
+          icon={<FireIcon className="w-10 h-10 text-orange-400 mx-auto" />} 
+          value={stats.currentMonthReferrals} 
+          label="เดือนนี้"
+        />
+        <StatCard 
+          icon={<GiftIcon className="w-10 h-10 text-purple-400 mx-auto" />} 
+          value={`${stats.conversionRate}%`} 
+          label="อัตราการแปลง"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Affiliate Link Card */}
+        <Card className="bg-zinc-800/60 border-zinc-700/50 backdrop-blur-sm hover:shadow-xl hover:shadow-red-500/10 transition-all duration-300">
+          <CardHeader className="pb-3">
+            <h2 className="text-xl font-semibold flex items-center text-white">
+              <div className="p-2 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg mr-3">
+                <LinkIcon className="w-5 h-5 text-white" />
               </div>
-            </CardBody>
-          </Card>
-
-          <Card className="bg-zinc-800/50 border-zinc-700">
-            <CardBody className="text-center">
-              <TrophyIcon className="w-8 h-8 text-yellow-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-white">{stats.totalEarnings}</p>
-              <p className="text-zinc-400">แต้มสะสมทั้งหมด</p>
-            </CardBody>
-          </Card>
-
-          <Card className="bg-zinc-800/50 border-zinc-700">
-            <CardBody className="text-center">
-              <ChartBarIcon className="w-8 h-8 text-green-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-white">{stats.currentMonthReferrals}</p>
-              <p className="text-zinc-400">เดือนนี้</p>
-            </CardBody>
-          </Card>
-
-          <Card className="bg-zinc-800/50 border-zinc-700">
-            <CardBody className="text-center">
-              <GiftIcon className="w-8 h-8 text-purple-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-white">{stats.conversionRate}%</p>
-              <p className="text-zinc-400">อัตราการแปลง</p>
-            </CardBody>
-          </Card>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Affiliate Link Section */}
-          <Card className="bg-zinc-800/50 border-zinc-700">
-            <CardHeader>
-              <h2 className="text-xl font-semibold flex items-center">
-                <LinkIcon className="w-5 h-5 mr-2" />
-                ลิงก์แนะนำของคุณ
-              </h2>
-            </CardHeader>
-            <CardBody className="space-y-4">
-              <div>
-                <label className="text-zinc-300 text-sm mb-2 block">โค้ดแนะนำ</label>
-                <div className="flex gap-2">
-                  <input
-                    value={affiliateCode}
-                    readOnly
-                    className="flex-1 bg-zinc-700 border border-zinc-600 rounded-lg px-4 py-3 text-sm"
+              ลิงก์แนะนำของคุณ
+            </h2>
+          </CardHeader>
+          <CardBody className="space-y-6">
+            {[
+              { label: 'โค้ดแนะนำ', value: affiliateCode, icon: '🎯' },
+              { label: 'ลิงก์แนะนำ', value: affiliateLink, icon: '🔗' }
+            ].map(({ label, value, icon }) => (
+              <div key={label}>
+                <label className="text-zinc-300 text-sm mb-2 flex items-center gap-2">
+                  <span>{icon}</span>
+                  {label}
+                </label>
+                <div className="flex gap-3">
+                  <input 
+                    value={value} 
+                    readOnly 
+                    className="flex-1 bg-zinc-700/50 border border-zinc-600 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-red-500/50" 
                   />
-                  <Button
-                    color="primary"
-                    variant="flat"
-                    onClick={() => copyToClipboard(affiliateCode)}
-                  >
-                    <ClipboardDocumentIcon className="w-4 h-4" />
-                  </Button>
+                  <Tooltip content="คัดลอก">
+                    <Button 
+                      color="primary" 
+                      variant="flat" 
+                      onClick={() => copyToClipboard(value, label)}
+                      className="min-w-unit-14"
+                    >
+                      <ClipboardDocumentIcon className="w-5 h-5" />
+                    </Button>
+                  </Tooltip>
                 </div>
               </div>
-
-              <div>
-                <label className="text-zinc-300 text-sm mb-2 block">ลิงก์แนะนำ</label>
-                <div className="flex gap-2">
-                  <input
-                    value={affiliateLink}
-                    readOnly
-                    className="flex-1 bg-zinc-700 border border-zinc-600 rounded-lg px-4 py-3 text-sm"
-                  />
+            ))}
+            <Divider className="my-6 bg-zinc-700/50" />
+            <div>
+              <p className="text-zinc-300 text-sm mb-4 flex items-center gap-2">
+                <ShareIcon className="w-4 h-4" />
+                แชร์บนโซเชียลมีเดีย
+              </p>
+              <div className="flex flex-wrap gap-3">
+                {[
+                  { name: 'facebook', label: 'Facebook', color: 'bg-blue-600 hover:bg-blue-700' },
+                  { name: 'twitter', label: 'Twitter', color: 'bg-sky-500 hover:bg-sky-600' },
+                  { name: 'line', label: 'LINE', color: 'bg-green-500 hover:bg-green-600' }
+                ].map(platform => (
                   <Button
-                    color="primary"
-                    variant="flat"
-                    onClick={() => copyToClipboard(affiliateLink)}
+                    key={platform.name}
+                    className={`${platform.color} text-white border-0`}
+                    size="md"
+                    onClick={() => shareOnSocial(platform.name)}
+                    startContent={<ShareIcon className="w-4 h-4" />}
                   >
-                    <ClipboardDocumentIcon className="w-4 h-4" />
+                    {platform.label}
                   </Button>
-                </div>
+                ))}
               </div>
+            </div>
+          </CardBody>
+        </Card>
 
-              <Divider className="my-4" />
-
-              <div>
-                <p className="text-zinc-300 text-sm mb-3">แชร์บนโซเชียลมีเดีย</p>
-                <div className="flex gap-2">
-                  <Button
-                    color="primary"
-                    variant="flat"
-                    size="sm"
-                    onClick={() => shareOnSocial('facebook')}
-                  >
-                    Facebook
-                  </Button>
-                  <Button
-                    color="primary"
-                    variant="flat"
-                    size="sm"
-                    onClick={() => shareOnSocial('twitter')}
-                  >
-                    Twitter
-                  </Button>
-                  <Button
-                    color="primary"
-                    variant="flat"
-                    size="sm"
-                    onClick={() => shareOnSocial('line')}
-                  >
-                    LINE
-                  </Button>
-                </div>
+        {/* Performance Stats Card */}
+        <Card className="bg-zinc-800/60 border-zinc-700/50 backdrop-blur-sm hover:shadow-xl hover:shadow-red-500/10 transition-all duration-300">
+          <CardHeader className="pb-3">
+            <h2 className="text-xl font-semibold flex items-center text-white">
+              <div className="p-2 bg-gradient-to-br from-green-500 to-green-600 rounded-lg mr-3">
+                <ChartBarIcon className="w-5 h-5 text-white" />
               </div>
-            </CardBody>
-          </Card>
-
-          {/* Performance Metrics */}
-          <Card className="bg-zinc-800/50 border-zinc-700">
-            <CardHeader>
-              <h2 className="text-xl font-semibold flex items-center">
-                <ChartBarIcon className="w-5 h-5 mr-2" />
-                สถิติประสิทธิภาพ
-              </h2>
-            </CardHeader>
-            <CardBody className="space-y-4">
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-zinc-300">อัตราการแปลง</span>
-                  <span className=" font-medium">{stats.conversionRate}%</span>
-                </div>
-                <Progress 
-                  value={stats.conversionRate} 
-                  className="w-full"
-                  color="primary"
-                />
-              </div>
-
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-zinc-300">การเติบโตรายเดือน</span>
-                  <span className={`font-medium ${stats.monthlyGrowth >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                    {stats.monthlyGrowth >= 0 ? '+' : ''}{stats.monthlyGrowth}%
+              สถิติประสิทธิภาพ
+            </h2>
+          </CardHeader>
+          <CardBody className="space-y-6">
+            {[
+              { label: 'อัตราการแปลง', value: stats.conversionRate, color: 'primary' as 'primary', icon: '📊' },
+              { label: 'การเติบโตรายเดือน', value: stats.monthlyGrowth, color: (stats.monthlyGrowth >= 0 ? 'success' : 'danger') as 'success' | 'danger', icon: '📈' }
+            ].map(({ label, value, color, icon }) => (
+              <div key={label}>
+                <div className="flex justify-between items-center mb-3">
+                  <span className="text-zinc-300 flex items-center gap-2">
+                    <span>{icon}</span>
+                    {label}
+                  </span>
+                  <span className={`font-semibold text-lg ${label === 'การเติบโตรายเดือน' ? (value >= 0 ? 'text-green-400' : 'text-red-400') : 'text-blue-400'}`}>
+                    {label === 'การเติบโตรายเดือน' && value >= 0 ? '+' : ''}{value}%
                   </span>
                 </div>
                 <Progress 
-                  value={Math.abs(stats.monthlyGrowth)} 
-                  className="w-full"
-                  color={stats.monthlyGrowth >= 0 ? "success" : "danger"}
+                  value={Math.abs(value)} 
+                  className="w-full" 
+                  color={color}
+                  size="lg"
+                  showValueLabel={false}
                 />
               </div>
-
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-zinc-300">ช่องทางแนะนำหลัก</span>
-                  <span className=" font-medium">{stats.topReferralSource}</span>
+            ))}
+            <Divider className="my-4 bg-zinc-700/50" />
+            <div className="flex justify-between items-center p-3 bg-zinc-700/30 rounded-lg">
+              <span className="text-zinc-300 flex items-center gap-2">
+                <SparklesIcon className="w-4 h-4" />
+                ช่องทางแนะนำหลัก
+              </span>
+              <Chip color="primary" variant="flat" size="sm">
+                {stats.topReferralSource}
+              </Chip>
+            </div>
+            <div className="bg-gradient-to-br from-zinc-700/50 to-zinc-800/50 p-5 rounded-lg border border-zinc-600/50">
+              <h3 className="font-semibold mb-4 text-white flex items-center gap-2">
+                <span className="text-xl">🎯</span>
+                เป้าหมายประจำเดือน
+              </h3>
+              <div className="space-y-3">
+                <div className="flex justify-between text-sm items-center">
+                  <span className="text-zinc-300">แนะนำ 10 คน</span>
+                  <span className="text-white font-semibold">{stats.totalReferrals}/10</span>
                 </div>
-              </div>
-
-              <Divider className="my-4" />
-
-              <div className="bg-zinc-700/50 p-4 rounded-lg">
-                <h3 className=" font-medium mb-2">🎯 เป้าหมาย</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-zinc-300">แนะนำ 10 คน</span>
-                    <span className="text-white">{stats.totalReferrals}/10</span>
+                <Progress 
+                  value={Math.min((stats.totalReferrals / 10) * 100, 100)} 
+                  className="w-full" 
+                  color="warning"
+                  size="lg"
+                />
+                {stats.totalReferrals >= 10 && (
+                  <div className="flex items-center gap-2 text-green-400 text-sm mt-2">
+                    <CheckCircleIcon className="w-4 h-4" />
+                    <span>บรรลุเป้าหมายแล้ว!</span>
                   </div>
-                  <Progress 
-                    value={(stats.totalReferrals / 10) * 100} 
-                    className="w-full"
-                    color="warning"
-                  />
-                </div>
+                )}
               </div>
-            </CardBody>
-          </Card>
-        </div>
+            </div>
+          </CardBody>
+        </Card>
+      </div>
 
-        {/* Referral History */}
-        <Card className="bg-zinc-800/50 border-zinc-700 mt-8">
-          <CardHeader>
-            <h2 className="text-xl font-semibold text-white">ประวัติการแนะนำ</h2>
-          </CardHeader>
-          <CardBody>
-            {referralHistory.length > 0 ? (
-              <Table aria-label="Referral history">
+      {/* Referral History Card */}
+      <Card className="bg-zinc-800/60 border-zinc-700/50 backdrop-blur-sm hover:shadow-xl hover:shadow-red-500/10 transition-all duration-300 mt-8">
+        <CardHeader className="pb-3">
+          <h2 className="text-xl font-semibold text-white flex items-center">
+            <div className="p-2 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg mr-3">
+              <UserPlusIcon className="w-5 h-5 text-white" />
+            </div>
+            ประวัติการแนะนำ
+          </h2>
+        </CardHeader>
+        <CardBody className="p-0">
+          {referralHistory.length > 0 ? (
+            <div className="overflow-x-auto">
+              <Table 
+                aria-label="Referral history"
+                classNames={{
+                  wrapper: "bg-transparent",
+                  th: "bg-zinc-700/50 text-zinc-300 border-b border-zinc-600",
+                  td: "border-b border-zinc-700/50 text-zinc-300",
+                }}
+              >
                 <TableHeader>
                   <TableColumn>วันที่</TableColumn>
                   <TableColumn>ผู้แนะนำ</TableColumn>
                   <TableColumn>ช่องทาง</TableColumn>
                   <TableColumn>สถานะ</TableColumn>
-                  <TableColumn>แต้มที่ได้รับ</TableColumn>
+                  <TableColumn className="text-right">แต้มที่ได้รับ</TableColumn>
                 </TableHeader>
                 <TableBody>
                   {referralHistory.map((referral) => (
-                    <TableRow key={referral.id}>
+                    <TableRow key={referral.id} className="hover:bg-zinc-700/30 transition-colors">
                       <TableCell>
-                        {new Date(referral.created_at).toLocaleDateString('th-TH')}
+                        {new Date(referral.created_at).toLocaleDateString('th-TH', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric'
+                        })}
                       </TableCell>
-                      <TableCell>{referral.referred_user_email}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                            {referral.referred_user_email.charAt(0).toUpperCase()}
+                          </div>
+                          <span className="max-w-[200px] truncate">{referral.referred_user_email}</span>
+                        </div>
+                      </TableCell>
                       <TableCell>
                         <Chip size="sm" color="primary" variant="flat">
                           {referral.source || 'Direct'}
                         </Chip>
                       </TableCell>
                       <TableCell>
-                        <Chip
-                          color={referral.status === 'rewarded' ? 'success' : 'warning'}
+                        <Chip 
+                          color={referral.status === 'rewarded' ? 'success' : 'warning'} 
                           size="sm"
+                          variant="flat"
                         >
-                          {referral.status === 'rewarded' ? 'ได้รับแต้มแล้ว' : 'รอดำเนินการ'}
+                          {referral.status === 'rewarded' ? (
+                            <span className="flex items-center gap-1">
+                              <CheckCircleIcon className="w-3 h-3" />
+                              ได้รับแต้มแล้ว
+                            </span>
+                          ) : (
+                            'รอดำเนินการ'
+                          )}
                         </Chip>
                       </TableCell>
-                      <TableCell className="text-green-400 font-medium">
-                        +{referral.points_earned} แต้ม
+                      <TableCell className="text-right">
+                        <span className="text-green-400 font-semibold flex items-center justify-end gap-1">
+                          <TrophyIcon className="w-4 h-4" />
+                          +{referral.points_earned.toLocaleString('th-TH')} แต้ม
+                        </span>
                       </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
-            ) : (
-              <div className="text-center py-8">
-                <UserPlusIcon className="w-12 h-12 text-zinc-500 mx-auto mb-4" />
-                <p className="text-zinc-400">ยังไม่มีประวัติการแนะนำ</p>
-                <p className="text-zinc-500 text-sm">เริ่มแชร์ลิงก์แนะนำของคุณได้เลย!</p>
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <div className="w-24 h-24 bg-zinc-700/50 rounded-full flex items-center justify-center mx-auto mb-6">
+                <UserPlusIcon className="w-12 h-12 text-zinc-500" />
               </div>
-            )}
-          </CardBody>
-        </Card>
-      </div>
-    </div>
+              <p className="text-zinc-300 text-lg font-medium mb-2">ยังไม่มีประวัติการแนะนำ</p>
+              <p className="text-zinc-500 text-sm mb-6">เริ่มแชร์ลิงก์แนะนำของคุณได้เลย!</p>
+              <Button 
+                color="primary" 
+                variant="flat"
+                onClick={() => {
+                  if (affiliateLink) {
+                    copyToClipboard(affiliateLink, 'ลิงก์แนะนำ');
+                  }
+                }}
+                startContent={<ShareIcon className="w-4 h-4" />}
+              >
+                คัดลอกลิงก์แนะนำ
+              </Button>
+            </div>
+          )}
+        </CardBody>
+      </Card>
+    </PageWrapper>
   );
 }

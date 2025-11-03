@@ -12,6 +12,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { AuthLayout } from "@/components/compositions/layouts";
 import { Button } from "@/components/shared";
+import { SupabaseDebug } from "./debug";
 
 /**
  * Interface for login form data
@@ -163,62 +164,99 @@ function LoginForm() {
 
       // If not an email, look up the email from username using RPC function
       if (!isEmail) {
-        const { data: userData, error: rpcError } = await supabase
-          .rpc('get_user_by_username_or_email', { identifier: formData.identifier });
+        try {
+          const { data: userData, error: rpcError } = await supabase
+            .rpc('get_user_by_username_or_email', { identifier: formData.identifier });
 
-        if (rpcError) {
-          // RPC Error occurred
+          if (rpcError) {
+            // Check if it's a network error
+            if (rpcError.message.includes("fetch") || rpcError.message.includes("Failed to fetch")) {
+              setErrors({
+                general: "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต",
+              });
+            } else {
+              setErrors({
+                general: `เกิดข้อผิดพลาดในการค้นหาผู้ใช้: ${rpcError.message}`,
+              });
+            }
+            setIsLoading(false);
+            return;
+          }
+
+          if (!userData || userData.length === 0) {
+            setErrors({
+              general: "ไม่พบผู้ใช้งานนี้ในระบบ กรุณาตรวจสอบ Username หรืออีเมลของคุณ",
+            });
+            setIsLoading(false);
+            return;
+          }
+
+          email = userData[0].email;
+        } catch (rpcNetworkError: any) {
           setErrors({
-            general: `เกิดข้อผิดพลาดในการค้นหาผู้ใช้: ${rpcError.message}`,
+            general: "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต",
           });
           setIsLoading(false);
           return;
         }
-
-        if (!userData || userData.length === 0) {
-          setErrors({
-            general: "ไม่พบผู้ใช้งานนี้ในระบบ กรุณาตรวจสอบ Username หรืออีเมลของคุณ",
-          });
-          setIsLoading(false);
-          return;
-        }
-
-        email = userData[0].email;
       }
 
       // Attempt to sign in with Supabase
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password: formData.password,
-      });
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password: formData.password,
+        });
 
-      if (error) {
-        // Handle authentication errors
-        if (error.message.includes("Invalid login credentials")) {
+        if (error) {
+          // Handle authentication errors
+          if (error.message.includes("Invalid login credentials") || error.message.includes("Invalid credentials")) {
+            setErrors({
+              general: "อีเมล, Username หรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง",
+            });
+          } else if (error.message.includes("Email not confirmed")) {
+            setErrors({
+              general: "กรุณายืนยันอีเมลของคุณก่อนเข้าสู่ระบบ",
+            });
+          } else if (error.message.includes("fetch") || error.message.includes("Failed to fetch") || error.status === null) {
+            setErrors({
+              general: "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต",
+            });
+          } else {
+            setErrors({
+              general: `เกิดข้อผิดพลาด: ${error.message}${error.status ? ` (Status: ${error.status})` : ''}`,
+            });
+          }
+          setIsLoading(false);
+          return;
+        }
+
+        if (data.session) {
+          // Login successful, redirect to intended page
+          router.push(redirectTo);
+          router.refresh(); // Refresh to update server components
+        }
+      } catch (authNetworkError: any) {
+        // Check if it's a fetch error
+        if (authNetworkError.message?.includes("fetch") || 
+            authNetworkError.message?.includes("Failed to fetch") ||
+            authNetworkError.name === "TypeError" ||
+            authNetworkError.cause?.code === "ECONNREFUSED" ||
+            authNetworkError.cause?.code === "ENOTFOUND") {
+          
           setErrors({
-            general: "อีเมล, Username หรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง",
-          });
-        } else if (error.message.includes("Email not confirmed")) {
-          setErrors({
-            general: "กรุณายืนยันอีเมลของคุณก่อนเข้าสู่ระบบ",
+            general: "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต",
           });
         } else {
           setErrors({
-            general: `เกิดข้อผิดพลาด: ${error.message}`,
+            general: `เกิดข้อผิดพลาดในการเชื่อมต่อ: ${authNetworkError.message || "Unknown error"}`,
           });
         }
-        return;
       }
-
-      if (data.session) {
-        // Login successful, redirect to intended page
-        router.push(redirectTo);
-        router.refresh(); // Refresh to update server components
-      }
-    } catch {
-      // Login error occurred
+    } catch (unknownError: any) {
+      // Unknown error occurred
       setErrors({
-        general: "เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง",
+        general: `เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ: ${unknownError.message || "กรุณาลองใหม่อีกครั้ง"}`,
       });
     } finally {
       setIsLoading(false);
@@ -255,9 +293,11 @@ function LoginForm() {
         {/* General Error Message */}
         {errors.general && (
           <div className="bg-red-500/20 p-4 border border-red-500 rounded-lg">
-            <div className="flex items-center gap-3">
-              <ExclamationTriangleIcon className="flex-shrink-0 w-6 h-6 text-red-400" />
-              <p className="text-red-400 text-sm">{errors.general}</p>
+            <div className="flex items-start gap-3">
+              <ExclamationTriangleIcon className="flex-shrink-0 w-6 h-6 text-red-400 mt-0.5" />
+              <div className="flex-1">
+                <p className="text-red-400 text-sm whitespace-pre-line">{errors.general}</p>
+              </div>
             </div>
           </div>
         )}
@@ -372,6 +412,8 @@ function LoginForm() {
         </p>
       </div>
 
+      {/* Debug Component (Development Only) */}
+      <SupabaseDebug />
     </AuthLayout>
   );
 }

@@ -94,6 +94,10 @@ function ForgetPasswordPageContent() {
           setErrors({
             general: "ไม่พบผู้ใช้ที่ใช้อีเมลนี้ กรุณาตรวจสอบอีเมลหรือสมัครสมาชิกใหม่",
           });
+        } else if (error.message.includes("fetch") || error.message.includes("Failed to fetch")) {
+          setErrors({
+            general: "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต",
+          });
         } else {
           setErrors({
             general: `เกิดข้อผิดพลาด: ${error.message}`,
@@ -107,7 +111,7 @@ function ForgetPasswordPageContent() {
       if (error instanceof Error) {
         if (error.message.includes('Failed to fetch')) {
           setErrors({
-            general: "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ตและลองใหม่",
+            general: "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต",
           });
         } else if (error.message.includes('Missing Supabase environment variables')) {
           setErrors({

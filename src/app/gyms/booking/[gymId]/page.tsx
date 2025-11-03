@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { PaymentWrapper } from '@/components/features/payments';
 import { createClient } from '@/lib/database/supabase/client';
+import { showErrorToast } from '@/lib/utils';
 
 interface BookingStep {
   id: number;
@@ -168,25 +169,25 @@ export default function GymBookingPage() {
   const handleNextStep = async () => {
     if (currentStep === 1) {
       if (!startDate || !endDate) {
-        alert('กรุณาเลือกวันที่');
+        showErrorToast('กรุณาเลือกวันที่');
         return;
       }
       if (new Date(endDate) <= new Date(startDate)) {
-        alert('วันที่สิ้นสุดต้องมากกว่าวันที่เริ่มต้น');
+        showErrorToast('วันที่สิ้นสุดต้องมากกว่าวันที่เริ่มต้น');
         return;
       }
     }
 
     if (currentStep === 2) {
       if (!selectedPackage) {
-        alert('กรุณาเลือกแพ็กเกจ');
+        showErrorToast('กรุณาเลือกแพ็กเกจ');
         return;
       }
     }
 
     if (currentStep === 3) {
       if (!contactInfo.name || !contactInfo.email || !contactInfo.phone) {
-        alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+        showErrorToast('กรุณากรอกข้อมูลให้ครบถ้วน');
         return;
       }
       // Move to payment step

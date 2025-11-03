@@ -28,16 +28,25 @@ import {
   MapPinIcon,
   PhoneIcon,
   EnvelopeIcon,
+  XMarkIcon,
+  TrashIcon,
 } from '@heroicons/react/24/outline';
 import type { Gym } from '@/types';
+import { uploadImages, validateFile } from '@/app/partner/apply/utils/fileUpload';
+import { showSuccessToast, showErrorToast } from '@/lib/utils';
 
 function GymPageContent() {
   const supabase = createClient();
   const [gym, setGym] = useState<Gym | null>(null);
-  const [user, setUser] = useState<{ email?: string } | null>(null);
+  const [user, setUser] = useState<{ id?: string; email?: string } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploadingImages, setIsUploadingImages] = useState(false);
+  const [showImageUpload, setShowImageUpload] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [fileErrors, setFileErrors] = useState<string[]>([]);
+  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
   const [editFormData, setEditFormData] = useState({
     gym_name: '',
     contact_name: '',
@@ -77,6 +86,17 @@ function GymPageContent() {
     loadData();
   }, [supabase]);
 
+  // Cleanup image preview URLs on unmount
+  useEffect(() => {
+    return () => {
+      imagePreviewUrls.forEach((url) => {
+        if (url && url.startsWith('blob:')) {
+          URL.revokeObjectURL(url);
+        }
+      });
+    };
+  }, [imagePreviewUrls]);
+
   const handleSaveProfile = async () => {
     if (!gym) return;
 
@@ -97,11 +117,114 @@ function GymPageContent() {
 
       setGym(updatedGym);
       setIsEditing(false);
-      alert('บันทึกข้อมูลสำเร็จ!');
+      showSuccessToast('บันทึกข้อมูลสำเร็จ!');
     } catch {
-      alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+      showErrorToast('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const errors: string[] = [];
+    const validFiles: File[] = [];
+    const previewUrls: string[] = [];
+
+    files.forEach((file) => {
+      const validationError = validateFile(file);
+      if (validationError) {
+        errors.push(validationError);
+      } else {
+        validFiles.push(file);
+        // Create preview URL
+        previewUrls.push(URL.createObjectURL(file));
+      }
+    });
+
+    setSelectedFiles((prev) => [...prev, ...validFiles]);
+    setImagePreviewUrls((prev) => [...prev, ...previewUrls]);
+    setFileErrors(errors);
+    e.target.value = ''; // Reset input
+  };
+
+  const handleRemoveFile = (index: number) => {
+    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+    setImagePreviewUrls((prev) => {
+      URL.revokeObjectURL(prev[index]); // Clean up object URL
+      return prev.filter((_, i) => i !== index);
+    });
+  };
+
+  const handleUploadImages = async () => {
+    if (!gym || !user || !user.id || selectedFiles.length === 0) return;
+
+    setIsUploadingImages(true);
+    setFileErrors([]);
+
+    try {
+      // Upload images to storage
+      const uploadedUrls = await uploadImages(supabase, selectedFiles, user.id);
+
+      // Update gym with new images
+      const currentImages = gym.images || [];
+      const updatedImages = [...currentImages, ...uploadedUrls];
+
+      const { error: updateError } = await supabase
+        .from('gyms')
+        .update({ images: updatedImages })
+        .eq('id', gym.id);
+
+      if (updateError) throw updateError;
+
+      // Refresh gym data
+      const { data: updatedGym } = await supabase
+        .from('gyms')
+        .select('*')
+        .eq('id', gym.id)
+        .maybeSingle();
+
+      setGym(updatedGym);
+      
+      // Clean up preview URLs
+      imagePreviewUrls.forEach((url) => URL.revokeObjectURL(url));
+      setSelectedFiles([]);
+      setImagePreviewUrls([]);
+      setShowImageUpload(false);
+      showSuccessToast('อัพโหลดรูปภาพสำเร็จ!');
+    } catch (error) {
+      setFileErrors([
+        error instanceof Error ? error.message : 'เกิดข้อผิดพลาดในการอัพโหลดรูปภาพ',
+      ]);
+    } finally {
+      setIsUploadingImages(false);
+    }
+  };
+
+  const handleDeleteImage = async (imageIndex: number) => {
+    if (!gym || !confirm('คุณแน่ใจว่าต้องการลบรูปภาพนี้?')) return;
+
+    try {
+      const updatedImages = gym.images?.filter((_, idx) => idx !== imageIndex) || [];
+
+      const { error } = await supabase
+        .from('gyms')
+        .update({ images: updatedImages })
+        .eq('id', gym.id);
+
+      if (error) throw error;
+
+      // Refresh gym data
+      const { data: updatedGym } = await supabase
+        .from('gyms')
+        .select('*')
+        .eq('id', gym.id)
+        .maybeSingle();
+
+      setGym(updatedGym);
+      showSuccessToast('ลบรูปภาพสำเร็จ!');
+    } catch (error) {
+      showErrorToast('เกิดข้อผิดพลาดในการลบรูปภาพ');
     }
   };
 
@@ -371,12 +494,119 @@ function GymPageContent() {
                 </div>
               </div>
 
-              {gym.images && gym.images.length > 0 && (
-                <div className="pt-6 border-white/5 border-t">
-                  <h4 className="mb-4 font-semibold text-white">รูปภาพยิม</h4>
+              <div className="pt-6 border-white/5 border-t">
+                <div className="flex justify-between items-center mb-4">
+                  <h4 className="font-semibold text-white">รูปภาพยิม</h4>
+                  <Button
+                    size="sm"
+                    color="secondary"
+                    variant="flat"
+                    startContent={<PhotoIcon className="w-4 h-4" />}
+                    onPress={() => setShowImageUpload(!showImageUpload)}
+                  >
+                    {showImageUpload ? 'ยกเลิก' : 'อัพโหลดรูปภาพ'}
+                  </Button>
+                </div>
+
+                {/* Image Upload Section */}
+                {showImageUpload && (
+                  <Card className="bg-white/5 border border-white/10 mb-4">
+                    <CardBody className="space-y-4">
+                      <div>
+                        <label className="flex flex-col items-center gap-3 bg-white/5 hover:bg-white/10 p-6 border border-white/10 border-dashed rounded-lg transition-colors cursor-pointer">
+                          <PhotoIcon className="w-12 h-12 text-default-400" />
+                          <span className="text-default-300 text-sm">
+                            คลิกเพื่อเลือกไฟล์ หรือลากไฟล์มาวาง
+                          </span>
+                          <span className="text-default-500 text-xs">
+                            รองรับไฟล์: JPG, PNG (ขนาดไม่เกิน 5MB ต่อไฟล์)
+                          </span>
+                          <input
+                            type="file"
+                            multiple
+                            accept="image/jpeg,image/jpg,image/png"
+                            onChange={handleFileSelect}
+                            className="hidden"
+                          />
+                        </label>
+
+                        {/* File Errors */}
+                        {fileErrors.length > 0 && (
+                          <div className="space-y-1 mt-3">
+                            {fileErrors.map((error, index) => (
+                              <p key={index} className="flex items-center gap-1 text-red-400 text-sm">
+                                <XMarkIcon className="w-4 h-4" />
+                                {error}
+                              </p>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Selected Files Preview */}
+                        {selectedFiles.length > 0 && (
+                          <div className="mt-4">
+                            <p className="mb-3 text-default-400 text-sm">
+                              ไฟล์ที่เลือก ({selectedFiles.length} ไฟล์)
+                            </p>
+                            <div className="gap-3 grid grid-cols-2 md:grid-cols-4">
+                              {selectedFiles.map((file, idx) => (
+                                <div key={idx} className="relative group rounded-lg w-full h-24 overflow-hidden">
+                                  {imagePreviewUrls[idx] && (
+                                    <Image
+                                      src={imagePreviewUrls[idx]}
+                                      alt={file.name}
+                                      fill
+                                      className="object-cover"
+                                    />
+                                  )}
+                                  <button
+                                    type="button"
+                                    onClick={() => handleRemoveFile(idx)}
+                                    className="absolute top-1 right-1 bg-red-500 hover:bg-red-600 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                  >
+                                    <XMarkIcon className="w-4 h-4 text-white" />
+                                  </button>
+                                  <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-2 py-1">
+                                    <p className="text-white text-xs truncate">{file.name}</p>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                            <div className="flex justify-end gap-2 mt-4">
+                              <Button
+                                size="sm"
+                                variant="flat"
+                                onPress={() => {
+                                  setSelectedFiles([]);
+                                  setImagePreviewUrls([]);
+                                  setFileErrors([]);
+                                  setShowImageUpload(false);
+                                }}
+                              >
+                                ยกเลิก
+                              </Button>
+                              <Button
+                                size="sm"
+                                color="secondary"
+                                onPress={handleUploadImages}
+                                isLoading={isUploadingImages}
+                                isDisabled={isUploadingImages || selectedFiles.length === 0}
+                              >
+                                {isUploadingImages ? 'กำลังอัพโหลด...' : 'อัพโหลด'}
+                              </Button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </CardBody>
+                  </Card>
+                )}
+
+                {/* Existing Images */}
+                {gym.images && gym.images.length > 0 ? (
                   <div className="gap-4 grid grid-cols-2 md:grid-cols-4">
                     {gym.images.map((image, idx) => (
-                      <div key={idx} className="relative rounded-lg w-full h-32 overflow-hidden">
+                      <div key={idx} className="relative group rounded-lg w-full h-32 overflow-hidden">
                         <Image
                           src={image}
                           alt={`Gym image ${idx + 1}`}
@@ -387,30 +617,28 @@ function GymPageContent() {
                             target.src = 'https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=400';
                           }}
                         />
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteImage(idx)}
+                          className="absolute top-2 right-2 bg-red-500/80 hover:bg-red-600 rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                          title="ลบรูปภาพ"
+                        >
+                          <TrashIcon className="w-4 h-4 text-white" />
+                        </button>
                       </div>
                     ))}
                   </div>
-                </div>
-              )}
-
-              {(!gym.images || gym.images.length === 0) && (
-                <div className="pt-6 border-white/5 border-t">
-                  <Card className="bg-white/5 border border-white/10 border-dashed">
-                    <CardBody className="py-12 text-center">
-                      <PhotoIcon className="mx-auto mb-4 w-12 h-12 text-default-300" />
-                      <p className="mb-4 text-default-400">ยังไม่มีรูปภาพยิม</p>
-                      <Button
-                        size="sm"
-                        color="secondary"
-                        variant="flat"
-                        startContent={<PhotoIcon className="w-4 h-4" />}
-                      >
-                        อัพโหลดรูปภาพ
-                      </Button>
-                    </CardBody>
-                  </Card>
-                </div>
-              )}
+                ) : (
+                  !showImageUpload && (
+                    <Card className="bg-white/5 border border-white/10 border-dashed">
+                      <CardBody className="py-12 text-center">
+                        <PhotoIcon className="mx-auto mb-4 w-12 h-12 text-default-300" />
+                        <p className="mb-4 text-default-400">ยังไม่มีรูปภาพยิม</p>
+                      </CardBody>
+                    </Card>
+                  )
+                )}
+              </div>
             </>
           )}
         </CardBody>

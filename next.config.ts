@@ -5,7 +5,7 @@ const isDevelopment = process.env.NODE_ENV === "development";
 function getContentSecurityPolicy(isDev: boolean): string {
   const connectSrc =
     "connect-src 'self' *.supabase.co *.stripe.com https://vercel.live" +
-    (isDev ? " http://127.0.0.1:54321 http://localhost:*" : "") +
+    (isDev ? " http://127.0.0.1:8000 http://127.0.0.1:54321 http://localhost:*" : "") +
     ";";
 
   return [

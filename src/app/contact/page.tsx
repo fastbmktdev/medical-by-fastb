@@ -9,6 +9,7 @@ import {
   PaperAirplaneIcon
 } from "@heroicons/react/24/outline";
 import { PageHeader } from "@/components/shared";
+import { showSuccessToast } from "@/lib/utils";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -37,7 +38,7 @@ export default function ContactPage() {
     // Simulate form submission
     await new Promise(resolve => setTimeout(resolve, 2000));
     
-    alert("ส่งข้อความเรียบร้อยแล้ว! ทีมงานจะติดต่อกลับภายใน 24 ชั่วโมง");
+    showSuccessToast("ส่งข้อความเรียบร้อยแล้ว! ทีมงานจะติดต่อกลับภายใน 24 ชั่วโมง");
     setFormData({
       name: "",
       email: "",

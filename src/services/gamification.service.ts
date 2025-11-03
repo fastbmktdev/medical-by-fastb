@@ -103,7 +103,6 @@ export async function getUserGamificationStats(userId: string): Promise<Gamifica
       recent_activities: recentActivities || [],
     };
   } catch (error) {
-    console.error('Error getting user gamification stats:', error);
     return null;
   }
 }
@@ -150,7 +149,7 @@ export async function awardPoints(request: AwardPointsRequest): Promise<PointsAw
     });
 
     if (badgesError) {
-      console.warn('Failed to check badges:', badgesError.message);
+      // Badge check failed, continue anyway
     }
 
     return {
@@ -161,7 +160,6 @@ export async function awardPoints(request: AwardPointsRequest): Promise<PointsAw
       message: `ได้รับ ${request.points} คะแนน!`,
     };
   } catch (error) {
-    console.error('Error awarding points:', error);
     return null;
   }
 }
@@ -190,7 +188,6 @@ export async function getUserPointsHistory(
 
     return data || [];
   } catch (error) {
-    console.error('Error getting points history:', error);
     return [];
   }
 }
@@ -218,7 +215,6 @@ export async function getAllBadges(): Promise<Badge[]> {
 
     return data || [];
   } catch (error) {
-    console.error('Error getting badges:', error);
     return [];
   }
 }
@@ -245,7 +241,6 @@ export async function getUserBadges(userId: string): Promise<UserBadge[]> {
 
     return data || [];
   } catch (error) {
-    console.error('Error getting user badges:', error);
     return [];
   }
 }
@@ -295,7 +290,6 @@ export async function getBadgeProgress(userId: string): Promise<BadgeProgress[]>
       };
     });
   } catch (error) {
-    console.error('Error getting badge progress:', error);
     return [];
   }
 }
@@ -365,7 +359,6 @@ export async function updateUserStreak(request: UpdateStreakRequest): Promise<St
       streak_bonus_points: streakBonusPoints > 0 ? streakBonusPoints : undefined,
     };
   } catch (error) {
-    console.error('Error updating user streak:', error);
     return null;
   }
 }
@@ -389,7 +382,6 @@ export async function getUserStreaks(userId: string): Promise<UserStreak[]> {
 
     return data || [];
   } catch (error) {
-    console.error('Error getting user streaks:', error);
     return [];
   }
 }
@@ -417,7 +409,6 @@ export async function getActiveChallenges(): Promise<Challenge[]> {
 
     return data || [];
   } catch (error) {
-    console.error('Error getting active challenges:', error);
     return [];
   }
 }
@@ -480,7 +471,6 @@ export async function joinChallenge(request: JoinChallengeRequest): Promise<Chal
       user_challenge: userChallenge,
     };
   } catch (error) {
-    console.error('Error joining challenge:', error);
     return null;
   }
 }
@@ -506,7 +496,6 @@ export async function updateChallengeProgress(request: UpdateChallengeProgressRe
 
     return true;
   } catch (error) {
-    console.error('Error updating challenge progress:', error);
     return false;
   }
 }
@@ -554,7 +543,6 @@ export async function getUserChallengeProgress(userId: string): Promise<Challeng
       };
     });
   } catch (error) {
-    console.error('Error getting user challenge progress:', error);
     return [];
   }
 }
@@ -619,7 +607,6 @@ export async function getLeaderboardData(
       user_score: userScore,
     };
   } catch (error) {
-    console.error('Error getting leaderboard data:', error);
     return null;
   }
 }
@@ -643,7 +630,6 @@ export async function getAllLeaderboards(): Promise<Leaderboard[]> {
 
     return data || [];
   } catch (error) {
-    console.error('Error getting leaderboards:', error);
     return [];
   }
 }
@@ -692,7 +678,6 @@ export async function getGamificationDashboard(userId: string): Promise<Gamifica
       upcoming_events: upcomingEvents,
     };
   } catch (error) {
-    console.error('Error getting gamification dashboard:', error);
     return null;
   }
 }

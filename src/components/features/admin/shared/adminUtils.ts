@@ -27,33 +27,18 @@ export const ADMIN_STATUS_CONFIG = {
   published: { label: 'เผยแพร่แล้ว', color: 'success' as const },
 } as const;
 
-/**
- * Format date for Thai locale
- */
-export function formatThaiDate(dateString: string | null | undefined): string {
-  if (!dateString) return '-';
-  
-  return new Date(dateString).toLocaleDateString('th-TH', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-}
+type DateFormatOptions = Intl.DateTimeFormatOptions;
 
-/**
- * Format date for short display
- */
-export function formatShortDate(dateString: string | null | undefined): string {
-  if (!dateString) return '-';
-  
-  return new Date(dateString).toLocaleDateString('th-TH', {
-    year: '2-digit',
-    month: 'short',
-    day: 'numeric',
-  });
-}
+const formatDate = (
+  dateString: string | null | undefined,
+  options: DateFormatOptions
+): string => dateString ? new Date(dateString).toLocaleDateString('th-TH', options) : '-';
+
+export const formatThaiDate = (dateString: string | null | undefined): string =>
+  formatDate(dateString, { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+export const formatShortDate = (dateString: string | null | undefined): string =>
+  formatDate(dateString, { year: '2-digit', month: 'short', day: 'numeric' });
 
 /**
  * Handle API response with consistent error handling
@@ -107,136 +92,64 @@ export async function makeApiCall<T>(
   }
 }
 
-/**
- * Debounce function for search inputs
- */
-export function debounce<T extends (...args: unknown[]) => unknown>(
-  func: T,
-  wait: number
-): (...args: Parameters<T>) => void {
+export function debounce<T extends (...args: unknown[]) => unknown>(func: T, wait: number) {
   let timeout: NodeJS.Timeout;
-  
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (...args: any[]) => {
+  return (...args: Parameters<T>) => {
     clearTimeout(timeout);
     timeout = setTimeout(() => func(...args), wait);
   };
 }
 
-/**
- * Filter array by search query
- */
-export function filterBySearch<T>(
-  items: T[],
-  query: string,
-  searchFields: (keyof T)[]
-): T[] {
+export const filterBySearch = <T>(items: T[], query: string, searchFields: (keyof T)[]): T[] => {
   if (!query.trim()) return items;
-  
   const lowerQuery = query.toLowerCase();
-  
   return items.filter((item) =>
-    searchFields.some((field) => {
-      const value = item[field];
-      if (typeof value === 'string') {
-        return value.toLowerCase().includes(lowerQuery);
-      }
-      return false;
-    })
+    searchFields.some((field) =>
+      typeof item[field] === 'string' && (item[field] as string).toLowerCase().includes(lowerQuery)
+    )
   );
-}
+};
 
-/**
- * Filter array by status
- */
-export function filterByStatus<T extends { status?: string }>(
-  items: T[],
-  status: string
-): T[] {
-  if (status === 'all') return items;
-  return items.filter((item) => item.status === status);
-}
+export const filterByStatus = <T extends { status?: string }>(items: T[], status: string): T[] =>
+  status === 'all' ? items : items.filter((item) => item.status === status);
 
-/**
- * Get stats from array of items
- */
-export function getItemStats<T extends { status?: string }>(items: T[]) {
-  const total = items.length;
-  const approved = items.filter((item) => item.status === 'approved').length;
-  const pending = items.filter((item) => item.status === 'pending').length;
-  const rejected = items.filter((item) => item.status === 'rejected').length;
-  
-  return { total, approved, pending, rejected };
-}
+export const getItemStats = <T extends { status?: string }>(items: T[]) => ({
+  total: items.length,
+  approved: items.filter((item) => item.status === 'approved').length,
+  pending: items.filter((item) => item.status === 'pending').length,
+  rejected: items.filter((item) => item.status === 'rejected').length,
+});
 
-/**
- * Generate slug from text
- */
-export function generateSlug(text: string): string {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, '') // Remove special characters
-    .replace(/[\s_-]+/g, '-') // Replace spaces and underscores with hyphens
-    .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
-}
+export const generateSlug = (text: string): string =>
+  text.toLowerCase().trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 
-/**
- * Truncate text with ellipsis
- */
-export function truncateText(text: string, maxLength: number): string {
-  if (text.length <= maxLength) return text;
-  return text.substring(0, maxLength).trim() + '...';
-}
+export const truncateText = (text: string, maxLength: number): string =>
+  text.length <= maxLength ? text : text.substring(0, maxLength).trim() + '...';
 
-/**
- * Check if user has permission for action
- */
-export function hasPermission(userRole: string, requiredRoles: string[]): boolean {
-  return requiredRoles.includes(userRole);
-}
+export const hasPermission = (userRole: string, requiredRoles: string[]): boolean =>
+  requiredRoles.includes(userRole);
 
-/**
- * Sort array by field
- */
-export function sortBy<T>(
-  items: T[],
-  field: keyof T,
-  direction: 'asc' | 'desc' = 'asc'
-): T[] {
-  return [...items].sort((a, b) => {
-    const aValue = a[field];
-    const bValue = b[field];
-    
-    if (aValue < bValue) return direction === 'asc' ? -1 : 1;
-    if (aValue > bValue) return direction === 'asc' ? 1 : -1;
-    return 0;
+export const sortBy = <T>(items: T[], field: keyof T, direction: 'asc' | 'desc' = 'asc'): T[] =>
+  [...items].sort((a, b) => {
+    const [aValue, bValue] = [a[field], b[field]];
+    return aValue < bValue ? (direction === 'asc' ? -1 : 1) : aValue > bValue ? (direction === 'asc' ? 1 : -1) : 0;
   });
-}
 
-/**
- * Paginate array
- */
-export function paginate<T>(items: T[], page: number, pageSize: number): T[] {
-  const startIndex = (page - 1) * pageSize;
-  return items.slice(startIndex, startIndex + pageSize);
-}
+export const paginate = <T>(items: T[], page: number, pageSize: number): T[] =>
+  items.slice((page - 1) * pageSize, page * pageSize);
 
-/**
- * Get pagination info
- */
-export function getPaginationInfo(totalItems: number, page: number, pageSize: number) {
+export const getPaginationInfo = (totalItems: number, page: number, pageSize: number) => {
   const totalPages = Math.ceil(totalItems / pageSize);
-  const startIndex = (page - 1) * pageSize + 1;
-  const endIndex = Math.min(page * pageSize, totalItems);
-  
   return {
     totalPages,
     currentPage: page,
-    startIndex,
-    endIndex,
+    startIndex: (page - 1) * pageSize + 1,
+    endIndex: Math.min(page * pageSize, totalItems),
     totalItems,
     hasNextPage: page < totalPages,
     hasPrevPage: page > 1,
   };
-}
+};

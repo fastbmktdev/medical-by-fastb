@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { GamificationDashboard as GamificationDashboardType } from '@/types/gamification.types';
 import LevelDisplay from './LevelDisplay';
 import BadgeCollection from './BadgeCollection';
@@ -13,25 +13,26 @@ interface GamificationDashboardProps {
   className?: string;
 }
 
+const Section = ({ title, icon, children }: { title: string; icon: string; children: React.ReactNode }) => (
+  <div className="bg-white rounded-lg shadow-md p-6">
+    <h2 className="text-xl font-semibold mb-4 flex items-center">
+      {icon} {title}
+    </h2>
+    {children}
+  </div>
+);
+
 export default function GamificationDashboard({ className = '' }: GamificationDashboardProps) {
   const [dashboard, setDashboard] = useState<GamificationDashboardType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchDashboard();
-  }, []);
 
   const fetchDashboard = async () => {
     try {
       setLoading(true);
       const response = await fetch('/api/gamification/dashboard');
       const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to fetch dashboard');
-      }
-
+      if (!response.ok) throw new Error(result.error || 'Failed to fetch dashboard');
       setDashboard(result.data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error');
@@ -39,6 +40,8 @@ export default function GamificationDashboard({ className = '' }: GamificationDa
       setLoading(false);
     }
   };
+
+  useEffect(() => { fetchDashboard(); }, []);
 
   if (loading) {
     return (
@@ -88,72 +91,48 @@ export default function GamificationDashboard({ className = '' }: GamificationDa
       {/* Level and Points Display */}
       <LevelDisplay userStats={dashboard.user_stats} />
 
-      {/* Streaks */}
       {dashboard.user_stats.current_streaks.length > 0 && (
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-semibold mb-4 flex items-center">
-            🔥 สตรีคของคุณ
-          </h2>
+        <Section title="สตรีคของคุณ" icon="🔥">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {dashboard.user_stats.current_streaks.map((streak) => (
               <StreakDisplay key={streak.id} streak={streak} />
             ))}
           </div>
-        </div>
+        </Section>
       )}
 
-      {/* Recent Badges */}
       {dashboard.recent_badges.length > 0 && (
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-semibold mb-4 flex items-center">
-            🏅 เหรียญล่าสุด
-          </h2>
+        <Section title="เหรียญล่าสุด" icon="🏅">
           <BadgeCollection badges={dashboard.recent_badges} showAll={false} />
-        </div>
+        </Section>
       )}
 
-      {/* Active Challenges */}
       {dashboard.active_challenges.length > 0 && (
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-semibold mb-4 flex items-center">
-            🎯 ความท้าทายที่กำลังทำ
-          </h2>
+        <Section title="ความท้าทายที่กำลังทำ" icon="🎯">
           <ChallengeList challenges={dashboard.active_challenges} />
-        </div>
+        </Section>
       )}
 
-      {/* Leaderboards */}
       {dashboard.leaderboards.length > 0 && (
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-semibold mb-4 flex items-center">
-            🏆 ตารางคะแนน
-          </h2>
+        <Section title="ตารางคะแนน" icon="🏆">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {dashboard.leaderboards.map((leaderboard) => (
               <LeaderboardWidget key={leaderboard.leaderboard.id} leaderboard={leaderboard} />
             ))}
           </div>
-        </div>
+        </Section>
       )}
 
-      {/* Upcoming Events */}
       {dashboard.upcoming_events.length > 0 && (
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-semibold mb-4 flex items-center">
-            📅 กิจกรรมที่จะมาถึง
-          </h2>
+        <Section title="กิจกรรมที่จะมาถึง" icon="📅">
           <ChallengeList challenges={dashboard.upcoming_events} />
-        </div>
+        </Section>
       )}
 
-      {/* Recent Activities */}
       {dashboard.user_stats.recent_activities.length > 0 && (
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-semibold mb-4 flex items-center">
-            📊 กิจกรรมล่าสุด
-          </h2>
+        <Section title="กิจกรรมล่าสุด" icon="📊">
           <PointsHistory activities={dashboard.user_stats.recent_activities} />
-        </div>
+        </Section>
       )}
     </div>
   );

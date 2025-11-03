@@ -50,84 +50,50 @@ export function useGymManagement() {
     setFilteredGyms(filtered);
   }, [gyms, selectedTab, searchQuery]);
 
-  // Handle approve gym
-  const handleApprove = async (gymId: string) => {
+  // Generic handler for API operations with loading state
+  const handleApiOperation = async (
+    url: string,
+    options: RequestInit,
+    successMessage: string
+  ) => {
     setIsProcessing(true);
-    const result = await makeApiCall(
+    const result = await makeApiCall(url, options, successMessage);
+    if (result.success) await loadGyms();
+    setIsProcessing(false);
+    return result.success;
+  };
+
+  // Handle approve gym
+  const handleApprove = (gymId: string) =>
+    handleApiOperation(
       `/api/partner-applications/${gymId}`,
-      {
-        method: 'PATCH',
-        body: JSON.stringify({ status: 'approved' }),
-      },
+      { method: 'PATCH', body: JSON.stringify({ status: 'approved' }) },
       TOAST_MESSAGES.APPROVE_SUCCESS
     );
-    
-    if (result.success) {
-      await loadGyms();
-    }
-    
-    setIsProcessing(false);
-    return result.success;
-  };
 
   // Handle reject gym
-  const handleReject = async (gymId: string) => {
-    setIsProcessing(true);
-    const result = await makeApiCall(
+  const handleReject = (gymId: string) =>
+    handleApiOperation(
       `/api/partner-applications/${gymId}`,
-      {
-        method: 'PATCH',
-        body: JSON.stringify({ status: 'denied' }),
-      },
+      { method: 'PATCH', body: JSON.stringify({ status: 'denied' }) },
       TOAST_MESSAGES.REJECT_SUCCESS
     );
-    
-    if (result.success) {
-      await loadGyms();
-    }
-    
-    setIsProcessing(false);
-    return result.success;
-  };
 
   // Handle edit gym
-  const handleEdit = async (gymId: string, data: Partial<Gym>) => {
-    setIsProcessing(true);
-    const result = await makeApiCall(
+  const handleEdit = (gymId: string, data: Partial<Gym>) =>
+    handleApiOperation(
       `/api/gyms/${gymId}`,
-      {
-        method: 'PATCH',
-        body: JSON.stringify(data),
-      },
+      { method: 'PATCH', body: JSON.stringify(data) },
       TOAST_MESSAGES.EDIT_SUCCESS
     );
-    
-    if (result.success) {
-      await loadGyms();
-    }
-    
-    setIsProcessing(false);
-    return result.success;
-  };
 
   // Handle delete gym
-  const handleDelete = async (gymId: string) => {
-    setIsProcessing(true);
-    const result = await makeApiCall(
+  const handleDelete = (gymId: string) =>
+    handleApiOperation(
       `/api/gyms/${gymId}`,
-      {
-        method: 'DELETE',
-      },
+      { method: 'DELETE' },
       TOAST_MESSAGES.DELETE_SUCCESS
     );
-    
-    if (result.success) {
-      await loadGyms();
-    }
-    
-    setIsProcessing(false);
-    return result.success;
-  };
 
   return {
     // State
