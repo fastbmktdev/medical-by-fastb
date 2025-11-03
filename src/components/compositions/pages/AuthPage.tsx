@@ -41,12 +41,12 @@ export function AuthPage({
               <div className="mb-6">
                 {/* Logo placeholder - replace with actual logo */}
                 <div className="w-16 h-16 bg-brand-primary rounded-xl mx-auto flex items-center justify-center">
-                  <span className="text-text-primary font-bold text-xl">MT</span>
+                  <span className=" font-bold text-xl">MT</span>
                 </div>
               </div>
             )}
             
-            <h1 className="text-2xl font-bold text-text-primary mb-2">
+            <h1 className="text-2xl font-bold mb-2">
               {title}
             </h1>
             

@@ -8,7 +8,7 @@ import {
   CheckCircleIcon,
   ArrowLeftIcon,
 } from "@heroicons/react/24/outline";
-import AuthLayout from "@/components/shared/layout/AuthLayout";
+import { AuthLayout } from "@/components/compositions/layouts";
 import { Button } from "@/components/shared";
 
 interface ForgetPasswordFormData {
@@ -141,7 +141,7 @@ function ForgetPasswordPageContent() {
           <p className="mb-2 text-zinc-300 text-base">
             เราได้ส่งลิงก์รีเซ็ตรหัสผ่านไปยัง
           </p>
-          <p className="mb-6 font-mono text-text-primary text-sm">{formData.email}</p>
+          <p className="mb-6 font-mono text-sm">{formData.email}</p>
           <div className="bg-blue-500/20 mb-6 p-4 border border-blue-500 rounded-lg">
             <p className="text-blue-400 text-sm">
               💡 กรุณาตรวจสอบอีเมลและคลิกลิงก์เพื่อรีเซ็ตรหัสผ่าน
@@ -200,7 +200,7 @@ function ForgetPasswordPageContent() {
               onChange={handleInputChange}
                   className={`w-full bg-zinc-800/50 backdrop-blur-sm border ${
                     errors.email ? "border-red-500/70 shadow-red-500/20" : "border-zinc-600/50 hover:border-zinc-500/70"
-                  } rounded-xl px-4 py-3 text-text-primary placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 focus:shadow-lg focus:shadow-red-500/10 transition-all duration-200 font-mono text-sm`}
+                  } rounded-xl px-4 py-3 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 focus:shadow-lg focus:shadow-red-500/10 transition-all duration-200 font-mono text-sm`}
               placeholder="your@email.com"
               autoComplete="email"
             />

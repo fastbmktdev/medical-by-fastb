@@ -15,7 +15,7 @@ export const GymMap = memo(function GymMap({ latitude, longitude, mapUrl, gymNam
   if (!hasCoords && !mapUrl) {
     return (
       <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
-        <h2 className="mb-4 font-bold text-text-primary text-2xl">แผนที่</h2>
+        <h2 className="mb-4 font-bold text-2xl">แผนที่</h2>
         <div className="flex justify-center items-center h-64">
           <p className="text-zinc-500 text-sm">ยังไม่มีข้อมูลตำแหน่ง</p>
         </div>
@@ -30,7 +30,7 @@ export const GymMap = memo(function GymMap({ latitude, longitude, mapUrl, gymNam
 
   return (
     <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
-      <h2 className="mb-4 font-bold text-text-primary text-2xl">แผนที่</h2>
+      <h2 className="mb-4 font-bold text-2xl">แผนที่</h2>
       {embedSrc ? (
         <div className="overflow-hidden rounded-lg border border-zinc-800">
           <iframe
@@ -47,7 +47,7 @@ export const GymMap = memo(function GymMap({ latitude, longitude, mapUrl, gymNam
             href={mapUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-zinc-700 hover:bg-zinc-600 px-4 py-2 rounded-lg text-text-primary transition-colors"
+            className="inline-flex items-center gap-2 bg-zinc-700 hover:bg-zinc-600 px-4 py-2 rounded-lg transition-colors"
           >
             เปิดใน Google Maps
           </a>

@@ -97,7 +97,7 @@ export default function ContactPage() {
           {/* Contact Information */}
           <div className="space-y-8 lg:col-span-1">
             <div>
-              <h2 className="mb-6 font-bold text-text-primary text-2xl">ข้อมูลติดต่อ</h2>
+              <h2 className="mb-6 font-bold text-2xl">ข้อมูลติดต่อ</h2>
               <div className="space-y-6">
                 {contactInfo.map((info, index) => (
                   <div key={index} className="flex items-start gap-4">
@@ -105,7 +105,7 @@ export default function ContactPage() {
                       {info.icon}
                     </div>
                     <div>
-                      <h3 className="mb-2 font-semibold text-text-primary text-lg">{info.title}</h3>
+                      <h3 className="mb-2 font-semibold text-lg">{info.title}</h3>
                       <div className="space-y-1">
                         {info.details.map((detail, detailIndex) => (
                           <p key={detailIndex} className="text-zinc-300">{detail}</p>
@@ -120,11 +120,11 @@ export default function ContactPage() {
 
             {/* Social Media */}
             <div>
-              <h3 className="mb-4 font-semibold text-text-primary text-lg">ติดตามเรา</h3>
+              <h3 className="mb-4 font-semibold text-lg">ติดตามเรา</h3>
               <div className="flex gap-4">
                 <a
                   href="#"
-                  className="bg-zinc-700 hover:bg-zinc-600 p-3 rounded-lg text-text-primary transition-colors"
+                  className="bg-zinc-700 hover:bg-zinc-600 p-3 rounded-lg transition-colors"
                   aria-label="Facebook"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -133,7 +133,7 @@ export default function ContactPage() {
                 </a>
                 <a
                   href="#"
-                  className="bg-zinc-700 hover:bg-zinc-600 p-3 rounded-lg text-text-primary transition-colors"
+                  className="bg-zinc-700 hover:bg-zinc-600 p-3 rounded-lg transition-colors"
                   aria-label="Instagram"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -142,7 +142,7 @@ export default function ContactPage() {
                 </a>
                 <a
                   href="#"
-                  className="bg-zinc-700 hover:bg-zinc-600 p-3 rounded-lg text-text-primary transition-colors"
+                  className="bg-zinc-700 hover:bg-zinc-600 p-3 rounded-lg transition-colors"
                   aria-label="YouTube"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -156,7 +156,7 @@ export default function ContactPage() {
           {/* Contact Form */}
           <div className="lg:col-span-2">
             <div className="bg-zinc-950 p-8 rounded-lg">
-              <h2 className="mb-6 font-bold text-text-primary text-2xl">ส่งข้อความถึงเรา</h2>
+              <h2 className="mb-6 font-bold text-2xl">ส่งข้อความถึงเรา</h2>
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="gap-6 grid grid-cols-1 md:grid-cols-2">
@@ -171,7 +171,7 @@ export default function ContactPage() {
                       value={formData.name}
                       onChange={handleInputChange}
                       required
-                      className="bg-zinc-700 px-3 py-2 border border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-text-primary"
+                      className="bg-zinc-700 px-3 py-2 border border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white"
                       placeholder="กรอกชื่อ-นามสกุล"
                     />
                   </div>
@@ -186,7 +186,7 @@ export default function ContactPage() {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="bg-zinc-700 px-3 py-2 border border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-text-primary"
+                      className="bg-zinc-700 px-3 py-2 border border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white"
                       placeholder="กรอกอีเมล"
                     />
                   </div>
@@ -203,7 +203,7 @@ export default function ContactPage() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="bg-zinc-700 px-3 py-2 border border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-text-primary"
+                      className="bg-zinc-700 px-3 py-2 border border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white"
                       placeholder="กรอกเบอร์โทรศัพท์"
                     />
                   </div>
@@ -217,7 +217,7 @@ export default function ContactPage() {
                       value={formData.inquiryType}
                       onChange={handleInputChange}
                       required
-                      className="bg-zinc-700 px-3 py-2 border border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-text-primary"
+                      className="bg-zinc-700 px-3 py-2 border border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white"
                     >
                       {inquiryTypes.map((type) => (
                         <option key={type.value} value={type.value}>
@@ -239,7 +239,7 @@ export default function ContactPage() {
                     value={formData.subject}
                     onChange={handleInputChange}
                     required
-                    className="bg-zinc-700 px-3 py-2 border border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-text-primary"
+                    className="bg-zinc-700 px-3 py-2 border border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white"
                     placeholder="กรอกหัวข้อ"
                   />
                 </div>
@@ -255,7 +255,7 @@ export default function ContactPage() {
                     onChange={handleInputChange}
                     required
                     rows={6}
-                    className="bg-zinc-700 px-3 py-2 border border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-text-primary"
+                    className="bg-zinc-700 px-3 py-2 border border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white"
                     placeholder="กรอกรายละเอียดข้อความ"
                   />
                 </div>
@@ -263,7 +263,7 @@ export default function ContactPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex justify-center items-center gap-2 bg-brand-primary hover:bg-red-700 disabled:bg-zinc-600 px-6 py-3 rounded-lg w-full font-semibold text-text-primary transition-colors disabled:cursor-not-allowed"
+                  className="flex justify-center items-center gap-2 bg-brand-primary hover:bg-red-700 disabled:bg-zinc-600 px-6 py-3 rounded-lg w-full font-semibold transition-colors disabled:cursor-not-allowed"
                  aria-label="Button">
                   {isSubmitting ? (
                     <>
@@ -284,7 +284,7 @@ export default function ContactPage() {
 
         {/* Map Section */}
         <div className="mt-16">
-          <h2 className="mb-6 font-bold text-text-primary text-2xl text-center">แผนที่สำนักงาน</h2>
+          <h2 className="mb-6 font-bold text-2xl text-center">แผนที่สำนักงาน</h2>
           <div className="bg-zinc-950 p-8 rounded-lg">
             <div className="flex justify-center items-center bg-zinc-700 rounded-lg aspect-video">
               <div className="text-center">

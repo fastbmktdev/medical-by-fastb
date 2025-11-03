@@ -80,8 +80,8 @@ const columns: TableColumn<User>[] = [
       return (
         <span className={`
           px-2 py-1 rounded-full text-xs font-medium
-          ${roleValue === 'admin' ? 'bg-brand-primary text-text-primary' : ''}
-          ${roleValue === 'partner' ? 'bg-semantic-info text-text-primary' : ''}
+          ${roleValue === 'admin' ? 'bg-brand-primary text-white' : ''}
+          ${roleValue === 'partner' ? 'bg-semantic-info text-white' : ''}
           ${roleValue === 'user' ? 'bg-background-secondary text-text-secondary' : ''}
         `}>
           {roleValue}
@@ -97,9 +97,9 @@ const columns: TableColumn<User>[] = [
       return (
         <span className={`
           px-2 py-1 rounded-full text-xs font-medium
-          ${statusValue === 'active' ? 'bg-semantic-success text-text-primary' : ''}
-          ${statusValue === 'inactive' ? 'bg-semantic-error text-text-primary' : ''}
-          ${statusValue === 'pending' ? 'bg-semantic-warning text-text-primary' : ''}
+          ${statusValue === 'active' ? 'bg-semantic-success text-white' : ''}
+          ${statusValue === 'inactive' ? 'bg-semantic-error text-white' : ''}
+          ${statusValue === 'pending' ? 'bg-semantic-warning text-white' : ''}
         `}>
           {statusValue}
         </span>
@@ -167,14 +167,14 @@ export const DataTableExamples: React.FC = () => {
   return (
     <div className="p-6 space-y-8 bg-background-primary min-h-screen">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-text-primary mb-8">
+        <h1 className="text-3xl font-bold mb-8">
           DataTable Component Examples
         </h1>
 
         {/* Basic Table */}
         <Card className="mb-8">
           <CardHeader>
-            <h2 className="text-xl font-semibold text-text-primary">Basic DataTable</h2>
+            <h2 className="text-xl font-semibold text-white">Basic DataTable</h2>
             <p className="text-text-secondary">Standard table with all features</p>
           </CardHeader>
           <CardContent>
@@ -185,7 +185,7 @@ export const DataTableExamples: React.FC = () => {
         {/* Loading State */}
         <Card className="mb-8">
           <CardHeader>
-            <h2 className="text-xl font-semibold text-text-primary">Loading State</h2>
+            <h2 className="text-xl font-semibold text-white">Loading State</h2>
             <p className="text-text-secondary">Table showing loading indicator</p>
           </CardHeader>
           <CardContent>
@@ -196,7 +196,7 @@ export const DataTableExamples: React.FC = () => {
         {/* Empty State */}
         <Card className="mb-8">
           <CardHeader>
-            <h2 className="text-xl font-semibold text-text-primary">Empty State</h2>
+            <h2 className="text-xl font-semibold text-white">Empty State</h2>
             <p className="text-text-secondary">Table with custom empty message</p>
           </CardHeader>
           <CardContent>
@@ -211,7 +211,7 @@ export const DataTableExamples: React.FC = () => {
         {/* Clickable Rows */}
         <Card className="mb-8">
           <CardHeader>
-            <h2 className="text-xl font-semibold text-text-primary">Clickable Rows</h2>
+            <h2 className="text-xl font-semibold text-white">Clickable Rows</h2>
             <p className="text-text-secondary">Click on any row to see console output</p>
           </CardHeader>
           <CardContent>
@@ -226,7 +226,7 @@ export const DataTableExamples: React.FC = () => {
         {/* With Sorting */}
         <Card className="mb-8">
           <CardHeader>
-            <h2 className="text-xl font-semibold text-text-primary">With Sorting</h2>
+            <h2 className="text-xl font-semibold text-white">With Sorting</h2>
             <p className="text-text-secondary">Table with sorting functionality</p>
           </CardHeader>
           <CardContent>
@@ -243,7 +243,7 @@ export const DataTableExamples: React.FC = () => {
         {/* Large Dataset */}
         <Card className="mb-8">
           <CardHeader>
-            <h2 className="text-xl font-semibold text-text-primary">Large Dataset</h2>
+            <h2 className="text-xl font-semibold text-white">Large Dataset</h2>
             <p className="text-text-secondary">Table with 50 rows to test performance</p>
           </CardHeader>
           <CardContent>
@@ -254,7 +254,7 @@ export const DataTableExamples: React.FC = () => {
         {/* Custom Alignment */}
         <Card className="mb-8">
           <CardHeader>
-            <h2 className="text-xl font-semibold text-text-primary">Custom Column Alignment</h2>
+            <h2 className="text-xl font-semibold text-white">Custom Column Alignment</h2>
             <p className="text-text-secondary">Columns with different text alignments</p>
           </CardHeader>
           <CardContent>
@@ -265,7 +265,7 @@ export const DataTableExamples: React.FC = () => {
         {/* Minimal Columns */}
         <Card className="mb-8">
           <CardHeader>
-            <h2 className="text-xl font-semibold text-text-primary">Minimal Columns</h2>
+            <h2 className="text-xl font-semibold text-white">Minimal Columns</h2>
             <p className="text-text-secondary">Table with only essential columns</p>
           </CardHeader>
           <CardContent>

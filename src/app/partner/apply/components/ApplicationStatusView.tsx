@@ -62,7 +62,7 @@ export const ApplicationStatusView = ({
       : statusConfig.pending;
 
   return (
-    <div className="bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 min-h-screen relative overflow-hidden">
+    <div className="bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 min-h-screen relative overflow-hidden text-white">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-500/10 via-transparent to-transparent"></div>
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-red-500/5 rounded-full blur-3xl"></div>
@@ -84,9 +84,9 @@ export const ApplicationStatusView = ({
           </h1>
 
           <div className="relative">
-            <p className="text-zinc-300 text-xl max-w-3xl mx-auto leading-relaxed">
-              ติดตามความคืบหน้าของคำขอสมัครเข้าร่วมเป็น Partner Gym
-            </p>
+                <p className="text-white text-xl max-w-3xl mx-auto leading-relaxed">
+                  ติดตามความคืบหน้าของคำขอสมัครเข้าร่วมเป็น Partner Gym
+                </p>
             <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-red-500 to-red-700 rounded-full"></div>
           </div>
         </div>
@@ -110,13 +110,13 @@ export const ApplicationStatusView = ({
                 ></div>
               </div>
               <div>
-                <p className="font-bold text-zinc-200 text-2xl mb-2">
+                <p className="font-bold text-white text-2xl mb-2">
                   สถานะ:{" "}
                   <span className={`${status.text} drop-shadow-lg`}>
                     {status.label}
                   </span>
                 </p>
-                <p className="text-zinc-300 text-lg leading-relaxed">
+                <p className="text-white text-lg leading-relaxed">
                   {status.description}
                 </p>
               </div>
@@ -125,8 +125,8 @@ export const ApplicationStatusView = ({
             {/* Enhanced Progress Bar */}
             <div className="flex-1 lg:max-w-md">
               <div className="flex justify-between items-center mb-3 text-sm">
-                <span className="text-zinc-300 font-medium">ความคืบหน้า</span>
-                <span className="text-zinc-200 font-bold bg-zinc-800/50 px-3 py-1 rounded-full">
+                <span className="text-white font-medium">ความคืบหน้า</span>
+                <span className="text-white font-bold bg-zinc-800/50 px-3 py-1 rounded-full">
                   {status.progress}%
                 </span>
               </div>
@@ -157,41 +157,41 @@ export const ApplicationStatusView = ({
               <div className="p-3 bg-gradient-to-br from-red-500/20 to-red-600/20 rounded-2xl border border-red-500/30">
                 <BuildingStorefrontIcon className="w-8 h-8 text-red-400" />
               </div>
-              <h2 className="font-bold text-text-primary text-2xl">
+              <h2 className="font-bold text-white text-2xl">
                 ข้อมูลยิม
               </h2>
             </div>
 
             <div className="space-y-6">
               <div className="group/item flex flex-col sm:flex-row sm:items-center gap-3 p-4 bg-zinc-800/30 rounded-2xl hover:bg-zinc-800/50 transition-colors">
-                <span className="text-zinc-400 text-sm w-28 flex-shrink-0 font-medium">
+                <span className="text-white text-sm w-28 flex-shrink-0 font-medium">
                   ชื่อยิม
                 </span>
-                <span className="font-semibold text-text-primary text-lg">
+                <span className="font-semibold text-white text-lg">
                   {existingGym.gym_name}
                 </span>
               </div>
               <div className="group/item flex flex-col sm:flex-row sm:items-center gap-3 p-4 bg-zinc-800/30 rounded-2xl hover:bg-zinc-800/50 transition-colors">
-                <span className="text-zinc-400 text-sm w-28 flex-shrink-0 font-medium">
+                <span className="text-white text-sm w-28 flex-shrink-0 font-medium">
                   ผู้ติดต่อ
                 </span>
-                <span className="font-semibold text-text-primary text-lg">
+                <span className="font-semibold text-white text-lg">
                   {existingGym.contact_name}
                 </span>
               </div>
               <div className="group/item flex flex-col sm:flex-row sm:items-center gap-3 p-4 bg-zinc-800/30 rounded-2xl hover:bg-zinc-800/50 transition-colors">
-                <span className="text-zinc-400 text-sm w-28 flex-shrink-0 font-medium">
+                <span className="text-white text-sm w-28 flex-shrink-0 font-medium">
                   เบอร์โทร
                 </span>
-                <span className="font-mono font-semibold text-text-primary text-lg bg-zinc-700/50 px-3 py-1 rounded-lg">
+                <span className="font-mono font-semibold text-white text-lg bg-zinc-700/50 px-3 py-1 rounded-lg">
                   {existingGym.phone}
                 </span>
               </div>
               <div className="group/item flex flex-col sm:flex-row sm:items-center gap-3 p-4 bg-zinc-800/30 rounded-2xl hover:bg-zinc-800/50 transition-colors">
-                <span className="text-zinc-400 text-sm w-28 flex-shrink-0 font-medium">
+                <span className="text-white text-sm w-28 flex-shrink-0 font-medium">
                   อีเมล
                 </span>
-                <span className="font-mono font-semibold text-text-primary text-lg bg-zinc-700/50 px-3 py-1 rounded-lg">
+                <span className="font-mono font-semibold text-white text-lg bg-zinc-700/50 px-3 py-1 rounded-lg">
                   {existingGym.email}
                 </span>
               </div>
@@ -204,7 +204,7 @@ export const ApplicationStatusView = ({
               <div className="p-3 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-2xl border border-blue-500/30">
                 <ClockIcon className="w-8 h-8 text-blue-400" />
               </div>
-              <h2 className="font-bold text-text-primary text-2xl">Timeline</h2>
+              <h2 className="font-bold text-white text-2xl">Timeline</h2>
             </div>
 
             <div className="space-y-6">
@@ -214,10 +214,10 @@ export const ApplicationStatusView = ({
                   <div className="absolute inset-0 bg-green-400 rounded-full opacity-30 animate-ping"></div>
                 </div>
                 <div className="flex-1">
-                  <p className="font-bold text-text-primary text-lg">
+                  <p className="font-bold text-white text-lg">
                     ส่งคำขอสมัคร
                   </p>
-                  <p className="text-zinc-300 text-sm bg-zinc-800/50 px-3 py-1 rounded-lg inline-block mt-1">
+                  <p className="text-white text-sm bg-zinc-800/50 px-3 py-1 rounded-lg inline-block mt-1">
                     {existingGym.created_at
                       ? new Date(existingGym.created_at).toLocaleDateString(
                           "th-TH",
@@ -241,10 +241,10 @@ export const ApplicationStatusView = ({
                     <div className="absolute inset-0 bg-yellow-400 rounded-full opacity-30 animate-ping"></div>
                   </div>
                   <div className="flex-1">
-                    <p className="font-bold text-text-primary text-lg">
+                    <p className="font-bold text-white text-lg">
                       กำลังตรวจสอบ
                     </p>
-                    <p className="text-zinc-300 text-sm">
+                    <p className="text-white text-sm">
                       ทีมงานกำลังตรวจสอบข้อมูล
                     </p>
                   </div>
@@ -258,10 +258,10 @@ export const ApplicationStatusView = ({
                     <div className="absolute inset-0 bg-green-400 rounded-full opacity-30 animate-ping"></div>
                   </div>
                   <div className="flex-1">
-                    <p className="font-bold text-text-primary text-lg">
+                    <p className="font-bold text-white text-lg">
                       อนุมัติแล้ว
                     </p>
-                    <p className="text-zinc-300 text-sm bg-zinc-800/50 px-3 py-1 rounded-lg inline-block mt-1">
+                    <p className="text-white text-sm bg-zinc-800/50 px-3 py-1 rounded-lg inline-block mt-1">
                       {existingGym.updated_at
                         ? new Date(existingGym.updated_at).toLocaleDateString(
                             "th-TH",
@@ -288,7 +288,7 @@ export const ApplicationStatusView = ({
             <div className="p-3 bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-2xl border border-purple-500/30">
               <span className="text-3xl">📋</span>
             </div>
-            <h2 className="font-bold text-text-primary text-2xl">
+            <h2 className="font-bold text-white text-2xl">
               รายละเอียดเพิ่มเติม
             </h2>
           </div>
@@ -297,7 +297,7 @@ export const ApplicationStatusView = ({
             {/* Services */}
             {existingGym.services && existingGym.services.length > 0 && (
               <div className="space-y-6">
-                <h3 className="flex items-center gap-3 font-bold text-text-primary text-xl">
+                <h3 className="flex items-center gap-3 font-bold text-white text-xl">
                   <div className="p-2 bg-gradient-to-br from-orange-500/20 to-orange-600/20 rounded-xl border border-orange-500/30">
                     <span className="text-2xl">🏋️</span>
                   </div>
@@ -319,7 +319,7 @@ export const ApplicationStatusView = ({
             {/* Images */}
             {existingGym.images && existingGym.images.length > 0 && (
               <div className="space-y-6">
-                <h3 className="flex items-center gap-3 font-bold text-text-primary text-xl">
+                <h3 className="flex items-center gap-3 font-bold text-white text-xl">
                   <div className="p-2 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-xl border border-blue-500/30">
                     <span className="text-2xl">📸</span>
                   </div>
@@ -339,7 +339,7 @@ export const ApplicationStatusView = ({
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       <div className="absolute inset-0 border-2 border-white/0 group-hover:border-white/30 transition-colors duration-300 rounded-2xl"></div>
-                      <div className="absolute bottom-2 left-2 right-2 text-text-primary text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute bottom-2 left-2 right-2 text-white text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         รูปภาพ {index + 1}
                       </div>
                     </div>
@@ -355,7 +355,7 @@ export const ApplicationStatusView = ({
           {applicationStatus === "approved" && (
             <Link
               href="/partner/dashboard"
-              className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-green-500 via-emerald-500 to-green-600 hover:from-green-600 hover:via-emerald-600 hover:to-green-700 px-10 py-4 rounded-2xl font-bold text-text-primary text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-green-500/25"
+              className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-green-500 via-emerald-500 to-green-600 hover:from-green-600 hover:via-emerald-600 hover:to-green-700 px-10 py-4 rounded-2xl font-bold text-white text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-green-500/25"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-400 rounded-2xl blur opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
               <span className="text-2xl animate-bounce">🎉</span>
@@ -367,12 +367,12 @@ export const ApplicationStatusView = ({
           {applicationStatus === "pending" && (
             <div className="text-center space-y-6">
               <div className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/30 rounded-2xl p-6">
-                <p className="text-zinc-300 text-lg mb-4">
+                <p className="text-white text-lg mb-4">
                   มีคำถามหรือต้องการติดต่อทีมงาน?
                 </p>
                 <a
                   href="mailto:support@thaikick-muaythai.com"
-                  className="group inline-flex items-center gap-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-8 py-3 rounded-xl font-bold text-text-primary transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-blue-500/25"
+                  className="group inline-flex items-center gap-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-8 py-3 rounded-xl font-bold text-white transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-blue-500/25"
                 >
                   <span className="text-xl">📧</span>
                   <span>ติดต่อทีมงาน</span>
@@ -384,20 +384,20 @@ export const ApplicationStatusView = ({
           {applicationStatus === "denied" && (
             <div className="text-center space-y-6">
               <div className="bg-gradient-to-r from-red-500/10 to-rose-500/10 border border-red-500/30 rounded-2xl p-6">
-                <p className="text-zinc-300 text-lg mb-6">
+                <p className="text-white text-lg mb-6">
                   ต้องการสมัครใหม่หรือมีคำถาม?
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <a
                     href="mailto:support@thaikick-muaythai.com"
-                    className="group inline-flex items-center gap-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-6 py-3 rounded-xl font-bold text-text-primary transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-blue-500/25"
+                    className="group inline-flex items-center gap-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-6 py-3 rounded-xl font-bold text-white transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-blue-500/25"
                   >
                     <span className="text-lg">📧</span>
                     <span>ติดต่อทีมงาน</span>
                   </a>
                   <button
                     onClick={() => window.location.reload()}
-                    className="group inline-flex items-center gap-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 px-6 py-3 rounded-xl font-bold text-text-primary transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-yellow-500/25"
+                    className="group inline-flex items-center gap-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 px-6 py-3 rounded-xl font-bold text-white transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-yellow-500/25"
                   >
                     <span className="text-lg">🔄</span>
                     <span>ลองใหม่</span>
@@ -409,7 +409,7 @@ export const ApplicationStatusView = ({
 
           <Link
             href="/"
-            className="group inline-flex items-center gap-3 bg-gradient-to-r from-zinc-600 to-zinc-700 hover:from-zinc-700 hover:to-zinc-800 px-8 py-3 rounded-xl font-bold text-text-primary transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
+            className="group inline-flex items-center gap-3 bg-gradient-to-r from-zinc-600 to-zinc-700 hover:from-zinc-700 hover:to-zinc-800 px-8 py-3 rounded-xl font-bold text-white transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
           >
             <span className="text-lg">🏠</span>
             <span>กลับหน้าหลัก</span>

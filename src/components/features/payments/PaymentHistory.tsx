@@ -38,11 +38,11 @@ export default function PaymentHistory() {
       <div className="bg-zinc-800 rounded-lg p-6">
         <div className="text-center py-12">
           <XCircleIcon className="w-16 h-16 text-red-500 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-text-primary mb-2">เกิดข้อผิดพลาด</h3>
+          <h3 className="text-xl font-semibold mb-2">เกิดข้อผิดพลาด</h3>
           <p className="text-zinc-400 mb-6">{error}</p>
           <button
             onClick={refreshPayments}
-            className="bg-brand-primary hover:bg-red-700 text-text-primary px-6 py-3 rounded-lg font-medium transition-colors"
+            className="bg-brand-primary hover:bg-red-700 px-6 py-3 rounded-lg font-medium transition-colors"
            aria-label="Button">
             ลองใหม่
           </button>
@@ -57,12 +57,12 @@ export default function PaymentHistory() {
       <div className="bg-zinc-800 rounded-lg p-6">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-xl font-semibold text-text-primary mb-2">ประวัติการชำระเงิน</h3>
+            <h3 className="text-xl font-semibold mb-2">ประวัติการชำระเงิน</h3>
             <p className="text-zinc-400">รายการการชำระเงินทั้งหมดของคุณ</p>
           </div>
           <div className="text-right">
             <p className="text-zinc-400 text-sm">จำนวนรายการ</p>
-            <p className="text-text-primary text-2xl font-bold">{payments.length}</p>
+            <p className=" text-2xl font-bold">{payments.length}</p>
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@ export default function PaymentHistory() {
         <div className="bg-zinc-800 rounded-lg p-6">
           <div className="text-center py-12">
             <CurrencyDollarIcon className="w-16 h-16 text-zinc-600 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-text-primary mb-2">ยังไม่มีประวัติการชำระเงิน</h3>
+            <h3 className="text-xl font-semibold mb-2">ยังไม่มีประวัติการชำระเงิน</h3>
             <p className="text-zinc-400">เมื่อคุณทำการชำระเงิน รายการจะปรากฏที่นี่</p>
           </div>
         </div>
@@ -85,7 +85,7 @@ export default function PaymentHistory() {
                   <PaymentStatusDisplay status={payment.status} size="md" />
                   <div>
                     <div className="flex items-center space-x-2">
-                      <h4 className="text-lg font-semibold text-text-primary">
+                      <h4 className="text-lg font-semibold text-white">
                         {getPaymentTypeText(payment.payment_type)}
                       </h4>
                     </div>
@@ -103,7 +103,7 @@ export default function PaymentHistory() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-2xl font-bold text-text-primary">
+                  <p className="text-2xl font-bold text-white">
                     {formatAmount(payment.amount)}
                   </p>
                   <button
@@ -125,10 +125,10 @@ export default function PaymentHistory() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
           <div className="bg-zinc-800 rounded-lg p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-text-primary">รายละเอียดการชำระเงิน</h3>
+              <h3 className="text-xl font-semibold text-white">รายละเอียดการชำระเงิน</h3>
               <button
                 onClick={() => setSelectedPayment(null)}
-                className="text-zinc-400 hover:text-text-primary transition-colors"
+                className="text-zinc-400 hover:text-white transition-colors"
               >
                 <XCircleIcon className="w-6 h-6" />
               </button>
@@ -138,7 +138,7 @@ export default function PaymentHistory() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="text-zinc-400 text-sm">หมายเลขคำสั่งซื้อ</label>
-                  <p className="text-text-primary font-mono">{selectedPayment.order_number}</p>
+                  <p className=" font-mono">{selectedPayment.order_number}</p>
                 </div>
                 <div>
                   <label className="text-zinc-400 text-sm">สถานะ</label>
@@ -146,17 +146,17 @@ export default function PaymentHistory() {
                 </div>
                 <div>
                   <label className="text-zinc-400 text-sm">ประเภท</label>
-                  <p className="text-text-primary">{getPaymentTypeText(selectedPayment.payment_type)}</p>
+                  <p className="text-white">{getPaymentTypeText(selectedPayment.payment_type)}</p>
                 </div>
                 <div>
                   <label className="text-zinc-400 text-sm">จำนวนเงิน</label>
-                  <p className="text-text-primary text-xl font-bold">
+                  <p className=" text-xl font-bold">
                     {formatAmount(selectedPayment.amount)}
                   </p>
                 </div>
                 <div>
                   <label className="text-zinc-400 text-sm">วันที่สร้าง</label>
-                  <p className="text-text-primary">{formatPaymentDate(selectedPayment.created_at)}</p>
+                  <p className="text-white">{formatPaymentDate(selectedPayment.created_at)}</p>
                 </div>
               </div>
 
@@ -175,7 +175,7 @@ export default function PaymentHistory() {
             <div className="flex justify-end mt-6">
               <button
                 onClick={() => setSelectedPayment(null)}
-                className="bg-zinc-600 hover:bg-zinc-500 text-text-primary px-6 py-3 rounded-lg font-medium transition-colors"
+                className="bg-zinc-600 hover:bg-zinc-500 px-6 py-3 rounded-lg font-medium transition-colors"
               >
                 ปิด
               </button>

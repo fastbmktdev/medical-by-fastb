@@ -38,7 +38,7 @@ export function EventCard({ event, viewMode }: EventCardProps) {
       <BaseCard className="p-6">
         <div className="flex sm:flex-row flex-col justify-between items-start gap-4">
           <div className="flex-1">
-            <h3 className="mb-2 font-bold text-text-primary group-hover:text-red-400 text-xl transition-colors">
+            <h3 className="mb-2 font-bold group-hover:text-red-400 text-xl transition-colors">
               {event.name}
             </h3>
             <div className="space-y-2">
@@ -59,13 +59,13 @@ export function EventCard({ event, viewMode }: EventCardProps) {
           <div className="flex gap-2 w-full sm:w-auto">
             <Link
               href={`/events/${event.slug}`}
-              className="sm:flex-initial flex-1 bg-zinc-700 hover:bg-zinc-600 px-4 py-2 rounded-lg font-semibold text-text-primary text-sm text-center transition-colors"
+              className="sm:flex-initial flex-1 bg-zinc-700 hover:bg-zinc-600 px-4 py-2 rounded-lg font-semibold text-sm text-center transition-colors"
             >
               ดูรายละเอียด
             </Link>
             <Link
               href={`/events/${event.slug}`}
-              className="sm:flex-initial flex-1 bg-brand-primary hover:bg-red-700 px-4 py-2 rounded-lg font-semibold text-text-primary text-sm text-center transition-colors"
+              className="sm:flex-initial flex-1 bg-brand-primary hover:bg-red-700 px-4 py-2 rounded-lg font-semibold text-sm text-center transition-colors"
             >
               จองตั๋ว
             </Link>
@@ -88,7 +88,7 @@ export function EventCard({ event, viewMode }: EventCardProps) {
         {event.price && (
           <div className="top-2 right-2 absolute flex items-center gap-1 bg-black/50 px-3 py-1 rounded-full">
             <TicketIcon className="w-4 h-4 text-green-400" />
-            <span className="font-bold text-text-primary text-sm">
+            <span className="font-bold text-sm">
               ฿{event.price.toLocaleString()}
             </span>
           </div>
@@ -96,7 +96,7 @@ export function EventCard({ event, viewMode }: EventCardProps) {
       </div>
 
       <div className="p-6">
-        <h3 className="mb-3 font-bold text-text-primary group-hover:text-red-400 text-xl transition-colors">
+        <h3 className="mb-3 font-bold group-hover:text-red-400 text-xl transition-colors">
           {event.name}
         </h3>
 
@@ -118,13 +118,13 @@ export function EventCard({ event, viewMode }: EventCardProps) {
         <div className="flex gap-2">
           <Link
             href={`/events/${event.slug}`}
-            className="flex-1 bg-zinc-700 hover:bg-zinc-600 py-2 rounded-lg font-semibold text-text-primary text-sm text-center transition-colors"
+            className="flex-1 bg-zinc-700 hover:bg-zinc-600 py-2 rounded-lg font-semibold text-sm text-center transition-colors"
           >
             ดูรายละเอียด
           </Link>
           <Link
             href={`/events/${event.slug}`}
-            className="flex-1 bg-brand-primary hover:bg-red-700 py-2 rounded-lg font-semibold text-text-primary text-sm text-center transition-colors"
+            className="flex-1 bg-brand-primary hover:bg-red-700 py-2 rounded-lg font-semibold text-sm text-center transition-colors"
           >
             จองตั๋ว
           </Link>

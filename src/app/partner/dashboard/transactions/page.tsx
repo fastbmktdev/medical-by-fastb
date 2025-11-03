@@ -99,9 +99,9 @@ function PartnerTransactionsContent() {
         <div className="gap-6 grid grid-cols-1 md:grid-cols-3">
           <Card className="bg-gradient-to-br from-success-500 to-success-700 border-none">
             <CardBody>
-              <p className="mb-2 text-text-primary/80 text-sm">ยอดคงเหลือ</p>
-              <p className="font-mono font-bold text-text-primary text-3xl">฿15,000</p>
-              <Button size="sm" className="bg-white/20 backdrop-blur-sm mt-4 text-text-primary">
+              <p className="mb-2 text-white/80 text-sm">ยอดคงเหลือ</p>
+              <p className="font-mono font-bold text-3xl">฿15,000</p>
+              <Button size="sm" className="bg-white/20 backdrop-blur-sm mt-4 text-white">
                 ถอนเงิน
               </Button>
             </CardBody>
@@ -125,7 +125,7 @@ function PartnerTransactionsContent() {
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardBody>
             <div className="flex justify-between items-center mb-6">
-              <h2 className="font-bold text-text-primary text-xl">ประวัติธุรกรรม</h2>
+              <h2 className="font-bold text-xl">ประวัติธุรกรรม</h2>
               <Button
                 size="sm"
                 color="secondary"
@@ -152,7 +152,7 @@ function PartnerTransactionsContent() {
               <TableBody>
                 {mockTransactions.map((txn) => (
                   <TableRow key={txn.id}>
-                    <TableCell className="font-mono text-text-primary">{txn.id}</TableCell>
+                    <TableCell className="font-mono text-white">{txn.id}</TableCell>
                     <TableCell className="text-default-400">
                       {new Date(txn.date).toLocaleDateString('th-TH')}
                     </TableCell>

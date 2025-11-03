@@ -151,12 +151,12 @@ function ProfileContent() {
                   }}
                 />
                 <button className="absolute inset-0 flex justify-center items-center bg-black/50 opacity-0 group-hover:opacity-100 backdrop-blur-sm rounded-full transition-opacity" aria-label="Button">
-                  <CameraIcon className="w-8 h-8 text-text-primary" />
+                  <CameraIcon className="w-8 h-8 text-white" />
                 </button>
               </div>
               
               <div>
-                <h3 className="mb-1 font-bold text-text-primary text-2xl">
+                <h3 className="mb-1 font-bold text-2xl">
                   {formData.displayName || user?.email?.split('@')[0] || 'ผู้ใช้'}
                 </h3>
                 <p className="mb-3 text-zinc-400 text-sm">{user?.email}</p>
@@ -176,7 +176,7 @@ function ProfileContent() {
                     <ClockIcon className="w-4 h-4 text-zinc-400" />
                     <span className="text-zinc-400 text-sm">สมาชิกตั้งแต่</span>
                   </div>
-                  <span className="font-semibold text-text-primary text-sm">
+                  <span className="font-semibold text-sm">
                     {user?.created_at ? new Date(user.created_at).toLocaleDateString('th-TH', {
                       year: 'numeric',
                       month: 'short',
@@ -204,7 +204,7 @@ function ProfileContent() {
           <Card className="bg-zinc-950/50 backdrop-blur-sm border border-zinc-700">
             <CardHeader className="flex justify-between items-center border-zinc-700 border-b">
               <div>
-                <h3 className="font-bold text-text-primary text-xl">ข้อมูลส่วนตัว</h3>
+                <h3 className="font-bold text-xl">ข้อมูลส่วนตัว</h3>
                 <p className="text-zinc-400 text-sm">จัดการข้อมูลบัญชีของคุณ</p>
               </div>
               {!isEditing ? (
@@ -245,7 +245,7 @@ function ProfileContent() {
                 <div className="space-y-6">
                   <div className="gap-6 grid grid-cols-1 md:grid-cols-2">
                     <div className="space-y-2">
-                      <label className="block font-medium text-text-primary text-sm">
+                      <label className="block font-medium text-sm">
                         ชื่อแสดง <span className="text-red-500">*</span>
                       </label>
                       <Input
@@ -255,7 +255,7 @@ function ProfileContent() {
                         variant="bordered"
                         size="lg"
                         classNames={{
-                          input: "text-text-primary",
+                          input: "text-white",
                           inputWrapper: "bg-zinc-950/50 border-zinc-700 hover:border-zinc-600 focus-within:border-blue-500",
                         }}
                         startContent={
@@ -265,7 +265,7 @@ function ProfileContent() {
                     </div>
 
                     <div className="space-y-2">
-                      <label className="block font-medium text-text-primary text-sm">
+                      <label className="block font-medium text-sm">
                         อีเมล
                       </label>
                       <Input
@@ -275,7 +275,7 @@ function ProfileContent() {
                         variant="bordered"
                         size="lg"
                         classNames={{
-                          input: "text-text-primary",
+                          input: "text-white",
                           inputWrapper: "bg-zinc-950/30 border-zinc-700 cursor-not-allowed",
                         }}
                         startContent={
@@ -287,7 +287,7 @@ function ProfileContent() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="block font-medium text-text-primary text-sm">
+                    <label className="block font-medium text-sm">
                       เบอร์โทรศัพท์
                     </label>
                     <Input
@@ -297,7 +297,7 @@ function ProfileContent() {
                       variant="bordered"
                       size="lg"
                       classNames={{
-                        input: "text-text-primary",
+                        input: "text-white",
                         inputWrapper: "bg-zinc-950/50 border-zinc-700 hover:border-zinc-600 focus-within:border-blue-500",
                       }}
                       startContent={
@@ -307,7 +307,7 @@ function ProfileContent() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="block font-medium text-text-primary text-sm">
+                    <label className="block font-medium text-sm">
                       ที่อยู่
                     </label>
                     <Input
@@ -317,7 +317,7 @@ function ProfileContent() {
                       variant="bordered"
                       size="lg"
                       classNames={{
-                        input: "text-text-primary",
+                        input: "text-white",
                         inputWrapper: "bg-zinc-950/50 border-zinc-700 hover:border-zinc-600 focus-within:border-blue-500",
                       }}
                       startContent={
@@ -330,19 +330,19 @@ function ProfileContent() {
                 <div className="gap-6 grid grid-cols-1 md:grid-cols-2">
                   <div className="bg-zinc-950/50 p-4 rounded-lg">
                     <p className="mb-2 text-zinc-400 text-xs uppercase tracking-wide">ชื่อแสดง</p>
-                    <p className="font-semibold text-text-primary">{formData.displayName || '-'}</p>
+                    <p className="font-semibold text-white">{formData.displayName || '-'}</p>
                   </div>
                   <div className="bg-zinc-950/50 p-4 rounded-lg">
                     <p className="mb-2 text-zinc-400 text-xs uppercase tracking-wide">อีเมล</p>
-                    <p className="font-mono text-text-primary">{user?.email || '-'}</p>
+                    <p className="font-mono text-white">{user?.email || '-'}</p>
                   </div>
                   <div className="bg-zinc-950/50 p-4 rounded-lg">
                     <p className="mb-2 text-zinc-400 text-xs uppercase tracking-wide">เบอร์โทรศัพท์</p>
-                    <p className="font-mono text-text-primary">{formData.phone || '-'}</p>
+                    <p className="font-mono text-white">{formData.phone || '-'}</p>
                   </div>
                   <div className="md:col-span-2 bg-zinc-950/50 p-4 rounded-lg">
                     <p className="mb-2 text-zinc-400 text-xs uppercase tracking-wide">ที่อยู่</p>
-                    <p className="text-text-primary">{formData.address || '-'}</p>
+                    <p className="text-white">{formData.address || '-'}</p>
                   </div>
                 </div>
               )}
@@ -356,14 +356,14 @@ function ProfileContent() {
                 <ShieldCheckIcon className="w-5 h-5 text-blue-400" />
               </div>
               <div>
-                <h3 className="font-bold text-text-primary text-xl">ความปลอดภัย</h3>
+                <h3 className="font-bold text-xl">ความปลอดภัย</h3>
                 <p className="text-zinc-400 text-sm">ตั้งค่าความปลอดภัยของบัญชี</p>
               </div>
             </CardHeader>
             <CardBody className="gap-4">
               <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 bg-zinc-950/50 hover:bg-zinc-950/70 p-4 rounded-lg transition-colors">
                 <div className="flex-1">
-                  <p className="mb-1 font-semibold text-text-primary">รหัสผ่าน</p>
+                  <p className="mb-1 font-semibold text-white">รหัสผ่าน</p>
                   <p className="text-zinc-400 text-sm">
                     แก้ไขล่าสุด: {user?.updated_at ? new Date(user.updated_at).toLocaleDateString('th-TH') : '-'}
                   </p>
@@ -380,7 +380,7 @@ function ProfileContent() {
               <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 bg-zinc-950/50 hover:bg-zinc-950/70 p-4 rounded-lg transition-colors">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <p className="font-semibold text-text-primary">การยืนยันตัวตนแบบสองชั้น</p>
+                    <p className="font-semibold text-white">การยืนยันตัวตนแบบสองชั้น</p>
                     <Chip size="sm" color="warning" variant="flat">เร็วๆ นี้</Chip>
                   </div>
                   <p className="text-zinc-400 text-sm">
@@ -415,7 +415,7 @@ function ProfileContent() {
             <CardBody className="gap-4">
               <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 bg-red-950/30 hover:bg-red-950/50 p-4 border border-red-800/30 rounded-lg transition-colors">
                 <div className="flex-1">
-                  <p className="mb-1 font-semibold text-text-primary">ลบบัญชีถาวร</p>
+                  <p className="mb-1 font-semibold text-white">ลบบัญชีถาวร</p>
                   <p className="text-zinc-400 text-sm">
                     การดำเนินการนี้ไม่สามารถย้อนกลับได้ ข้อมูลทั้งหมดจะถูกลบอย่างถาวร
                   </p>

@@ -57,7 +57,7 @@ export default function ShopPage() {
                 placeholder="ค้นหาสินค้า..."
                 value={searchQuery}
                 onChange={handleSearch}
-                className="bg-zinc-950 py-3 pr-4 pl-10 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-text-primary placeholder-zinc-400"
+                className="bg-zinc-950 py-3 pr-4 pl-10 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full placeholder-zinc-400"
               />
             </div>
 
@@ -67,7 +67,7 @@ export default function ShopPage() {
               <select
                 value={selectedCategory}
                 onChange={handleCategory}
-                className="bg-zinc-950 py-3 pr-4 pl-10 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-text-primary appearance-none cursor-pointer"
+                className="bg-zinc-950 py-3 pr-4 pl-10 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full appearance-none cursor-pointer"
               >
                 <option value="all">หมวดหมู่ทั้งหมด</option>
                 {categories
@@ -95,7 +95,7 @@ export default function ShopPage() {
             </p>
             <button
               onClick={handleReset}
-              className="bg-brand-primary hover:bg-red-700 mt-4 px-6 py-2 rounded-lg text-text-primary transition-colors"
+              className="bg-brand-primary hover:bg-red-700 mt-4 px-6 py-2 rounded-lg transition-colors"
              aria-label="Button">
               ล้างการค้นหา
             </button>

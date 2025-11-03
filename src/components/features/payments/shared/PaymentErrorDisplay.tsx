@@ -43,7 +43,7 @@ export default function PaymentErrorDisplay({
           }`}>
             {error.title}
           </h3>
-          <p className="mb-3 text-text-primary text-sm">
+          <p className="mb-3 text-sm">
             {error.message}
           </p>
           {error.suggestion && (
@@ -57,7 +57,7 @@ export default function PaymentErrorDisplay({
             <button
               type="button"
               onClick={onRetry}
-              className="flex items-center gap-2 bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded-lg font-semibold text-text-primary text-sm transition-colors"
+              className="flex items-center gap-2 bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded-lg font-semibold text-sm transition-colors"
              aria-label="Button">
               <ArrowPathIcon className="w-4 h-4" />
               ลองใหม่อีกครั้ง

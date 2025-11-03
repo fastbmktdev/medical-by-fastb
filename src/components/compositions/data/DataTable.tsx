@@ -89,7 +89,7 @@ function DataTableImpl<T = Record<string, unknown>>({
                 <th
                   key={column.key}
                   className={`
-                    px-6 py-4 text-left text-sm font-semibold text-text-primary
+                    px-6 py-4 text-left text-sm font-semibold text-white
                     ${column.align === 'center' ? 'text-center' : ''}
                     ${column.align === 'right' ? 'text-right' : ''}
                     ${column.sortable ? 'cursor-pointer hover:bg-zinc-800' : ''}

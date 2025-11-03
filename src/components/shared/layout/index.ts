@@ -1,24 +1,27 @@
 /**
- * Layout Components
+ * Layout Utility Components
  * 
- * Responsive layout components for consistent spacing and structure.
+ * Utility components for layout (EmptyState, Loading, etc.)
+ * 
+ * Note: Primitive layouts (Container, Flex, Grid, Stack) have been moved to:
+ * @/components/design-system/primitives
+ * 
+ * Application layouts (DashboardLayout, AuthLayout) have been moved to:
+ * @/components/compositions/layouts
  */
 
-// Existing layout components
-export { default as AuthLayout } from './AuthLayout';
+// Utility components that remain in shared/layout
 export { default as CenteredLoading } from './CenteredLoading';
-export { default as DashboardLayout } from './DashboardLayout';
 export { default as EmptyState } from './EmptyState';
-export { default as Footer } from './Footer';
-export { default as Header } from './Header';
-export { default as LayoutWrapper } from './LayoutWrapper';
-export { default as SidebarContent } from './SidebarContent';
 
-// New responsive layout components
-export { default as Container, type ContainerProps } from './Container';
-export { default as Grid, type GridProps } from './Grid';
-export { default as Stack, type StackProps } from './Stack';
-export { default as Flex, type FlexProps } from './Flex';
+// Re-export primitive layouts from design-system for backward compatibility
+export { Container, Flex, Grid, Stack } from '@/components/design-system/primitives';
+export type { ContainerProps, FlexProps, GridProps, StackProps } from '@/components/design-system/primitives';
+
+// Re-export application layouts from compositions for backward compatibility
+export { DashboardLayout, AuthLayout } from '@/components/compositions/layouts';
+export type { MenuItem } from '@/components/compositions/layouts';
+export type { AuthLayoutProps } from '@/components/compositions/layouts';
 
 // Re-export layout-related types
 export type {

@@ -45,7 +45,7 @@ export default function EventDetailPage({
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-7xl">
           <Link
             href="/events"
-            className="inline-flex items-center gap-2 text-zinc-400 hover:text-text-primary transition-colors"
+            className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
           >
             <ArrowLeftIcon className="w-5 h-5" />
             <span>กลับไปหน้ารายการอีเวนต์</span>
@@ -59,17 +59,17 @@ export default function EventDetailPage({
           <div className="space-y-8 lg:col-span-2">
             {/* Header */}
             <div>
-              <h1 className="mb-4 font-bold text-text-primary text-4xl">
+              <h1 className="mb-4 font-bold text-4xl">
                 {event.name}
               </h1>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 bg-zinc-950 px-4 py-2 rounded-lg">
                   <CalendarIcon className="w-5 h-5 text-blue-500" />
-                  <span className="text-text-primary">{formattedDate}</span>
+                  <span className="text-white">{formattedDate}</span>
                 </div>
                 <div className="flex items-center gap-2 bg-zinc-950 px-4 py-2 rounded-lg">
                   <ClockIcon className="w-5 h-5 text-green-500" />
-                  <span className="text-text-primary">{formattedTime}</span>
+                  <span className="text-white">{formattedTime}</span>
                 </div>
               </div>
             </div>
@@ -84,7 +84,7 @@ export default function EventDetailPage({
 
             {/* About Event */}
             <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
-              <h2 className="flex items-center gap-2 mb-4 font-bold text-text-primary text-2xl">
+              <h2 className="flex items-center gap-2 mb-4 font-bold text-2xl">
                 <InformationCircleIcon className="w-6 h-6 text-blue-500" />
                 รายละเอียดอีเวนต์
               </h2>
@@ -92,7 +92,7 @@ export default function EventDetailPage({
                 {event.details || "รายละเอียดเพิ่มเติมจะประกาศในเร็วๆ นี้"}
               </p>
               <div className="pt-4 border-zinc-700 border-t">
-                <h3 className="mb-3 font-semibold text-text-primary text-lg">
+                <h3 className="mb-3 font-semibold text-lg">
                   ไฮไลท์ของอีเวนต์
                 </h3>
                 <ul className="space-y-2 text-zinc-300">
@@ -118,7 +118,7 @@ export default function EventDetailPage({
 
             {/* Location */}
             <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
-              <h2 className="flex items-center gap-2 mb-4 font-bold text-text-primary text-2xl">
+              <h2 className="flex items-center gap-2 mb-4 font-bold text-2xl">
                 <MapPinIcon className="w-6 h-6 text-red-500" />
                 สถานที่จัดงาน
               </h2>
@@ -135,7 +135,7 @@ export default function EventDetailPage({
 
             {/* Important Info */}
             <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
-              <h2 className="mb-4 font-bold text-text-primary text-2xl">
+              <h2 className="mb-4 font-bold text-2xl">
                 ข้อมูลสำคัญ
               </h2>
               <div className="space-y-3 text-zinc-300 text-sm">
@@ -166,7 +166,7 @@ export default function EventDetailPage({
             <div className="top-4 sticky space-y-6">
               {/* Ticket Info */}
               <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
-                <h3 className="flex items-center gap-2 mb-4 font-bold text-text-primary text-xl">
+                <h3 className="flex items-center gap-2 mb-4 font-bold text-xl">
                   <TicketIcon className="w-6 h-6 text-green-500" />
                   ข้อมูลตั๋ว
                 </h3>
@@ -197,7 +197,7 @@ export default function EventDetailPage({
 
               {/* Quick Info */}
               <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
-                <h3 className="mb-4 font-bold text-text-primary text-xl">
+                <h3 className="mb-4 font-bold text-xl">
                   ข้อมูลด่วน
                 </h3>
                 <div className="space-y-4">
@@ -218,10 +218,10 @@ export default function EventDetailPage({
 
               {/* CTA */}
               <div className="bg-gradient-to-r from-red-600 to-red-700 p-6 rounded-lg text-center">
-                <h3 className="mb-2 font-bold text-text-primary text-xl">
+                <h3 className="mb-2 font-bold text-xl">
                   พร้อมจองตั๋วแล้ว?
                 </h3>
-                <p className="mb-4 text-text-primary/80 text-sm">
+                <p className="mb-4 text-white/80 text-sm">
                   อย่าพลาดการแข่งขันที่น่าตื่นเต้น!
                 </p>
                 <Link
@@ -230,7 +230,7 @@ export default function EventDetailPage({
                 >
                   จองตั๋วเลย
                 </Link>
-                <p className="mt-3 text-text-primary/60 text-xs">
+                <p className="mt-3 text-white/60 text-xs">
                   หรือติดต่อสอบถามเพิ่มเติม
                 </p>
               </div>

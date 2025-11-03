@@ -103,7 +103,7 @@ export default function ChallengeList({ challenges, className = '' }: ChallengeL
                 <button
                   onClick={() => handleJoinChallenge(challengeData.id)}
                   disabled={joiningChallenge === challengeData.id}
-                  className="bg-blue-600 text-text-primary px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   {joiningChallenge === challengeData.id ? 'กำลังเข้าร่วม...' : 'เข้าร่วม'}
                 </button>

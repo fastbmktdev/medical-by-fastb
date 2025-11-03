@@ -296,25 +296,25 @@ export default function BookingPage({
       <div className="bg-zinc-950 border-zinc-700 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-7xl">
           <nav className="flex items-center gap-2 mb-3 text-sm">
-            <Link href="/" className="flex items-center gap-1 text-zinc-400 hover:text-text-primary transition-colors">
+            <Link href="/" className="flex items-center gap-1 text-zinc-400 hover:text-white transition-colors">
               <HomeIcon className="w-4 h-4" />
               <span>หน้าแรก</span>
             </Link>
             <ChevronRightIcon className="w-4 h-4 text-zinc-600" />
-            <Link href="/gyms" className="text-zinc-400 hover:text-text-primary transition-colors">
+            <Link href="/gyms" className="text-zinc-400 hover:text-white transition-colors">
               ค่ายมวย
             </Link>
             <ChevronRightIcon className="w-4 h-4 text-zinc-600" />
-            <Link href={`/gyms/${slug}`} className="text-zinc-400 hover:text-text-primary transition-colors">
+            <Link href={`/gyms/${slug}`} className="text-zinc-400 hover:text-white transition-colors">
               {gym.gym_name}
             </Link>
             <ChevronRightIcon className="w-4 h-4 text-zinc-600" />
-            <span className="font-medium text-text-primary">จองค่ายมวย</span>
+            <span className="font-medium text-white">จองค่ายมวย</span>
           </nav>
 
           <Link
             href={`/gyms/${slug}`}
-            className="inline-flex items-center gap-2 text-zinc-400 hover:text-text-primary transition-colors"
+            className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
           >
             <ArrowLeftIcon className="w-5 h-5" />
             <span>กลับไปหน้ารายละเอียด</span>
@@ -344,14 +344,14 @@ export default function BookingPage({
                       }`}
                     >
                       {isCompleted ? (
-                        <CheckIcon className="w-6 h-6 text-text-primary" />
+                        <CheckIcon className="w-6 h-6 text-white" />
                       ) : (
-                        <Icon className="w-6 h-6 text-text-primary" />
+                        <Icon className="w-6 h-6 text-white" />
                       )}
                     </div>
                     <span
                       className={`mt-2 text-center text-sm ${
-                        isCurrent ? "text-text-primary font-semibold" : "text-zinc-400"
+                        isCurrent ? " font-semibold" : "text-zinc-400"
                       }`}
                     >
                       {step.name}
@@ -374,7 +374,7 @@ export default function BookingPage({
       {/* Form Content */}
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-4xl">
         <div className="bg-zinc-950 shadow-xl p-8 border border-zinc-700 rounded-xl">
-          <h1 className="mb-2 font-bold text-text-primary text-3xl">
+          <h1 className="mb-2 font-bold text-3xl">
             จอง {gym.gym_name}
           </h1>
           <p className="mb-8 text-zinc-400">
@@ -392,7 +392,7 @@ export default function BookingPage({
           {currentStep === 1 && (
             <div className="space-y-8">
               <div>
-                <h2 className="mb-4 font-semibold text-text-primary text-xl">เลือกประเภทการจอง</h2>
+                <h2 className="mb-4 font-semibold text-xl">เลือกประเภทการจอง</h2>
                 
                 {/* One-time Packages */}
                 {oneTimePackages.length > 0 && (
@@ -411,7 +411,7 @@ export default function BookingPage({
                         >
                           <div className="flex justify-between items-start mb-3">
                             <div>
-                              <h4 className="mb-1 font-bold text-text-primary text-lg">{pkg.name}</h4>
+                              <h4 className="mb-1 font-bold text-lg">{pkg.name}</h4>
                               {pkg.name_english && (
                                 <p className="text-zinc-400 text-sm">{pkg.name_english}</p>
                               )}
@@ -460,10 +460,10 @@ export default function BookingPage({
                           }`}
                         >
                           <div className="mb-3 text-center">
-                            <div className="inline-flex justify-center items-center bg-brand-primary mb-2 px-3 py-1 rounded-full font-semibold text-text-primary text-xs">
+                            <div className="inline-flex justify-center items-center bg-brand-primary mb-2 px-3 py-1 rounded-full font-semibold text-xs">
                               {pkg.duration_months} เดือน
                             </div>
-                            <h4 className="mb-1 font-bold text-text-primary text-lg">{pkg.name}</h4>
+                            <h4 className="mb-1 font-bold text-lg">{pkg.name}</h4>
                             {pkg.name_english && (
                               <p className="text-zinc-400 text-xs">{pkg.name_english}</p>
                             )}
@@ -508,15 +508,15 @@ export default function BookingPage({
           {/* Step 2: Personal Info */}
           {currentStep === 2 && (
             <div className="space-y-6">
-              <h2 className="font-semibold text-text-primary text-xl">ข้อมูลผู้จอง</h2>
+              <h2 className="font-semibold text-xl">ข้อมูลผู้จอง</h2>
               
               {/* Selected Package Summary */}
               {formData.selectedPackage && (
                 <div className="bg-zinc-700/50 p-4 rounded-lg">
-                  <p className="mb-2 font-semibold text-text-primary">แพ็คเกจที่เลือก:</p>
+                  <p className="mb-2 font-semibold text-white">แพ็คเกจที่เลือก:</p>
                   <div className="flex justify-between items-center">
                     <div>
-                      <p className="text-text-primary">{formData.selectedPackage.name}</p>
+                      <p className="text-white">{formData.selectedPackage.name}</p>
                       {formData.selectedPackage.duration_months && (
                         <p className="text-zinc-400 text-sm">
                           ระยะเวลา {formData.selectedPackage.duration_months} เดือน
@@ -538,7 +538,7 @@ export default function BookingPage({
                   type="text"
                   value={formData.fullName}
                   onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
-                  className={`bg-zinc-700 px-4 py-3 border rounded-lg w-full text-text-primary placeholder-zinc-500 focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:outline-none ${
+                  className={`bg-zinc-700 px-4 py-3 border rounded-lg w-full placeholder-zinc-500 focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:outline-none ${
                     errors.fullName ? "border-red-500" : "border-zinc-600"
                   }`}
                   placeholder="เช่น: สมชาย ใจดี"
@@ -556,7 +556,7 @@ export default function BookingPage({
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                  className={`bg-zinc-700 px-4 py-3 border rounded-lg w-full text-text-primary placeholder-zinc-500 focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:outline-none ${
+                  className={`bg-zinc-700 px-4 py-3 border rounded-lg w-full placeholder-zinc-500 focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:outline-none ${
                     errors.email ? "border-red-500" : "border-zinc-600"
                   }`}
                   placeholder="example@email.com"
@@ -574,7 +574,7 @@ export default function BookingPage({
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                  className={`bg-zinc-700 px-4 py-3 border rounded-lg w-full text-text-primary placeholder-zinc-500 focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:outline-none ${
+                  className={`bg-zinc-700 px-4 py-3 border rounded-lg w-full placeholder-zinc-500 focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:outline-none ${
                     errors.phone ? "border-red-500" : "border-zinc-600"
                   }`}
                   placeholder="0812345678"
@@ -592,7 +592,7 @@ export default function BookingPage({
                   type="date"
                   value={formData.startDate}
                   onChange={(e) => setFormData(prev => ({ ...prev, startDate: e.target.value }))}
-                  className={`bg-zinc-700 px-4 py-3 border rounded-lg w-full text-text-primary focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:outline-none ${
+                  className={`bg-zinc-700 px-4 py-3 border rounded-lg w-full focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:outline-none ${
                     errors.startDate ? "border-red-500" : "border-zinc-600"
                   }`}
                   min={getTomorrowDate()}
@@ -614,7 +614,7 @@ export default function BookingPage({
                 <textarea
                   value={formData.specialRequests}
                   onChange={(e) => setFormData(prev => ({ ...prev, specialRequests: e.target.value }))}
-                  className="bg-zinc-700 px-4 py-3 border border-zinc-600 focus:border-red-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-text-primary placeholder-zinc-500"
+                  className="bg-zinc-700 px-4 py-3 border border-zinc-600 focus:border-red-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full placeholder-zinc-500"
                   rows={4}
                   placeholder="มีความต้องการพิเศษอะไรเพิ่มเติมไหม?"
                 />
@@ -625,34 +625,34 @@ export default function BookingPage({
           {/* Step 3: Payment */}
           {currentStep === 3 && (
             <div className="space-y-6">
-              <h2 className="font-semibold text-text-primary text-xl">ยืนยันและชำระเงิน</h2>
+              <h2 className="font-semibold text-xl">ยืนยันและชำระเงิน</h2>
 
               <div className="bg-zinc-700/50 p-6 rounded-lg">
-                <h3 className="mb-4 font-semibold text-text-primary">สรุปการจอง</h3>
+                <h3 className="mb-4 font-semibold text-white">สรุปการจอง</h3>
                 <div className="space-y-2 text-zinc-300 text-sm">
                   <div className="flex justify-between">
                     <span>ชื่อผู้จอง:</span>
-                    <span className="font-semibold text-text-primary">{formData.fullName}</span>
+                    <span className="font-semibold text-white">{formData.fullName}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>เบอร์โทรศัพท์:</span>
-                    <span className="font-semibold text-text-primary">{formData.phone}</span>
+                    <span className="font-semibold text-white">{formData.phone}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>แพ็คเกจ:</span>
-                    <span className="font-semibold text-text-primary">{formData.selectedPackage?.name}</span>
+                    <span className="font-semibold text-white">{formData.selectedPackage?.name}</span>
                   </div>
                   {formData.selectedPackage?.duration_months && (
                     <div className="flex justify-between">
                       <span>ระยะเวลา:</span>
-                      <span className="font-semibold text-text-primary">
+                      <span className="font-semibold text-white">
                         {formData.selectedPackage.duration_months} เดือน
                       </span>
                     </div>
                   )}
                   <div className="flex justify-between">
                     <span>วันที่เริ่มต้น:</span>
-                    <span className="font-semibold text-text-primary">
+                    <span className="font-semibold text-white">
                       {new Date(formData.startDate).toLocaleDateString('th-TH')}
                     </span>
                   </div>
@@ -675,7 +675,7 @@ export default function BookingPage({
                 </div>
               ) : clientSecret ? (
                 <div>
-                  <h3 className="mb-4 font-semibold text-text-primary">ชำระเงิน</h3>
+                  <h3 className="mb-4 font-semibold text-white">ชำระเงิน</h3>
                   <PaymentWrapper
                     clientSecret={clientSecret}
                     returnUrl={`${process.env.NEXT_PUBLIC_APP_URL}/gyms/${slug}/booking/success?booking=${bookingId}`}
@@ -704,7 +704,7 @@ export default function BookingPage({
               <button
                 onClick={handlePrevious}
                 disabled={currentStep === 1}
-                className="disabled:opacity-50 px-6 py-3 rounded-lg font-semibold text-zinc-400 hover:text-text-primary transition-colors disabled:cursor-not-allowed"
+                className="disabled:opacity-50 px-6 py-3 rounded-lg font-semibold text-zinc-400 hover:text-white transition-colors disabled:cursor-not-allowed"
                aria-label="Button">
                 ย้อนกลับ
               </button>
@@ -712,7 +712,7 @@ export default function BookingPage({
               <button
                 onClick={handleNext}
                 disabled={isCreatingPayment}
-                className="bg-brand-primary hover:bg-red-700 disabled:opacity-50 px-8 py-3 rounded-lg font-semibold text-text-primary transition-colors disabled:cursor-not-allowed"
+                className="bg-brand-primary hover:bg-red-700 disabled:opacity-50 px-8 py-3 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed"
                aria-label="Button">
                 {isCreatingPayment ? "กำลังโหลด..." : "ถัดไป"}
               </button>
@@ -724,7 +724,7 @@ export default function BookingPage({
             <div className="flex justify-start mt-8 pt-6 border-zinc-700 border-t">
               <button
                 onClick={handlePrevious}
-                className="px-6 py-3 rounded-lg font-semibold text-zinc-400 hover:text-text-primary transition-colors"
+                className="px-6 py-3 rounded-lg font-semibold text-zinc-400 hover:text-white transition-colors"
                aria-label="Button">
                 ย้อนกลับ
               </button>

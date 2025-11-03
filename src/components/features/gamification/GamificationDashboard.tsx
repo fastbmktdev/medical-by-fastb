@@ -61,7 +61,7 @@ export default function GamificationDashboard({ className = '' }: GamificationDa
         <p className="text-gray-600 mb-4">{error}</p>
         <button
           onClick={fetchDashboard}
-          className="bg-blue-600 text-text-primary px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+          className="bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
          aria-label="Button">
           ลองใหม่
         </button>
@@ -80,7 +80,7 @@ export default function GamificationDashboard({ className = '' }: GamificationDa
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-6 text-text-primary">
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-6 text-white">
         <h1 className="text-2xl font-bold mb-2">🏆 ระบบ Gamification</h1>
         <p className="text-blue-100">สะสมคะแนน รับเหรียญ และแข่งขันกับเพื่อนๆ</p>
       </div>

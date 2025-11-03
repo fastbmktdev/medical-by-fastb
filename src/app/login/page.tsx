@@ -10,7 +10,7 @@ import {
   EyeSlashIcon,
   ArrowRightIcon,
 } from "@heroicons/react/24/outline";
-import AuthLayout from "@/components/shared/layout/AuthLayout";
+import { AuthLayout } from "@/components/compositions/layouts";
 import { Button } from "@/components/shared";
 
 /**
@@ -279,7 +279,7 @@ function LoginForm() {
               onChange={handleInputChange}
                   className={`w-full bg-zinc-800/50 backdrop-blur-sm border ${
                     errors.identifier ? "border-red-500/70 shadow-red-500/20" : "border-zinc-600/50 hover:border-zinc-500/70"
-                  } rounded-xl px-4 py-3 text-text-primary placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 focus:shadow-lg focus:shadow-red-500/10 transition-all duration-200 font-mono text-sm`}
+                  } rounded-xl px-4 py-3 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 focus:shadow-lg focus:shadow-red-500/10 transition-all duration-200 font-mono text-sm`}
               placeholder="your@email.com or username"
               autoComplete="username"
             />
@@ -309,7 +309,7 @@ function LoginForm() {
                   onChange={handleInputChange}
                   className={`w-full bg-zinc-800/50 backdrop-blur-sm border ${
                     errors.password ? "border-red-500/70 shadow-red-500/20" : "border-zinc-600/50 hover:border-zinc-500/70 group-hover:border-zinc-500/50"
-                  } rounded-xl px-4 py-3 pr-12 text-text-primary placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 focus:shadow-lg focus:shadow-red-500/10 transition-all duration-200 font-mono text-sm`}
+                  } rounded-xl px-4 py-3 pr-12 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 focus:shadow-lg focus:shadow-red-500/10 transition-all duration-200 font-mono text-sm`}
                   placeholder="••••••••"
                   autoComplete="current-password"
                 />

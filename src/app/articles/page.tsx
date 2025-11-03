@@ -69,7 +69,7 @@ function ArticlesContent() {
   });
 
   return (
-    <div className="bg-transparent min-h-screen text-text-primary">
+    <div className="bg-transparent min-h-screen text-white">
       <PageHeader
         title={activeTab === "articles" ? "บทความมวยไทย" : "ข่าวสารมวยไทย"}
         description={
@@ -99,7 +99,7 @@ function ArticlesContent() {
                   }}
                   className={`relative z-10 px-8 py-3 rounded-xl font-bold text-sm transition-all duration-300 ${
                     activeTab === "articles"
-                      ? "text-text-primary"
+                      ? "text-white"
                       : "text-zinc-400 hover:text-zinc-200"
                   }`}
                 >
@@ -113,7 +113,7 @@ function ArticlesContent() {
                   }}
                   className={`relative z-10 px-8 py-3 rounded-xl font-bold text-sm transition-all duration-300 ${
                     activeTab === "news"
-                      ? "text-text-primary"
+                      ? "text-white"
                       : "text-zinc-400 hover:text-zinc-200"
                   }`}
                 >
@@ -138,12 +138,12 @@ function ArticlesContent() {
                   placeholder="ค้นหาบทความ..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-10 py-2 bg-zinc-800/60 border border-zinc-600/50 rounded-lg text-text-primary placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/50 transition-all duration-300 text-sm"
+                  className="w-full pl-10 pr-10 py-2 bg-zinc-800/60 border border-zinc-600/50 rounded-lg placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/50 transition-all duration-300 text-sm"
                 />
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery("")}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-zinc-400 hover:text-text-primary transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-zinc-400 hover:text-white transition-colors"
                   >
                     <XMarkIcon className="w-4 h-4" />
                   </button>
@@ -159,8 +159,8 @@ function ArticlesContent() {
                   onClick={() => setSelectedCategory(category)}
                   className={`group relative px-4 py-2 rounded-full font-medium text-xs transition-all duration-300 ${
                     selectedCategory === category
-                      ? "bg-gradient-to-r from-red-500 to-red-600 text-text-primary shadow-lg shadow-red-500/25"
-                      : "bg-zinc-800/60 text-zinc-300 hover:bg-zinc-700/60 hover:text-text-primary border border-zinc-600/50 hover:border-zinc-500"
+                      ? "bg-gradient-to-r from-red-500 to-red-600 shadow-lg shadow-red-500/25"
+                      : "bg-zinc-800/60 text-zinc-300 hover:bg-zinc-700/60 hover:text-white border border-zinc-600/50 hover:border-zinc-500"
                   }`}
                 >
                   {/* Active indicator dot */}
@@ -213,13 +213,13 @@ function ArticlesContent() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 <div className="absolute top-3 right-3">
-                  <span className="bg-brand-primary px-3 py-1 rounded-full font-semibold text-text-primary text-xs">
+                  <span className="bg-brand-primary px-3 py-1 rounded-full font-semibold text-xs">
                     {article.category}
                   </span>
                 </div>
                 {article.isNew && (
                   <div className="absolute top-3 left-3">
-                    <span className="bg-green-600 px-3 py-1 rounded-full font-semibold text-text-primary text-xs animate-pulse">
+                    <span className="bg-green-600 px-3 py-1 rounded-full font-semibold text-xs animate-pulse">
                       ใหม่
                     </span>
                   </div>
@@ -228,7 +228,7 @@ function ArticlesContent() {
 
               {/* Content */}
               <div className="p-6">
-                <h2 className="mb-3 font-bold text-text-primary group-hover:text-red-500 text-xl line-clamp-2 transition-colors">
+                <h2 className="mb-3 font-bold group-hover:text-red-500 text-xl line-clamp-2 transition-colors">
                   {article.title}
                 </h2>
                 <p className="mb-4 text-zinc-400 text-sm line-clamp-3">
@@ -286,7 +286,7 @@ function ArticlesContent() {
 export default function ArticlesPage() {
   return (
     <Suspense fallback={
-      <div className="bg-transparent min-h-screen text-text-primary flex items-center justify-center">
+      <div className="bg-transparent min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500 mx-auto mb-4"></div>
           <p className="text-zinc-400">กำลังโหลด...</p>

@@ -139,7 +139,7 @@ export default function AffiliatePage() {
       <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
         <div className="container mx-auto px-4 py-16">
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-text-primary mb-4">Affiliate Program</h1>
+            <h1 className="text-4xl font-bold mb-4">Affiliate Program</h1>
             <p className="text-zinc-300 text-xl mb-8">
               กรุณาเข้าสู่ระบบเพื่อเข้าร่วมโปรแกรม Affiliate
             </p>
@@ -161,7 +161,7 @@ export default function AffiliatePage() {
       <div className="container mx-auto px-4 py-16">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-text-primary mb-4">
+          <h1 className="text-4xl font-bold mb-4">
             🎯 Affiliate Program
           </h1>
           <p className="text-zinc-300 text-xl max-w-3xl mx-auto">
@@ -174,7 +174,7 @@ export default function AffiliatePage() {
           <Card className="bg-zinc-800/50 border-zinc-700">
             <CardBody className="text-center">
               <UserPlusIcon className="w-8 h-8 text-blue-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-text-primary">{stats.totalReferrals}</p>
+              <p className="text-2xl font-bold text-white">{stats.totalReferrals}</p>
               <p className="text-zinc-400">ผู้แนะนำทั้งหมด</p>
             </CardBody>
           </Card>
@@ -182,7 +182,7 @@ export default function AffiliatePage() {
           <Card className="bg-zinc-800/50 border-zinc-700">
             <CardBody className="text-center">
               <TrophyIcon className="w-8 h-8 text-yellow-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-text-primary">{stats.totalEarnings}</p>
+              <p className="text-2xl font-bold text-white">{stats.totalEarnings}</p>
               <p className="text-zinc-400">แต้มสะสมทั้งหมด</p>
             </CardBody>
           </Card>
@@ -190,7 +190,7 @@ export default function AffiliatePage() {
           <Card className="bg-zinc-800/50 border-zinc-700">
             <CardBody className="text-center">
               <ChartBarIcon className="w-8 h-8 text-green-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-text-primary">{stats.currentMonthReferrals}</p>
+              <p className="text-2xl font-bold text-white">{stats.currentMonthReferrals}</p>
               <p className="text-zinc-400">เดือนนี้</p>
             </CardBody>
           </Card>
@@ -198,7 +198,7 @@ export default function AffiliatePage() {
           <Card className="bg-zinc-800/50 border-zinc-700">
             <CardBody className="text-center">
               <GiftIcon className="w-8 h-8 text-purple-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-text-primary">{stats.conversionRate}%</p>
+              <p className="text-2xl font-bold text-white">{stats.conversionRate}%</p>
               <p className="text-zinc-400">อัตราการแปลง</p>
             </CardBody>
           </Card>
@@ -208,7 +208,7 @@ export default function AffiliatePage() {
           {/* Affiliate Link Section */}
           <Card className="bg-zinc-800/50 border-zinc-700">
             <CardHeader>
-              <h2 className="text-xl font-semibold text-text-primary flex items-center">
+              <h2 className="text-xl font-semibold flex items-center">
                 <LinkIcon className="w-5 h-5 mr-2" />
                 ลิงก์แนะนำของคุณ
               </h2>
@@ -222,7 +222,7 @@ export default function AffiliatePage() {
                     readOnly
                     className="flex-1"
                     classNames={{
-                      input: "bg-zinc-700 text-text-primary",
+                      input: "bg-zinc-700 text-white",
                       inputWrapper: "border-zinc-600"
                     }}
                   />
@@ -244,7 +244,7 @@ export default function AffiliatePage() {
                     readOnly
                     className="flex-1"
                     classNames={{
-                      input: "bg-zinc-700 text-text-primary text-sm",
+                      input: "bg-zinc-700 text-sm",
                       inputWrapper: "border-zinc-600"
                     }}
                   />
@@ -295,7 +295,7 @@ export default function AffiliatePage() {
           {/* How it Works */}
           <Card className="bg-zinc-800/50 border-zinc-700">
             <CardHeader>
-              <h2 className="text-xl font-semibold text-text-primary flex items-center">
+              <h2 className="text-xl font-semibold flex items-center">
                 <ShareIcon className="w-5 h-5 mr-2" />
                 วิธีการทำงาน
               </h2>
@@ -303,25 +303,25 @@ export default function AffiliatePage() {
             <CardBody className="space-y-4">
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-text-primary text-sm font-bold">1</div>
+                  <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-sm font-bold">1</div>
                   <div>
-                    <p className="text-text-primary font-medium">แชร์ลิงก์แนะนำ</p>
+                    <p className=" font-medium">แชร์ลิงก์แนะนำ</p>
                     <p className="text-zinc-400 text-sm">ใช้ลิงก์หรือโค้ดแนะนำของคุณ</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-text-primary text-sm font-bold">2</div>
+                  <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-sm font-bold">2</div>
                   <div>
-                    <p className="text-text-primary font-medium">เพื่อนสมัครสมาชิก</p>
+                    <p className=" font-medium">เพื่อนสมัครสมาชิก</p>
                     <p className="text-zinc-400 text-sm">เพื่อนใช้ลิงก์ของคุณสมัครสมาชิก</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-yellow-500 rounded-full flex items-center justify-center text-text-primary text-sm font-bold">3</div>
+                  <div className="w-6 h-6 bg-yellow-500 rounded-full flex items-center justify-center text-sm font-bold">3</div>
                   <div>
-                    <p className="text-text-primary font-medium">รับแต้มสะสม</p>
+                    <p className=" font-medium">รับแต้มสะสม</p>
                     <p className="text-zinc-400 text-sm">รับ 200 แต้มทันทีเมื่อเพื่อนสมัครสำเร็จ</p>
                   </div>
                 </div>
@@ -330,7 +330,7 @@ export default function AffiliatePage() {
               <Divider className="my-4" />
 
               <div className="bg-zinc-700/50 p-4 rounded-lg">
-                <h3 className="text-text-primary font-medium mb-2">🎁 สิทธิประโยชน์</h3>
+                <h3 className=" font-medium mb-2">🎁 สิทธิประโยชน์</h3>
                 <ul className="text-zinc-300 text-sm space-y-1">
                   <li>• รับ 200 แต้มต่อการแนะนำ 1 คน</li>
                   <li>• แต้มสามารถแลกของรางวัลได้</li>
@@ -345,7 +345,7 @@ export default function AffiliatePage() {
         {/* Referral History */}
         <Card className="bg-zinc-800/50 border-zinc-700 mt-8">
           <CardHeader>
-            <h2 className="text-xl font-semibold text-text-primary">ประวัติการแนะนำ</h2>
+            <h2 className="text-xl font-semibold text-white">ประวัติการแนะนำ</h2>
           </CardHeader>
           <CardBody>
             {referralHistory.length > 0 ? (

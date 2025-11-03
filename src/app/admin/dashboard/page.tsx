@@ -166,10 +166,10 @@ function AdminDashboardContent() {
         <Card className="bg-warning/10 backdrop-blur-sm mb-8 border border-warning/30">
           <CardBody className="flex-row items-center gap-4">
             <div className="flex justify-center items-center bg-warning rounded-lg w-12 h-12">
-              <ClockIcon className="w-6 h-6 text-text-primary" />
+              <ClockIcon className="w-6 h-6 text-white" />
             </div>
             <div className="flex-1">
-              <h3 className="mb-1 font-semibold text-text-primary">มีรายการรออนุมัติ</h3>
+              <h3 className="mb-1 font-semibold text-white">มีรายการรออนุมัติ</h3>
               <p className="text-default-400 text-sm">
                 มี {stats.pendingApprovals} ยิมที่รอการอนุมัติจากคุณ
               </p>
@@ -188,7 +188,7 @@ function AdminDashboardContent() {
 
       {/* Admin Tools */}
       <section className="mb-8">
-        <h2 className="mb-6 font-bold text-text-primary text-2xl">เครื่องมือผู้ดูแล</h2>
+        <h2 className="mb-6 font-bold text-2xl">เครื่องมือผู้ดูแล</h2>
         <div className="gap-6 grid grid-cols-1 md:grid-cols-2">
           {adminTools.map((tool, index) => {
             const Icon = tool.icon;
@@ -204,10 +204,10 @@ function AdminDashboardContent() {
                 <CardBody>
                   <div className="flex items-center gap-4">
                     <div className={`bg-${tool.color} p-4 rounded-lg`}>
-                      <Icon className="w-7 h-7 text-text-primary" />
+                      <Icon className="w-7 h-7 text-white" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="mb-1 font-semibold text-text-primary text-xl">
+                      <h3 className="mb-1 font-semibold text-xl">
                         {tool.title}
                       </h3>
                       <p className="text-default-400 text-sm">
@@ -225,13 +225,13 @@ function AdminDashboardContent() {
 
       {/* System Info */}
       <section>
-        <h2 className="mb-6 font-bold text-text-primary text-2xl">ข้อมูลระบบ</h2>
+        <h2 className="mb-6 font-bold text-2xl">ข้อมูลระบบ</h2>
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardBody>
             <div className="gap-8 grid grid-cols-1 md:grid-cols-3">
               <div className="text-center">
                 <p className="mb-2 text-default-400 text-sm">เวอร์ชัน</p>
-                <p className="font-mono font-bold text-text-primary text-2xl">v1.0.0</p>
+                <p className="font-mono font-bold text-2xl">v1.0.0</p>
               </div>
               <div className="text-center">
                 <p className="mb-2 text-default-400 text-sm">สถานะระบบ</p>

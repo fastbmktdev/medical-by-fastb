@@ -24,7 +24,7 @@ export const GymDetailsForm = ({
 }: GymDetailsFormProps) => {
   return (
     <div className="bg-zinc-950 shadow-xl p-6 md:p-8 rounded-xl">
-      <h2 className="flex items-center gap-3 mb-6 font-semibold text-text-primary text-2xl">
+      <h2 className="flex items-center gap-3 mb-6 font-semibold text-white text-2xl">
         <DocumentTextIcon className="w-7 h-7 text-blue-500" />
         ข้อมูลยิมเบื้องต้น
       </h2>
@@ -47,7 +47,7 @@ export const GymDetailsForm = ({
             value={formData.description}
             onChange={onInputChange}
             rows={6}
-            className="bg-zinc-700 px-4 py-3 border border-zinc-600 focus:border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-text-primary resize-none placeholder-zinc-500"
+            className="bg-zinc-700 px-4 py-3 border border-zinc-600 focus:border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white resize-none placeholder-zinc-500"
             placeholder="เช่น: ยิมมวยไทยขนาดใหญ่ มีเวที 2 เวที รองรับได้ 50 คน เปิดทุกวัน 06:00-22:00 มีครูมืออาชีพ 10 คน..."
           />
         </div>
@@ -63,7 +63,7 @@ export const GymDetailsForm = ({
                 key={service}
                 className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
                   formData.services.includes(service)
-                    ? "bg-brand-primary/20 border-red-500 text-text-primary"
+                    ? "bg-brand-primary/20 border-red-500 text-white"
                     : "bg-zinc-700 border-zinc-600 text-zinc-300 hover:border-zinc-500"
                 }`}
               >
@@ -124,7 +124,7 @@ export const GymDetailsForm = ({
                 >
                   <div className="flex items-center gap-3">
                     <PhotoIcon className="w-5 h-5 text-blue-400" />
-                    <span className="max-w-[200px] font-mono text-text-primary text-sm truncate">
+                    <span className="max-w-[200px] font-mono text-white text-sm truncate">
                       {file.name}
                     </span>
                     <span className="text-zinc-500 text-xs">

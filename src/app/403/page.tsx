@@ -34,7 +34,7 @@ export default function ForbiddenPage() {
   }, [supabase]);
 
   return (
-    <div className="flex flex-col justify-center items-center bg-gradient-to-br from-zinc-950 to-zinc-950 px-4 min-h-screen text-text-primary">
+    <div className="flex flex-col justify-center items-center bg-gradient-to-br from-zinc-950 to-zinc-950 px-4 min-h-screen text-white">
       <Card className="bg-default-100/50 backdrop-blur-sm border-none w-full max-w-2xl">
         <CardBody className="p-8 md:p-12">
           {/* Icon */}
@@ -48,7 +48,7 @@ export default function ForbiddenPage() {
           <h1 className="mb-4 font-bold text-danger text-6xl text-center">403</h1>
           
           {/* Title */}
-          <h2 className="mb-4 font-semibold text-text-primary text-3xl text-center tracking-tight">
+          <h2 className="mb-4 font-semibold text-3xl text-center tracking-tight">
             ไม่มีสิทธิ์เข้าถึง
           </h2>
           

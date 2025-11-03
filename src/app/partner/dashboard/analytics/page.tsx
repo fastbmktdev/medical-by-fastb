@@ -75,11 +75,11 @@ function PartnerAnalyticsContent() {
             <CardBody className="gap-3">
               <div className="flex justify-between items-center">
                 <div className="bg-primary p-3 rounded-lg">
-                  <UsersIcon className="w-6 h-6 text-text-primary" />
+                  <UsersIcon className="w-6 h-6 text-white" />
                 </div>
               </div>
               <div>
-                <h3 className="font-bold text-text-primary text-2xl">0</h3>
+                <h3 className="font-bold text-2xl">0</h3>
                 <p className="text-default-400 text-sm">ลูกค้าทั้งหมด</p>
               </div>
             </CardBody>
@@ -88,11 +88,11 @@ function PartnerAnalyticsContent() {
             <CardBody className="gap-3">
               <div className="flex justify-between items-center">
                 <div className="bg-success p-3 rounded-lg">
-                  <CalendarIcon className="w-6 h-6 text-text-primary" />
+                  <CalendarIcon className="w-6 h-6 text-white" />
                 </div>
               </div>
               <div>
-                <h3 className="font-bold text-text-primary text-2xl">0</h3>
+                <h3 className="font-bold text-2xl">0</h3>
                 <p className="text-default-400 text-sm">การจองเดือนนี้</p>
               </div>
             </CardBody>
@@ -101,11 +101,11 @@ function PartnerAnalyticsContent() {
             <CardBody className="gap-3">
               <div className="flex justify-between items-center">
                 <div className="bg-warning p-3 rounded-lg">
-                  <StarIcon className="w-6 h-6 text-text-primary" />
+                  <StarIcon className="w-6 h-6 text-white" />
                 </div>
               </div>
               <div>
-                <h3 className="font-bold text-text-primary text-2xl">0.0</h3>
+                <h3 className="font-bold text-2xl">0.0</h3>
                 <p className="text-default-400 text-sm">คะแนนเฉลี่ย</p>
               </div>
             </CardBody>
@@ -114,11 +114,11 @@ function PartnerAnalyticsContent() {
             <CardBody className="gap-3">
               <div className="flex justify-between items-center">
                 <div className="bg-secondary p-3 rounded-lg">
-                  <TrophyIcon className="w-6 h-6 text-text-primary" />
+                  <TrophyIcon className="w-6 h-6 text-white" />
                 </div>
               </div>
               <div>
-                <h3 className="font-bold text-text-primary text-2xl">0</h3>
+                <h3 className="font-bold text-2xl">0</h3>
                 <p className="text-default-400 text-sm">อันดับในพื้นที่</p>
               </div>
             </CardBody>
@@ -129,7 +129,7 @@ function PartnerAnalyticsContent() {
       <div className="gap-6 grid grid-cols-1 lg:grid-cols-2">
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader>
-            <h3 className="font-bold text-text-primary text-xl">กราฟรายได้</h3>
+            <h3 className="font-bold text-xl">กราฟรายได้</h3>
           </CardHeader>
           <CardBody className="justify-center items-center min-h-[300px]">
             <ChartBarIcon className="mb-4 w-16 h-16 text-default-300" />
@@ -139,7 +139,7 @@ function PartnerAnalyticsContent() {
 
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader>
-            <h3 className="font-bold text-text-primary text-xl">บริการยอดนิยม</h3>
+            <h3 className="font-bold text-xl">บริการยอดนิยม</h3>
           </CardHeader>
           <CardBody className="justify-center items-center min-h-[300px]">
             <TrophyIcon className="mb-4 w-16 h-16 text-default-300" />

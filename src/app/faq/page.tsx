@@ -162,7 +162,7 @@ export default function FAQPage() {
           {/* Categories Sidebar */}
           <div className="lg:w-1/4">
             <div className="top-8 sticky bg-zinc-950 p-6 rounded-lg">
-              <h3 className="mb-4 font-semibold text-text-primary text-lg">หมวดหมู่</h3>
+              <h3 className="mb-4 font-semibold text-lg">หมวดหมู่</h3>
               <nav className="space-y-2">
                 {categories.map((category) => (
                   <button
@@ -170,8 +170,8 @@ export default function FAQPage() {
                     onClick={() => setActiveCategory(category)}
                     className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
                       activeCategory === category
-                        ? "bg-brand-primary text-text-primary"
-                        : "text-zinc-300 hover:bg-zinc-700 hover:text-text-primary"
+                        ? "bg-brand-primary text-white"
+                        : "text-zinc-300 hover:bg-zinc-700 hover:text-white"
                     }`}
                   >
                     {category}
@@ -184,7 +184,7 @@ export default function FAQPage() {
           {/* FAQ Content */}
           <div className="lg:w-3/4">
             <div className="bg-zinc-950 p-8 rounded-lg">
-              <h2 className="mb-6 font-bold text-text-primary text-2xl">{activeCategory}</h2>
+              <h2 className="mb-6 font-bold text-2xl">{activeCategory}</h2>
               
               <div className="space-y-4">
                 {selectedCategoryData?.questions.map((faq, index) => {
@@ -197,7 +197,7 @@ export default function FAQPage() {
                         onClick={() => toggleQuestion(questionId)}
                         className="flex justify-between items-center hover:bg-zinc-700 p-6 w-full text-left transition-colors"
                       >
-                        <h3 className="pr-4 font-semibold text-text-primary text-lg">
+                        <h3 className="pr-4 font-semibold text-lg">
                           {faq.question}
                         </h3>
                         {isOpen ? (
@@ -224,20 +224,20 @@ export default function FAQPage() {
 
             {/* Contact Support */}
             <div className="bg-zinc-950 mt-8 p-8 rounded-lg text-center">
-              <h3 className="mb-4 font-semibold text-text-primary text-xl">ไม่พบคำตอบที่ต้องการ?</h3>
+              <h3 className="mb-4 font-semibold text-xl">ไม่พบคำตอบที่ต้องการ?</h3>
               <p className="mb-6 text-zinc-400">
                 ทีมงานของเราพร้อมให้ความช่วยเหลือและตอบคำถามเพิ่มเติม
               </p>
               <div className="flex sm:flex-row flex-col justify-center gap-4">
                 <a
                   href="/contact"
-                  className="bg-brand-primary hover:bg-red-700 px-6 py-3 rounded-lg font-semibold text-text-primary transition-colors"
+                  className="bg-brand-primary hover:bg-red-700 px-6 py-3 rounded-lg font-semibold transition-colors"
                 >
                   ติดต่อทีมงาน
                 </a>
                 <a
                   href="mailto:support@muaythainext.com"
-                  className="bg-zinc-700 hover:bg-zinc-600 px-6 py-3 rounded-lg font-semibold text-text-primary transition-colors"
+                  className="bg-zinc-700 hover:bg-zinc-600 px-6 py-3 rounded-lg font-semibold transition-colors"
                 >
                   ส่งอีเมล
                 </a>

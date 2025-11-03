@@ -117,13 +117,13 @@ export default function GamificationWidget({ className = '' }: GamificationWidge
       <div className="mt-3 flex space-x-2">
         <Link
           href="/dashboard/gamification"
-          className="flex-1 bg-blue-600 text-text-primary text-xs py-2 px-3 rounded-lg text-center hover:bg-blue-700 transition-colors"
+          className="flex-1 bg-blue-600 text-xs py-2 px-3 rounded-lg text-center hover:bg-blue-700 transition-colors"
         >
           ดูความคืบหน้า
         </Link>
         <Link
           href="/dashboard/gamification?tab=leaderboards"
-          className="flex-1 bg-purple-600 text-text-primary text-xs py-2 px-3 rounded-lg text-center hover:bg-purple-700 transition-colors"
+          className="flex-1 bg-purple-600 text-xs py-2 px-3 rounded-lg text-center hover:bg-purple-700 transition-colors"
         >
           ตารางคะแนน
         </Link>

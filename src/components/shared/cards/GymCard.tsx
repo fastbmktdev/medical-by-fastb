@@ -26,7 +26,7 @@ export function GymCard({ gym }: GymCardProps) {
 
       <div className="p-6">
         {/* Gym Name */}
-        <h3 className="mb-2 font-bold text-text-primary group-hover:text-red-400 text-xl transition-colors">
+        <h3 className="mb-2 font-bold group-hover:text-red-400 text-xl transition-colors">
           {gym.gym_name}
         </h3>
         {gym.gym_name_english && (
@@ -57,7 +57,7 @@ export function GymCard({ gym }: GymCardProps) {
           </div>
           <Link
             href={`/gyms/${gym.slug}`}
-            className="bg-brand-primary hover:bg-red-700 px-4 py-2 rounded-lg font-semibold text-text-primary text-sm transition-colors"
+            className="bg-brand-primary hover:bg-red-700 px-4 py-2 rounded-lg font-semibold text-sm transition-colors"
           >
             ดูรายละเอียด
           </Link>

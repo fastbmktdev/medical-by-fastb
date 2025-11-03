@@ -78,12 +78,12 @@ function PartnerSettingsContent() {
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader className="flex items-center gap-3">
             <BellIcon className="w-6 h-6 text-secondary" />
-            <h3 className="font-bold text-text-primary text-xl">การแจ้งเตือน</h3>
+            <h3 className="font-bold text-xl">การแจ้งเตือน</h3>
           </CardHeader>
           <CardBody className="gap-4">
             <div className="flex justify-between items-center">
               <div>
-                <p className="mb-1 font-semibold text-text-primary">อีเมล</p>
+                <p className="mb-1 font-semibold text-white">อีเมล</p>
                 <p className="text-default-400 text-sm">รับการแจ้งเตือนทางอีเมล</p>
               </div>
               <Switch
@@ -94,7 +94,7 @@ function PartnerSettingsContent() {
             </div>
             <div className="flex justify-between items-center pt-4 border-white/5 border-t">
               <div>
-                <p className="mb-1 font-semibold text-text-primary">SMS</p>
+                <p className="mb-1 font-semibold text-white">SMS</p>
                 <p className="text-default-400 text-sm">รับการแจ้งเตือนทาง SMS</p>
               </div>
               <Switch
@@ -110,12 +110,12 @@ function PartnerSettingsContent() {
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader className="flex items-center gap-3">
             <ShieldCheckIcon className="w-6 h-6 text-secondary" />
-            <h3 className="font-bold text-text-primary text-xl">ความปลอดภัย</h3>
+            <h3 className="font-bold text-xl">ความปลอดภัย</h3>
           </CardHeader>
           <CardBody className="gap-4">
             <div className="flex justify-between items-center">
               <div>
-                <p className="mb-1 font-semibold text-text-primary">รหัสผ่าน</p>
+                <p className="mb-1 font-semibold text-white">รหัสผ่าน</p>
                 <p className="text-default-400 text-sm">เปลี่ยนรหัสผ่านของคุณ</p>
               </div>
               <Button size="sm" color="secondary" variant="flat">
@@ -124,7 +124,7 @@ function PartnerSettingsContent() {
             </div>
             <div className="flex justify-between items-center pt-4 border-white/5 border-t">
               <div>
-                <p className="mb-1 font-semibold text-text-primary">2FA</p>
+                <p className="mb-1 font-semibold text-white">2FA</p>
                 <p className="text-default-400 text-sm">การยืนยันตัวตนแบบสองชั้น</p>
               </div>
               <Button size="sm" variant="flat">
@@ -138,7 +138,7 @@ function PartnerSettingsContent() {
         <Card className="lg:col-span-2 bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader className="flex items-center gap-3">
             <BanknotesIcon className="w-6 h-6 text-secondary" />
-            <h3 className="font-bold text-text-primary text-xl">บัญชีธนาคาร</h3>
+            <h3 className="font-bold text-xl">บัญชีธนาคาร</h3>
           </CardHeader>
           <CardBody className="gap-4">
             <div className="gap-4 grid grid-cols-1 md:grid-cols-2">
@@ -146,7 +146,7 @@ function PartnerSettingsContent() {
                 label="ชื่อธนาคาร"
                 placeholder="เลือกธนาคาร"
                 classNames={{
-                  input: "text-text-primary",
+                  input: "text-white",
                   label: "text-default-400",
                 }}
               />
@@ -154,7 +154,7 @@ function PartnerSettingsContent() {
                 label="เลขที่บัญชี"
                 placeholder="กรอกเลขที่บัญชี"
                 classNames={{
-                  input: "text-text-primary",
+                  input: "text-white",
                   label: "text-default-400",
                 }}
               />
@@ -162,7 +162,7 @@ function PartnerSettingsContent() {
                 label="ชื่อบัญชี"
                 placeholder="กรอกชื่อบัญชี"
                 classNames={{
-                  input: "text-text-primary",
+                  input: "text-white",
                   label: "text-default-400",
                 }}
               />

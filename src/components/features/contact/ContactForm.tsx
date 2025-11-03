@@ -167,7 +167,7 @@ export function ContactForm({ onSubmit, className }: ContactFormProps = {}) {
           required
           rows={4}
           disabled={isSubmitting}
-          className="bg-zinc-700 px-4 py-3 border border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-text-primary resize-none transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="bg-zinc-700 px-4 py-3 border border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full resize-none transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           placeholder="เขียนข้อความของคุณที่นี่..."
         />
       </div>

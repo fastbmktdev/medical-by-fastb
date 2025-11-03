@@ -182,7 +182,7 @@ export default function PaymentMethods({
       {/* Payment Method Selection */}
       {!selectedMethod && (
         <div>
-          <h3 className="text-lg font-semibold text-text-primary mb-4">เลือกวิธีการชำระเงิน</h3>
+          <h3 className="text-lg font-semibold mb-4">เลือกวิธีการชำระเงิน</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {paymentMethods.map((method) => (
               <div
@@ -197,7 +197,7 @@ export default function PaymentMethods({
                 <div className="flex items-start gap-4">
                   <method.icon className="w-8 h-8 text-red-500 flex-shrink-0" />
                   <div className="flex-1">
-                    <h4 className="font-semibold text-text-primary mb-1">{method.name}</h4>
+                    <h4 className="font-semibold mb-1">{method.name}</h4>
                     <p className="text-zinc-400 text-sm mb-3">{method.description}</p>
                     {method.available && (
                       <div className="flex flex-wrap gap-2">
@@ -226,10 +226,10 @@ export default function PaymentMethods({
       {selectedMethod && (
         <div>
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold text-text-primary">วิธีการชำระเงินที่เลือก</h3>
+            <h3 className="text-lg font-semibold text-white">วิธีการชำระเงินที่เลือก</h3>
             <button
               onClick={() => setSelectedMethod(null)}
-              className="text-zinc-400 hover:text-text-primary text-sm"
+              className="text-zinc-400 hover:text-white text-sm"
             >
               เปลี่ยนวิธีการชำระเงิน
             </button>
@@ -239,7 +239,7 @@ export default function PaymentMethods({
             <div className="bg-zinc-700 rounded-lg p-6">
               <div className="flex items-center gap-3 mb-4">
                 <CreditCardIcon className="w-6 h-6 text-red-500" />
-                <h4 className="font-semibold text-text-primary">บัตรเครดิต/เดบิต</h4>
+                <h4 className="font-semibold text-white">บัตรเครดิต/เดบิต</h4>
               </div>
               <CheckoutForm
                 returnUrl="/payment/success"
@@ -253,34 +253,34 @@ export default function PaymentMethods({
             <div className="bg-zinc-700 rounded-lg p-6">
               <div className="flex items-center gap-3 mb-4">
                 <BanknotesIcon className="w-6 h-6 text-red-500" />
-                <h4 className="font-semibold text-text-primary">โอนเงินผ่านธนาคาร</h4>
+                <h4 className="font-semibold text-white">โอนเงินผ่านธนาคาร</h4>
               </div>
               <div className="space-y-4">
                 <div className="bg-zinc-800 rounded-lg p-4">
-                  <h5 className="font-medium text-text-primary mb-3">ข้อมูลการโอนเงิน</h5>
+                  <h5 className="font-medium mb-3">ข้อมูลการโอนเงิน</h5>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-zinc-400">ธนาคาร:</span>
-                      <span className="text-text-primary">ธนาคารกสิกรไทย</span>
+                      <span className="text-white">ธนาคารกสิกรไทย</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-zinc-400">เลขที่บัญชี:</span>
-                      <span className="text-text-primary font-mono">1234567890</span>
+                      <span className=" font-mono">1234567890</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-zinc-400">ชื่อบัญชี:</span>
-                      <span className="text-text-primary">ค่ายมวยไทย</span>
+                      <span className="text-white">ค่ายมวยไทย</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-zinc-400">จำนวนเงิน:</span>
-                      <span className="text-text-primary font-semibold">{formatAmount(amount)}</span>
+                      <span className=" font-semibold">{formatAmount(amount)}</span>
                     </div>
                   </div>
                 </div>
                 <button
                   onClick={handleBankTransfer}
                   disabled={isProcessing}
-                  className="w-full bg-brand-primary hover:bg-red-700 disabled:bg-zinc-600 disabled:opacity-50 text-text-primary py-3 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed"
+                  className="w-full bg-brand-primary hover:bg-red-700 disabled:bg-zinc-600 disabled:opacity-50 py-3 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed"
                  aria-label="Button">
                   {isProcessing ? 'กำลังสร้างข้อมูลโอนเงิน...' : 'ยืนยันการโอนเงิน'}
                 </button>
@@ -292,26 +292,26 @@ export default function PaymentMethods({
             <div className="bg-zinc-700 rounded-lg p-6">
               <div className="flex items-center gap-3 mb-4">
                 <QrCodeIcon className="w-6 h-6 text-red-500" />
-                <h4 className="font-semibold text-text-primary">พร้อมเพย์</h4>
+                <h4 className="font-semibold text-white">พร้อมเพย์</h4>
               </div>
               <div className="space-y-4">
                 <div className="bg-zinc-800 rounded-lg p-4">
-                  <h5 className="font-medium text-text-primary mb-3">ข้อมูลพร้อมเพย์</h5>
+                  <h5 className="font-medium mb-3">ข้อมูลพร้อมเพย์</h5>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-zinc-400">เบอร์โทรศัพท์:</span>
-                      <span className="text-text-primary font-mono">0812345678</span>
+                      <span className=" font-mono">0812345678</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-zinc-400">จำนวนเงิน:</span>
-                      <span className="text-text-primary font-semibold">{formatAmount(amount)}</span>
+                      <span className=" font-semibold">{formatAmount(amount)}</span>
                     </div>
                   </div>
                 </div>
                 <button
                   onClick={handlePromptPay}
                   disabled={isProcessing}
-                  className="w-full bg-brand-primary hover:bg-red-700 disabled:bg-zinc-600 disabled:opacity-50 text-text-primary py-3 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed"
+                  className="w-full bg-brand-primary hover:bg-red-700 disabled:bg-zinc-600 disabled:opacity-50 py-3 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed"
                  aria-label="Button">
                   {isProcessing ? 'กำลังสร้าง QR Code...' : 'สร้าง QR Code'}
                 </button>
@@ -323,19 +323,19 @@ export default function PaymentMethods({
             <div className="bg-zinc-700 rounded-lg p-6">
               <div className="flex items-center gap-3 mb-4">
                 <DevicePhoneMobileIcon className="w-6 h-6 text-red-500" />
-                <h4 className="font-semibold text-text-primary">ชำระเงินที่ค่ายมวย</h4>
+                <h4 className="font-semibold text-white">ชำระเงินที่ค่ายมวย</h4>
               </div>
               <div className="space-y-4">
                 <div className="bg-zinc-800 rounded-lg p-4">
-                  <h5 className="font-medium text-text-primary mb-3">ข้อมูลการชำระเงิน</h5>
+                  <h5 className="font-medium mb-3">ข้อมูลการชำระเงิน</h5>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-zinc-400">จำนวนเงิน:</span>
-                      <span className="text-text-primary font-semibold">{formatAmount(amount)}</span>
+                      <span className=" font-semibold">{formatAmount(amount)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-zinc-400">สถานที่:</span>
-                      <span className="text-text-primary">ค่ายมวยไทย</span>
+                      <span className="text-white">ค่ายมวยไทย</span>
                     </div>
                   </div>
                 </div>
@@ -347,7 +347,7 @@ export default function PaymentMethods({
                 <button
                   onClick={handleOnsitePayment}
                   disabled={isProcessing}
-                  className="w-full bg-brand-primary hover:bg-red-700 disabled:bg-zinc-600 disabled:opacity-50 text-text-primary py-3 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed"
+                  className="w-full bg-brand-primary hover:bg-red-700 disabled:bg-zinc-600 disabled:opacity-50 py-3 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed"
                  aria-label="Button">
                   {isProcessing ? 'กำลังสร้างการชำระเงิน...' : 'ยืนยันการชำระเงินที่ค่ายมวย'}
                 </button>

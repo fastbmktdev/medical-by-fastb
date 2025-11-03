@@ -104,11 +104,11 @@ function FavoritesContent() {
             <CardBody>
               <div className="flex items-center gap-4">
                 <div className="bg-danger p-3 rounded-lg">
-                  <HeartSolidIcon className="w-6 h-6 text-text-primary" />
+                  <HeartSolidIcon className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <p className="mb-1 text-default-400 text-sm">ยิมโปรด</p>
-                  <p className="font-bold text-text-primary text-2xl">{mockFavorites.length}</p>
+                  <p className="font-bold text-2xl">{mockFavorites.length}</p>
                 </div>
               </div>
             </CardBody>
@@ -117,11 +117,11 @@ function FavoritesContent() {
             <CardBody>
               <div className="flex items-center gap-4">
                 <div className="bg-secondary p-3 rounded-lg">
-                  <StarIcon className="w-6 h-6 text-text-primary" />
+                  <StarIcon className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <p className="mb-1 text-default-400 text-sm">สินค้าโปรด</p>
-                  <p className="font-bold text-text-primary text-2xl">0</p>
+                  <p className="font-bold text-2xl">0</p>
                 </div>
               </div>
             </CardBody>
@@ -130,11 +130,11 @@ function FavoritesContent() {
             <CardBody>
               <div className="flex items-center gap-4">
                 <div className="bg-primary p-3 rounded-lg">
-                  <CalendarIcon className="w-6 h-6 text-text-primary" />
+                  <CalendarIcon className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <p className="mb-1 text-default-400 text-sm">การจองจากรายการโปรด</p>
-                  <p className="font-bold text-text-primary text-2xl">5</p>
+                  <p className="font-bold text-2xl">5</p>
                 </div>
               </div>
             </CardBody>
@@ -144,12 +144,12 @@ function FavoritesContent() {
 
       {/* Favorite Gyms */}
       <section>
-        <h2 className="mb-6 font-bold text-text-primary text-2xl">ยิมโปรด</h2>
+        <h2 className="mb-6 font-bold text-2xl">ยิมโปรด</h2>
         {mockFavorites.length === 0 ? (
           <Card className="bg-default-100/50 backdrop-blur-sm border-none">
             <CardBody className="py-16 text-center">
               <HeartIcon className="mx-auto mb-4 w-16 h-16 text-default-300" />
-              <h3 className="mb-2 font-semibold text-text-primary text-xl">ยังไม่มีรายการโปรด</h3>
+              <h3 className="mb-2 font-semibold text-xl">ยังไม่มีรายการโปรด</h3>
               <p className="mb-6 text-default-400">
                 เริ่มเพิ่มยิมที่คุณชื่นชอบเพื่อเข้าถึงได้ง่ายขึ้น
               </p>
@@ -196,7 +196,7 @@ function FavoritesContent() {
                 </CardHeader>
                 <CardBody className="gap-3">
                   <div>
-                    <h3 className="mb-1 font-bold text-text-primary text-lg">{gym.name}</h3>
+                    <h3 className="mb-1 font-bold text-lg">{gym.name}</h3>
                     <div className="flex items-center gap-2 mb-2">
                       <MapPinIcon className="w-4 h-4 text-default-400" />
                       <p className="text-default-400 text-sm">{gym.location}</p>

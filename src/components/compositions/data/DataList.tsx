@@ -59,7 +59,7 @@ export function DataList({
 
               {/* Content */}
               <div className="flex-1 min-w-0">
-                <h4 className="text-text-primary font-medium truncate">
+                <h4 className=" font-medium truncate">
                   {item.title}
                 </h4>
                 {item.description && (

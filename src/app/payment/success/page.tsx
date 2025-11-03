@@ -74,7 +74,7 @@ function PaymentSuccessContent() {
   if (loading) {
     return (
       <div className="min-h-screen bg-zinc-900 flex items-center justify-center">
-        <div className="text-text-primary text-center">
+        <div className=" text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500 mx-auto mb-4"></div>
           <p>กำลังโหลด...</p>
         </div>
@@ -89,9 +89,9 @@ function PaymentSuccessContent() {
           {/* Success Header */}
           <div className="text-center mb-8">
             <div className="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircleIcon className="w-12 h-12 text-text-primary" />
+              <CheckCircleIcon className="w-12 h-12 text-white" />
             </div>
-            <h1 className="text-3xl font-bold text-text-primary mb-2">การชำระเงินสำเร็จ!</h1>
+            <h1 className="text-3xl font-bold mb-2">การชำระเงินสำเร็จ!</h1>
             <p className="text-zinc-400 text-lg">
               ขอบคุณสำหรับการชำระเงินของคุณ
             </p>
@@ -100,31 +100,31 @@ function PaymentSuccessContent() {
           {/* Payment Details */}
           {paymentData && (
             <div className="bg-zinc-800 rounded-lg p-6 mb-8">
-              <h2 className="text-xl font-semibold text-text-primary mb-4">รายละเอียดการชำระเงิน</h2>
+              <h2 className="text-xl font-semibold mb-4">รายละเอียดการชำระเงิน</h2>
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-zinc-400">ประเภท:</span>
-                  <span className="text-text-primary font-medium">
+                  <span className=" font-medium">
                     {getPaymentTypeText(paymentData.paymentType)}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-zinc-400">จำนวนเงิน:</span>
-                  <span className="text-text-primary font-semibold text-lg">
+                  <span className=" font-semibold text-lg">
                     ฿{paymentData.amount.toLocaleString()}
                   </span>
                 </div>
                 {paymentData.orderNumber && (
                   <div className="flex justify-between">
                     <span className="text-zinc-400">หมายเลขคำสั่งซื้อ:</span>
-                    <span className="text-text-primary font-mono text-sm">
+                    <span className=" font-mono text-sm">
                       {paymentData.orderNumber}
                     </span>
                   </div>
                 )}
                 <div className="flex justify-between">
                   <span className="text-zinc-400">วันที่ชำระ:</span>
-                  <span className="text-text-primary">
+                  <span className="text-white">
                     {new Date(paymentData.timestamp).toLocaleDateString('th-TH', {
                       year: 'numeric',
                       month: 'long',
@@ -144,13 +144,13 @@ function PaymentSuccessContent() {
 
           {/* Next Steps */}
           <div className="bg-zinc-800 rounded-lg p-6 mb-8">
-            <h3 className="text-lg font-semibold text-text-primary mb-4">ขั้นตอนต่อไป</h3>
+            <h3 className="text-lg font-semibold mb-4">ขั้นตอนต่อไป</h3>
             <div className="space-y-4">
               {paymentData?.paymentType === 'gym_booking' && (
                 <div className="flex items-start gap-3 p-4 bg-blue-600/10 border border-blue-600/50 rounded-lg">
                   <ClockIcon className="w-5 h-5 text-blue-400 mt-0.5" />
                   <div>
-                    <h4 className="font-medium text-text-primary">การจองค่ายมวย</h4>
+                    <h4 className="font-medium text-white">การจองค่ายมวย</h4>
                     <p className="text-zinc-400 text-sm">
                       การจองของคุณได้รับการยืนยันแล้ว กรุณามาที่ค่ายมวยตามเวลาที่กำหนด
                     </p>
@@ -162,7 +162,7 @@ function PaymentSuccessContent() {
                 <div className="flex items-start gap-3 p-4 bg-green-600/10 border border-green-600/50 rounded-lg">
                   <DocumentTextIcon className="w-5 h-5 text-green-400 mt-0.5" />
                   <div>
-                    <h4 className="font-medium text-text-primary">การสั่งซื้อสินค้า</h4>
+                    <h4 className="font-medium text-white">การสั่งซื้อสินค้า</h4>
                     <p className="text-zinc-400 text-sm">
                       ใบเสร็จจะถูกส่งไปยังอีเมลของคุณ และสินค้าจะถูกจัดส่งภายใน 1-3 วันทำการ
                     </p>
@@ -174,7 +174,7 @@ function PaymentSuccessContent() {
                 <div className="flex items-start gap-3 p-4 bg-purple-600/10 border border-purple-600/50 rounded-lg">
                   <DocumentTextIcon className="w-5 h-5 text-purple-400 mt-0.5" />
                   <div>
-                    <h4 className="font-medium text-text-primary">การซื้อตั๋ว</h4>
+                    <h4 className="font-medium text-white">การซื้อตั๋ว</h4>
                     <p className="text-zinc-400 text-sm">
                       ตั๋วของคุณได้รับการยืนยันแล้ว กรุณานำ QR Code ไปแสดงที่งาน
                     </p>
@@ -188,7 +188,7 @@ function PaymentSuccessContent() {
           <div className="flex flex-col sm:flex-row gap-4">
             <button
               onClick={handleGoHome}
-              className="flex items-center justify-center gap-2 bg-brand-primary hover:bg-red-700 text-text-primary px-6 py-3 rounded-lg font-semibold transition-colors"
+              className="flex items-center justify-center gap-2 bg-brand-primary hover:bg-red-700 px-6 py-3 rounded-lg font-semibold transition-colors"
              aria-label="Button">
               <HomeIcon className="w-5 h-5" />
               กลับหน้าหลัก
@@ -196,7 +196,7 @@ function PaymentSuccessContent() {
             
             <button
               onClick={handleViewOrders}
-              className="flex items-center justify-center gap-2 bg-zinc-700 hover:bg-zinc-600 text-text-primary px-6 py-3 rounded-lg font-semibold transition-colors"
+              className="flex items-center justify-center gap-2 bg-zinc-700 hover:bg-zinc-600 px-6 py-3 rounded-lg font-semibold transition-colors"
              aria-label="Button">
               <DocumentTextIcon className="w-5 h-5" />
               ดูรายการสั่งซื้อ
@@ -204,7 +204,7 @@ function PaymentSuccessContent() {
             
             <button
               onClick={handleViewPayments}
-              className="flex items-center justify-center gap-2 bg-zinc-700 hover:bg-zinc-600 text-text-primary px-6 py-3 rounded-lg font-semibold transition-colors"
+              className="flex items-center justify-center gap-2 bg-zinc-700 hover:bg-zinc-600 px-6 py-3 rounded-lg font-semibold transition-colors"
              aria-label="Button">
               <ArrowRightIcon className="w-5 h-5" />
               ดูประวัติการชำระเงิน
@@ -213,7 +213,7 @@ function PaymentSuccessContent() {
 
           {/* Additional Information */}
           <div className="mt-8 p-4 bg-zinc-800/50 rounded-lg">
-            <h4 className="font-medium text-text-primary mb-2">ข้อมูลเพิ่มเติม</h4>
+            <h4 className="font-medium mb-2">ข้อมูลเพิ่มเติม</h4>
             <div className="text-sm text-zinc-400 space-y-1">
               <p>• ใบเสร็จจะถูกส่งไปยังอีเมลของคุณภายใน 5 นาที</p>
               <p>• หากมีคำถาม กรุณาติดต่อทีมสนับสนุน</p>
@@ -230,7 +230,7 @@ export default function PaymentSuccessPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-zinc-900 flex items-center justify-center">
-        <div className="text-text-primary text-center">
+        <div className=" text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500 mx-auto mb-4"></div>
           <p>กำลังโหลด...</p>
         </div>

@@ -21,6 +21,12 @@ export type { CardProps, CardHeaderProps, CardContentProps, CardFooterProps } fr
 // Layout Primitives
 export { Container } from './Container';
 export type { ContainerProps } from './Container';
+export { Flex } from './Flex';
+export type { FlexProps } from './Flex';
+export { Grid } from './Grid';
+export type { GridProps } from './Grid';
+export { Stack } from './Stack';
+export type { StackProps } from './Stack';
 
 // Feedback Primitives
 export { Loading } from './Loading';

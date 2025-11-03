@@ -219,10 +219,10 @@ function BookingsContent() {
               <TableBody emptyContent="ไม่พบข้อมูลการจอง">
                 {filteredBookings.map((booking) => (
                   <TableRow key={booking.id}>
-                    <TableCell className="font-mono text-text-primary text-sm">{booking.booking_number}</TableCell>
+                    <TableCell className="font-mono text-sm">{booking.booking_number}</TableCell>
                     <TableCell>
                       <div>
-                        <p className="font-semibold text-text-primary">{booking.gyms?.gym_name || 'N/A'}</p>
+                        <p className="font-semibold text-white">{booking.gyms?.gym_name || 'N/A'}</p>
                         {booking.gyms?.gym_name_english && (
                           <p className="text-default-400 text-xs">{booking.gyms.gym_name_english}</p>
                         )}
@@ -230,7 +230,7 @@ function BookingsContent() {
                     </TableCell>
                     <TableCell>
                       <div>
-                        <p className="text-text-primary">{booking.package_name}</p>
+                        <p className="text-white">{booking.package_name}</p>
                         <p className="text-default-400 text-xs">
                           {booking.package_type === 'one_time' ? 'ครั้งเดียว' : `${booking.duration_months} เดือน`}
                         </p>
@@ -255,7 +255,7 @@ function BookingsContent() {
                     </TableCell>
                     <TableCell>{getStatusChip(booking.status)}</TableCell>
                     <TableCell>{getPaymentStatusChip(booking.payment_status)}</TableCell>
-                    <TableCell className="font-mono text-text-primary">
+                    <TableCell className="font-mono text-white">
                       ฿{Number(booking.price_paid).toLocaleString()}
                     </TableCell>
                     <TableCell>

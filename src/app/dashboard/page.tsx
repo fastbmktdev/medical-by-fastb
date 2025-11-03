@@ -156,7 +156,7 @@ function DashboardContent() {
                 </div>
                 <div className="flex-1">
                   <div className="flex sm:flex-row flex-col sm:justify-between sm:items-center gap-2 mb-2">
-                    <h2 className="font-bold text-text-primary text-2xl">
+                    <h2 className="font-bold text-2xl">
                       📋 รอการอนุมัติ Partner
                     </h2>
                     <Chip color="warning" variant="flat" size="lg">
@@ -167,7 +167,7 @@ function DashboardContent() {
                     คำขอสมัครของคุณสำหรับ <strong className="text-yellow-400">{gymApplication.gym_name}</strong> กำลังรอการตรวจสอบจากทีมงาน
                   </p>
                   <div className="bg-zinc-950/50 mb-4 p-4 border border-zinc-700 rounded-lg">
-                    <p className="mb-2 text-text-primary text-sm">📅 ส่งคำขอเมื่อ: <span className="font-mono text-zinc-300">{new Date(gymApplication.created_at).toLocaleDateString('th-TH', { 
+                    <p className="mb-2 text-sm">📅 ส่งคำขอเมื่อ: <span className="font-mono text-zinc-300">{new Date(gymApplication.created_at).toLocaleDateString('th-TH', { 
                       year: 'numeric', 
                       month: 'long', 
                       day: 'numeric',
@@ -175,11 +175,11 @@ function DashboardContent() {
                       minute: '2-digit'
                     })}</span></p>
                     <p className="text-zinc-400 text-sm">
-                      ⏱️ ระยะเวลาการตรวจสอบโดยเฉลี่ย: <strong className="text-text-primary">3-5 วันทำการ</strong>
+                      ⏱️ ระยะเวลาการตรวจสอบโดยเฉลี่ย: <strong className="text-white">3-5 วันทำการ</strong>
                     </p>
                   </div>
                   <div className="space-y-2">
-                    <p className="font-semibold text-text-primary text-sm">🔍 ขั้นตอนการตรวจสอบ:</p>
+                    <p className="font-semibold text-sm">🔍 ขั้นตอนการตรวจสอบ:</p>
                     <ul className="space-y-1 ml-4 text-zinc-300 text-sm list-disc">
                       <li>ตรวจสอบความถูกต้องของข้อมูล</li>
                       <li>ตรวจสอบความครบถ้วนของเอกสาร</li>
@@ -203,7 +203,7 @@ function DashboardContent() {
                   <CheckCircleIcon className="w-6 h-6 text-green-400" />
                 </div>
                 <div>
-                  <h2 className="font-bold text-text-primary text-xl">
+                  <h2 className="font-bold text-xl">
                     ✅ คำขอของคุณได้รับการอนุมัติแล้ว!
                   </h2>
                   <p className="text-green-300 text-sm">
@@ -235,7 +235,7 @@ function DashboardContent() {
       {/* Recent Bookings */}
       <section>
         <div className="flex justify-between items-center mb-6">
-          <h2 className="font-bold text-text-primary text-2xl">การจองล่าสุด</h2>
+          <h2 className="font-bold text-2xl">การจองล่าสุด</h2>
           <Button
             as={Link}
             href="/dashboard/bookings"
@@ -266,8 +266,8 @@ function DashboardContent() {
               <TableBody emptyContent="ยังไม่มีการจอง">
                 {recentBookings.map((booking) => (
                   <TableRow key={booking.id}>
-                    <TableCell className="font-mono text-text-primary text-sm">{booking.booking_number}</TableCell>
-                    <TableCell className="font-semibold text-text-primary">{booking.gyms?.gym_name || 'N/A'}</TableCell>
+                    <TableCell className="font-mono text-sm">{booking.booking_number}</TableCell>
+                    <TableCell className="font-semibold text-white">{booking.gyms?.gym_name || 'N/A'}</TableCell>
                     <TableCell className="text-default-400">{booking.package_name}</TableCell>
                     <TableCell className="text-default-400">
                       {new Date(booking.start_date).toLocaleDateString('th-TH', {
@@ -276,7 +276,7 @@ function DashboardContent() {
                         day: 'numeric'
                       })}
                     </TableCell>
-                    <TableCell className="font-mono text-text-primary">฿{Number(booking.price_paid).toLocaleString()}</TableCell>
+                    <TableCell className="font-mono text-white">฿{Number(booking.price_paid).toLocaleString()}</TableCell>
                     <TableCell>
                       <Chip
                         size="sm"

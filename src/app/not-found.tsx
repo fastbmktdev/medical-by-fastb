@@ -10,8 +10,8 @@ export default function NotFound() {
     <div className="flex justify-center items-center bg-zinc-950 px-4 min-h-screen">
       <div className="text-center">
         <ExclamationTriangleIcon className="mx-auto mb-6 w-20 h-20 text-yellow-500" />
-        <h1 className="mb-4 font-bold text-text-primary text-4xl">404</h1>
-        <h2 className="mb-4 font-bold text-text-primary text-2xl">
+        <h1 className="mb-4 font-bold text-4xl">404</h1>
+        <h2 className="mb-4 font-bold text-2xl">
           ไม่พบหน้าที่คุณค้นหา
         </h2>
         <p className="mb-8 text-zinc-400 text-xl">
@@ -19,7 +19,7 @@ export default function NotFound() {
         </p>
         <Link
           href="/"
-          className="inline-block bg-brand-primary hover:bg-red-700 px-6 py-3 rounded-lg font-semibold text-text-primary transition-colors"
+          className="inline-block bg-brand-primary hover:bg-red-700 px-6 py-3 rounded-lg font-semibold transition-colors"
         >
           กลับหน้าหลัก
         </Link>

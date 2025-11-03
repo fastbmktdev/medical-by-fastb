@@ -21,7 +21,7 @@ export default function FeaturedSection({
       <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Header */}
         <div className="mb-12 text-center">
-          <h2 className="mb-4 font-bold text-text-primary text-3xl md:text-4xl">
+          <h2 className="mb-4 font-bold text-3xl md:text-4xl">
             Find Your Next Fight
           </h2>
           <p className="text-zinc-400 text-lg">
@@ -38,7 +38,7 @@ export default function FeaturedSection({
             aria-controls="featured-content"
             className={`px-8 py-3 rounded-lg font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 ${
               activeTab === "gyms"
-                ? "bg-brand-primary text-text-primary"
+                ? "bg-brand-primary text-white"
                 : "bg-zinc-950 text-zinc-300 hover:bg-zinc-700"
             }`}
           >
@@ -51,7 +51,7 @@ export default function FeaturedSection({
             aria-controls="featured-content"
             className={`px-8 py-3 rounded-lg font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 ${
               activeTab === "events"
-                ? "bg-brand-primary text-text-primary"
+                ? "bg-brand-primary text-white"
                 : "bg-zinc-950 text-zinc-300 hover:bg-zinc-700"
             }`}
           >
@@ -79,7 +79,7 @@ export default function FeaturedSection({
         <div className="text-center">
           <Link
             href={activeTab === "gyms" ? "/gyms" : "/events"}
-            className="inline-block bg-brand-primary hover:bg-red-700 px-8 py-3 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 font-semibold text-text-primary transition-colors"
+            className="inline-block bg-brand-primary hover:bg-red-700 px-8 py-3 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 font-semibold transition-colors"
             aria-label={activeTab === "gyms" ? "View all Muay Thai camps" : "View all upcoming events"}
           >
             {activeTab === "gyms" ? "View All Camps" : "View All Events"}

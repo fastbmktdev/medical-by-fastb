@@ -94,7 +94,7 @@ function CheckoutContent() {
             <p className="mb-6 text-gray-600">{error}</p>
             <button
               onClick={() => router.back()}
-              className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg text-text-primary transition-colors"
+              className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg transition-colors"
             >
               กลับไปหน้าก่อนหน้า
             </button>

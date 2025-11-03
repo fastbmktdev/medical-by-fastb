@@ -255,32 +255,32 @@ function PartnerBookingsContent() {
       <section className="gap-4 grid grid-cols-1 md:grid-cols-5 mb-6">
         <Card className="bg-gradient-to-br from-blue-500 to-blue-600">
           <CardBody className="text-center">
-            <p className="mb-1 text-text-primary/80 text-sm">ทั้งหมด</p>
-            <p className="font-bold text-text-primary text-3xl">{stats.total}</p>
+            <p className="mb-1 text-white/80 text-sm">ทั้งหมด</p>
+            <p className="font-bold text-3xl">{stats.total}</p>
           </CardBody>
         </Card>
         <Card className="bg-gradient-to-br from-yellow-500 to-yellow-600">
           <CardBody className="text-center">
-            <p className="mb-1 text-text-primary/80 text-sm">รอยืนยัน</p>
-            <p className="font-bold text-text-primary text-3xl">{stats.pending}</p>
+            <p className="mb-1 text-white/80 text-sm">รอยืนยัน</p>
+            <p className="font-bold text-3xl">{stats.pending}</p>
           </CardBody>
         </Card>
         <Card className="bg-gradient-to-br from-green-500 to-green-600">
           <CardBody className="text-center">
-            <p className="mb-1 text-text-primary/80 text-sm">ยืนยันแล้ว</p>
-            <p className="font-bold text-text-primary text-3xl">{stats.confirmed}</p>
+            <p className="mb-1 text-white/80 text-sm">ยืนยันแล้ว</p>
+            <p className="font-bold text-3xl">{stats.confirmed}</p>
           </CardBody>
         </Card>
         <Card className="bg-gradient-to-br from-purple-500 to-purple-600">
           <CardBody className="text-center">
-            <p className="mb-1 text-text-primary/80 text-sm">เสร็จสิ้น</p>
-            <p className="font-bold text-text-primary text-3xl">{stats.completed}</p>
+            <p className="mb-1 text-white/80 text-sm">เสร็จสิ้น</p>
+            <p className="font-bold text-3xl">{stats.completed}</p>
           </CardBody>
         </Card>
         <Card className="bg-gradient-to-br from-red-500 to-red-600">
           <CardBody className="text-center">
-            <p className="mb-1 text-text-primary/80 text-sm">ยกเลิก</p>
-            <p className="font-bold text-text-primary text-3xl">{stats.cancelled}</p>
+            <p className="mb-1 text-white/80 text-sm">ยกเลิก</p>
+            <p className="font-bold text-3xl">{stats.cancelled}</p>
           </CardBody>
         </Card>
       </section>
@@ -323,10 +323,10 @@ function PartnerBookingsContent() {
               <TableBody emptyContent="ไม่พบข้อมูลการจอง">
                 {filteredBookings.map((booking) => (
                   <TableRow key={booking.id}>
-                    <TableCell className="font-mono text-text-primary text-xs">
+                    <TableCell className="font-mono text-xs">
                       {booking.booking_number}
                     </TableCell>
-                    <TableCell className="font-semibold text-text-primary">
+                    <TableCell className="font-semibold text-white">
                       {booking.customer_name}
                     </TableCell>
                     <TableCell className="font-mono text-default-400 text-sm">
@@ -341,7 +341,7 @@ function PartnerBookingsContent() {
                     <TableCell className="text-default-400">
                       {booking.end_date ? formatDate(booking.end_date) : '-'}
                     </TableCell>
-                    <TableCell className="font-mono text-text-primary">
+                    <TableCell className="font-mono text-white">
                       {formatCurrency(Number(booking.price_paid))}
                     </TableCell>
                     <TableCell>

@@ -73,7 +73,7 @@ export default function EventsPage() {
                 placeholder="ค้นหาอีเวนต์..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-zinc-950 py-3 pr-4 pl-10 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-text-primary placeholder-zinc-400"
+                className="bg-zinc-950 py-3 pr-4 pl-10 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full placeholder-zinc-400"
               />
             </div>
 
@@ -83,7 +83,7 @@ export default function EventsPage() {
               <select
                 value={selectedCity}
                 onChange={(e) => setSelectedCity(e.target.value)}
-                className="bg-zinc-950 py-3 pr-4 pl-10 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-text-primary appearance-none cursor-pointer"
+                className="bg-zinc-950 py-3 pr-4 pl-10 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full appearance-none cursor-pointer"
               >
                 <option value="all">จังหวัด/เมืองทั้งหมด</option>
                 {cities
@@ -107,8 +107,8 @@ export default function EventsPage() {
                 onClick={() => setViewMode("list")}
                 className={`p-2 rounded-lg transition-colors ${
                   viewMode === "list"
-                    ? "bg-brand-primary text-text-primary"
-                    : "bg-zinc-950 text-zinc-400 hover:text-text-primary"
+                    ? "bg-brand-primary text-white"
+                    : "bg-zinc-950 text-zinc-400 hover:text-white"
                 }`}
                 aria-label="List view"
               >
@@ -118,8 +118,8 @@ export default function EventsPage() {
                 onClick={() => setViewMode("grid")}
                 className={`p-2 rounded-lg transition-colors ${
                   viewMode === "grid"
-                    ? "bg-brand-primary text-text-primary"
-                    : "bg-zinc-950 text-zinc-400 hover:text-text-primary"
+                    ? "bg-brand-primary text-white"
+                    : "bg-zinc-950 text-zinc-400 hover:text-white"
                 }`}
                 aria-label="Grid view"
               >
@@ -140,7 +140,7 @@ export default function EventsPage() {
                 setSearchQuery("");
                 setSelectedCity("all");
               }}
-              className="bg-brand-primary hover:bg-red-700 mt-4 px-6 py-2 rounded-lg text-text-primary transition-colors"
+              className="bg-brand-primary hover:bg-red-700 mt-4 px-6 py-2 rounded-lg transition-colors"
             >
               ล้างการค้นหา
             </button>

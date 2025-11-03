@@ -320,7 +320,7 @@ function HeroSection() {
           </div>
         </FadeInUp>
         <FadeInUp delay={400}>
-          <h1 className="mb-6 font-bold text-4xl md:text-6xl lg:text-7xl tracking-tight text-text-primary">
+          <h1 className="mb-6 font-bold text-4xl md:text-6xl lg:text-7xl tracking-tight text-white">
             เส้นทางสู่การเป็นแชมป์
           </h1>
         </FadeInUp>
@@ -333,14 +333,14 @@ function HeroSection() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
               href="#apply"
-              className="group inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 px-8 py-4 rounded-lg font-bold text-text-primary text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl shadow-red-500/25"
+              className="group inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 px-8 py-4 rounded-lg font-bold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl shadow-red-500/25"
             >
               สมัครเข้าร่วมโปรแกรม
               <ArrowRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
               href="#tiers"
-              className="inline-flex items-center gap-2 border border-red-500 hover:bg-red-500 px-8 py-4 rounded-lg font-bold text-red-400 hover:text-text-primary text-lg transition-all duration-300"
+              className="inline-flex items-center gap-2 border border-red-500 hover:bg-red-500 px-8 py-4 rounded-lg font-bold text-red-400 hover:text-white text-lg transition-all duration-300"
             >
               ดูระดับโปรแกรม
             </Link>
@@ -434,7 +434,7 @@ function TiersSection() {
                 <div className="w-full relative z-10">
                   {index === 1 && (
                     <div className="mb-6 text-center">
-                      <span className="inline-flex items-center gap-2 bg-gradient-to-r from-red-500 to-red-600 px-4 py-2 rounded-full font-bold text-text-primary text-sm shadow-lg">
+                      <span className="inline-flex items-center gap-2 bg-gradient-to-r from-red-500 to-red-600 px-4 py-2 rounded-full font-bold text-sm shadow-lg">
                         <StarIcon className="w-4 h-4" />
                         ยอดนิยม
                       </span>
@@ -454,7 +454,7 @@ function TiersSection() {
                         className="flex items-center gap-3 group/item"
                       >
                         <CheckBadgeIcon className="w-6 h-6 text-green-500 group-hover/item:scale-110 transition-transform duration-200" />
-                        <span className="text-zinc-300 group-hover/item:text-text-primary transition-colors duration-200">
+                        <span className="text-zinc-300 group-hover/item: transition-colors duration-200">
                           {feature}
                         </span>
                       </li>
@@ -465,8 +465,8 @@ function TiersSection() {
                     href={tier.href}
                     className={`group/btn w-full text-center font-bold py-4 px-6 rounded-lg transition-all duration-300 transform ${
                       index === 1
-                        ? "bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-text-primary shadow-lg hover:shadow-red-500/25 border border-red-500 flex items-center justify-center w-full"
-                        : "bg-zinc-700 hover:bg-brand-primary text-text-primary hover:shadow-lg border flex items-center justify-center"
+                        ? "bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 shadow-lg hover:shadow-red-500/25 border border-red-500 flex items-center justify-center w-full"
+                        : "bg-zinc-700 hover:bg-brand-primary hover:shadow-lg border flex items-center justify-center"
                     }`}
                   >
                     <span className="flex items-center justify-center gap-2">
@@ -514,7 +514,7 @@ function TimelineSection() {
               <FadeInUp key={item.step} delay={index * 200}>
                 <li className="mb-8 ml-10 group">
                   <div className="relative">
-                    <span className="-left-5 absolute flex justify-center items-center bg-gradient-to-br from-red-500 to-red-600 rounded-full ring-8 ring-zinc-900 w-12 h-12 font-bold text-text-primary shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <span className="-left-5 absolute flex justify-center items-center bg-gradient-to-br from-red-500 to-red-600 rounded-full ring-8 ring-zinc-900 w-12 h-12 font-bold shadow-lg group-hover:scale-110 transition-transform duration-300">
                       {item.step}
                     </span>
                     
@@ -523,7 +523,7 @@ function TimelineSection() {
                         <div className="flex items-center justify-between mb-4">
                           <div className="flex items-center gap-3">
                             <span className="text-2xl">{item.icon}</span>
-                            <h3 className="font-bold text-text-primary text-xl group-hover:text-red-400 transition-colors duration-300">
+                            <h3 className="font-bold text-xl group-hover:text-red-400 transition-colors duration-300">
                               {item.title}
                             </h3>
                           </div>
@@ -574,19 +574,19 @@ function TimelineSection() {
         <FadeInUp delay={1000}>
           <div className="mt-12 text-center">
             <div className="bg-transparent rounded-2xl p-8 border border-red-500/20">
-              <h3 className="text-2xl font-bold text-text-primary mb-4">พร้อมเริ่มต้นแล้วหรือยัง?</h3>
+              <h3 className="text-2xl font-bold mb-4">พร้อมเริ่มต้นแล้วหรือยัง?</h3>
               <p className="text-zinc-400 mb-6">เริ่มต้นเส้นทางสู่การเป็นแชมป์ด้วยการสมัครออนไลน์</p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/signup"
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 px-8 py-3 rounded-lg font-bold text-text-primary transition-all duration-300 transform hover:scale-105"
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 px-8 py-3 rounded-lg font-bold transition-all duration-300 transform hover:scale-105"
                 >
                   <span>เริ่มสมัครเลย</span>
                   <ArrowRightIcon className="w-5 h-5" />
                 </Link>
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-2 border border-red-500 hover:bg-red-500 px-8 py-3 rounded-lg font-bold text-red-400 hover:text-text-primary transition-all duration-300"
+                  className="inline-flex items-center gap-2 border border-red-500 hover:bg-red-500 px-8 py-3 rounded-lg font-bold text-red-400 hover:text-white transition-all duration-300"
                 >
                   <span>สอบถามข้อมูล</span>
                 </Link>
@@ -654,7 +654,7 @@ function TestimonialsSection() {
                       <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border border-zinc-900" />
                     </div>
                     <div>
-                      <p className="font-bold text-text-primary group-hover:text-purple-400 transition-colors duration-300">
+                      <p className="font-bold group-hover:text-purple-400 transition-colors duration-300">
                         {name}
                       </p>
                       <p className="text-zinc-400 text-sm group-hover:text-zinc-300 transition-colors duration-300">
@@ -722,7 +722,7 @@ function CallToActionSection() {
           </div>
         </FadeInUp>
         <FadeInUp delay={400}>
-          <h2 className="mb-6 font-bold text-4xl md:text-5xl lg:text-6xl bg-transparent bg-clip-text text-text-primary">
+          <h2 className="mb-6 font-bold text-4xl md:text-5xl lg:text-6xl bg-transparent bg-clip-text text-white">
             พร้อมที่จะขึ้นสังเวียนหรือยัง?
           </h2>
         </FadeInUp>
@@ -736,7 +736,7 @@ function CallToActionSection() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
               href="/signup"
-              className="group inline-flex items-center gap-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 px-10 py-5 rounded-lg font-bold text-text-primary text-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl shadow-red-500/25"
+              className="group inline-flex items-center gap-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 px-10 py-5 rounded-lg font-bold text-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl shadow-red-500/25"
             >
               <TrophyIcon className="w-6 h-6 group-hover:rotate-12 transition-transform" />
               สมัครเลย
@@ -744,7 +744,7 @@ function CallToActionSection() {
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 border border-red-500 hover:bg-red-500 px-8 py-4 rounded-lg font-bold text-red-400 hover:text-text-primary text-lg transition-all duration-300"
+              className="inline-flex items-center gap-2 border border-red-500 hover:bg-red-500 px-8 py-4 rounded-lg font-bold text-red-400 hover:text-white text-lg transition-all duration-300"
             >
               ติดต่อสอบถาม
             </Link>
@@ -759,7 +759,7 @@ function CallToActionSection() {
 
 export default function FighterProgramPage() {
   return (
-    <div className="bg-transparent text-text-primary">
+    <div className="bg-transparent text-white">
       <HeroSection />
       <BenefitsSection />
       <TiersSection />

@@ -157,7 +157,7 @@ export default function GymEditModal({
           errorMessage={errors.gym_name}
           isRequired
           classNames={{
-            input: 'text-text-primary',
+            input: 'text-white',
             label: 'text-default-400',
           }}
         />
@@ -172,7 +172,7 @@ export default function GymEditModal({
           errorMessage={errors.gym_name_english}
           description={formData.gym_name_english ? `Slug: ${previewSlug(formData.gym_name_english)}` : 'ใช้สำหรับสร้าง URL ของยิม'}
           classNames={{
-            input: 'text-text-primary',
+            input: 'text-white',
             label: 'text-default-400',
           }}
         />
@@ -181,7 +181,7 @@ export default function GymEditModal({
         {gym?.slug && (
           <div className="bg-default-100/50 px-3 py-2 rounded-lg">
             <p className="mb-1 text-default-400 text-xs">Slug ปัจจุบัน:</p>
-            <p className="font-mono text-text-primary text-sm">{gym.slug}</p>
+            <p className="font-mono text-sm">{gym.slug}</p>
           </div>
         )}
 
@@ -195,7 +195,7 @@ export default function GymEditModal({
           errorMessage={errors.contact_name}
           isRequired
           classNames={{
-            input: 'text-text-primary',
+            input: 'text-white',
             label: 'text-default-400',
           }}
         />
@@ -210,7 +210,7 @@ export default function GymEditModal({
           errorMessage={errors.phone}
           isRequired
           classNames={{
-            input: 'text-text-primary',
+            input: 'text-white',
             label: 'text-default-400',
           }}
         />
@@ -226,7 +226,7 @@ export default function GymEditModal({
           errorMessage={errors.email}
           isRequired
           classNames={{
-            input: 'text-text-primary',
+            input: 'text-white',
             label: 'text-default-400',
           }}
         />
@@ -241,7 +241,7 @@ export default function GymEditModal({
           isInvalid={!!errors.website}
           errorMessage={errors.website}
           classNames={{
-            input: 'text-text-primary',
+            input: 'text-white',
             label: 'text-default-400',
           }}
         />
@@ -257,7 +257,7 @@ export default function GymEditModal({
           isRequired
           minRows={2}
           classNames={{
-            input: 'text-text-primary',
+            input: 'text-white',
             label: 'text-default-400',
           }}
         />
@@ -270,7 +270,7 @@ export default function GymEditModal({
           onValueChange={(value) => setFormData(prev => ({ ...prev, gym_details: value }))}
           minRows={3}
           classNames={{
-            input: 'text-text-primary',
+            input: 'text-white',
             label: 'text-default-400',
           }}
         />
@@ -290,7 +290,7 @@ export default function GymEditModal({
                 }
               }}
               classNames={{
-                input: 'text-text-primary',
+                input: 'text-white',
               }}
             />
             <Button
@@ -323,7 +323,7 @@ export default function GymEditModal({
           classNames={{
             trigger: 'bg-default-100',
             label: 'text-default-400',
-            value: 'text-text-primary',
+            value: 'text-white',
           }}
         >
           <SelectItem key="pending">

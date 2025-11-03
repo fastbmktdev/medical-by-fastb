@@ -43,7 +43,7 @@ export default function ProductDetailPage({
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-7xl">
           <Link
             href="/shop"
-            className="inline-flex items-center gap-2 text-zinc-400 hover:text-text-primary transition-colors"
+            className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
           >
             <ArrowLeftIcon className="w-5 h-5" />
             <span>กลับไปหน้าร้านค้า</span>
@@ -68,11 +68,11 @@ export default function ProductDetailPage({
             {/* Title and Category */}
             <div className="mb-6">
               {product.category && (
-                <span className="inline-block bg-brand-primary mb-3 px-3 py-1 rounded-full font-semibold text-text-primary text-sm">
+                <span className="inline-block bg-brand-primary mb-3 px-3 py-1 rounded-full font-semibold text-sm">
                   {product.category}
                 </span>
               )}
-              <h1 className="mb-2 font-bold text-text-primary text-4xl">
+              <h1 className="mb-2 font-bold text-4xl">
                 {productName}
               </h1>
               {product.nameEnglish && product.nameThai && (
@@ -106,7 +106,7 @@ export default function ProductDetailPage({
             {/* Description */}
             {product.description && (
               <div className="mb-6">
-                <h2 className="mb-2 font-semibold text-text-primary text-xl">
+                <h2 className="mb-2 font-semibold text-xl">
                   รายละเอียดสินค้า
                 </h2>
                 <p className="text-zinc-300 leading-relaxed">
@@ -135,14 +135,14 @@ export default function ProductDetailPage({
             {/* Quantity Selector */}
             {!isOutOfStock && (
               <div className="mb-6">
-                <label className="block mb-2 font-semibold text-text-primary">
+                <label className="block mb-2 font-semibold text-white">
                   จำนวน
                 </label>
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => handleQuantityChange(quantity - 1)}
                     disabled={quantity <= 1}
-                    className="bg-zinc-700 hover:bg-zinc-600 disabled:opacity-50 px-4 py-2 rounded-lg font-semibold text-text-primary transition-colors disabled:cursor-not-allowed"
+                    className="bg-zinc-700 hover:bg-zinc-600 disabled:opacity-50 px-4 py-2 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed"
                   >
                     -
                   </button>
@@ -154,18 +154,18 @@ export default function ProductDetailPage({
                     onChange={(e) =>
                       handleQuantityChange(parseInt(e.target.value) || 1)
                     }
-                    className="bg-zinc-950 px-4 py-2 border border-zinc-700 rounded-lg w-20 font-semibold text-text-primary text-center"
+                    className="bg-zinc-950 px-4 py-2 border border-zinc-700 rounded-lg w-20 font-semibold text-center"
                   />
                   <button
                     onClick={() => handleQuantityChange(quantity + 1)}
                     disabled={quantity >= product.stock}
-                    className="bg-zinc-700 hover:bg-zinc-600 disabled:opacity-50 px-4 py-2 rounded-lg font-semibold text-text-primary transition-colors disabled:cursor-not-allowed"
+                    className="bg-zinc-700 hover:bg-zinc-600 disabled:opacity-50 px-4 py-2 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed"
                   >
                     +
                   </button>
                   <div className="ml-auto text-right">
                     <p className="text-zinc-400 text-xs">ราคารวม</p>
-                    <p className="font-bold text-text-primary text-xl">
+                    <p className="font-bold text-xl">
                       ฿{totalPrice.toLocaleString()}
                     </p>
                   </div>
@@ -179,7 +179,7 @@ export default function ProductDetailPage({
               className={`w-full flex items-center justify-center gap-2 px-6 py-4 rounded-lg font-semibold text-lg transition-colors ${
                 isOutOfStock
                   ? "bg-zinc-700 text-zinc-500 cursor-not-allowed"
-                  : "bg-brand-primary hover:bg-red-700 text-text-primary"
+                  : "bg-brand-primary hover:bg-red-700 text-white"
               }`}
              aria-label="Button">
               <ShoppingCartIcon className="w-6 h-6" />
@@ -190,17 +190,17 @@ export default function ProductDetailPage({
             <div className="gap-4 grid grid-cols-1 sm:grid-cols-3 mt-8">
               <div className="bg-zinc-950 p-4 border border-zinc-700 rounded-lg text-center">
                 <TruckIcon className="mx-auto mb-2 w-8 h-8 text-blue-500" />
-                <p className="font-semibold text-text-primary text-sm">จัดส่งฟรี</p>
+                <p className="font-semibold text-sm">จัดส่งฟรี</p>
                 <p className="text-zinc-400 text-xs">สั่งซื้อขั้นต่ำ 1000฿</p>
               </div>
               <div className="bg-zinc-950 p-4 border border-zinc-700 rounded-lg text-center">
                 <ShieldCheckIcon className="mx-auto mb-2 w-8 h-8 text-green-500" />
-                <p className="font-semibold text-text-primary text-sm">รับประกัน</p>
+                <p className="font-semibold text-sm">รับประกัน</p>
                 <p className="text-zinc-400 text-xs">รับประกัน 30 วัน</p>
               </div>
               <div className="bg-zinc-950 p-4 border border-zinc-700 rounded-lg text-center">
                 <CheckCircleIcon className="mx-auto mb-2 w-8 h-8 text-purple-500" />
-                <p className="font-semibold text-text-primary text-sm">ของแท้</p>
+                <p className="font-semibold text-sm">ของแท้</p>
                 <p className="text-zinc-400 text-xs">สินค้าแท้ 100%</p>
               </div>
             </div>
@@ -209,7 +209,7 @@ export default function ProductDetailPage({
 
         {/* Related Products Section */}
         <div className="mt-16">
-          <h2 className="mb-6 font-bold text-text-primary text-2xl">
+          <h2 className="mb-6 font-bold text-2xl">
             สินค้าที่เกี่ยวข้อง
           </h2>
           <div className="gap-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -225,7 +225,7 @@ export default function ProductDetailPage({
                     <div className="text-zinc-600 text-5xl">🥊</div>
                   </div>
                   <div className="p-3">
-                    <p className="mb-1 font-semibold text-text-primary group-hover:text-red-400 text-sm line-clamp-2 transition-colors">
+                    <p className="mb-1 font-semibold group-hover:text-red-400 text-sm line-clamp-2 transition-colors">
                       {relatedProduct.nameThai || relatedProduct.nameEnglish}
                     </p>
                     <p className="font-bold text-red-500">

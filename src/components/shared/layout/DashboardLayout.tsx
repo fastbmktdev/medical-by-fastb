@@ -108,9 +108,9 @@ export default function DashboardLayout({
               variant="light"
               onPress={() => setIsSidebarOpen(true)}
             >
-              <Bars3Icon className="w-6 h-6 text-text-primary" />
+              <Bars3Icon className="w-6 h-6 text-white" />
             </Button>
-            <h1 className="font-bold text-text-primary text-lg">{headerTitle}</h1>
+            <h1 className="font-bold text-lg">{headerTitle}</h1>
             <div className="w-10" /> {/* Spacer for centering */}
           </header>
         )}
@@ -118,7 +118,7 @@ export default function DashboardLayout({
         {/* Page Header */}
         <div className="bg-gradient-to-r from-red-950/20 to-transparent px-4 sm:px-6 lg:px-8 py-8 border-white/5 border-b">
           <div className="mx-auto max-w-7xl">
-            <h1 className="mb-2 font-bold text-text-primary text-3xl md:text-4xl">
+            <h1 className="mb-2 font-bold text-3xl md:text-4xl">
               {headerTitle}
             </h1>
             <p className="text-default-400 text-lg">

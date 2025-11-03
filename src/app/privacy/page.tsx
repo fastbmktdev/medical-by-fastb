@@ -304,7 +304,7 @@ export default function PrivacyPage() {
           {/* Table of Contents */}
           <div className="lg:w-1/4">
             <div className="top-8 sticky bg-zinc-950 p-6 rounded-lg">
-              <h3 className="mb-4 font-semibold text-text-primary text-lg">สารบัญ</h3>
+              <h3 className="mb-4 font-semibold text-lg">สารบัญ</h3>
               <nav className="space-y-2">
                 {privacyData.map((section, index) => (
                   <button
@@ -312,8 +312,8 @@ export default function PrivacyPage() {
                     onClick={() => setActiveSection(index)}
                     className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
                       activeSection === index
-                        ? "bg-brand-primary text-text-primary"
-                        : "text-zinc-300 hover:bg-zinc-700 hover:text-text-primary"
+                        ? "bg-brand-primary text-white"
+                        : "text-zinc-300 hover:bg-zinc-700 hover:text-white"
                     }`}
                   >
                     {section.title}
@@ -326,7 +326,7 @@ export default function PrivacyPage() {
           {/* Content */}
           <div className="lg:w-3/4">
             <div className="bg-zinc-950 p-8 rounded-lg">
-              <h2 className="mb-6 font-bold text-text-primary text-2xl">
+              <h2 className="mb-6 font-bold text-2xl">
                 {privacyData[activeSection].title}
               </h2>
               <div className="prose-invert max-w-none prose">
@@ -341,7 +341,7 @@ export default function PrivacyPage() {
               <button
                 onClick={() => setActiveSection(Math.max(0, activeSection - 1))}
                 disabled={activeSection === 0}
-                className="bg-zinc-700 hover:bg-zinc-600 disabled:bg-zinc-950 px-6 py-2 rounded-lg font-medium text-text-primary disabled:text-zinc-500 transition-colors disabled:cursor-not-allowed"
+                className="bg-zinc-700 hover:bg-zinc-600 disabled:bg-zinc-950 px-6 py-2 rounded-lg font-medium disabled:text-zinc-500 transition-colors disabled:cursor-not-allowed"
               >
                 ← ก่อนหน้า
               </button>
@@ -351,7 +351,7 @@ export default function PrivacyPage() {
               <button
                 onClick={() => setActiveSection(Math.min(privacyData.length - 1, activeSection + 1))}
                 disabled={activeSection === privacyData.length - 1}
-                className="bg-zinc-700 hover:bg-zinc-600 disabled:bg-zinc-950 px-6 py-2 rounded-lg font-medium text-text-primary disabled:text-zinc-500 transition-colors disabled:cursor-not-allowed"
+                className="bg-zinc-700 hover:bg-zinc-600 disabled:bg-zinc-950 px-6 py-2 rounded-lg font-medium disabled:text-zinc-500 transition-colors disabled:cursor-not-allowed"
               >
                 ถัดไป →
               </button>
@@ -361,20 +361,20 @@ export default function PrivacyPage() {
 
         {/* Contact Section */}
         <div className="bg-zinc-950 mt-16 p-8 rounded-lg text-center">
-          <h3 className="mb-4 font-semibold text-text-primary text-xl">มีคำถามเกี่ยวกับความเป็นส่วนตัว?</h3>
+          <h3 className="mb-4 font-semibold text-xl">มีคำถามเกี่ยวกับความเป็นส่วนตัว?</h3>
           <p className="mb-6 text-zinc-400">
             ทีมงานของเราพร้อมให้คำปรึกษาและตอบคำถามเกี่ยวกับการปกป้องข้อมูลส่วนบุคคล
           </p>
           <div className="flex sm:flex-row flex-col justify-center gap-4">
             <a
               href="/contact"
-              className="bg-brand-primary hover:bg-red-700 px-6 py-3 rounded-lg font-semibold text-text-primary transition-colors"
+              className="bg-brand-primary hover:bg-red-700 px-6 py-3 rounded-lg font-semibold transition-colors"
             >
               ติดต่อทีมงาน
             </a>
             <a
               href="mailto:privacy@muaythainext.com"
-              className="bg-zinc-700 hover:bg-zinc-600 px-6 py-3 rounded-lg font-semibold text-text-primary transition-colors"
+              className="bg-zinc-700 hover:bg-zinc-600 px-6 py-3 rounded-lg font-semibold transition-colors"
             >
               ส่งอีเมลถึง DPO
             </a>

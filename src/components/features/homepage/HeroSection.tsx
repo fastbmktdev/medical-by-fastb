@@ -60,7 +60,7 @@ function HeroContent() {
       <p className="mb-4 font-semibold text-red-500 text-sm md:text-base tracking-wider">
         {HERO_HEADINGS.subheading}
       </p>
-      <h1 className="mb-6 font-bold text-text-primary text-4xl md:text-6xl lg:text-7xl leading-18">
+      <h1 className="mb-6 font-bold text-white text-4xl md:text-6xl lg:text-7xl leading-18">
         {HERO_HEADINGS.heading}
       </h1>
       <p className="text-zinc-300 text-xl md:text-2xl">

@@ -67,8 +67,8 @@ const basicColumns: TableColumn<User>[] = [
     render: (value) => (
       <span className={`
         px-2 py-1 rounded-full text-xs font-medium
-        ${value === 'admin' ? 'bg-brand-primary text-text-primary' : ''}
-        ${value === 'partner' ? 'bg-semantic-info text-text-primary' : ''}
+        ${value === 'admin' ? 'bg-brand-primary text-white' : ''}
+        ${value === 'partner' ? 'bg-semantic-info text-white' : ''}
         ${value === 'user' ? 'bg-background-secondary text-text-secondary' : ''}
       `}>
         {value}
@@ -81,9 +81,9 @@ const basicColumns: TableColumn<User>[] = [
     render: (value) => (
       <span className={`
         px-2 py-1 rounded-full text-xs font-medium
-        ${value === 'active' ? 'bg-semantic-success text-text-primary' : ''}
-        ${value === 'inactive' ? 'bg-semantic-error text-text-primary' : ''}
-        ${value === 'pending' ? 'bg-semantic-warning text-text-primary' : ''}
+        ${value === 'active' ? 'bg-semantic-success text-white' : ''}
+        ${value === 'inactive' ? 'bg-semantic-error text-white' : ''}
+        ${value === 'pending' ? 'bg-semantic-warning text-white' : ''}
       `}>
         {value}
       </span>

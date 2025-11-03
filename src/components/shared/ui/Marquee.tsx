@@ -9,12 +9,12 @@ export default function Marquee() {
   ];
 
   return (
-    <div className="relative bg-brand-primary/90 backdrop-blur-sm py-3 w-full overflow-hidden">
+    <div className="relative bg-gradient-to-r from-red-600 to-red-700 py-3 w-full overflow-hidden">
       <div className="flex gap-8 whitespace-nowrap animate-marquee">
         {[...marqueeTexts, ...marqueeTexts].map((text, index) => (
           <span
             key={index}
-            className="inline-block font-bold text-text-primary text-lg tracking-wider"
+            className="inline-block font-bold text-lg tracking-wider"
           >
             {text}
           </span>

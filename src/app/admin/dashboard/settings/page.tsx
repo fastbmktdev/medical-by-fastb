@@ -62,14 +62,14 @@ function AdminSettingsContent() {
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader className="flex items-center gap-3">
             <GlobeAltIcon className="w-6 h-6 text-danger" />
-            <h3 className="font-bold text-text-primary text-xl">ตั้งค่าทั่วไป</h3>
+            <h3 className="font-bold text-xl">ตั้งค่าทั่วไป</h3>
           </CardHeader>
           <CardBody className="gap-4">
             <Input
               label="ชื่อเว็บไซต์"
               placeholder="MUAYTHAI"
               classNames={{
-                input: "text-text-primary",
+                input: "text-white",
                 label: "text-default-400",
               }}
             />
@@ -77,7 +77,7 @@ function AdminSettingsContent() {
               label="คำอธิบายเว็บไซต์"
               placeholder="แพลตฟอร์มจองยิมมวยไทยออนไลน์"
               classNames={{
-                input: "text-text-primary",
+                input: "text-white",
                 label: "text-default-400",
               }}
             />
@@ -86,7 +86,7 @@ function AdminSettingsContent() {
               type="email"
               placeholder="admin@muaythai.com"
               classNames={{
-                input: "text-text-primary",
+                input: "text-white",
                 label: "text-default-400",
               }}
             />
@@ -97,12 +97,12 @@ function AdminSettingsContent() {
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader className="flex items-center gap-3">
             <Cog6ToothIcon className="w-6 h-6 text-danger" />
-            <h3 className="font-bold text-text-primary text-xl">ตั้งค่าระบบ</h3>
+            <h3 className="font-bold text-xl">ตั้งค่าระบบ</h3>
           </CardHeader>
           <CardBody className="gap-4">
             <div className="flex justify-between items-center">
               <div>
-                <p className="mb-1 font-semibold text-text-primary">โหมดปิดปรับปรุง</p>
+                <p className="mb-1 font-semibold text-white">โหมดปิดปรับปรุง</p>
                 <p className="text-default-400 text-sm">ปิดเว็บไซต์ชั่วคราว</p>
               </div>
               <Switch
@@ -113,7 +113,7 @@ function AdminSettingsContent() {
             </div>
             <div className="flex justify-between items-center pt-4 border-white/5 border-t">
               <div>
-                <p className="mb-1 font-semibold text-text-primary">อนุมัติยิมอัตโนมัติ</p>
+                <p className="mb-1 font-semibold text-white">อนุมัติยิมอัตโนมัติ</p>
                 <p className="text-default-400 text-sm">อนุมัติยิมใหม่โดยอัตโนมัติ</p>
               </div>
               <Switch
@@ -129,26 +129,26 @@ function AdminSettingsContent() {
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader className="flex items-center gap-3">
             <BellIcon className="w-6 h-6 text-danger" />
-            <h3 className="font-bold text-text-primary text-xl">การแจ้งเตือน</h3>
+            <h3 className="font-bold text-xl">การแจ้งเตือน</h3>
           </CardHeader>
           <CardBody className="gap-4">
             <div className="flex justify-between items-center">
               <div>
-                <p className="mb-1 font-semibold text-text-primary">แจ้งเตือนผู้ใช้ใหม่</p>
+                <p className="mb-1 font-semibold text-white">แจ้งเตือนผู้ใช้ใหม่</p>
                 <p className="text-default-400 text-sm">แจ้งเตือนเมื่อมีผู้ใช้ใหม่</p>
               </div>
               <Switch color="danger" defaultSelected />
             </div>
             <div className="flex justify-between items-center pt-4 border-white/5 border-t">
               <div>
-                <p className="mb-1 font-semibold text-text-primary">แจ้งเตือนยิมใหม่</p>
+                <p className="mb-1 font-semibold text-white">แจ้งเตือนยิมใหม่</p>
                 <p className="text-default-400 text-sm">แจ้งเตือนเมื่อมียิมใหม่</p>
               </div>
               <Switch color="danger" defaultSelected />
             </div>
             <div className="flex justify-between items-center pt-4 border-white/5 border-t">
               <div>
-                <p className="mb-1 font-semibold text-text-primary">แจ้งเตือนการจอง</p>
+                <p className="mb-1 font-semibold text-white">แจ้งเตือนการจอง</p>
                 <p className="text-default-400 text-sm">แจ้งเตือนเมื่อมีการจอง</p>
               </div>
               <Switch color="danger" defaultSelected />
@@ -160,7 +160,7 @@ function AdminSettingsContent() {
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader className="flex items-center gap-3">
             <CurrencyDollarIcon className="w-6 h-6 text-danger" />
-            <h3 className="font-bold text-text-primary text-xl">การชำระเงิน</h3>
+            <h3 className="font-bold text-xl">การชำระเงิน</h3>
           </CardHeader>
           <CardBody className="gap-4">
             <Input
@@ -168,7 +168,7 @@ function AdminSettingsContent() {
               type="number"
               placeholder="10"
               classNames={{
-                input: "text-text-primary",
+                input: "text-white",
                 label: "text-default-400",
               }}
             />
@@ -177,7 +177,7 @@ function AdminSettingsContent() {
               type="number"
               placeholder="1000"
               classNames={{
-                input: "text-text-primary",
+                input: "text-white",
                 label: "text-default-400",
               }}
             />
@@ -188,12 +188,12 @@ function AdminSettingsContent() {
         <Card className="lg:col-span-2 bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader className="flex items-center gap-3">
             <ShieldCheckIcon className="w-6 h-6 text-danger" />
-            <h3 className="font-bold text-text-primary text-xl">ความปลอดภัย</h3>
+            <h3 className="font-bold text-xl">ความปลอดภัย</h3>
           </CardHeader>
           <CardBody className="gap-4">
             <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4">
               <div>
-                <p className="mb-1 font-semibold text-text-primary">เปลี่ยนรหัสผ่าน</p>
+                <p className="mb-1 font-semibold text-white">เปลี่ยนรหัสผ่าน</p>
                 <p className="text-default-400 text-sm">เปลี่ยนรหัสผ่านผู้ดูแลระบบ</p>
               </div>
               <Button size="sm" color="danger" variant="flat">
@@ -202,7 +202,7 @@ function AdminSettingsContent() {
             </div>
             <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 pt-4 border-white/5 border-t">
               <div>
-                <p className="mb-1 font-semibold text-text-primary">ดูบันทึกกิจกรรม</p>
+                <p className="mb-1 font-semibold text-white">ดูบันทึกกิจกรรม</p>
                 <p className="text-default-400 text-sm">ดูประวัติการใช้งานของผู้ดูแล</p>
               </div>
               <Button size="sm" variant="flat">

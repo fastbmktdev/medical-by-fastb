@@ -42,7 +42,7 @@ export default function AuthLayout({
         <div className="absolute top-6 left-6 z-30">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-text-primary text-sm font-medium transition-all duration-200 hover:scale-105"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:scale-105"
           >
             <ArrowLeftIcon className="w-4 h-4" />
             กลับหน้าหลัก
@@ -53,7 +53,7 @@ export default function AuthLayout({
         <div className="w-full h-full bg-black/50 absolute top-0 left-0 z-0"></div>
         <div className="relative z-20 flex flex-col justify-center items-center text-center p-8">
           <div className="max-w-sm">
-            <h1 className="text-3xl lg:text-4xl font-bold text-text-primary mb-4">
+            <h1 className="text-3xl lg:text-4xl font-bold mb-4">
               {title}
             </h1>
             <p className="text-lg text-zinc-200 mb-6 leading-relaxed">
@@ -68,7 +68,7 @@ export default function AuthLayout({
         <div className="mx-auto w-full max-w-md py-4">
           {/* Mobile Header */}
           <div className="lg:hidden text-center mb-6">
-            <h1 className="text-2xl font-bold text-text-primary mb-2">{title}</h1>
+            <h1 className="text-2xl font-bold mb-2">{title}</h1>
             {subtitle && <p className="text-zinc-400 text-sm">{subtitle}</p>}
           </div>
 

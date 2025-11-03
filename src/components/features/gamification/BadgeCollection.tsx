@@ -72,7 +72,7 @@ export default function BadgeCollection({ badges, showAll = true, className = ''
             onClick={() => setFilter('all')}
             className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
               filter === 'all' 
-                ? 'bg-blue-600 text-text-primary' 
+                ? 'bg-blue-600 text-white' 
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
             }`}
           >
@@ -82,7 +82,7 @@ export default function BadgeCollection({ badges, showAll = true, className = ''
             onClick={() => setFilter('earned')}
             className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
               filter === 'earned' 
-                ? 'bg-green-600 text-text-primary' 
+                ? 'bg-green-600 text-white' 
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
             }`}
           >
@@ -92,7 +92,7 @@ export default function BadgeCollection({ badges, showAll = true, className = ''
             onClick={() => setFilter('available')}
             className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
               filter === 'available' 
-                ? 'bg-orange-600 text-text-primary' 
+                ? 'bg-orange-600 text-white' 
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
             }`}
           >
@@ -168,7 +168,7 @@ export default function BadgeCollection({ badges, showAll = true, className = ''
               {/* Earned Overlay */}
               {isEarned && (
                 <div className="absolute top-2 right-2">
-                  <div className="bg-green-500 text-text-primary rounded-full p-1">
+                  <div className="bg-green-500 rounded-full p-1">
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>

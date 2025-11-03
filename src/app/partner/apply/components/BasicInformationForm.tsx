@@ -18,7 +18,7 @@ interface BasicInformationFormProps {
 export const BasicInformationForm = ({ formData, errors, onInputChange }: BasicInformationFormProps) => {
   return (
     <div className="bg-zinc-950 shadow-xl p-6 md:p-8 rounded-xl">
-      <h2 className="flex items-center gap-3 mb-6 font-semibold text-text-primary text-2xl">
+      <h2 className="flex items-center gap-3 mb-6 font-semibold text-white text-2xl">
         <BuildingStorefrontIcon className="w-7 h-7 text-red-500" />
         ข้อมูลพื้นฐาน
       </h2>
@@ -41,7 +41,7 @@ export const BasicInformationForm = ({ formData, errors, onInputChange }: BasicI
               onChange={onInputChange}
               className={`w-full bg-zinc-700 border ${
                 errors.gymName ? "border-red-500" : "border-zinc-600"
-              } rounded-lg px-4 py-3 text-text-primary placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent font-mono`}
+              } rounded-lg px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent font-mono`}
               placeholder="เช่น: ยิมมวยไทยเสือ"
             />
           </div>
@@ -70,7 +70,7 @@ export const BasicInformationForm = ({ formData, errors, onInputChange }: BasicI
               onChange={onInputChange}
               className={`w-full bg-zinc-700 border ${
                 errors.gymNameEnglish ? "border-red-500" : "border-zinc-600"
-              } rounded-lg px-4 py-3 text-text-primary placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent font-mono`}
+              } rounded-lg px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent font-mono`}
               placeholder="e.g., Tiger Muay Thai Gym"
             />
           </div>
@@ -103,7 +103,7 @@ export const BasicInformationForm = ({ formData, errors, onInputChange }: BasicI
               onChange={onInputChange}
               className={`w-full bg-zinc-700 border ${
                 errors.contactName ? "border-red-500" : "border-zinc-600"
-              } rounded-lg px-4 py-3 pl-10 text-text-primary placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent`}
+              } rounded-lg px-4 py-3 pl-10 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent`}
               placeholder="เช่น: สมชาย ใจดี"
             />
           </div>
@@ -134,7 +134,7 @@ export const BasicInformationForm = ({ formData, errors, onInputChange }: BasicI
                 onChange={onInputChange}
                 className={`w-full bg-zinc-700 border ${
                   errors.phone ? "border-red-500" : "border-zinc-600"
-                } rounded-lg px-4 py-3 pl-10 text-text-primary placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent font-mono`}
+                } rounded-lg px-4 py-3 pl-10 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent font-mono`}
                 placeholder="0812345678"
               />
             </div>
@@ -163,7 +163,7 @@ export const BasicInformationForm = ({ formData, errors, onInputChange }: BasicI
                 onChange={onInputChange}
                 className={`w-full bg-zinc-700 border ${
                   errors.email ? "border-red-500" : "border-zinc-600"
-                } rounded-lg px-4 py-3 pl-10 text-text-primary placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent font-mono`}
+                } rounded-lg px-4 py-3 pl-10 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent font-mono`}
                 placeholder="contact@gym.com"
               />
             </div>
@@ -193,7 +193,7 @@ export const BasicInformationForm = ({ formData, errors, onInputChange }: BasicI
               name="website"
               value={formData.website}
               onChange={onInputChange}
-              className="bg-zinc-700 px-4 py-3 pl-10 border border-zinc-600 focus:border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full font-mono text-text-primary placeholder-zinc-500"
+              className="bg-zinc-700 px-4 py-3 pl-10 border border-zinc-600 focus:border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full font-mono text-white placeholder-zinc-500"
               placeholder="https://www.example.com หรือ @facebook_page"
             />
           </div>
@@ -217,7 +217,7 @@ export const BasicInformationForm = ({ formData, errors, onInputChange }: BasicI
               rows={3}
               className={`w-full bg-zinc-700 border ${
                 errors.address ? "border-red-500" : "border-zinc-600"
-              } rounded-lg px-4 py-3 pl-10 text-text-primary placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none`}
+              } rounded-lg px-4 py-3 pl-10 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none`}
               placeholder="เลขที่, ซอก, ถนน, แขวง/ตำบล, เขต/อำเภอ, จังหวัด, รหัสไปรษณีย์"
             />
           </div>

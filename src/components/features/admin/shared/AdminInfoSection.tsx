@@ -17,7 +17,7 @@ export default function AdminInfoSection({
 }: AdminInfoSectionProps) {
   return (
     <div className={className}>
-      <h4 className="mb-3 font-semibold text-text-primary">{title}</h4>
+      <h4 className="mb-3 font-semibold text-white">{title}</h4>
       {children}
     </div>
   );
@@ -51,7 +51,7 @@ export function AdminInfoItem({
       {value}
     </a>
   ) : (
-    <span className="text-text-primary">{value}</span>
+    <span className="text-white">{value}</span>
   );
 
   return (
@@ -90,7 +90,7 @@ export function AdminInfoItemStart({
       </div>
       <div className="flex-1">
         <p className="text-default-400 text-xs">{label}</p>
-        <div className="text-text-primary">{value}</div>
+        <div className="text-white">{value}</div>
       </div>
     </div>
   );

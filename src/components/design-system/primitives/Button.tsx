@@ -16,22 +16,22 @@ const buttonVariants = cva(
     variants: {
       variant: {
         // Primary button - main action buttons
-        primary: "bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-text-primary shadow-lg hover:shadow-xl hover:shadow-red-500/25 focus:ring-red-500/50",
+        primary: "bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 shadow-lg hover:shadow-xl hover:shadow-red-500/25 focus:ring-red-500/50",
         
         // Secondary button - secondary actions
         secondary: "bg-zinc-700 hover:bg-zinc-600 text-zinc-300 border border-zinc-600 hover:border-zinc-500 focus:ring-zinc-500/50",
         
         // Outline button - alternative actions
-        outline: "border border-red-500 text-red-500 hover:bg-red-500 hover:text-text-primary focus:ring-red-500/50",
+        outline: "border border-red-500 text-red-500 hover:bg-red-500 hover:text-white focus:ring-red-500/50",
         
         // Ghost button - subtle actions
         ghost: "text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800/50 focus:ring-zinc-500/50",
         
         // Danger button - destructive actions
-        danger: "bg-brand-primary hover:bg-red-700 text-text-primary shadow-lg hover:shadow-xl hover:shadow-red-500/25 focus:ring-red-500/50",
+        danger: "bg-brand-primary hover:bg-red-700 text-white shadow-lg hover:shadow-xl hover:shadow-red-500/25 focus:ring-red-500/50",
         
         // Success button - positive actions
-        success: "bg-green-600 hover:bg-green-700 text-text-primary shadow-lg hover:shadow-xl hover:shadow-green-500/25 focus:ring-green-500/50",
+        success: "bg-green-600 hover:bg-green-700 text-white shadow-lg hover:shadow-xl hover:shadow-green-500/25 focus:ring-green-500/50",
         
         // Link button - navigation actions
         link: "text-red-500 hover:text-red-400 underline-offset-4 hover:underline p-0 h-auto focus:ring-red-500/50",

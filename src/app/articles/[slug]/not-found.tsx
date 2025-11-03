@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function ArticleNotFound() {
   return (
-    <div className="flex flex-col justify-center items-center bg-zinc-950 px-4 min-h-screen text-text-primary">
+    <div className="flex flex-col justify-center items-center bg-zinc-950 px-4 min-h-screen text-white">
       <h1 className="mb-4 font-bold text-red-600 text-6xl">404</h1>
       <h2 className="mb-2 font-semibold text-2xl">ไม่พบบทความที่คุณกำลังค้นหา</h2>
       <p className="mb-8 text-zinc-400 text-center">

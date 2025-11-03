@@ -138,7 +138,7 @@ function AdminGymsContent() {
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardBody>
             <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 mb-6">
-              <h2 className="font-bold text-text-primary text-xl">
+              <h2 className="font-bold text-xl">
                 รายชื่อยิม ({filteredGyms.length})
               </h2>
               <Input
@@ -148,7 +148,7 @@ function AdminGymsContent() {
                 startContent={<MagnifyingGlassIcon className="w-4 h-4 text-default-400" />}
                 className="max-w-xs"
                 classNames={{
-                  input: 'text-text-primary',
+                  input: 'text-white',
                 }}
               />
             </div>
@@ -183,7 +183,7 @@ function AdminGymsContent() {
               <TableBody emptyContent="ไม่พบข้อมูลยิม">
                 {filteredGyms.map((gym) => (
                   <TableRow key={gym.id}>
-                    <TableCell className="font-semibold text-text-primary">{gym.gym_name}</TableCell>
+                    <TableCell className="font-semibold text-white">{gym.gym_name}</TableCell>
                     <TableCell className="text-default-400">{gym.contact_name}</TableCell>
                     <TableCell className="font-mono text-default-400 text-sm">{gym.phone}</TableCell>
                     <TableCell className="text-default-400">{gym.location}</TableCell>

@@ -4,6 +4,7 @@ import "./globals.css";
 import { LayoutWrapper, ErrorBoundary } from "@/components/shared";
 import { Providers } from "./providers";
 import { FixedBackground } from "@/components/shared/ui";
+import AssetLoader from "@/components/shared/ui/AssetLoader";
 import GamificationNotification from "@/components/features/gamification/GamificationNotification";
 
 const baiJamjuree = Bai_Jamjuree({
@@ -25,14 +26,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="th" className={`${baiJamjuree.variable} antialiased`}>
-      <body className="bg-zinc-950 text-foreground">
-        <FixedBackground />
-        <Providers>
-          <LayoutWrapper>
-            <ErrorBoundary>{children}</ErrorBoundary>
-            <GamificationNotification />
-          </LayoutWrapper>
-        </Providers>
+      <body className="bg-zinc-950 text-white">
+        <AssetLoader>
+          <FixedBackground />
+          <Providers>
+            <LayoutWrapper>
+              <ErrorBoundary>{children}</ErrorBoundary>
+              <GamificationNotification />
+            </LayoutWrapper>
+          </Providers>
+        </AssetLoader>
       </body>
     </html>
   );

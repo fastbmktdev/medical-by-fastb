@@ -35,7 +35,7 @@ export function FeatureSection({
         {(title || description) && (
           <div className="text-center mb-12 max-w-3xl mx-auto">
             {title && (
-              <h2 className="text-3xl font-bold text-text-primary mb-4">
+              <h2 className="text-3xl font-bold mb-4">
                 {title}
               </h2>
             )}
@@ -74,7 +74,7 @@ export function FeatureSection({
 
               {/* Content */}
               <div className={layout === 'list' ? 'flex-1' : ''}>
-                <h3 className="text-xl font-semibold text-text-primary mb-3">
+                <h3 className="text-xl font-semibold mb-3">
                   {feature.title}
                 </h3>
                 <p className="text-zinc-400 leading-relaxed">

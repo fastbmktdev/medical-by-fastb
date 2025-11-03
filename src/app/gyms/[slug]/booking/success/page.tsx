@@ -121,9 +121,9 @@ function BookingSuccessContent() {
       <div className="flex justify-center items-center bg-zinc-950 p-4 min-h-screen">
         <div className="bg-zinc-950 shadow-xl p-8 border border-zinc-700 rounded-xl w-full max-w-md text-center">
           <div className="inline-flex justify-center items-center bg-brand-primary mb-4 rounded-full w-16 h-16">
-            <ExclamationTriangleIcon className="w-8 h-8 text-text-primary" />
+            <ExclamationTriangleIcon className="w-8 h-8 text-white" />
           </div>
-          <h1 className="mb-2 font-bold text-text-primary text-2xl">
+          <h1 className="mb-2 font-bold text-2xl">
             ไม่พบข้อมูล
           </h1>
           <p className="mb-6 text-zinc-400">
@@ -131,7 +131,7 @@ function BookingSuccessContent() {
           </p>
           <Link
             href="/gyms"
-            className="inline-block bg-brand-primary hover:bg-red-700 px-6 py-3 rounded-lg font-semibold text-text-primary transition-colors"
+            className="inline-block bg-brand-primary hover:bg-red-700 px-6 py-3 rounded-lg font-semibold transition-colors"
           >
             กลับไปหน้าค่ายมวย
           </Link>
@@ -146,9 +146,9 @@ function BookingSuccessContent() {
         {/* Success Message */}
         <div className="mb-8 text-center">
           <div className="inline-flex justify-center items-center bg-green-600 mb-4 rounded-full w-20 h-20">
-            <CheckCircleIcon className="w-12 h-12 text-text-primary" />
+            <CheckCircleIcon className="w-12 h-12 text-white" />
           </div>
-          <h1 className="mb-2 font-bold text-text-primary text-3xl md:text-4xl">
+          <h1 className="mb-2 font-bold text-3xl md:text-4xl">
             จองสำเร็จ!
           </h1>
           <p className="text-zinc-400 text-lg">
@@ -162,7 +162,7 @@ function BookingSuccessContent() {
             <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 mb-4">
               <div>
                 <p className="mb-1 text-zinc-400 text-sm">หมายเลขการจอง</p>
-                <p className="font-mono font-bold text-text-primary text-2xl">
+                <p className="font-mono font-bold text-2xl">
                   {booking.booking_number}
                 </p>
               </div>
@@ -181,7 +181,7 @@ function BookingSuccessContent() {
               <MapPinIcon className="flex-shrink-0 mt-1 w-5 h-5 text-red-500" />
               <div>
                 <p className="mb-1 text-zinc-400 text-sm">ค่ายมวย</p>
-                <p className="font-semibold text-text-primary text-xl">{gymName}</p>
+                <p className="font-semibold text-xl">{gymName}</p>
               </div>
             </div>
           </div>
@@ -190,7 +190,7 @@ function BookingSuccessContent() {
           <div className="gap-6 grid sm:grid-cols-2 mb-6">
             <div className="bg-zinc-700/50 p-4 rounded-lg">
               <p className="mb-2 text-zinc-400 text-xs uppercase tracking-wide">แพ็คเกจ</p>
-              <p className="font-semibold text-text-primary">{booking.package_name}</p>
+              <p className="font-semibold text-white">{booking.package_name}</p>
               {booking.duration_months && (
                 <p className="mt-1 text-zinc-400 text-sm">
                   ระยะเวลา {booking.duration_months} เดือน
@@ -212,7 +212,7 @@ function BookingSuccessContent() {
               <CalendarIcon className="flex-shrink-0 mt-1 w-5 h-5 text-zinc-400" />
               <div>
                 <p className="mb-1 text-zinc-400 text-xs uppercase tracking-wide">วันเริ่มต้น</p>
-                <p className="font-semibold text-text-primary">
+                <p className="font-semibold text-white">
                   {new Date(booking.start_date).toLocaleDateString('th-TH', {
                     year: 'numeric',
                     month: 'long',
@@ -227,7 +227,7 @@ function BookingSuccessContent() {
                 <CalendarIcon className="flex-shrink-0 mt-1 w-5 h-5 text-zinc-400" />
                 <div>
                   <p className="mb-1 text-zinc-400 text-xs uppercase tracking-wide">วันสิ้นสุด</p>
-                  <p className="font-semibold text-text-primary">
+                  <p className="font-semibold text-white">
                     {new Date(booking.end_date).toLocaleDateString('th-TH', {
                       year: 'numeric',
                       month: 'long',
@@ -241,26 +241,26 @@ function BookingSuccessContent() {
 
           {/* Contact Info */}
           <div className="pt-6 border-zinc-700 border-t">
-            <p className="mb-3 font-semibold text-text-primary">ข้อมูลผู้จอง</p>
+            <p className="mb-3 font-semibold text-white">ข้อมูลผู้จอง</p>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-zinc-400">ชื่อ:</span>
-                <span className="font-medium text-text-primary">{booking.customer_name}</span>
+                <span className="font-medium text-white">{booking.customer_name}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-400">อีเมล:</span>
-                <span className="font-medium text-text-primary">{booking.customer_email}</span>
+                <span className="font-medium text-white">{booking.customer_email}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-400">เบอร์โทร:</span>
-                <span className="font-medium text-text-primary">{booking.customer_phone}</span>
+                <span className="font-medium text-white">{booking.customer_phone}</span>
               </div>
             </div>
           </div>
 
           {booking.special_requests && (
             <div className="mt-6 pt-6 border-zinc-700 border-t">
-              <p className="mb-2 font-semibold text-text-primary">คำขอพิเศษ</p>
+              <p className="mb-2 font-semibold text-white">คำขอพิเศษ</p>
               <p className="text-zinc-300 text-sm">{booking.special_requests}</p>
             </div>
           )}
@@ -279,8 +279,8 @@ function BookingSuccessContent() {
                 กรุณาชำระเงินภายใน 24 ชั่วโมง เพื่อยืนยันการจอง
               </p>
               <div className="space-y-2 text-zinc-300 text-sm">
-                <p>• หมายเลขการจอง: <span className="font-mono font-semibold text-text-primary">{booking.booking_number}</span></p>
-                <p>• จำนวนเงิน: <span className="font-semibold text-text-primary">฿{booking.price_paid.toLocaleString()}</span></p>
+                <p>• หมายเลขการจอง: <span className="font-mono font-semibold text-white">{booking.booking_number}</span></p>
+                <p>• จำนวนเงิน: <span className="font-semibold text-white">฿{booking.price_paid.toLocaleString()}</span></p>
               </div>
             </div>
           </div>
@@ -290,14 +290,14 @@ function BookingSuccessContent() {
         <div className="gap-4 grid sm:grid-cols-2">
           <Link
             href="/dashboard/bookings"
-            className="flex justify-center items-center gap-2 bg-brand-primary hover:bg-red-700 px-6 py-4 rounded-lg font-semibold text-text-primary transition-colors"
+            className="flex justify-center items-center gap-2 bg-brand-primary hover:bg-red-700 px-6 py-4 rounded-lg font-semibold transition-colors"
           >
             ดูรายการจองของฉัน
             <ArrowRightIcon className="w-5 h-5" />
           </Link>
           <Link
             href="/"
-            className="flex justify-center items-center gap-2 bg-zinc-700 hover:bg-zinc-600 px-6 py-4 rounded-lg font-semibold text-text-primary transition-colors"
+            className="flex justify-center items-center gap-2 bg-zinc-700 hover:bg-zinc-600 px-6 py-4 rounded-lg font-semibold transition-colors"
           >
             <HomeIcon className="w-5 h-5" />
             กลับหน้าหลัก

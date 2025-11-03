@@ -8,7 +8,7 @@ import {
   CheckCircleIcon,
   ArrowLeftIcon,
 } from "@heroicons/react/24/outline";
-import AuthLayout from "@/components/shared/layout/AuthLayout";
+import { AuthLayout } from "@/components/compositions/layouts";
 import { Button } from "@/components/shared";
 
 /**
@@ -156,7 +156,7 @@ export default function ResetPasswordPage() {
           <p className="mb-2 text-zinc-300 text-lg">
             เราได้ส่งลิงก์รีเซ็ตรหัสผ่านไปยัง
           </p>
-          <p className="mb-6 font-mono text-text-primary">{formData.email}</p>
+          <p className="mb-6 font-mono text-white">{formData.email}</p>
           <div className="bg-blue-500/20 mb-6 p-4 border border-blue-500 rounded-lg">
             <p className="text-blue-400 text-sm">
               💡 กรุณาตรวจสอบอีเมลและคลิกลิงก์เพื่อรีเซ็ตรหัสผ่าน
@@ -218,7 +218,7 @@ export default function ResetPasswordPage() {
               onChange={handleInputChange}
                   className={`w-full bg-zinc-700 border ${
                     errors.email ? "border-red-500" : "border-zinc-600"
-                  } rounded-lg px-4 py-2.5 text-text-primary placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent font-mono text-sm`}
+                  } rounded-lg px-4 py-2.5 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent font-mono text-sm`}
               placeholder="your@email.com"
               autoComplete="email"
             />

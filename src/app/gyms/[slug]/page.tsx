@@ -23,7 +23,7 @@ const Breadcrumb = memo(function Breadcrumb({ gymName }: { gymName: string }) {
     <nav className="flex items-center gap-2 mb-3 text-sm">
       <Link
         href="/"
-        className="flex items-center gap-1 text-zinc-400 hover:text-text-primary transition-colors"
+        className="flex items-center gap-1 text-zinc-400 hover:text-white transition-colors"
       >
         <HomeIcon className="w-4 h-4" />
         <span>หน้าแรก</span>
@@ -31,12 +31,12 @@ const Breadcrumb = memo(function Breadcrumb({ gymName }: { gymName: string }) {
       <ChevronRightIcon className="w-4 h-4 text-zinc-600" />
       <Link
         href="/gyms"
-        className="text-zinc-400 hover:text-text-primary transition-colors"
+        className="text-zinc-400 hover:text-white transition-colors"
       >
         ค่ายมวย
       </Link>
       <ChevronRightIcon className="w-4 h-4 text-zinc-600" />
-      <span className="font-medium text-text-primary">{gymName}</span>
+      <span className="font-medium text-white">{gymName}</span>
     </nav>
   );
 });
@@ -45,7 +45,7 @@ const BackButton = memo(function BackButton() {
   return (
     <Link
       href="/gyms"
-      className="inline-flex items-center gap-2 text-zinc-400 hover:text-text-primary transition-colors"
+      className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
     >
       <ArrowLeftIcon className="w-5 h-5" />
       <span>กลับไปหน้ารายการค่ายมวย</span>
@@ -58,14 +58,14 @@ const GymHeader = memo(function GymHeader({ gym }: { gym: Gym }) {
     <div>
       <div className="flex justify-start items-end gap-3 mb-4">
         <div className="flex sm:flex-row flex-col sm:items-center sm:gap-4">
-          <h1 className="font-bold text-text-primary text-4xl sm:text-5xl tracking-tight">
+          <h1 className="font-bold text-4xl sm:text-5xl tracking-tight">
             {gym.gym_name}
           </h1>
         </div>
         <p className="mt-2 text-zinc-300 text-lg">{gym.gym_name_english}</p>
       </div>
       {gym.gym_type && (
-        <span className="inline-block bg-brand-primary px-3 py-1 rounded-full font-semibold text-text-primary text-sm">
+        <span className="inline-block bg-brand-primary px-3 py-1 rounded-full font-semibold text-sm">
           {gym.gym_type}
         </span>
       )}
@@ -87,7 +87,7 @@ const GalleryPlaceholder = memo(function GalleryPlaceholder() {
 const AboutSection = memo(function AboutSection({ details }: { details?: string | null }) {
   return (
     <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
-      <h2 className="mb-4 font-bold text-text-primary text-2xl">เกี่ยวกับค่ายมวย</h2>
+      <h2 className="mb-4 font-bold text-2xl">เกี่ยวกับค่ายมวย</h2>
       <p className="text-zinc-300 leading-relaxed">
         {details || "ไม่มีรายละเอียดเพิ่มเติม"}
       </p>
@@ -104,7 +104,7 @@ const LocationSection = memo(function LocationSection({
 }) {
   return (
     <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
-      <h2 className="mb-4 font-bold text-text-primary text-2xl">ที่อยู่และแผนที่</h2>
+      <h2 className="mb-4 font-bold text-2xl">ที่อยู่และแผนที่</h2>
       <div className="flex items-start gap-3 mb-4">
         <MapPinIcon className="flex-shrink-0 w-6 h-6 text-red-500" />
         <p className="text-zinc-300">{location || "ไม่มีข้อมูลที่อยู่"}</p>
@@ -114,7 +114,7 @@ const LocationSection = memo(function LocationSection({
           href={mapUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 bg-zinc-700 hover:bg-zinc-600 px-4 py-2 rounded-lg text-text-primary transition-colors"
+          className="inline-flex items-center gap-2 bg-zinc-700 hover:bg-zinc-600 px-4 py-2 rounded-lg transition-colors"
         >
           <GlobeAltIcon className="w-5 h-5" />
           <span>เปิดใน Google Maps</span>
@@ -128,7 +128,7 @@ const ServicesSection = memo(function ServicesSection({ services }: { services: 
   if (!services?.length) return null;
   return (
     <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
-      <h2 className="mb-4 font-bold text-text-primary text-2xl">บริการ</h2>
+      <h2 className="mb-4 font-bold text-2xl">บริการ</h2>
       <div className="flex flex-wrap gap-2">
         {services.map((service, idx) => (
           <span
@@ -146,7 +146,7 @@ const ServicesSection = memo(function ServicesSection({ services }: { services: 
 const ContactInfo = memo(function ContactInfo({ gym }: { gym: Gym }) {
   return (
     <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
-      <h3 className="mb-4 font-bold text-text-primary text-xl">ข้อมูลติดต่อ</h3>
+      <h3 className="mb-4 font-bold text-xl">ข้อมูลติดต่อ</h3>
       <div className="space-y-4">
         {gym.phone && (
           <div className="flex items-start gap-3">
@@ -155,7 +155,7 @@ const ContactInfo = memo(function ContactInfo({ gym }: { gym: Gym }) {
               <p className="mb-1 text-zinc-400 text-xs">โทรศัพท์</p>
               <a
                 href={`tel:${gym.phone}`}
-                className="text-zinc-300 hover:text-text-primary transition-colors"
+                className="text-zinc-300 hover:text-white transition-colors"
               >
                 {gym.phone}
               </a>
@@ -169,7 +169,7 @@ const ContactInfo = memo(function ContactInfo({ gym }: { gym: Gym }) {
               <p className="mb-1 text-zinc-400 text-xs">อีเมล</p>
               <a
                 href={`mailto:${gym.email}`}
-                className="text-zinc-300 hover:text-text-primary break-all transition-colors"
+                className="text-zinc-300 hover:text-white break-all transition-colors"
               >
                 {gym.email}
               </a>
@@ -185,7 +185,7 @@ const ContactInfo = memo(function ContactInfo({ gym }: { gym: Gym }) {
                 href={gym.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-zinc-300 hover:text-text-primary break-all transition-colors"
+                className="text-zinc-300 hover:text-white break-all transition-colors"
               >
                 {gym.website}
               </a>
@@ -215,7 +215,7 @@ const ContactInfo = memo(function ContactInfo({ gym }: { gym: Gym }) {
 const QuickInfo = memo(function QuickInfo({ gym }: { gym: Gym }) {
   return (
     <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
-      <h3 className="mb-4 font-bold text-text-primary text-xl">ข้อมูลทั่วไป</h3>
+      <h3 className="mb-4 font-bold text-xl">ข้อมูลทั่วไป</h3>
       <div className="space-y-4">
         <div className="flex items-center gap-3">
           <ClockIcon className="w-5 h-5 text-blue-500" />
@@ -239,7 +239,7 @@ const QuickInfo = memo(function QuickInfo({ gym }: { gym: Gym }) {
 const CTABooking = memo(function CTABooking({ gymSlug }: { gymSlug: string }) {
   return (
     <div className="bg-gradient-to-r from-red-600 to-red-700 p-6 rounded-lg text-center">
-      <h3 className="mb-2 font-bold text-text-primary text-xl">
+      <h3 className="mb-2 font-bold text-xl">
         ต้องการใช้บริการค่ายมวย
       </h3>
       <Link

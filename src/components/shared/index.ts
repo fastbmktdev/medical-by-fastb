@@ -26,22 +26,16 @@ export { EventCard } from './cards/EventCard';
 export { ProductCard } from './cards/ProductCard';
 
 // === LAYOUT COMPONENTS ===
-// Core Layout Components
-export { default as DashboardLayout } from './layout/DashboardLayout';
-export { default as LayoutWrapper } from './layout/LayoutWrapper';
+// Application Layouts
+export { DashboardLayout, AuthLayout, LayoutWrapper, Header, Footer, SidebarContent } from '@/components/compositions/layouts';
 
-// Responsive Layout Components (design system)
-export { Container } from '@/components/design-system/primitives/Container';
-export { Grid } from './layout/Grid';
-export { Stack } from './layout/Stack';
-export { Flex } from './layout/Flex';
+// Primitive Layout Components (from design system)
+export { Container, Flex, Grid, Stack } from '@/components/design-system/primitives';
+export type { ContainerProps, FlexProps, GridProps, StackProps } from '@/components/design-system/primitives';
 
-// Legacy Layout Components (less frequently used)
+// Utility Layout Components
 export { default as CenteredLoading } from './layout/CenteredLoading';
 export { default as EmptyState } from './layout/EmptyState';
-export { default as Footer } from './layout/Footer';
-export { default as Header } from './layout/Header';
-export { default as SidebarContent } from './layout/SidebarContent';
 
 // === FEEDBACK COMPONENTS ===
 export { Loading } from '@/components/design-system/primitives/Loading';
@@ -56,7 +50,7 @@ export type { BaseInputProps } from '@/components/design-system/primitives/BaseI
 export type { CardProps } from '@/components/design-system/primitives/Card';
 
 // Layout Types
-export type { MenuItem } from './layout/DashboardLayout';
+export type { MenuItem, AuthLayoutProps } from '@/components/compositions/layouts';
 
 // Re-export commonly used types from design system
 export type {

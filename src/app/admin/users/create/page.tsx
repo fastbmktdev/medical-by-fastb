@@ -10,7 +10,7 @@ import {
   EyeIcon,
   EyeSlashIcon
 } from "@heroicons/react/24/outline";
-import DashboardLayout from "@/components/shared/layout/DashboardLayout";
+import { DashboardLayout } from "@/components/compositions/layouts";
 import { adminMenuItems } from "@/components/features/admin/adminMenuItems";
 
 interface UserFormData {
@@ -236,7 +236,7 @@ export default function CreateUserPage() {
               onChange={handleInputChange}
               className={`w-full bg-zinc-800/50 backdrop-blur-sm border ${
                 errors.email ? "border-red-500/70 shadow-red-500/20" : "border-zinc-600/50 hover:border-zinc-500/70"
-              } rounded-xl px-4 py-3 text-text-primary placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 transition-all duration-200`}
+              } rounded-xl px-4 py-3 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 transition-all duration-200`}
               placeholder="user@example.com"
               required
             />
@@ -275,7 +275,7 @@ export default function CreateUserPage() {
                 disabled={autoGeneratePassword}
                 className={`w-full bg-zinc-800/50 backdrop-blur-sm border ${
                   errors.password ? "border-red-500/70 shadow-red-500/20" : "border-zinc-600/50 hover:border-zinc-500/70"
-                } rounded-xl px-4 py-3 pr-12 text-text-primary placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 transition-all duration-200 ${
+                } rounded-xl px-4 py-3 pr-12 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 transition-all duration-200 ${
                   autoGeneratePassword ? "opacity-50 cursor-not-allowed" : ""
                 }`}
                 placeholder={autoGeneratePassword ? "จะสร้างรหัสผ่านอัตโนมัติ" : "••••••••"}
@@ -321,7 +321,7 @@ export default function CreateUserPage() {
               onChange={handleInputChange}
               className={`w-full bg-zinc-800/50 backdrop-blur-sm border ${
                 errors.full_name ? "border-red-500/70 shadow-red-500/20" : "border-zinc-600/50 hover:border-zinc-500/70"
-              } rounded-xl px-4 py-3 text-text-primary placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 transition-all duration-200`}
+              } rounded-xl px-4 py-3 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 transition-all duration-200`}
               placeholder="ชื่อ-นามสกุล"
               required
             />
@@ -346,7 +346,7 @@ export default function CreateUserPage() {
               onChange={handleInputChange}
               className={`w-full bg-zinc-800/50 backdrop-blur-sm border ${
                 errors.username ? "border-red-500/70 shadow-red-500/20" : "border-zinc-600/50 hover:border-zinc-500/70"
-              } rounded-xl px-4 py-3 text-text-primary placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 transition-all duration-200`}
+              } rounded-xl px-4 py-3 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 transition-all duration-200`}
               placeholder="username (ไม่บังคับ)"
             />
             {errors.username && (
@@ -370,7 +370,7 @@ export default function CreateUserPage() {
               onChange={handleInputChange}
               className={`w-full bg-zinc-800/50 backdrop-blur-sm border ${
                 errors.phone ? "border-red-500/70 shadow-red-500/20" : "border-zinc-600/50 hover:border-zinc-500/70"
-              } rounded-xl px-4 py-3 text-text-primary placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 transition-all duration-200`}
+              } rounded-xl px-4 py-3 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 transition-all duration-200`}
               placeholder="+66812345678"
             />
             {errors.phone && (
@@ -391,7 +391,7 @@ export default function CreateUserPage() {
               name="role"
               value={formData.role}
               onChange={handleInputChange}
-              className="w-full bg-zinc-800/50 backdrop-blur-sm border border-zinc-600/50 hover:border-zinc-500/70 rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 transition-all duration-200"
+              className="w-full bg-zinc-800/50 backdrop-blur-sm border border-zinc-600/50 hover:border-zinc-500/70 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 transition-all duration-200"
               required
             >
               <option value="authenticated">ผู้ใช้ทั่วไป</option>
@@ -411,7 +411,7 @@ export default function CreateUserPage() {
               name="avatar_url"
               value={formData.avatar_url}
               onChange={handleInputChange}
-              className="w-full bg-zinc-800/50 backdrop-blur-sm border border-zinc-600/50 hover:border-zinc-500/70 rounded-xl px-4 py-3 text-text-primary placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 transition-all duration-200"
+              className="w-full bg-zinc-800/50 backdrop-blur-sm border border-zinc-600/50 hover:border-zinc-500/70 rounded-xl px-4 py-3 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 transition-all duration-200"
               placeholder="https://example.com/avatar.jpg"
             />
           </div>

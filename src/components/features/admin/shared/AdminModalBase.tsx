@@ -59,7 +59,7 @@ export default function AdminModalBase({
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              <h3 className="text-text-primary text-xl">{title}</h3>
+              <h3 className=" text-xl">{title}</h3>
               {subtitle && (
                 <p className="text-default-400 text-sm">{subtitle}</p>
               )}

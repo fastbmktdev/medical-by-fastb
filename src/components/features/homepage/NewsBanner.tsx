@@ -87,11 +87,11 @@ function NewsSlide({ item, isActive }: { item: typeof NEWS_ITEMS[0]; isActive: b
       {/* Content */}
       <div className="relative z-10 flex flex-col justify-end h-full p-6">
         {item.isNew && (
-          <div className="absolute top-4 right-4 bg-brand-primary text-text-primary text-xs font-bold px-3 py-1 rounded-full animate-pulse">
+          <div className="absolute top-4 right-4 bg-brand-primary text-xs font-bold px-3 py-1 rounded-full animate-pulse">
             ใหม่
           </div>
         )}
-        <h3 className="text-text-primary font-bold text-lg md:text-xl mb-2 group-hover:text-red-400 transition-colors">
+        <h3 className=" font-bold text-lg md:text-xl mb-2 group-hover:text-red-400 transition-colors">
           {item.title}
         </h3>
         <p className="text-zinc-300 text-sm md:text-base line-clamp-2">
@@ -131,7 +131,7 @@ function NewsBannerContent() {
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-            <h2 className="text-text-primary font-bold text-lg md:text-xl">
+            <h2 className=" font-bold text-lg md:text-xl">
               ข่าวสารและโปรโมชั่น
             </h2>
           </div>
@@ -156,7 +156,7 @@ function NewsBannerContent() {
           {/* Navigation Arrows */}
           <button
             onClick={goToPrevious}
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-text-primary p-2 rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 z-20"
+            className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 p-2 rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 z-20"
             aria-label="Previous slide"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -166,7 +166,7 @@ function NewsBannerContent() {
           
           <button
             onClick={goToNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-text-primary p-2 rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 z-20"
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 p-2 rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 z-20"
             aria-label="Next slide"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

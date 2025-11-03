@@ -159,7 +159,7 @@ function GymPageContent() {
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardBody className="py-16 text-center">
             <BuildingStorefrontIcon className="mx-auto mb-6 w-20 h-20 text-default-300" />
-            <h2 className="mb-4 font-bold text-text-primary text-2xl">
+            <h2 className="mb-4 font-bold text-2xl">
               ยังไม่มีข้อมูลยิม
             </h2>
             <p className="mx-auto mb-8 max-w-md text-default-400 text-xl">
@@ -196,7 +196,7 @@ function GymPageContent() {
             </div>
             {/* <div className="text-right">
               <p className="mb-1 text-default-400 text-sm">ID ยิม</p>
-              <p className="font-mono text-text-primary">{gym.id}</p>
+              <p className="font-mono text-white">{gym.id}</p>
             </div> */}
           </div>
         </CardBody>
@@ -205,7 +205,7 @@ function GymPageContent() {
       {/* Gym Information */}
       <Card className="bg-default-100/50 backdrop-blur-sm border-none">
         <CardHeader className="flex justify-between items-center">
-          <h3 className="font-bold text-text-primary text-xl">ข้อมูลยิม</h3>
+          <h3 className="font-bold text-xl">ข้อมูลยิม</h3>
           {!isEditing ? (
             <Button
               size="sm"
@@ -259,7 +259,7 @@ function GymPageContent() {
                 onValueChange={(value) => setEditFormData({ ...editFormData, gym_name: value })}
                 startContent={<BuildingStorefrontIcon className="w-4 h-4 text-default-400" />}
                 classNames={{
-                  input: "text-text-primary",
+                  input: "text-white",
                   label: "text-default-400",
                 }}
               />
@@ -269,7 +269,7 @@ function GymPageContent() {
                 value={editFormData.contact_name}
                 onValueChange={(value) => setEditFormData({ ...editFormData, contact_name: value })}
                 classNames={{
-                  input: "text-text-primary",
+                  input: "text-white",
                   label: "text-default-400",
                 }}
               />
@@ -280,7 +280,7 @@ function GymPageContent() {
                 onValueChange={(value) => setEditFormData({ ...editFormData, phone: value })}
                 startContent={<PhoneIcon className="w-4 h-4 text-default-400" />}
                 classNames={{
-                  input: "text-text-primary",
+                  input: "text-white",
                   label: "text-default-400",
                 }}
               />
@@ -292,7 +292,7 @@ function GymPageContent() {
                 onValueChange={(value) => setEditFormData({ ...editFormData, email: value })}
                 startContent={<EnvelopeIcon className="w-4 h-4 text-default-400" />}
                 classNames={{
-                  input: "text-text-primary",
+                  input: "text-white",
                   label: "text-default-400",
                 }}
               />
@@ -304,7 +304,7 @@ function GymPageContent() {
                 startContent={<MapPinIcon className="w-4 h-4 text-default-400" />}
                 className="md:col-span-2"
                 classNames={{
-                  input: "text-text-primary",
+                  input: "text-white",
                   label: "text-default-400",
                 }}
               />
@@ -315,7 +315,7 @@ function GymPageContent() {
                 onValueChange={(value) => setEditFormData({ ...editFormData, gym_details: value })}
                 className="md:col-span-2"
                 classNames={{
-                  input: "text-text-primary",
+                  input: "text-white",
                   label: "text-default-400",
                 }}
               />
@@ -325,31 +325,31 @@ function GymPageContent() {
               <div className="gap-8 grid grid-cols-1 lg:grid-cols-2">
                 <div className="space-y-4">
                   <div>
-                    <h4 className="mb-2 font-semibold text-text-primary text-sm">ชื่อยิม</h4>
+                    <h4 className="mb-2 font-semibold text-sm">ชื่อยิม</h4>
                     <p className="text-default-400 text-lg">{gym.gym_name}</p>
                   </div>
                   <div>
-                    <h4 className="mb-2 font-semibold text-text-primary text-sm">ผู้ติดต่อ</h4>
+                    <h4 className="mb-2 font-semibold text-sm">ผู้ติดต่อ</h4>
                     <p className="text-default-400">{gym.contact_name}</p>
                   </div>
                   <div>
-                    <h4 className="mb-2 font-semibold text-text-primary text-sm">โทรศัพท์</h4>
+                    <h4 className="mb-2 font-semibold text-sm">โทรศัพท์</h4>
                     <p className="font-mono text-default-400">{gym.phone}</p>
                   </div>
                   <div>
-                    <h4 className="mb-2 font-semibold text-text-primary text-sm">อีเมล</h4>
+                    <h4 className="mb-2 font-semibold text-sm">อีเมล</h4>
                     <p className="font-mono text-default-400">{gym.email}</p>
                   </div>
                 </div>
 
                 <div className="space-y-4">
                   <div>
-                    <h4 className="mb-2 font-semibold text-text-primary text-sm">ที่อยู่</h4>
+                    <h4 className="mb-2 font-semibold text-sm">ที่อยู่</h4>
                     <p className="text-default-400">{gym.location}</p>
                   </div>
                   {gym.services && gym.services.length > 0 && (
                     <div>
-                      <h4 className="mb-2 font-semibold text-text-primary text-sm">บริการ</h4>
+                      <h4 className="mb-2 font-semibold text-sm">บริการ</h4>
                       <div className="flex flex-wrap gap-2">
                         {gym.services.map((service, idx) => (
                           <Chip
@@ -365,7 +365,7 @@ function GymPageContent() {
                     </div>
                   )}
                   <div>
-                    <h4 className="mb-2 font-semibold text-text-primary text-sm">รายละเอียด</h4>
+                    <h4 className="mb-2 font-semibold text-sm">รายละเอียด</h4>
                     <p className="text-default-400">{gym.gym_details || '-'}</p>
                   </div>
                 </div>
@@ -373,7 +373,7 @@ function GymPageContent() {
 
               {gym.images && gym.images.length > 0 && (
                 <div className="pt-6 border-white/5 border-t">
-                  <h4 className="mb-4 font-semibold text-text-primary">รูปภาพยิม</h4>
+                  <h4 className="mb-4 font-semibold text-white">รูปภาพยิม</h4>
                   <div className="gap-4 grid grid-cols-2 md:grid-cols-4">
                     {gym.images.map((image, idx) => (
                       <div key={idx} className="relative rounded-lg w-full h-32 overflow-hidden">

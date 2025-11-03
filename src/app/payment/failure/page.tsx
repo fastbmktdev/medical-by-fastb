@@ -104,7 +104,7 @@ function PaymentFailureContent() {
   if (loading) {
     return (
       <div className="min-h-screen bg-zinc-900 flex items-center justify-center">
-        <div className="text-text-primary text-center">
+        <div className=" text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500 mx-auto mb-4"></div>
           <p>กำลังโหลด...</p>
         </div>
@@ -119,9 +119,9 @@ function PaymentFailureContent() {
           {/* Failure Header */}
           <div className="text-center mb-8">
             <div className="w-20 h-20 bg-brand-primary rounded-full flex items-center justify-center mx-auto mb-6">
-              <XCircleIcon className="w-12 h-12 text-text-primary" />
+              <XCircleIcon className="w-12 h-12 text-white" />
             </div>
-            <h1 className="text-3xl font-bold text-text-primary mb-2">การชำระเงินล้มเหลว</h1>
+            <h1 className="text-3xl font-bold mb-2">การชำระเงินล้มเหลว</h1>
             <p className="text-zinc-400 text-lg">
               ขออภัยในความไม่สะดวก
             </p>
@@ -130,25 +130,25 @@ function PaymentFailureContent() {
           {/* Error Details */}
           {paymentData && (
             <div className="bg-zinc-800 rounded-lg p-6 mb-8">
-              <h2 className="text-xl font-semibold text-text-primary mb-4">รายละเอียดข้อผิดพลาด</h2>
+              <h2 className="text-xl font-semibold mb-4">รายละเอียดข้อผิดพลาด</h2>
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-zinc-400">ประเภท:</span>
-                  <span className="text-text-primary font-medium">
+                  <span className=" font-medium">
                     {paymentData.paymentType ? getPaymentTypeText(paymentData.paymentType) : 'การชำระเงิน'}
                   </span>
                 </div>
                 {paymentData.amount && (
                   <div className="flex justify-between">
                     <span className="text-zinc-400">จำนวนเงิน:</span>
-                    <span className="text-text-primary font-semibold text-lg">
+                    <span className=" font-semibold text-lg">
                       ฿{paymentData.amount.toLocaleString()}
                     </span>
                   </div>
                 )}
                 <div className="flex justify-between">
                   <span className="text-zinc-400">วันที่:</span>
-                  <span className="text-text-primary">
+                  <span className="text-white">
                     {new Date(paymentData.timestamp).toLocaleDateString('th-TH', {
                       year: 'numeric',
                       month: 'long',
@@ -190,12 +190,12 @@ function PaymentFailureContent() {
 
           {/* Common Solutions */}
           <div className="bg-zinc-800 rounded-lg p-6 mb-8">
-            <h3 className="text-lg font-semibold text-text-primary mb-4">วิธีแก้ไขปัญหา</h3>
+            <h3 className="text-lg font-semibold mb-4">วิธีแก้ไขปัญหา</h3>
             <div className="space-y-4">
               <div className="flex items-start gap-3 p-4 bg-blue-600/10 border border-blue-600/50 rounded-lg">
                 <ArrowPathIcon className="w-5 h-5 text-blue-400 mt-0.5" />
                 <div>
-                  <h4 className="font-medium text-text-primary">ลองใหม่อีกครั้ง</h4>
+                  <h4 className="font-medium text-white">ลองใหม่อีกครั้ง</h4>
                   <p className="text-zinc-400 text-sm">
                     ตรวจสอบข้อมูลบัตรและลองชำระเงินอีกครั้ง
                   </p>
@@ -205,7 +205,7 @@ function PaymentFailureContent() {
               <div className="flex items-start gap-3 p-4 bg-green-600/10 border border-green-600/50 rounded-lg">
                 <PhoneIcon className="w-5 h-5 text-green-400 mt-0.5" />
                 <div>
-                  <h4 className="font-medium text-text-primary">ใช้วิธีการชำระเงินอื่น</h4>
+                  <h4 className="font-medium text-white">ใช้วิธีการชำระเงินอื่น</h4>
                   <p className="text-zinc-400 text-sm">
                     ลองใช้พร้อมเพย์ หรือโอนเงินผ่านธนาคาร
                   </p>
@@ -215,7 +215,7 @@ function PaymentFailureContent() {
               <div className="flex items-start gap-3 p-4 bg-purple-600/10 border border-purple-600/50 rounded-lg">
                 <PhoneIcon className="w-5 h-5 text-purple-400 mt-0.5" />
                 <div>
-                  <h4 className="font-medium text-text-primary">ติดต่อทีมสนับสนุน</h4>
+                  <h4 className="font-medium text-white">ติดต่อทีมสนับสนุน</h4>
                   <p className="text-zinc-400 text-sm">
                     หากปัญหายังคงเกิดขึ้น กรุณาติดต่อทีมสนับสนุน
                   </p>
@@ -228,7 +228,7 @@ function PaymentFailureContent() {
           <div className="flex flex-col sm:flex-row gap-4">
             <button
               onClick={handleRetryPayment}
-              className="flex items-center justify-center gap-2 bg-brand-primary hover:bg-red-700 text-text-primary px-6 py-3 rounded-lg font-semibold transition-colors"
+              className="flex items-center justify-center gap-2 bg-brand-primary hover:bg-red-700 px-6 py-3 rounded-lg font-semibold transition-colors"
              aria-label="Button">
               <ArrowPathIcon className="w-5 h-5" />
               ลองใหม่อีกครั้ง
@@ -236,7 +236,7 @@ function PaymentFailureContent() {
             
             <button
               onClick={handleGoHome}
-              className="flex items-center justify-center gap-2 bg-zinc-700 hover:bg-zinc-600 text-text-primary px-6 py-3 rounded-lg font-semibold transition-colors"
+              className="flex items-center justify-center gap-2 bg-zinc-700 hover:bg-zinc-600 px-6 py-3 rounded-lg font-semibold transition-colors"
              aria-label="Button">
               <HomeIcon className="w-5 h-5" />
               กลับหน้าหลัก
@@ -244,7 +244,7 @@ function PaymentFailureContent() {
             
             <button
               onClick={handleContactSupport}
-              className="flex items-center justify-center gap-2 bg-zinc-700 hover:bg-zinc-600 text-text-primary px-6 py-3 rounded-lg font-semibold transition-colors"
+              className="flex items-center justify-center gap-2 bg-zinc-700 hover:bg-zinc-600 px-6 py-3 rounded-lg font-semibold transition-colors"
              aria-label="Button">
               <PhoneIcon className="w-5 h-5" />
               ติดต่อสนับสนุน
@@ -253,7 +253,7 @@ function PaymentFailureContent() {
 
           {/* Additional Information */}
           <div className="mt-8 p-4 bg-zinc-800/50 rounded-lg">
-            <h4 className="font-medium text-text-primary mb-2">ข้อมูลเพิ่มเติม</h4>
+            <h4 className="font-medium mb-2">ข้อมูลเพิ่มเติม</h4>
             <div className="text-sm text-zinc-400 space-y-1">
               <p>• การชำระเงินของคุณไม่ถูกเรียกเก็บ</p>
               <p>• หากมีคำถาม กรุณาติดต่อทีมสนับสนุน</p>
@@ -270,7 +270,7 @@ export default function PaymentFailurePage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-zinc-900 flex items-center justify-center">
-        <div className="text-text-primary text-center">
+        <div className=" text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500 mx-auto mb-4"></div>
           <p>กำลังโหลด...</p>
         </div>

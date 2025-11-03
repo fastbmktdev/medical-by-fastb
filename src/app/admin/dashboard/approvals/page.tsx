@@ -36,7 +36,7 @@ const ApplicationTable = ({
   <Card className="bg-default-100/50 backdrop-blur-sm border-none">
     <CardBody>
       <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 mb-6">
-        <h2 className="font-bold text-text-primary text-xl">
+        <h2 className="font-bold text-xl">
           รายการรออนุมัติ ({applications.length})
         </h2>
         <Input
@@ -58,7 +58,7 @@ const ApplicationTable = ({
         <TableBody emptyContent={isLoading ? null : "ไม่พบใบสมัครที่รอการอนุมัติ"}>
           {applications.map((app) => (
             <TableRow key={app.id}>
-              <TableCell className="font-semibold text-text-primary">{app.gym_name}</TableCell>
+              <TableCell className="font-semibold text-white">{app.gym_name}</TableCell>
               <TableCell>{app.contact_name}</TableCell>
               <TableCell>{app.email}</TableCell>
               <TableCell>{app.created_at ? formatDate(app.created_at) : '-'}</TableCell>
@@ -136,7 +136,7 @@ const ApplicationDetailModal = ({
                   </div>
                 )}
                 <div>
-                  <h4 className="mb-3 font-semibold text-text-primary">ข้อมูลติดต่อ</h4>
+                  <h4 className="mb-3 font-semibold text-white">ข้อมูลติดต่อ</h4>
                   <div className="space-y-3">
                     <p><strong>ผู้ติดต่อ:</strong> {application.contact_name}</p>
                     <p><strong>เบอร์โทรศัพท์:</strong> {application.phone}</p>
@@ -146,7 +146,7 @@ const ApplicationDetailModal = ({
                 </div>
                 {(application.services?.length ?? 0) > 0 && (
                   <div>
-                    <h4 className="mb-3 font-semibold text-text-primary">บริการที่มี</h4>
+                    <h4 className="mb-3 font-semibold text-white">บริการที่มี</h4>
                     <div className="flex flex-wrap gap-2">
                       {application.services?.map((service, index) => (
                         <Chip key={index} color="primary" variant="flat">
@@ -158,7 +158,7 @@ const ApplicationDetailModal = ({
                 )}
                 {application.gym_details && (
                   <div>
-                    <h4 className="mb-3 font-semibold text-text-primary">รายละเอียดเพิ่มเติม</h4>
+                    <h4 className="mb-3 font-semibold text-white">รายละเอียดเพิ่มเติม</h4>
                     <p>{application.gym_details}</p>
                   </div>
                 )}

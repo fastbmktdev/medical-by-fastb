@@ -16,9 +16,9 @@ const selectVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-zinc-700 border-zinc-600 text-text-primary focus:border-transparent focus:ring-red-500",
-        error: "bg-zinc-700 border-red-500 text-text-primary focus:border-red-500 focus:ring-red-500/50",
-        success: "bg-zinc-700 border-green-500 text-text-primary focus:border-green-500 focus:ring-green-500/50",
+        default: "bg-zinc-700 border-zinc-600 focus:border-transparent focus:ring-red-500",
+        error: "bg-zinc-700 border-red-500 focus:border-red-500 focus:ring-red-500/50",
+        success: "bg-zinc-700 border-green-500 focus:border-green-500 focus:ring-green-500/50",
       },
       size: {
         sm: "px-3 py-2 text-sm",

@@ -12,7 +12,7 @@ export const STATS_CARDS = [
     title: 'ยิมทั้งหมด',
     color: 'default',
     bgColor: 'bg-default-100/50',
-    textColor: 'text-text-primary',
+    textColor: 'text-white',
   },
   {
     title: 'อนุมัติแล้ว',

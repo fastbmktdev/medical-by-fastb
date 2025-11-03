@@ -220,7 +220,7 @@ function TransactionsContent() {
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardBody>
             <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 mb-6">
-              <h2 className="font-bold text-text-primary text-xl">ประวัติธุรกรรม</h2>
+              <h2 className="font-bold text-xl">ประวัติธุรกรรม</h2>
               <Button
                 color="primary"
                 variant="flat"
@@ -261,7 +261,7 @@ function TransactionsContent() {
               <TableBody emptyContent="ไม่พบข้อมูลธุรกรรม">
                 {filteredTransactions.map((transaction) => (
                   <TableRow key={transaction.id}>
-                    <TableCell className="font-mono text-text-primary">{transaction.id}</TableCell>
+                    <TableCell className="font-mono text-white">{transaction.id}</TableCell>
                     <TableCell className="text-default-400">
                       {new Date(transaction.date).toLocaleDateString('th-TH')}
                     </TableCell>

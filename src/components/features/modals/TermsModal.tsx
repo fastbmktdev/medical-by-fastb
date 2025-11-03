@@ -36,7 +36,7 @@ export default function TermsModal({ isOpen, onClose, onAccept, gymName }: Terms
         <div className="top-0 z-10 sticky bg-gradient-to-br from-red-900 to-red-700 px-6 py-5 border-red-600 border-b">
           <div className="flex justify-between items-center">
             <div>
-              <h2 className="flex items-center gap-3 font-bold text-text-primary text-2xl">
+              <h2 className="flex items-center gap-3 font-bold text-2xl">
                 <CheckCircleIcon className="w-8 h-8" />
                 ยืนยันการส่งใบสมัคร
               </h2>
@@ -44,7 +44,7 @@ export default function TermsModal({ isOpen, onClose, onAccept, gymName }: Terms
             </div>
             <button
               onClick={handleClose}
-              className="hover:bg-red-800 p-2 rounded-lg text-text-primary transition-colors"
+              className="hover:bg-red-800 p-2 rounded-lg transition-colors"
               aria-label="ปิด"
             >
               <XMarkIcon className="w-6 h-6" />
@@ -56,7 +56,7 @@ export default function TermsModal({ isOpen, onClose, onAccept, gymName }: Terms
         <div className="px-6 py-6 max-h-[calc(90vh-220px)] overflow-y-auto">
           {/* General Terms Section */}
           <div className="bg-zinc-950 mb-8 p-6 border border-zinc-700 rounded-xl">
-            <h3 className="mb-4 pb-3 border-zinc-700 border-b font-bold text-text-primary text-xl">
+            <h3 className="mb-4 pb-3 border-zinc-700 border-b font-bold text-xl">
               เงื่อนไขบริการทั่วไป
             </h3>
 
@@ -71,22 +71,22 @@ export default function TermsModal({ isOpen, onClose, onAccept, gymName }: Terms
 
                 <div className="space-y-4">
                   <div className="bg-zinc-950 p-4 border-blue-500 border-l-4 rounded-lg">
-                    <h5 className="mb-2 font-semibold text-text-primary">1. การยินยอม</h5>
+                    <h5 className="mb-2 font-semibold text-white">1. การยินยอม</h5>
                     <p className="text-zinc-300 text-sm leading-relaxed">
                       ผู้ใช้บริการ <span className="font-medium text-yellow-400">ให้ความยินยอมโดยชัดแจ้งและสมัครใจ</span> แก่{' '}
                       <span className="font-semibold text-red-400">thaikickmuaythai.com</span> ในการ{' '}
-                      <span className="font-medium text-text-primary">บันทึก ถ่ายภาพ ถ่ายวิดีโอ</span> (รวมถึงเสียง) หรือ{' '}
-                      <span className="font-medium text-text-primary">ประมวลผล</span> ภาพลักษณ์ ข้อมูล หรือสื่อใด ๆ
+                      <span className="font-medium text-white">บันทึก ถ่ายภาพ ถ่ายวิดีโอ</span> (รวมถึงเสียง) หรือ{' '}
+                      <span className="font-medium text-white">ประมวลผล</span> ภาพลักษณ์ ข้อมูล หรือสื่อใด ๆ
                       ที่ผู้ใช้ปรากฏตัวในสถานที่ กิจกรรม หรือบนแพลตฟอร์มของ thaikickmuaythai.com
                     </p>
                   </div>
 
                   <div className="bg-zinc-950 p-4 border-green-500 border-l-4 rounded-lg">
-                    <h5 className="mb-2 font-semibold text-text-primary">2. วัตถุประสงค์และขอบเขต</h5>
+                    <h5 className="mb-2 font-semibold text-white">2. วัตถุประสงค์และขอบเขต</h5>
                     <p className="text-zinc-300 text-sm leading-relaxed">
                       thaikickmuaythai.com มีสิทธิ{' '}
                       <span className="font-medium text-yellow-400">โดยเด็ดขาดและเป็นสิทธิ์ขาดแต่เพียงผู้เดียว</span>{' '}
-                      ในการ <span className="font-medium text-text-primary">ใช้ ทำซ้ำ ดัดแปลง แก้ไข เผยแพร่ หรือโอนสิทธิ</span>{' '}
+                      ในการ <span className="font-medium text-white">ใช้ ทำซ้ำ ดัดแปลง แก้ไข เผยแพร่ หรือโอนสิทธิ</span>{' '}
                       ในสื่อดังกล่าวทั้งหมดหรือบางส่วน เพื่อวัตถุประสงค์ในการ{' '}
                       <span className="font-medium text-red-400">โฆษณา การสร้างแบรนด์ การส่งเสริมการขาย และการประชาสัมพันธ์</span>{' '}
                       ของ thaikickmuaythai.com ในทุกช่องทาง ทั้งในและต่างประเทศ{' '}
@@ -95,22 +95,22 @@ export default function TermsModal({ isOpen, onClose, onAccept, gymName }: Terms
                   </div>
 
                   <div className="bg-zinc-950 p-4 border-purple-500 border-l-4 rounded-lg">
-                    <h5 className="mb-2 font-semibold text-text-primary">3. การสละสิทธิ</h5>
+                    <h5 className="mb-2 font-semibold text-white">3. การสละสิทธิ</h5>
                     <p className="text-zinc-300 text-sm leading-relaxed">
                       ผู้ใช้บริการตกลงว่าการยินยอมนี้เป็นการให้สิทธิ{' '}
                       <span className="font-medium text-yellow-400">โดยไม่มีค่าตอบแทน</span> และ{' '}
                       <span className="font-medium text-red-400">สละสิทธิ</span> ในการเรียกร้อง{' '}
-                      <span className="font-medium text-text-primary">ค่าเสียหาย ค่าตอบแทน หรือค่าสิทธิ (Royalty)</span> ใด ๆ
+                      <span className="font-medium text-white">ค่าเสียหาย ค่าตอบแทน หรือค่าสิทธิ (Royalty)</span> ใด ๆ
                       จาก thaikickmuaythai.com ที่เกิดจากการใช้ภาพลักษณ์และข้อมูลเพื่อการตลาดดังกล่าว
                     </p>
                   </div>
 
                   <div className="bg-zinc-950 p-4 border-orange-500 border-l-4 rounded-lg">
-                    <h5 className="mb-2 font-semibold text-text-primary">4. การคงอยู่ของสิทธิ</h5>
+                    <h5 className="mb-2 font-semibold text-white">4. การคงอยู่ของสิทธิ</h5>
                     <p className="text-zinc-300 text-sm leading-relaxed">
                       สิทธิในการใช้สื่อตามมาตรานี้ จะ<span className="font-medium text-yellow-400">มีผลต่อเนื่องและไม่มีกำหนดเวลา</span>{' '}
-                      แม้ว่าผู้ใช้บริการจะ <span className="font-medium text-text-primary">ส��้นสุดสถานะการเป็นสมาชิก</span> หรือ{' '}
-                      <span className="font-medium text-text-primary">เลิกใช้บริการ</span>ของ thaikickmuaythai.com แล้วก็ตาม
+                      แม้ว่าผู้ใช้บริการจะ <span className="font-medium text-white">ส��้นสุดสถานะการเป็นสมาชิก</span> หรือ{' '}
+                      <span className="font-medium text-white">เลิกใช้บริการ</span>ของ thaikickmuaythai.com แล้วก็ตาม
                     </p>
                   </div>
                 </div>
@@ -165,20 +165,20 @@ export default function TermsModal({ isOpen, onClose, onAccept, gymName }: Terms
                   <div className="bg-gradient-to-r from-yellow-900/20 to-orange-900/20 p-4 border border-yellow-700/50 rounded-lg">
                     <p className="text-zinc-300 text-sm leading-relaxed">
                       <span className="font-semibold text-yellow-300">→</span> การยินยอมนี้{' '}
-                      <span className="font-medium text-text-primary">ไม่มีค่าใช้จ่าย</span> และ{' '}
-                      <span className="font-medium text-text-primary">ไม่มีค่าตอบแทน</span> ใดๆ
+                      <span className="font-medium text-white">ไม่มีค่าใช้จ่าย</span> และ{' '}
+                      <span className="font-medium text-white">ไม่มีค่าตอบแทน</span> ใดๆ
                     </p>
                   </div>
                   <div className="bg-gradient-to-r from-blue-900/20 to-cyan-900/20 p-4 border border-blue-700/50 rounded-lg">
                     <p className="text-zinc-300 text-sm leading-relaxed">
                       <span className="font-semibold text-blue-300">→</span> สิทธิที่ได้รับ{' '}
-                      <span className="font-medium text-text-primary">ไม่สามารถเพิกถอนได้</span> แม้จะยกเลิกการเป็นสมาชิกแล้ว
+                      <span className="font-medium text-white">ไม่สามารถเพิกถอนได้</span> แม้จะยกเลิกการเป็นสมาชิกแล้ว
                     </p>
                   </div>
                   <div className="bg-gradient-to-r from-purple-900/20 to-pink-900/20 p-4 border border-purple-700/50 rounded-lg">
                     <p className="text-zinc-300 text-sm leading-relaxed">
                       <span className="font-semibold text-purple-300">→</span> เราจะใช้ภาพและข้อมูล{' '}
-                      <span className="font-medium text-text-primary">อย่างมืออาชีพและสร้างสรรค์</span>{' '}
+                      <span className="font-medium text-white">อย่างมืออาชีพและสร้างสรรค์</span>{' '}
                       เพื่อประโยชน์ในการประชาสัมพันธ์เท่านั้น
                     </p>
                   </div>
@@ -201,15 +201,15 @@ export default function TermsModal({ isOpen, onClose, onAccept, gymName }: Terms
                   <ul className="space-y-2 text-zinc-300 text-sm">
                     <li className="flex items-start gap-2">
                       <span className="text-green-400">🔒</span>
-                      <span>ข้อมูลส่วนตัว (ชื่อ, ที่อยู่, เบอร์โทร) จะ<span className="font-medium text-text-primary">ไม่ถูกเผยแพร่</span>สาธารณะ</span>
+                      <span>ข้อมูลส่วนตัว (ชื่อ, ที่อยู่, เบอร์โทร) จะ<span className="font-medium text-white">ไม่ถูกเผยแพร่</span>สาธารณะ</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-green-400">🔒</span>
-                      <span>ใช้เฉพาะภาพและวิดีโอที่<span className="font-medium text-text-primary">เหมาะสมและสร้างสรรค์</span></span>
+                      <span>ใช้เฉพาะภาพและวิดีโอที่<span className="font-medium text-white">เหมาะสมและสร้างสรรค์</span></span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-green-400">🔒</span>
-                      <span>คุณสามารถ<span className="font-medium text-text-primary">ขอดูและแก้ไขข้อมูล</span>ส่วนตัวได้ตลอดเวลา</span>
+                      <span>คุณสามารถ<span className="font-medium text-white">ขอดูและแก้ไขข้อมูล</span>ส่วนตัวได้ตลอดเวลา</span>
                     </li>
                   </ul>
                 </div>
@@ -219,7 +219,7 @@ export default function TermsModal({ isOpen, onClose, onAccept, gymName }: Terms
 
           {/* Gym-specific Terms */}
           <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 mb-6 p-6 border border-red-600 rounded-xl">
-            <h3 className="flex items-center gap-2 mb-4 font-bold text-text-primary text-xl">
+            <h3 className="flex items-center gap-2 mb-4 font-bold text-xl">
               <span className="bg-red-500 rounded-full w-2 h-2 animate-pulse"></span>
               เงื่อนไขสำหรับ: <span className="text-red-400">{gymName}</span>
             </h3>
@@ -228,8 +228,8 @@ export default function TermsModal({ isOpen, onClose, onAccept, gymName }: Terms
               <div className="bg-zinc-950/50 p-4 border border-zinc-700 rounded-lg">
                 <p className="text-zinc-300 leading-relaxed">
                   ข้าพเจ้าได้อ่านและยอมรับ{' '}
-                  <span className="font-semibold text-text-primary">ข้อตกลงและเงื่อนไขการใช้บริการ</span> และ{' '}
-                  <span className="font-semibold text-text-primary">นโยบายความเป็นส่วนตัว</span> ของ{' '}
+                  <span className="font-semibold text-white">ข้อตกลงและเงื่อนไขการใช้บริการ</span> และ{' '}
+                  <span className="font-semibold text-white">นโยบายความเป็นส่วนตัว</span> ของ{' '}
                   <span className="font-semibold text-red-400">{gymName}</span>
                 </p>
               </div>
@@ -247,7 +247,7 @@ export default function TermsModal({ isOpen, onClose, onAccept, gymName }: Terms
                 className="mt-1 rounded focus:ring-2 focus:ring-red-500 w-5 h-5 text-red-600 cursor-pointer"
               />
               <div className="flex-1">
-                <p className="font-semibold text-text-primary group-hover:text-red-400 text-base transition-colors">
+                <p className="font-semibold group-hover:text-red-400 text-base transition-colors">
                   ข้าพเจ้าได้อ่านและยอมรับ ข้อตกลงและเงื่อนไขการใช้บริการ และ นโยบายความเป็นส่วนตัว
                 </p>
                 <p className="mt-2 text-zinc-400 text-sm">
@@ -266,19 +266,19 @@ export default function TermsModal({ isOpen, onClose, onAccept, gymName }: Terms
               />
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
-                  <p className="font-semibold text-text-primary group-hover:text-red-400 text-base transition-colors">
+                  <p className="font-semibold group-hover:text-red-400 text-base transition-colors">
                     คำยินยอมใช้สื่อการตลาด
                   </p>
-                  <span className="inline-flex items-center bg-brand-primary px-2 py-0.5 rounded-full font-bold text-text-primary text-xs animate-pulse">
+                  <span className="inline-flex items-center bg-brand-primary px-2 py-0.5 rounded-full font-bold text-xs animate-pulse">
                     สำคัญมาก
                   </span>
                 </div>
                 <p className="text-zinc-300 text-sm leading-relaxed">
                   ข้าพเจ้า <span className="font-medium text-yellow-400">ยินยอมโดยชัดแจ้ง</span> ให้{' '}
                   <span className="font-semibold text-red-400">{gymName}</span> ใช้{' '}
-                  <span className="font-medium text-text-primary">ภาพถ่าย วิดีโอ และข้อมูลความสำเร็จ</span> ของข้าพเจ้า
+                  <span className="font-medium text-white">ภาพถ่าย วิดีโอ และข้อมูลความสำเร็จ</span> ของข้าพเจ้า
                   เพื่อวัตถุประสงค์ในการ{' '}
-                  <span className="font-medium text-text-primary">ประชาสัมพันธ์และการตลาด</span>{' '}
+                  <span className="font-medium text-white">ประชาสัมพันธ์และการตลาด</span>{' '}
                   <span className="font-medium text-yellow-400">โดยไม่มีค่าตอบแทน</span>
                 </p>
                 <p className="mt-2 text-zinc-500 text-xs italic">

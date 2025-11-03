@@ -28,12 +28,12 @@ export function ProductCard({ product, showAddToCart = true }: ProductCardProps)
           />
           {isOutOfStock && (
             <div className="top-2 right-2 absolute bg-brand-primary px-3 py-1 rounded-full">
-              <span className="font-bold text-text-primary text-xs">หมด</span>
+              <span className="font-bold text-xs">หมด</span>
             </div>
           )}
           {product.category && (
             <div className="bottom-2 left-2 absolute bg-black/50 px-2 py-1 rounded-full">
-              <span className="text-text-primary text-xs">{product.category}</span>
+              <span className=" text-xs">{product.category}</span>
             </div>
           )}
         </div>
@@ -41,7 +41,7 @@ export function ProductCard({ product, showAddToCart = true }: ProductCardProps)
 
       <div className="p-4">
         {/* Product Name */}
-        <h3 className="mb-2 font-semibold text-text-primary group-hover:text-red-400 text-lg line-clamp-2 transition-colors">
+        <h3 className="mb-2 font-semibold group-hover:text-red-400 text-lg line-clamp-2 transition-colors">
           {productName}
         </h3>
 
@@ -68,7 +68,7 @@ export function ProductCard({ product, showAddToCart = true }: ProductCardProps)
               className={`p-2 rounded-lg transition-colors ${
                 isOutOfStock
                   ? "bg-zinc-700 text-zinc-500 cursor-not-allowed"
-                  : "bg-brand-primary hover:bg-red-700 text-text-primary"
+                  : "bg-brand-primary hover:bg-red-700 text-white"
               }`}
              aria-label="Button">
               <ShoppingCartIcon className="w-5 h-5" />

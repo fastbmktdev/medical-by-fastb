@@ -34,7 +34,7 @@ export function PageLayout({
         {(title || description) && (
           <div className="py-8 border-b border-zinc-700 mb-8">
             {title && (
-              <h1 className="text-3xl font-bold text-text-primary mb-2">
+              <h1 className="text-3xl font-bold mb-2">
                 {title}
               </h1>
             )}

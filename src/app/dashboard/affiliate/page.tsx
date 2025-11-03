@@ -162,7 +162,7 @@ export default function AffiliateDashboardPage() {
       <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
         <div className="container mx-auto px-4 py-16">
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-text-primary mb-4">Affiliate Dashboard</h1>
+            <h1 className="text-4xl font-bold mb-4">Affiliate Dashboard</h1>
             <p className="text-zinc-300 text-xl mb-8">
               กรุณาเข้าสู่ระบบเพื่อเข้าถึง Affiliate Dashboard
             </p>
@@ -197,7 +197,7 @@ export default function AffiliateDashboardPage() {
       <div className="container mx-auto px-4 py-16">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-text-primary mb-4">
+          <h1 className="text-4xl font-bold mb-4">
             📊 Affiliate Dashboard
           </h1>
           <p className="text-zinc-300 text-xl max-w-3xl mx-auto">
@@ -210,7 +210,7 @@ export default function AffiliateDashboardPage() {
           <Card className="bg-zinc-800/50 border-zinc-700">
             <CardBody className="text-center">
               <UserPlusIcon className="w-8 h-8 text-blue-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-text-primary">{stats.totalReferrals}</p>
+              <p className="text-2xl font-bold text-white">{stats.totalReferrals}</p>
               <p className="text-zinc-400">ผู้แนะนำทั้งหมด</p>
               <div className="flex items-center justify-center mt-2">
                 {stats.monthlyGrowth >= 0 ? (
@@ -228,7 +228,7 @@ export default function AffiliateDashboardPage() {
           <Card className="bg-zinc-800/50 border-zinc-700">
             <CardBody className="text-center">
               <TrophyIcon className="w-8 h-8 text-yellow-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-text-primary">{stats.totalEarnings}</p>
+              <p className="text-2xl font-bold text-white">{stats.totalEarnings}</p>
               <p className="text-zinc-400">แต้มสะสมทั้งหมด</p>
             </CardBody>
           </Card>
@@ -236,7 +236,7 @@ export default function AffiliateDashboardPage() {
           <Card className="bg-zinc-800/50 border-zinc-700">
             <CardBody className="text-center">
               <ChartBarIcon className="w-8 h-8 text-green-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-text-primary">{stats.currentMonthReferrals}</p>
+              <p className="text-2xl font-bold text-white">{stats.currentMonthReferrals}</p>
               <p className="text-zinc-400">เดือนนี้</p>
             </CardBody>
           </Card>
@@ -244,7 +244,7 @@ export default function AffiliateDashboardPage() {
           <Card className="bg-zinc-800/50 border-zinc-700">
             <CardBody className="text-center">
               <GiftIcon className="w-8 h-8 text-purple-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-text-primary">{stats.conversionRate}%</p>
+              <p className="text-2xl font-bold text-white">{stats.conversionRate}%</p>
               <p className="text-zinc-400">อัตราการแปลง</p>
             </CardBody>
           </Card>
@@ -254,7 +254,7 @@ export default function AffiliateDashboardPage() {
           {/* Affiliate Link Section */}
           <Card className="bg-zinc-800/50 border-zinc-700">
             <CardHeader>
-              <h2 className="text-xl font-semibold text-text-primary flex items-center">
+              <h2 className="text-xl font-semibold flex items-center">
                 <LinkIcon className="w-5 h-5 mr-2" />
                 ลิงก์แนะนำของคุณ
               </h2>
@@ -266,7 +266,7 @@ export default function AffiliateDashboardPage() {
                   <input
                     value={affiliateCode}
                     readOnly
-                    className="flex-1 bg-zinc-700 border border-zinc-600 rounded-lg px-4 py-3 text-text-primary text-sm"
+                    className="flex-1 bg-zinc-700 border border-zinc-600 rounded-lg px-4 py-3 text-sm"
                   />
                   <Button
                     color="primary"
@@ -284,7 +284,7 @@ export default function AffiliateDashboardPage() {
                   <input
                     value={affiliateLink}
                     readOnly
-                    className="flex-1 bg-zinc-700 border border-zinc-600 rounded-lg px-4 py-3 text-text-primary text-sm"
+                    className="flex-1 bg-zinc-700 border border-zinc-600 rounded-lg px-4 py-3 text-sm"
                   />
                   <Button
                     color="primary"
@@ -333,7 +333,7 @@ export default function AffiliateDashboardPage() {
           {/* Performance Metrics */}
           <Card className="bg-zinc-800/50 border-zinc-700">
             <CardHeader>
-              <h2 className="text-xl font-semibold text-text-primary flex items-center">
+              <h2 className="text-xl font-semibold flex items-center">
                 <ChartBarIcon className="w-5 h-5 mr-2" />
                 สถิติประสิทธิภาพ
               </h2>
@@ -342,7 +342,7 @@ export default function AffiliateDashboardPage() {
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-zinc-300">อัตราการแปลง</span>
-                  <span className="text-text-primary font-medium">{stats.conversionRate}%</span>
+                  <span className=" font-medium">{stats.conversionRate}%</span>
                 </div>
                 <Progress 
                   value={stats.conversionRate} 
@@ -368,18 +368,18 @@ export default function AffiliateDashboardPage() {
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-zinc-300">ช่องทางแนะนำหลัก</span>
-                  <span className="text-text-primary font-medium">{stats.topReferralSource}</span>
+                  <span className=" font-medium">{stats.topReferralSource}</span>
                 </div>
               </div>
 
               <Divider className="my-4" />
 
               <div className="bg-zinc-700/50 p-4 rounded-lg">
-                <h3 className="text-text-primary font-medium mb-2">🎯 เป้าหมาย</h3>
+                <h3 className=" font-medium mb-2">🎯 เป้าหมาย</h3>
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-zinc-300">แนะนำ 10 คน</span>
-                    <span className="text-text-primary">{stats.totalReferrals}/10</span>
+                    <span className="text-white">{stats.totalReferrals}/10</span>
                   </div>
                   <Progress 
                     value={(stats.totalReferrals / 10) * 100} 
@@ -395,7 +395,7 @@ export default function AffiliateDashboardPage() {
         {/* Referral History */}
         <Card className="bg-zinc-800/50 border-zinc-700 mt-8">
           <CardHeader>
-            <h2 className="text-xl font-semibold text-text-primary">ประวัติการแนะนำ</h2>
+            <h2 className="text-xl font-semibold text-white">ประวัติการแนะนำ</h2>
           </CardHeader>
           <CardBody>
             {referralHistory.length > 0 ? (

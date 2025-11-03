@@ -47,27 +47,27 @@ export default function ArticleDetailPage({
   ).slice(0, 3);
 
   return (
-    <div className="bg-transparent min-h-screen text-text-primary mt-16">
+    <div className="bg-transparent min-h-screen mt-16">
       {/* Breadcrumb & Back Button */}
       <div className="border-zinc-800 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-4xl">
           <div className="flex items-center gap-2 mb-4 text-zinc-400 text-sm">
-            <Link href="/" className="hover:text-text-primary transition-colors">
+            <Link href="/" className="hover:text-white transition-colors">
               หน้าแรก
             </Link>
             <ChevronRightIcon className="w-4 h-4" />
             <Link
               href="/articles"
-              className="hover:text-text-primary transition-colors"
+              className="hover:text-white transition-colors"
             >
               บทความ
             </Link>
             <ChevronRightIcon className="w-4 h-4" />
-            <span className="text-text-primary">{article.title}</span>
+            <span className="text-white">{article.title}</span>
           </div>
           <Link
             href="/articles"
-            className="inline-flex items-center gap-2 text-zinc-400 hover:text-text-primary transition-colors"
+            className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
           >
             <ArrowLeftIcon className="w-5 h-5" />
             <span>กลับไปหน้าบทความ</span>
@@ -79,7 +79,7 @@ export default function ArticleDetailPage({
       <article className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-4xl">
         {/* Category Badge */}
         <div className="mb-4">
-          <span className="inline-block bg-brand-primary px-4 py-1 rounded-full font-semibold text-text-primary text-sm">
+          <span className="inline-block bg-brand-primary px-4 py-1 rounded-full font-semibold text-sm">
             {article.category}
           </span>
         </div>
@@ -133,7 +133,7 @@ export default function ArticleDetailPage({
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
           <div className="absolute bottom-4 left-4 right-4">
             <div className="bg-black/50 backdrop-blur-sm rounded-lg p-4">
-              <h2 className="text-text-primary font-bold text-xl mb-2">
+              <h2 className=" font-bold text-xl mb-2">
                 {article.title}
               </h2>
               <p className="text-zinc-200 text-sm line-clamp-2">
@@ -181,7 +181,7 @@ export default function ArticleDetailPage({
       {relatedArticles.length > 0 && (
         <div className="bg-zinc-900 mt-12 py-12 border-zinc-800 border-t">
           <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-            <h2 className="mb-8 font-bold text-text-primary text-2xl">
+            <h2 className="mb-8 font-bold text-2xl">
               บทความที่เกี่ยวข้อง
             </h2>
             <div className="gap-6 grid grid-cols-1 md:grid-cols-3">
@@ -200,13 +200,13 @@ export default function ArticleDetailPage({
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                     <div className="absolute top-2 right-2">
-                      <span className="bg-brand-primary px-2 py-1 rounded-full font-semibold text-text-primary text-xs">
+                      <span className="bg-brand-primary px-2 py-1 rounded-full font-semibold text-xs">
                         {related.category}
                       </span>
                     </div>
                   </div>
                   <div className="p-4">
-                    <h3 className="mb-2 font-semibold text-text-primary group-hover:text-red-500 line-clamp-2 transition-colors">
+                    <h3 className="mb-2 font-semibold group-hover:text-red-500 line-clamp-2 transition-colors">
                       {related.title}
                     </h3>
                     <p className="text-zinc-500 text-xs mb-2">

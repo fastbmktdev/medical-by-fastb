@@ -54,7 +54,7 @@ export function StatsSection({
         {/* Section Header */}
         {title && (
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-text-primary">
+            <h2 className="text-3xl font-bold text-white">
               {title}
             </h2>
           </div>
@@ -76,7 +76,7 @@ export function StatsSection({
               )}
 
               {/* Value */}
-              <div className="text-3xl font-bold text-text-primary mb-2">
+              <div className="text-3xl font-bold mb-2">
                 {stat.value}
               </div>
 

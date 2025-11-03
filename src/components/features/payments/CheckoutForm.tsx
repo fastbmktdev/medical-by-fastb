@@ -109,7 +109,7 @@ export default function CheckoutForm({
       <div>
         <label
           htmlFor="phone"
-          className="block mb-2 font-medium text-text-primary text-sm"
+          className="block mb-2 font-medium text-sm"
         >
           เบอร์โทรศัพท์ <span className="text-red-500">*</span>
         </label>
@@ -119,7 +119,7 @@ export default function CheckoutForm({
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
           placeholder="0812345678"
-          className="bg-zinc-700 px-4 py-3 border border-zinc-600 focus:border-red-500 rounded-lg focus:ring-2 focus:ring-red-500 w-full text-text-primary placeholder-zinc-500"
+          className="bg-zinc-700 px-4 py-3 border border-zinc-600 focus:border-red-500 rounded-lg focus:ring-2 focus:ring-red-500 w-full placeholder-zinc-500"
           required
         />
         <p className="mt-1 text-zinc-400 text-xs">
@@ -129,7 +129,7 @@ export default function CheckoutForm({
 
       {/* Payment Element */}
       <div>
-        <label className="block mb-2 font-medium text-text-primary text-sm">
+        <label className="block mb-2 font-medium text-sm">
           เลือกวิธีการชำระเงิน
         </label>
         <PaymentElement

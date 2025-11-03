@@ -100,10 +100,10 @@ function AdminReportsContent() {
             <Card key={index} className="bg-default-100/50 backdrop-blur-sm border-none">
               <CardHeader className="flex items-center gap-4">
                 <div className={`bg-${report.color} p-4 rounded-lg`}>
-                  <Icon className="w-8 h-8 text-text-primary" />
+                  <Icon className="w-8 h-8 text-white" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="mb-1 font-bold text-text-primary text-lg">{report.title}</h3>
+                  <h3 className="mb-1 font-bold text-lg">{report.title}</h3>
                   <p className="text-default-400 text-sm">{report.description}</p>
                 </div>
               </CardHeader>
@@ -134,7 +134,7 @@ function AdminReportsContent() {
 
       <Card className="bg-default-100/50 backdrop-blur-sm mt-8 border-none">
         <CardHeader>
-          <h3 className="font-bold text-text-primary text-xl">รายงานกำหนดเอง</h3>
+          <h3 className="font-bold text-xl">รายงานกำหนดเอง</h3>
         </CardHeader>
         <CardBody className="justify-center items-center py-12 text-center">
           <DocumentTextIcon className="mb-4 w-16 h-16 text-default-300" />
