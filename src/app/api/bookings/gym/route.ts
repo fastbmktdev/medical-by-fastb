@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/database/supabase/server';
 import { awardPoints, updateUserStreak } from '@/services/gamification.service';
+import { sendBookingConfirmationEmail } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
   try {
@@ -80,6 +81,51 @@ export async function POST(request: NextRequest) {
         { error: 'Failed to create gym booking' },
         { status: 500 }
       );
+    }
+
+    // Send booking confirmation email
+    try {
+      // Fetch gym details for email
+      const { data: gym } = await supabase
+        .from('gyms')
+        .select('gym_name, gym_name_english, slug')
+        .eq('id', gymId)
+        .single();
+
+      if (gym && booking) {
+        await sendBookingConfirmationEmail({
+          to: booking.customer_email || user.email || '',
+          customerName: booking.customer_name || 'คุณลูกค้า',
+          bookingNumber: booking.booking_number || '',
+          gymName: gym.gym_name || gym.gym_name_english || 'ค่ายมวย',
+          packageName: booking.package_name || packageName,
+          packageType: (booking.package_type as 'one_time' | 'package') || packageType as 'one_time' | 'package',
+          startDate: booking.start_date,
+          endDate: booking.end_date,
+          pricePaid: booking.price_paid || totalPrice,
+          customerPhone: booking.customer_phone,
+          specialRequests: booking.special_requests || specialRequests,
+          bookingUrl: gym.slug ? `/dashboard/bookings` : undefined,
+        });
+
+        // Create in-app notification
+        await supabase
+          .from('notifications')
+          .insert({
+            user_id: user.id,
+            type: 'booking_confirmation',
+            title: 'ยืนยันการจองสำเร็จ',
+            message: `การจองของคุณ ${booking.booking_number || 'ใหม่'} ได้รับการยืนยันแล้ว`,
+            link_url: '/dashboard/bookings',
+            metadata: {
+              booking_id: booking.id,
+              booking_number: booking.booking_number,
+            },
+          });
+      }
+    } catch (emailError) {
+      // Don't fail the booking if email fails
+      console.warn('Email notification error (booking still successful):', emailError);
     }
 
     // Award gamification points for booking

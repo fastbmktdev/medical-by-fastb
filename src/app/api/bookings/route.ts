@@ -10,6 +10,7 @@ import { createClient } from '@/lib/database/supabase/server';
 import { NextRequest } from 'next/server';
 import { getBookings, createBooking } from '@/services';
 import { awardPoints, updateUserStreak } from '@/services/gamification.service';
+import { sendBookingConfirmationEmail } from '@/lib/email';
 
 /**
  * GET /api/bookings
@@ -95,6 +96,51 @@ export async function POST(request: NextRequest) {
       special_requests,
       payment_method,
     });
+
+    // Send booking confirmation email
+    try {
+      // Fetch gym details for email
+      const { data: gym } = await supabase
+        .from('gyms')
+        .select('gym_name, gym_name_english, slug')
+        .eq('id', gym_id)
+        .single();
+
+      if (gym && booking) {
+        await sendBookingConfirmationEmail({
+          to: customer_email,
+          customerName: customer_name,
+          bookingNumber: booking.booking_number || '',
+          gymName: gym.gym_name || gym.gym_name_english || 'ค่ายมวย',
+          packageName: booking.package_name || '',
+          packageType: (booking.package_type as 'one_time' | 'package') || 'one_time',
+          startDate: booking.start_date,
+          endDate: booking.end_date,
+          pricePaid: booking.price_paid || 0,
+          customerPhone: customer_phone,
+          specialRequests: special_requests,
+          bookingUrl: gym.slug ? `/dashboard/bookings` : undefined,
+        });
+
+        // Create in-app notification
+        await supabase
+          .from('notifications')
+          .insert({
+            user_id: user.id,
+            type: 'booking_confirmation',
+            title: 'ยืนยันการจองสำเร็จ',
+            message: `การจองของคุณ ${booking.booking_number} ได้รับการยืนยันแล้ว`,
+            link_url: '/dashboard/bookings',
+            metadata: {
+              booking_id: booking.id,
+              booking_number: booking.booking_number,
+            },
+          });
+      }
+    } catch (emailError) {
+      // Don't fail the booking if email fails
+      console.warn('Email notification error (booking still successful):', emailError);
+    }
 
     // Award gamification points for booking
     try {

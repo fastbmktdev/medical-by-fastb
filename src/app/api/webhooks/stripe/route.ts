@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import { stripe } from '@/lib/payments';
 import { createClient } from '@/lib/database/supabase/server';
+import { sendPaymentReceiptEmail, sendPaymentFailedEmail } from '@/lib/email';
 import Stripe from 'stripe';
 
 // Disable body parser to get raw body for signature verification
@@ -165,18 +166,64 @@ async function handlePaymentSuccess(
 
     if (bookingId) {
       // Updating booking directly
-
-      const { error: bookingUpdateError } = await supabase
+      const { data: booking, error: bookingUpdateError } = await supabase
         .from('bookings')
         .update({
           payment_status: 'paid',
           status: 'confirmed',
           updated_at: new Date().toISOString(),
         })
-        .eq('id', bookingId);
+        .eq('id', bookingId)
+        .select(`
+          *,
+          gyms:gym_id (
+            gym_name,
+            gym_name_english
+          )
+        `)
+        .single();
 
       if (bookingUpdateError) {
         console.error('❌ Error updating booking:', bookingUpdateError);
+      } else if (booking) {
+        // Send payment receipt email
+        try {
+          const gymName = booking.gyms?.gym_name || booking.gyms?.gym_name_english || 'ค่ายมวย';
+          
+          await sendPaymentReceiptEmail({
+            to: booking.customer_email || '',
+            customerName: booking.customer_name || 'คุณลูกค้า',
+            transactionNumber: paymentIntent.id,
+            amount: paymentIntent.amount ? paymentIntent.amount / 100 : booking.price_paid || 0,
+            paymentMethod: 'Stripe',
+            paymentDate: new Date().toISOString(),
+            items: [
+              {
+                description: `${gymName} - ${booking.package_name || 'แพ็คเกจ'}`,
+                quantity: 1,
+                amount: booking.price_paid || 0,
+              },
+            ],
+            receiptUrl: '/dashboard/transactions',
+          });
+
+          // Create in-app notification
+          await supabase
+            .from('notifications')
+            .insert({
+              user_id: booking.user_id,
+              type: 'payment_received',
+              title: 'การชำระเงินสำเร็จ',
+              message: `การชำระเงินสำหรับการจอง ${booking.booking_number} สำเร็จแล้ว`,
+              link_url: '/dashboard/transactions',
+              metadata: {
+                booking_id: booking.id,
+                payment_intent_id: paymentIntent.id,
+              },
+            });
+        } catch (emailError) {
+          console.warn('Email notification error:', emailError);
+        }
       }
       // Booking payment status updated successfully
     }
@@ -207,7 +254,7 @@ async function handlePaymentFailed(
   // Update order status
   const { data: payment } = await supabase
     .from('payments')
-    .select('id')
+    .select('id, user_id')
     .eq('stripe_payment_intent_id', paymentIntent.id)
     .single();
 
@@ -219,6 +266,57 @@ async function handlePaymentFailed(
         updated_at: new Date().toISOString(),
       })
       .eq('payment_id', payment.id);
+  }
+
+  // Get booking from metadata to send failed email
+  const bookingId = paymentIntent.metadata?.bookingId;
+  if (bookingId) {
+    try {
+      const { data: booking } = await supabase
+        .from('bookings')
+        .select(`
+          *,
+          gyms:gym_id (
+            gym_name,
+            gym_name_english
+          )
+        `)
+        .eq('id', bookingId)
+        .single();
+
+      if (booking) {
+        const gymName = booking.gyms?.gym_name || booking.gyms?.gym_name_english || 'ค่ายมวย';
+        const failureReason = paymentIntent.last_payment_error?.message || 'ไม่สามารถดำเนินการได้';
+
+        await sendPaymentFailedEmail({
+          to: booking.customer_email || '',
+          customerName: booking.customer_name || 'คุณลูกค้า',
+          transactionNumber: paymentIntent.id,
+          amount: paymentIntent.amount ? paymentIntent.amount / 100 : booking.price_paid || 0,
+          paymentMethod: 'Stripe',
+          failureReason,
+          retryUrl: `/gyms/booking/${booking.gym_id}`,
+          supportEmail: process.env.CONTACT_EMAIL_TO || 'support@muaythai.com',
+        });
+
+        // Create in-app notification
+        await supabase
+          .from('notifications')
+          .insert({
+            user_id: booking.user_id,
+            type: 'payment_failed',
+            title: 'การชำระเงินไม่สำเร็จ',
+            message: `การชำระเงินสำหรับการจอง ${booking.booking_number} ไม่สำเร็จ: ${failureReason}`,
+            link_url: `/gyms/booking/${booking.gym_id}`,
+            metadata: {
+              booking_id: booking.id,
+              payment_intent_id: paymentIntent.id,
+            },
+          });
+      }
+    } catch (emailError) {
+      console.warn('Email notification error:', emailError);
+    }
   }
 }
 
