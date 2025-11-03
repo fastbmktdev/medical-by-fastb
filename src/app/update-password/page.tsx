@@ -68,6 +68,18 @@ function UpdatePasswordForm() {
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
+        // Check for SMTP reset token in URL params
+        const token = searchParams.get("token");
+        const email = searchParams.get("email");
+
+        if (token && email) {
+          // This is SMTP password reset flow
+          console.log('SMTP password reset flow detected');
+          setIsCheckingAuth(false);
+          return;
+        }
+
+        // Check for regular Supabase auth session
         const { data: { session } } = await supabase.auth.getSession();
 
         if (!session) {
@@ -90,7 +102,7 @@ function UpdatePasswordForm() {
     };
 
     checkAuthentication();
-  }, [supabase, router]);
+  }, [supabase, router, searchParams]);
 
   /**
    * Get password strength indicator
@@ -170,7 +182,44 @@ function UpdatePasswordForm() {
     setErrors({});
 
     try {
-      // Update password with Supabase
+      // Check for SMTP reset token
+      const token = searchParams.get("token");
+      const email = searchParams.get("email");
+
+      if (token && email) {
+        // Use SMTP reset flow
+        const smtpResponse = await fetch("/api/auth/smtp-reset-password", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            token,
+            newPassword: formData.password,
+          }),
+        });
+
+        const smtpData = await smtpResponse.json();
+
+        if (!smtpResponse.ok) {
+          setErrors({
+            general: smtpData.error || "เกิดข้อผิดพลาดในการอัปเดตรหัสผ่าน",
+          });
+          return;
+        }
+
+        // Password update successful
+        setIsSuccess(true);
+        
+        // Redirect to login after 3 seconds
+        setTimeout(() => {
+          router.push("/login");
+        }, 3000);
+        return;
+      }
+
+      // Regular Supabase auth flow
       const { error } = await supabase.auth.updateUser({
         password: formData.password
       });

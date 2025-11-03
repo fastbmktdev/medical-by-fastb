@@ -82,10 +82,31 @@ function ForgetPasswordPageContent() {
       );
 
       if (error) {
-        if (error.message.includes("rate limit")) {
-          setErrors({
-            general: "คุณส่งคำขอบ่อยเกินไป กรุณารอสักครู่แล้วลองใหม่",
+        // Check for rate limit or email sending issues
+        if (error.message.includes("rate limit") || error.message.includes("confirmation email") || error.message.includes("429")) {
+          console.log("⚠️ Using SMTP fallback for password reset");
+          
+          // Use SMTP fallback via API
+          const smtpResponse = await fetch("/api/auth/smtp-reset-password", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: formData.email,
+            }),
           });
+
+          if (smtpResponse.ok) {
+            setIsSuccess(true);
+            return;
+          } else {
+            const smtpData = await smtpResponse.json();
+            setErrors({
+              general: smtpData.error || "ไม่สามารถส่งอีเมลรีเซ็ตรหัสผ่านได้ กรุณาลองใหม่อีกครั้ง",
+            });
+            return;
+          }
         } else if (error.message.includes("Invalid email")) {
           setErrors({
             general: "อีเมลไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง",
