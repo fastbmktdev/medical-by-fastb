@@ -48,13 +48,13 @@ export function GamificationProgressBar({
   return (
     <div className={className}>
       {(label || showPercentage) && (
-        <div className="flex justify-between text-sm text-gray-600 mb-1">
+        <div className="flex justify-between text-sm text-zinc-300 mb-1">
           {label && <span>{label}</span>}
           {showPercentage && <span>{Math.round(clampedProgress)}%</span>}
         </div>
       )}
       
-      <div className={`w-full bg-gray-200 rounded-full ${getSizeClasses()}`}>
+      <div className={`w-full bg-zinc-800 rounded-full ${getSizeClasses()}`}>
         <div
           className={`${getSizeClasses()} rounded-full transition-all duration-500 ${getBarClasses()}`}
           style={{ width: `${clampedProgress}%` }}

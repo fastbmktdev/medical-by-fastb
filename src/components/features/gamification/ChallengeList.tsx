@@ -65,10 +65,10 @@ export default function ChallengeList({ challenges, className = '' }: ChallengeL
         const typeIcon = challengeData.challenge_type === 'daily' ? '📅' : 
                          challengeData.challenge_type === 'weekly' ? '📆' : 
                          challengeData.challenge_type === 'monthly' ? '🗓️' : '🎯';
-        const typeColorClass = challengeData.challenge_type === 'daily' ? 'bg-blue-100 text-blue-800' : 
-                               challengeData.challenge_type === 'weekly' ? 'bg-purple-100 text-purple-800' : 
-                               challengeData.challenge_type === 'monthly' ? 'bg-green-100 text-green-800' : 
-                               'bg-orange-100 text-orange-800';
+        const typeColorClass = challengeData.challenge_type === 'daily' ? 'bg-blue-900/50 text-blue-300 border border-blue-700' : 
+                               challengeData.challenge_type === 'weekly' ? 'bg-purple-900/50 text-purple-300 border border-purple-700' : 
+                               challengeData.challenge_type === 'monthly' ? 'bg-green-900/50 text-green-300 border border-green-700' : 
+                               'bg-orange-900/50 text-orange-300 border border-orange-700';
         const isProgress = !!progress;
         const progressPercentage = progress?.progress_percentage || 0;
         const isCompleted = progress?.is_completed || false;
@@ -84,14 +84,14 @@ export default function ChallengeList({ challenges, className = '' }: ChallengeL
                   {typeIcon}
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">
+                  <h3 className="font-semibold text-white">
                     {challengeData.title}
                   </h3>
                   <div className="flex items-center space-x-2 mt-1">
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${typeColorClass}`}>
                       {challengeData.challenge_type}
                     </span>
-                    <span className="text-sm text-gray-600">
+                    <span className="text-sm text-zinc-400">
                       {challengeData.points_reward} คะแนน
                     </span>
                   </div>
@@ -109,7 +109,7 @@ export default function ChallengeList({ challenges, className = '' }: ChallengeL
               )}
             </div>
 
-            <p className="text-gray-600 text-sm mb-3">
+            <p className="text-zinc-300 text-sm mb-3">
               {challengeData.description}
             </p>
 
@@ -123,7 +123,7 @@ export default function ChallengeList({ challenges, className = '' }: ChallengeL
                   variant="default"
                 />
                 {isCompleted && (
-                  <div className="mt-2 text-green-600 text-sm font-medium">
+                  <div className="mt-2 text-green-400 text-sm font-medium">
                     ✅ เสร็จสิ้นแล้ว!
                   </div>
                 )}
@@ -131,7 +131,7 @@ export default function ChallengeList({ challenges, className = '' }: ChallengeL
             )}
 
             {/* Challenge Dates */}
-            <div className="flex items-center justify-between text-sm text-gray-500">
+            <div className="flex items-center justify-between text-sm text-zinc-500">
               <div className="flex items-center space-x-4">
                 {challengeData.start_date && (
                   <span>

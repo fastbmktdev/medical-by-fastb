@@ -305,7 +305,7 @@ create_test_users() {
         echo "  Partner2: partner2@muaythai.com / password123"
         echo ""
         log_info "Next steps:"
-        echo "  1. Set admin role: Use scripts/admin-management.sql"
+        echo "  1. Set admin role: Use scripts/sql/admin-management.sql"
         echo "  2. Seed sample data: Run with --seed-only flag"
     fi
 }
@@ -484,7 +484,7 @@ main() {
     echo ""
     log_info "Next steps:"
     echo "  1. Start the development server: npm run dev"
-    echo "  2. Set admin roles: Use scripts/admin-management.sql"
+    echo "  2. Set admin roles: Use scripts/sql/admin-management.sql"
     echo "  3. Check database utilities: npm run db:check"
     echo ""
 }

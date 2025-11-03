@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button, Avatar, Chip } from '@heroui/react';
 import {
-  ArrowRightOnRectangleIcon,
+  ArrowRightStartOnRectangleIcon,
   BriefcaseIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
@@ -148,7 +148,7 @@ export default function SidebarContent({
           onPress={handleLogout}
           variant="flat"
           color="danger"
-          startContent={<ArrowRightOnRectangleIcon className="w-5 h-5" />}
+          startContent={<ArrowRightStartOnRectangleIcon className="w-5 h-5" />}
           className="w-full font-semibold"
         >
           ออกจากระบบ

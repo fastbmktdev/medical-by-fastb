@@ -73,7 +73,7 @@ export default function BadgeCollection({ badges, showAll = true, className = ''
             className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
               filter === 'all' 
                 ? 'bg-blue-600 text-white' 
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700 border border-zinc-700'
             }`}
           >
             ทั้งหมด
@@ -83,7 +83,7 @@ export default function BadgeCollection({ badges, showAll = true, className = ''
             className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
               filter === 'earned' 
                 ? 'bg-green-600 text-white' 
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700 border border-zinc-700'
             }`}
           >
             ได้รับแล้ว
@@ -93,7 +93,7 @@ export default function BadgeCollection({ badges, showAll = true, className = ''
             className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
               filter === 'available' 
                 ? 'bg-orange-600 text-white' 
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700 border border-zinc-700'
             }`}
           >
             ยังไม่ได้รับ
@@ -106,10 +106,10 @@ export default function BadgeCollection({ badges, showAll = true, className = ''
           const isEarned = earnedBadgeIds.has(badge.id);
           const earnedAt = badges.find(b => b.badge_id === badge.id)?.earned_at;
           // Calculate display properties directly instead of using hook in callback
-          const rarityColorClass = badge.rarity === 'common' ? 'bg-gray-100 text-gray-800' : 
-                                   badge.rarity === 'rare' ? 'bg-blue-100 text-blue-800' : 
-                                   badge.rarity === 'epic' ? 'bg-purple-100 text-purple-800' : 
-                                   'bg-yellow-100 text-yellow-800';
+          const rarityColorClass = badge.rarity === 'common' ? 'bg-zinc-800 text-zinc-300 border border-zinc-700' : 
+                                   badge.rarity === 'rare' ? 'bg-blue-900/50 text-blue-300 border border-blue-700' : 
+                                   badge.rarity === 'epic' ? 'bg-purple-900/50 text-purple-300 border border-purple-700' : 
+                                   'bg-yellow-900/50 text-yellow-300 border border-yellow-700';
           const rarityIcon = badge.rarity === 'common' ? '🥉' : badge.rarity === 'rare' ? '🥈' : badge.rarity === 'epic' ? '🥇' : '💎';
           const formattedEarnedDate = earnedAt ? new Date(earnedAt).toLocaleDateString('th-TH') : null;
           
@@ -119,8 +119,8 @@ export default function BadgeCollection({ badges, showAll = true, className = ''
               variant={isEarned ? 'bordered' : 'default'}
               className={`relative ${
                 isEarned 
-                  ? 'border-green-300 bg-green-50' 
-                  : 'hover:border-blue-300'
+                  ? 'border-green-600/50 bg-green-950/30' 
+                  : 'hover:border-blue-600/50'
               }`}
             >
               {/* Badge Icon */}
@@ -145,21 +145,21 @@ export default function BadgeCollection({ badges, showAll = true, className = ''
 
               {/* Badge Info */}
               <div className="text-center">
-                <h3 className="font-semibold text-gray-900 mb-1">
+                <h3 className="font-semibold text-white mb-1">
                   {badge.name}
                 </h3>
-                <p className="text-sm text-gray-600 mb-2">
+                <p className="text-sm text-zinc-400 mb-2">
                   {badge.description}
                 </p>
                 
                 {/* Points Required */}
-                <div className="text-xs text-gray-500 mb-2">
+                <div className="text-xs text-zinc-500 mb-2">
                   ต้องการ {badge.points_required} คะแนน
                 </div>
 
                 {/* Earned Status */}
                 {isEarned && formattedEarnedDate && (
-                  <div className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                  <div className="bg-green-900/50 text-green-300 text-xs px-2 py-1 rounded-full border border-green-700/30">
                     ได้รับเมื่อ {formattedEarnedDate}
                   </div>
                 )}
@@ -168,8 +168,8 @@ export default function BadgeCollection({ badges, showAll = true, className = ''
               {/* Earned Overlay */}
               {isEarned && (
                 <div className="absolute top-2 right-2">
-                  <div className="bg-green-500 rounded-full p-1">
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <div className="bg-green-600 rounded-full p-1">
+                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                   </div>

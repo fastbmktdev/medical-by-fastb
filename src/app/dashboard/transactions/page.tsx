@@ -35,70 +35,70 @@ function TransactionsContent() {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState('all');
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   useEffect(() => {
     async function loadUser() {
       const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
+      
+      if (user) {
+        // Load bookings as transactions
+        await loadTransactions(user.id);
+      }
+      
       setIsLoading(false);
     }
     loadUser();
   }, [supabase]);
+  
+  const loadTransactions = async (userId: string) => {
+    try {
+      const { data: bookingsData } = await supabase
+        .from('bookings')
+        .select('*, gyms:gym_id(gym_name)')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+      
+      if (bookingsData) {
+        const mappedTransactions: Transaction[] = bookingsData.map(booking => {
+          const gymName = Array.isArray(booking.gyms) ? booking.gyms[0]?.gym_name : booking.gyms?.gym_name || 'Unknown Gym';
+          
+          let type: 'payment' | 'refund' | 'topup' = 'payment';
+          if (booking.payment_status === 'refunded') {
+            type = 'refund';
+          }
+          
+          let status: 'completed' | 'pending' | 'failed' = 'pending';
+          if (booking.payment_status === 'paid') {
+            status = 'completed';
+          } else if (booking.payment_status === 'failed') {
+            status = 'failed';
+          }
+          
+          return {
+            id: booking.booking_number,
+            date: booking.created_at,
+            type,
+            description: booking.package_name ? `จ่ายเงินค่า ${booking.package_name} - ${gymName}` : 'Unknown',
+            amount: booking.payment_status === 'refunded' ? Number(booking.price_paid || 0) : -Number(booking.price_paid || 0),
+            status,
+            reference: booking.booking_number,
+          };
+        });
+        
+        setTransactions(mappedTransactions);
+      }
+    } catch (error) {
+      console.error('Error loading transactions:', error);
+    }
+  };
 
   const menuItems: MenuItem[] = [
     { label: 'การจองของฉัน', href: '/dashboard/bookings', icon: CalendarIcon },
     { label: 'รายการโปรด', href: '/dashboard/favorites', icon: HeartIcon },
     { label: 'ประวัติการเงิน', href: '/dashboard/transactions', icon: BanknotesIcon },
     { label: 'โปรไฟล์', href: '/dashboard/profile', icon: UserIcon },
-  ];
-
-  // Mock transactions data
-  const mockTransactions: Transaction[] = [
-    {
-      id: 'TXN001',
-      date: '2024-10-20',
-      type: 'payment',
-      description: 'จ่ายเงินค่า Private Class - Tiger Muay Thai Gym',
-      amount: -500,
-      status: 'completed',
-      reference: 'BK001',
-    },
-    {
-      id: 'TXN002',
-      date: '2024-10-19',
-      type: 'topup',
-      description: 'เติมเงินเข้ากระเป๋า',
-      amount: 2000,
-      status: 'completed',
-      reference: 'TP001',
-    },
-    {
-      id: 'TXN003',
-      date: '2024-10-15',
-      type: 'payment',
-      description: 'จ่ายเงินค่าคลาสกลุ่ม - Fairtex Training Center',
-      amount: -300,
-      status: 'completed',
-      reference: 'BK002',
-    },
-    {
-      id: 'TXN004',
-      date: '2024-10-10',
-      type: 'refund',
-      description: 'คืนเงินจากการยกเลิกการจอง',
-      amount: 400,
-      status: 'completed',
-      reference: 'RF001',
-    },
-    {
-      id: 'TXN005',
-      date: '2024-10-05',
-      type: 'payment',
-      description: 'จ่ายเงินค่า Private Class - Yokkao Training Center',
-      amount: -600,
-      status: 'pending',
-      reference: 'BK003',
-    },
   ];
 
   const getTypeChip = (type: Transaction['type']) => {
@@ -169,22 +169,22 @@ function TransactionsContent() {
     );
   };
 
-  const filteredTransactions = mockTransactions.filter(transaction => {
+  const filteredTransactions = transactions.filter(transaction => {
     if (selectedTab === 'all') return true;
     return transaction.type === selectedTab;
   });
 
-  const totalIncome = mockTransactions
+  const totalIncome = transactions
     .filter(t => t.amount > 0 && t.status === 'completed')
     .reduce((sum, t) => sum + t.amount, 0);
 
   const totalExpense = Math.abs(
-    mockTransactions
+    transactions
       .filter(t => t.amount < 0 && t.status === 'completed')
       .reduce((sum, t) => sum + t.amount, 0)
   );
 
-  const balance = 2000; // Mock balance
+  const balance = totalIncome - totalExpense;
 
   if (isLoading) {
     return (

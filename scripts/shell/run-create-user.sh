@@ -73,7 +73,7 @@ create_test_users() {
 
     # Run the create user script
     print_status "Running user creation script..."
-    node scripts/create-user.js --test-users
+    node scripts/node/create-user.js --test-users
 }
 
 # Function to create a single user
@@ -100,13 +100,13 @@ create_single_user() {
     role=${role:-"authenticated"}
 
     print_status "Creating user: $email"
-    node scripts/create-user.js --email "$email" --password "$password" --full-name "$full_name" --username "$username" --phone "$phone" --role "$role"
+    node scripts/node/create-user.js --email "$email" --password "$password" --full-name "$full_name" --username "$username" --phone "$phone" --role "$role"
 }
 
 # Function to list all users
 list_users() {
     print_header "Listing All Users"
-    node scripts/create-user.js --list-users
+    node scripts/node/create-user.js --list-users
 }
 
 # Function to check if user exists
@@ -120,7 +120,7 @@ check_user() {
     fi
 
     print_header "Checking User"
-    node scripts/create-user.js --check "$email"
+    node scripts/node/create-user.js --check "$email"
 }
 
 # Function to get user details
@@ -134,7 +134,7 @@ get_user_details() {
     fi
 
     print_header "Getting User Details"
-    node scripts/create-user.js --details "$email"
+    node scripts/node/create-user.js --details "$email"
 }
 
 # Function to run SQL script
@@ -156,7 +156,7 @@ run_sql_script() {
     fi
 
     print_status "Running SQL script to create user functions..."
-    psql "$DATABASE_URL" -f scripts/create-user.sql
+    psql "$DATABASE_URL" -f scripts/sql/create-user.sql
 }
 
 # Function to show help

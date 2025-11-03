@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { MagnifyingGlassIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 
@@ -8,8 +8,6 @@ export default function QuickSearchBar() {
   const router = useRouter();
   const [activeCategory, setActiveCategory] = useState("gyms");
   const [searchQuery, setSearchQuery] = useState("");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const categories = [
     { id: "gyms", label: "Gyms/Classes", icon: "🥊" },
@@ -37,17 +35,6 @@ export default function QuickSearchBar() {
     router.push(`${path}${queryString ? `?${queryString}` : ""}`);
   };
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsDropdownOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [dropdownRef]);
   
   const selectedCategory = categories.find(c => c.id === activeCategory);
 
@@ -57,31 +44,26 @@ export default function QuickSearchBar() {
         <div className="bg-zinc-950 shadow-2xl p-2 border border-zinc-800 rounded-2xl">
           <form onSubmit={handleSearch} className="flex items-center gap-2">
             <div 
-              className="relative" 
-              ref={dropdownRef}
-              onMouseEnter={() => setIsDropdownOpen(true)}
-              onMouseLeave={() => setIsDropdownOpen(false)}
+              className="relative group" 
             >
               <div className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 px-4 py-3 rounded-lg transition-colors cursor-pointer">
                 <span className="text-xl">{selectedCategory?.icon}</span>
                 <span className="font-semibold">{selectedCategory?.label}</span>
-                <ChevronDownIcon className={`h-5 w-5 text-zinc-400 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                <ChevronDownIcon className="h-5 w-5 text-zinc-400 transition-transform group-hover:rotate-180" />
               </div>
-              {isDropdownOpen && (
-                <div className="absolute bg-zinc-800 shadow-lg mt-2 border border-zinc-700 rounded-lg w-full z-50">
-                  {categories.map((category) => (
-                    <button
-                      key={category.id}
-                      type="button"
-                      onClick={() => setActiveCategory(category.id)}
-                      className="flex items-center gap-2 hover:bg-zinc-700 px-4 py-2 w-full text-left"
-                    >
-                      <span className="text-xl">{category.icon}</span>
-                      <span>{category.label}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
+              <div className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 absolute bg-zinc-800 shadow-lg pt-2 border border-zinc-700 rounded-lg w-full z-50">
+                {categories.map((category) => (
+                  <button
+                    key={category.id}
+                    type="button"
+                    onClick={() => setActiveCategory(category.id)}
+                    className="flex items-center gap-2 hover:bg-zinc-700 px-4 py-2 w-full text-left"
+                  >
+                    <span className="text-xl">{category.icon}</span>
+                    <span>{category.label}</span>
+                  </button>
+                ))}
+              </div>
             </div>
             <div className="relative flex-grow">
               <MagnifyingGlassIcon className="top-1/2 left-4 absolute w-6 h-6 text-zinc-400 -translate-y-1/2" />

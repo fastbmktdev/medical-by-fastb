@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import {
   ChevronDownIcon,
   UserCircleIcon,
-  ArrowRightOnRectangleIcon,
+  ArrowRightStartOnRectangleIcon,
   HomeIcon,
   BuildingStorefrontIcon,
   ShieldCheckIcon,
@@ -40,9 +40,6 @@ export default function Header() {
 
   // UI state
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLangDropdownOpen, setLangDropdownOpen] = useState(false);
-  const [isInfoMenuOpen, setInfoMenuOpen] = useState(false);
-  const [isUserMenuOpen, setUserMenuOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState("TH");
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [userRole, setUserRole] = useState<UserRole | null>(null);
@@ -85,7 +82,6 @@ export default function Header() {
   const handleLogout = async () => {
     setIsLoggingOut(true);
     await signOut();
-    setUserMenuOpen(false);
     setIsMobileMenuOpen(false);
     setIsLoggingOut(false);
     router.push("/");
@@ -125,31 +121,22 @@ export default function Header() {
             <nav className="hidden md:flex items-center gap-6 text-sm">
               {navLinks.map((link) =>
                 link.dropdown ? (
-                  <div 
-                    key={link.text} 
-                    className="relative"
-                    onMouseEnter={() => setInfoMenuOpen(true)}
-                    onMouseLeave={() => setInfoMenuOpen(false)}
-                  >
+                  <div key={link.text} className="relative group">
                     <div className="flex items-center gap-1 hover:text-red-500 transition-colors cursor-pointer">
                       {link.text}
                       <ChevronDownIcon className="w-4 h-4" />
                     </div>
-                    {isInfoMenuOpen && (
-                      <div className="right-0 absolute bg-zinc-950 shadow-lg mt-2 border border-white/10 rounded-md w-48 z-50">
-                        <div className="py-1">
-                          {link.dropdown.map((item) => (
-                            <Link
-                              key={item.href}
-                              href={item.href}
-                              className="block hover:bg-white/5 px-4 py-2 text-white/80 text-sm"
-                            >
-                              {item.text}
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                    <div className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 absolute right-0 bg-zinc-950 shadow-lg border border-white/10 rounded-md w-48 z-50">
+                      {link.dropdown.map((item) => (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          className="block hover:bg-white/5 px-4 py-2 text-white/80 text-sm"
+                        >
+                          {item.text}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 ) : (
                   <Link
@@ -167,99 +154,88 @@ export default function Header() {
           <div className="flex items-center gap-2">
             {/* User Menu (Desktop) */}
             {user ? (
-              <div 
-                className="hidden md:block relative"
-                onMouseEnter={() => setUserMenuOpen(true)}
-                onMouseLeave={() => setUserMenuOpen(false)}
-              >
-                <div className="flex items-center gap-2 hover:bg-white/10 px-3 border border-white/20 rounded-lg h-10 transition-all duration-200 cursor-pointer group">
+              <div className="hidden md:block relative group">
+                <div className="flex items-center gap-2 hover:bg-white/10 px-3 border border-white/20 rounded-lg h-10 transition-all duration-200 cursor-pointer">
                   <UserCircleIcon className="w-5 h-5 group-hover:text-red-400 transition-colors" />
                   <span className="max-w-[100px] text-sm truncate group-hover:text-white transition-colors">
                     {user.user_metadata?.full_name || user.email?.split("@")[0]}
                   </span>
-                  <ChevronDownIcon className={`w-4 h-4 transition-transform duration-200 ${isUserMenuOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDownIcon className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" />
                 </div>
-                {isUserMenuOpen && (
-                  <div 
-                    className="right-0 absolute bg-zinc-950/95 backdrop-blur-md shadow-2xl mt-2 border border-white/20 rounded-xl w-64 z-50 overflow-hidden"
-                    onMouseEnter={() => setUserMenuOpen(true)}
-                    onMouseLeave={() => setUserMenuOpen(false)}
-                  >
-                    <div className="py-2">
-                      {/* User Info */}
-                      <div className="px-4 py-3 border-white/10 border-b bg-gradient-to-r from-zinc-800/30 to-zinc-700/30">
-                        <p className="font-semibold text-sm truncate">
-                          {user.user_metadata?.full_name || "ผู้ใช้งาน"}
-                        </p>
-                        <p className="text-zinc-400 text-xs truncate mt-1">
-                          {user.email}
-                        </p>
-                        {userRole && (
-                          <div className="flex items-center gap-1 mt-2">
-                            <span className="inline-block bg-gradient-to-r from-red-500/20 to-red-600/20 px-3 py-1 rounded-full text-red-400 text-xs font-medium border border-red-500/30">
-                              {ROLE_NAMES[userRole]}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Dashboard Link - Role-based, but check application status */}
-                      {userRole && (
-                        <Link
-                          href={getDashboardPath(userRole)}
-                          className="group flex items-center gap-3 hover:bg-gradient-to-r hover:from-red-500/10 hover:to-red-600/10 px-4 py-3 text-zinc-300 hover:text-white text-sm transition-all duration-200"
-                        >
-                          {userRole === "admin" && (
-                            <ShieldCheckIcon className="w-5 h-5 group-hover:text-red-400 transition-colors" />
-                          )}
-                          {userRole === "partner" && (
-                            <BuildingStorefrontIcon className="w-5 h-5 group-hover:text-red-400 transition-colors" />
-                          )}
-                          {userRole === "authenticated" && (
-                            <HomeIcon className="w-5 h-5 group-hover:text-red-400 transition-colors" />
-                          )}
-                          <span className="font-medium">แดชบอร์ด</span>
-                        </Link>
-                      )}
-
-                      {/* Apply for Partner - Show only for authenticated users without pending/approved application */}
-                      {userRole === "authenticated" && !applicationStatus && (
-                        <Link
-                          href="/partner/apply"
-                          className="group flex items-center gap-3 hover:bg-gradient-to-r hover:from-blue-500/10 hover:to-blue-600/10 px-4 py-3 text-zinc-300 hover:text-white text-sm transition-all duration-200"
-                        >
-                          <BuildingStorefrontIcon className="w-5 h-5 group-hover:text-blue-400 transition-colors" />
-                          <span className="font-medium">สมัคร Partner</span>
-                        </Link>
-                      )}
-
-                      {/* Show Application Status if pending */}
-                      {userRole === "authenticated" &&
-                        applicationStatus === "pending" && (
-                          <div className="px-4 py-3 border-white/10 border-t bg-gradient-to-r from-yellow-500/10 to-orange-500/10">
-                            <div className="flex items-center gap-2">
-                              <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
-                              <p className="text-yellow-400 text-xs font-medium">
-                                📋 รอการอนุมัติ Partner
-                              </p>
-                            </div>
-                          </div>
-                        )}
-
-                      {/* Logout */}
-                      <button
-                        onClick={handleLogout}
-                        disabled={isLoggingOut}
-                        className="group flex items-center gap-3 hover:bg-gradient-to-r hover:from-red-500/10 hover:to-red-600/10 disabled:opacity-50 px-4 py-3 w-full text-zinc-300 hover:text-white text-sm text-left transition-all duration-200"
-                       aria-label="Button">
-                        <ArrowRightOnRectangleIcon className="w-5 h-5 group-hover:text-red-400 transition-colors" />
-                        <span className="font-medium">
-                          {isLoggingOut ? "กำลังออกจากระบบ..." : "ออกจากระบบ"}
+                <div className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 right-0 absolute bg-zinc-950/95 backdrop-blur-md shadow-2xl border border-white/20 rounded-xl w-64 z-50 overflow-hidden">
+                  {/* User Info */}
+                  <div className="px-4 py-3 border-white/10 border-b bg-gradient-to-r from-zinc-800/30 to-zinc-700/30">
+                    <p className="font-semibold text-sm truncate">
+                      {user.user_metadata?.full_name || "ผู้ใช้งาน"}
+                    </p>
+                    <p className="text-zinc-400 text-xs truncate mt-1">
+                      {user.email}
+                    </p>
+                    {userRole && (
+                      <div className="flex items-center gap-1 mt-2">
+                        <span className="inline-block bg-gradient-to-r from-red-500/20 to-red-600/20 px-3 py-1 rounded-full text-red-400 text-xs font-medium border border-red-500/30">
+                          {ROLE_NAMES[userRole]}
                         </span>
-                      </button>
-                    </div>
+                      </div>
+                    )}
                   </div>
-                )}
+
+                  {/* Dashboard Link - Role-based, but check application status */}
+                  {userRole && (
+                    <Link
+                      href={getDashboardPath(userRole)}
+                      className="group flex items-center gap-3 hover:bg-gradient-to-r hover:from-red-500/10 hover:to-red-600/10 px-4 py-3 text-zinc-300 hover:text-white text-sm transition-all duration-200"
+                    >
+                      {userRole === "admin" && (
+                        <ShieldCheckIcon className="w-5 h-5 group-hover:text-red-400 transition-colors" />
+                      )}
+                      {userRole === "partner" && (
+                        <BuildingStorefrontIcon className="w-5 h-5 group-hover:text-red-400 transition-colors" />
+                      )}
+                      {userRole === "authenticated" && (
+                        <HomeIcon className="w-5 h-5 group-hover:text-red-400 transition-colors" />
+                      )}
+                      <span className="font-medium">แดชบอร์ด</span>
+                    </Link>
+                  )}
+
+                  {/* Apply for Partner - Show only for authenticated users without pending/approved application */}
+                  {userRole === "authenticated" && !applicationStatus && (
+                    <Link
+                      href="/partner/apply"
+                      className="group flex items-center gap-3 hover:bg-gradient-to-r hover:from-blue-500/10 hover:to-blue-600/10 px-4 py-3 text-zinc-300 hover:text-white text-sm transition-all duration-200"
+                    >
+                      <BuildingStorefrontIcon className="w-5 h-5 group-hover:text-blue-400 transition-colors" />
+                      <span className="font-medium">สมัคร Partner</span>
+                    </Link>
+                  )}
+
+                  {/* Show Application Status if pending */}
+                  {userRole === "authenticated" &&
+                    applicationStatus === "pending" && (
+                      <div className="px-4 py-3 border-white/10 border-t bg-gradient-to-r from-yellow-500/10 to-orange-500/10">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+                          <p className="text-yellow-400 text-xs font-medium">
+                            📋 รอการอนุมัติ Partner
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                  {/* Logout */}
+                  <button
+                    onClick={handleLogout}
+                    disabled={isLoggingOut}
+                    className="group flex items-center gap-3 hover:bg-gradient-to-r hover:from-red-500/10 hover:to-red-600/10 disabled:opacity-50 px-4 py-3 w-full text-zinc-300 hover:text-white text-sm text-left transition-all duration-200"
+                    aria-label="Button"
+                  >
+                    <ArrowRightStartOnRectangleIcon className="w-5 h-5 group-hover:text-red-400 transition-colors" />
+                    <span className="font-medium">
+                      {isLoggingOut ? "กำลังออกจากระบบ..." : "ออกจากระบบ"}
+                    </span>
+                  </button>
+                </div>
               </div>
             ) : (
               <Link
@@ -272,38 +248,32 @@ export default function Header() {
             )}
 
             {/* Language Switcher */}
-            <div 
-              className="relative"
-              onMouseEnter={() => setLangDropdownOpen(true)}
-              onMouseLeave={() => setLangDropdownOpen(false)}
-            >
+            <div className="relative group">
               <div className="hidden md:inline-flex justify-center items-center hover:bg-white/5 border border-white/20 rounded w-12 h-10 font-semibold text-sm cursor-pointer">
                 {currentLang}
               </div>
-              {isLangDropdownOpen && (
-                <div className="right-0 absolute bg-zinc-950 shadow-lg mt-2 border border-white/10 rounded-md w-32 z-50">
-                  <div className="py-1">
-                    <button
-                      onClick={() => setCurrentLang("TH")}
-                      className="block hover:bg-white/5 px-4 py-2 w-full text-white/80 text-sm text-left"
-                    >
-                      ไทย (TH)
-                    </button>
-                    <button
-                      onClick={() => setCurrentLang("EN")}
-                      className="block hover:bg-white/5 px-4 py-2 w-full text-white/80 text-sm text-left"
-                    >
-                      English (EN)
-                    </button>
-                    <button
-                      onClick={() => setCurrentLang("JP")}
-                      className="block hover:bg-white/5 px-4 py-2 w-full text-white/80 text-sm text-left"
-                    >
-                      日本語 (JP)
-                    </button>
-                  </div>
+              <div className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 right-0 absolute bg-zinc-950 shadow-lg pt-2 border border-white/10 rounded-md w-32 z-50">
+                <div className="py-1">
+                  <button
+                    onClick={() => setCurrentLang("TH")}
+                    className="block hover:bg-white/5 px-4 py-2 w-full text-white/80 text-sm text-left"
+                  >
+                    ไทย (TH)
+                  </button>
+                  <button
+                    onClick={() => setCurrentLang("EN")}
+                    className="block hover:bg-white/5 px-4 py-2 w-full text-white/80 text-sm text-left"
+                  >
+                    English (EN)
+                  </button>
+                  <button
+                    onClick={() => setCurrentLang("JP")}
+                    className="block hover:bg-white/5 px-4 py-2 w-full text-white/80 text-sm text-left"
+                  >
+                    日本語 (JP)
+                  </button>
                 </div>
-              )}
+              </div>
             </div>
 
             <button
@@ -441,8 +411,9 @@ export default function Header() {
                     onClick={handleLogout}
                     disabled={isLoggingOut}
                     className="flex justify-center items-center gap-2 bg-brand-primary hover:bg-red-700 disabled:bg-red-400 px-4 py-2 rounded w-full font-medium text-sm transition-colors"
-                   aria-label="Button">
-                    <ArrowRightOnRectangleIcon className="w-5 h-5" />
+                    aria-label="Button"
+                  >
+                    <ArrowRightStartOnRectangleIcon className="w-5 h-5" />
                     <span>
                       {isLoggingOut ? "กำลังออกจากระบบ..." : "ออกจากระบบ"}
                     </span>

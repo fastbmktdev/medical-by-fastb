@@ -12,7 +12,6 @@ import {
 } from "@heroicons/react/24/outline";
 import { AuthLayout } from "@/components/compositions/layouts";
 import { Button } from "@/components/shared";
-import { SupabaseDebug } from "./debug";
 
 /**
  * Interface for login form data
@@ -411,9 +410,6 @@ function LoginForm() {
           </Link>
         </p>
       </div>
-
-      {/* Debug Component (Development Only) */}
-      <SupabaseDebug />
     </AuthLayout>
   );
 }

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import {
   ChevronDownIcon,
   UserCircleIcon,
-  ArrowRightOnRectangleIcon,
+  ArrowRightStartOnRectangleIcon,
   HomeIcon,
   BuildingStorefrontIcon,
   ShieldCheckIcon,
@@ -41,7 +41,6 @@ export default function Header() {
   // UI state
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLangDropdownOpen, setLangDropdownOpen] = useState(false);
-  const [isInfoMenuOpen, setInfoMenuOpen] = useState(false);
   const [isUserMenuOpen, setUserMenuOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState("TH");
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -84,18 +83,18 @@ export default function Header() {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      const userMenu = target.closest('[data-user-menu]');
+      const userMenu = target.closest("[data-user-menu]");
       if (isUserMenuOpen && !userMenu) {
         setUserMenuOpen(false);
       }
     };
 
     if (isUserMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isUserMenuOpen]);
 
@@ -146,31 +145,22 @@ export default function Header() {
             <nav className="hidden md:flex items-center gap-6 text-sm">
               {navLinks.map((link) =>
                 link.dropdown ? (
-                  <div 
-                    key={link.text} 
-                    className="relative"
-                    onMouseEnter={() => setInfoMenuOpen(true)}
-                    onMouseLeave={() => setInfoMenuOpen(false)}
-                  >
+                  <div key={link.text} className="relative group">
                     <div className="flex items-center gap-1 hover:text-red-500 transition-colors cursor-pointer">
                       {link.text}
                       <ChevronDownIcon className="w-4 h-4" />
                     </div>
-                    {isInfoMenuOpen && (
-                      <div className="right-0 absolute bg-zinc-950 shadow-lg mt-2 border border-white/10 rounded-md w-48 z-50">
-                        <div className="py-1">
-                          {link.dropdown.map((item) => (
-                            <Link
-                              key={item.href}
-                              href={item.href}
-                              className="block hover:bg-white/5 px-4 py-2 text-white/80 text-sm"
-                            >
-                              {item.text}
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                    <div className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 absolute right-0 bg-zinc-950 shadow-lg border border-white/10 rounded-md w-48 z-50">
+                      {link.dropdown.map((item) => (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          className="block hover:bg-white/5 px-4 py-2 text-white/80 text-sm"
+                        >
+                          {item.text}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 ) : (
                   <Link
@@ -188,10 +178,7 @@ export default function Header() {
           <div className="flex items-center gap-2">
             {/* User Menu (Desktop) */}
             {user ? (
-              <div 
-                className="hidden md:block relative"
-                data-user-menu
-              >
+              <div className="hidden md:block relative" data-user-menu>
                 <button
                   onClick={() => setUserMenuOpen(!isUserMenuOpen)}
                   className="flex items-center gap-2 hover:bg-white/10 px-3 border border-white/20 rounded-lg h-10 transition-all duration-200 cursor-pointer group w-full"
@@ -204,7 +191,7 @@ export default function Header() {
                   </span>
                 </button>
                 {isUserMenuOpen && (
-                  <div 
+                  <div
                     className="right-0 absolute bg-zinc-950/95 backdrop-blur-md shadow-2xl top-full mt-2 border border-white/20 rounded-xl w-64 z-50 overflow-hidden"
                     data-user-menu
                   >
@@ -276,8 +263,9 @@ export default function Header() {
                         onClick={handleLogout}
                         disabled={isLoggingOut}
                         className="group flex items-center gap-3 hover:bg-gradient-to-r hover:from-red-500/10 hover:to-red-600/10 disabled:opacity-50 px-4 py-3 w-full text-zinc-300 hover:text-white text-sm text-left transition-all duration-200"
-                       aria-label="Button">
-                        <ArrowRightOnRectangleIcon className="w-5 h-5 group-hover:text-red-400 transition-colors" />
+                        aria-label="Button"
+                      >
+                        <ArrowRightStartOnRectangleIcon className="w-5 h-5 group-hover:text-red-400 transition-colors" />
                         <span className="font-medium">
                           {isLoggingOut ? "กำลังออกจากระบบ..." : "ออกจากระบบ"}
                         </span>
@@ -297,7 +285,7 @@ export default function Header() {
             )}
 
             {/* Language Switcher */}
-            <div 
+            <div
               className="relative"
               onMouseEnter={() => setLangDropdownOpen(true)}
               onMouseLeave={() => setLangDropdownOpen(false)}
@@ -466,8 +454,9 @@ export default function Header() {
                     onClick={handleLogout}
                     disabled={isLoggingOut}
                     className="flex justify-center items-center gap-2 bg-brand-primary hover:bg-red-700 disabled:bg-red-400 px-4 py-2 rounded w-full font-medium text-sm transition-colors"
-                   aria-label="Button">
-                    <ArrowRightOnRectangleIcon className="w-5 h-5" />
+                    aria-label="Button"
+                  >
+                    <ArrowRightStartOnRectangleIcon className="w-5 h-5" />
                     <span>
                       {isLoggingOut ? "กำลังออกจากระบบ..." : "ออกจากระบบ"}
                     </span>

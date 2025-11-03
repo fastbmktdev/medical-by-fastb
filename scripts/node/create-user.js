@@ -15,7 +15,7 @@
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config({ path: '.env.local' });
 
 // Supabase configuration
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
@@ -66,27 +66,31 @@ async function createUser(userData) {
 
     const userId = authData.user.id;
 
-    // Create profile
+    // Update profile if it already exists (created by trigger)
     const { error: profileError } = await supabase
       .from('profiles')
-      .insert({
+      .upsert({
         user_id: userId,
         username,
         full_name,
         phone,
         avatar_url
+      }, {
+        onConflict: 'user_id'
       });
 
     if (profileError) {
       console.warn(`⚠️  Profile creation warning: ${profileError.message}`);
     }
 
-    // Create user role
+    // Update user role if it already exists (created by trigger)
     const { error: roleError } = await supabase
       .from('user_roles')
-      .insert({
+      .upsert({
         user_id: userId,
         role
+      }, {
+        onConflict: 'user_id'
       });
 
     if (roleError) {

@@ -14,8 +14,8 @@ interface GamificationDashboardProps {
 }
 
 const Section = ({ title, icon, children }: { title: string; icon: string; children: React.ReactNode }) => (
-  <div className="bg-white rounded-lg shadow-md p-6">
-    <h2 className="text-xl font-semibold mb-4 flex items-center">
+  <div className="bg-zinc-950/50 backdrop-blur-sm border border-zinc-800/50 rounded-lg shadow-md p-6">
+    <h2 className="text-xl font-semibold mb-4 flex items-center text-white">
       {icon} {title}
     </h2>
     {children}
@@ -47,7 +47,7 @@ export default function GamificationDashboard({ className = '' }: GamificationDa
     return (
       <div className={`flex items-center justify-center p-8 ${className}`}>
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-        <span className="ml-2 text-gray-600">กำลังโหลด...</span>
+        <span className="ml-2 text-zinc-300">กำลังโหลด...</span>
       </div>
     );
   }
@@ -60,8 +60,8 @@ export default function GamificationDashboard({ className = '' }: GamificationDa
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
           </svg>
         </div>
-        <h3 className="text-lg font-medium text-gray-900 mb-2">เกิดข้อผิดพลาด</h3>
-        <p className="text-gray-600 mb-4">{error}</p>
+        <h3 className="text-lg font-medium text-white mb-2">เกิดข้อผิดพลาด</h3>
+        <p className="text-zinc-300 mb-4">{error}</p>
         <button
           onClick={fetchDashboard}
           className="bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
@@ -75,7 +75,7 @@ export default function GamificationDashboard({ className = '' }: GamificationDa
   if (!dashboard) {
     return (
       <div className={`text-center p-8 ${className}`}>
-        <p className="text-gray-600">ไม่พบข้อมูล Gamification</p>
+        <p className="text-zinc-300">ไม่พบข้อมูล Gamification</p>
       </div>
     );
   }
@@ -83,9 +83,9 @@ export default function GamificationDashboard({ className = '' }: GamificationDa
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-6 text-white">
+      <div className="bg-gradient-to-r from-blue-900/80 to-purple-900/80 rounded-lg p-6 text-white border border-blue-700/30 backdrop-blur-sm">
         <h1 className="text-2xl font-bold mb-2">🏆 ระบบ Gamification</h1>
-        <p className="text-blue-100">สะสมคะแนน รับเหรียญ และแข่งขันกับเพื่อนๆ</p>
+        <p className="text-blue-200">สะสมคะแนน รับเหรียญ และแข่งขันกับเพื่อนๆ</p>
       </div>
 
       {/* Level and Points Display */}

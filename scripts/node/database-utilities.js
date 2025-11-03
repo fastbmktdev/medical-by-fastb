@@ -11,7 +11,7 @@
  * - Environment detection and validation
  * 
  * Usage:
- *   node scripts/database-utilities.js [command]
+ *   node scripts/node/database-utilities.js [command]
  * 
  * Commands:
  *   check        - Check database health and table existence (default)
@@ -21,10 +21,10 @@
  *   all          - Run all checks and utilities
  * 
  * Examples:
- *   node scripts/database-utilities.js
- *   node scripts/database-utilities.js check
- *   node scripts/database-utilities.js partners
- *   node scripts/database-utilities.js slugs
+ *   node scripts/node/database-utilities.js
+ *   node scripts/node/database-utilities.js check
+ *   node scripts/node/database-utilities.js partners
+ *   node scripts/node/database-utilities.js slugs
  *   npm run check-db
  */
 
@@ -36,7 +36,7 @@ import { dirname, join } from 'path';
 // Get current directory and environment setup
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const projectRoot = join(__dirname, '..');
+const projectRoot = join(__dirname, '../..');
 
 // Environment detection
 const isProduction = process.env.NODE_ENV === 'production';
@@ -516,7 +516,7 @@ class DatabaseUtilities {
     console.log(`
 📖 Database Utilities Help
 
-Usage: node scripts/database-utilities.js [command]
+Usage: node scripts/node/database-utilities.js [command]
 
 Available Commands:
   check, health    - Check database health and table existence (default)
@@ -526,10 +526,10 @@ Available Commands:
   all              - Run all utilities
 
 Examples:
-  node scripts/database-utilities.js
-  node scripts/database-utilities.js check
-  node scripts/database-utilities.js partners
-  node scripts/database-utilities.js slugs
+  node scripts/node/database-utilities.js
+  node scripts/node/database-utilities.js check
+  node scripts/node/database-utilities.js partners
+  node scripts/node/database-utilities.js slugs
   npm run check-db
 
 Environment:

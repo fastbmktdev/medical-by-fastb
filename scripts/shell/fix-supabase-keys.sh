@@ -8,7 +8,7 @@ echo "=========================================="
 
 # Get Supabase status
 echo "📋 Getting Supabase status..."
-STATUS=$(supabase status)
+STATUS=$(npx supabase status)
 
 # Extract publishable key
 PUBLISHABLE_KEY=$(echo "$STATUS" | grep "Publishable key:" | awk '{print $3}')

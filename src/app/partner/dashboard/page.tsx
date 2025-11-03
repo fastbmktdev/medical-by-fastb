@@ -67,6 +67,10 @@ function PartnerDashboardContent() {
   const [packages, setPackages] = useState<GymPackage[]>([]);
   const [editingPackage, setEditingPackage] = useState<GymPackage | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  
+  // Real data states
+  const [recentBookings, setRecentBookings] = useState<any[]>([]);
+  const [recentTransactions, setRecentTransactions] = useState<any[]>([]);
   const [formData, setFormData] = useState<PackageFormData>({
     package_type: '',
     name: '',
@@ -103,6 +107,9 @@ function PartnerDashboardContent() {
           
           // Load packages
           loadPackages();
+          
+          // Load bookings and transactions for this gym
+          await loadBookings(gymData.id);
         }
       }
 
@@ -110,6 +117,38 @@ function PartnerDashboardContent() {
     }
     loadData();
   }, [supabase]);
+  
+  // Load bookings for partner's gym
+  const loadBookings = async (gymId: string) => {
+    try {
+      const { data: bookingsData } = await supabase
+        .from('bookings')
+        .select('*')
+        .eq('gym_id', gymId)
+        .order('created_at', { ascending: false })
+        .limit(5);
+      
+      if (bookingsData) {
+        setRecentBookings(bookingsData);
+        
+        // Use bookings with payment_status=paid as transactions
+        const paidBookings = bookingsData
+          .filter(b => b.payment_status === 'paid')
+          .map(b => ({
+            id: b.booking_number,
+            date: b.created_at,
+            type: 'รายได้',
+            description: `การจอง ${b.package_name} - ${b.customer_name}`,
+            amount: Number(b.price_paid || 0),
+            status: b.status,
+          }));
+        
+        setRecentTransactions(paidBookings.slice(0, 5));
+      }
+    } catch (error) {
+      console.error('Error loading bookings:', error);
+    }
+  };
 
   const loadPackages = async () => {
     try {
@@ -323,47 +362,6 @@ function PartnerDashboardContent() {
     );
   };
 
-  // Mock booking data
-  const mockBookings = [
-    {
-      id: '1',
-      customer: 'สมชาย ใจดี',
-      service: 'มวยไทย - Private Class',
-      date: '2024-10-20',
-      time: '10:00-11:00',
-      status: 'confirmed',
-      amount: '฿500',
-    },
-    {
-      id: '2',
-      customer: 'สมหญิง รักสุข',
-      service: 'คลาสกลุ่ม',
-      date: '2024-10-21',
-      time: '14:00-15:00',
-      status: 'pending',
-      amount: '฿300',
-    },
-  ];
-
-  // Mock transaction data
-  const mockTransactions = [
-    {
-      id: 'TXN001',
-      date: '2024-10-20',
-      type: 'รายได้',
-      description: 'การจอง Private Class - สมชาย ใจดี',
-      amount: '+฿500',
-      status: 'completed',
-    },
-    {
-      id: 'TXN002',
-      date: '2024-10-19',
-      type: 'ถอนเงิน',
-      description: 'ถอนเงินเข้าบัญชี xxx-xxx-1234',
-      amount: '-฿5,000',
-      status: 'completed',
-    },
-  ];
 
   if (isLoading) {
     return (
@@ -940,13 +938,13 @@ function PartnerDashboardContent() {
                 <TableColumn>สถานะ</TableColumn>
                 <TableColumn>ยอดเงิน</TableColumn>
               </TableHeader>
-              <TableBody>
-                {mockBookings.map((booking) => (
+              <TableBody emptyContent="ยังไม่มีการจอง">
+                {recentBookings.map((booking) => (
                   <TableRow key={booking.id}>
-                    <TableCell className="text-white">{booking.customer}</TableCell>
-                    <TableCell className="text-default-400">{booking.service}</TableCell>
-                    <TableCell className="text-default-400">{new Date(booking.date).toLocaleDateString('th-TH')}</TableCell>
-                    <TableCell className="text-default-400">{booking.time}</TableCell>
+                    <TableCell className="text-white">{booking.customer_name || 'N/A'}</TableCell>
+                    <TableCell className="text-default-400">{booking.package_name || 'N/A'}</TableCell>
+                    <TableCell className="text-default-400">{new Date(booking.start_date).toLocaleDateString('th-TH')}</TableCell>
+                    <TableCell className="text-default-400">-</TableCell>
                     <TableCell>
                       <Chip
                         size="sm"
@@ -956,7 +954,7 @@ function PartnerDashboardContent() {
                         {booking.status === 'confirmed' ? 'ยืนยันแล้ว' : 'รอยืนยัน'}
                       </Chip>
                     </TableCell>
-                    <TableCell className="font-mono text-white">{booking.amount}</TableCell>
+                    <TableCell className="font-mono text-white">฿{Number(booking.price_paid || 0).toLocaleString()}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -996,8 +994,8 @@ function PartnerDashboardContent() {
                 <TableColumn>จำนวนเงิน</TableColumn>
                 <TableColumn>สถานะ</TableColumn>
               </TableHeader>
-              <TableBody>
-                {mockTransactions.map((txn) => (
+              <TableBody emptyContent="ยังไม่มีธุรกรรม">
+                {recentTransactions.map((txn) => (
                   <TableRow key={txn.id}>
                     <TableCell className="font-mono text-white">{txn.id}</TableCell>
                     <TableCell className="text-default-400">{new Date(txn.date).toLocaleDateString('th-TH')}</TableCell>
@@ -1011,17 +1009,17 @@ function PartnerDashboardContent() {
                       </Chip>
                     </TableCell>
                     <TableCell className="text-default-400">{txn.description}</TableCell>
-                    <TableCell className={`font-mono font-bold ${txn.amount.startsWith('+') ? 'text-success' : 'text-warning'}`}>
-                      {txn.amount}
+                    <TableCell className="font-mono font-bold text-success">
+                      +฿{Number(txn.amount || 0).toLocaleString()}
                     </TableCell>
                     <TableCell>
                       <Chip
                         size="sm"
-                        color={txn.status === 'completed' ? 'success' : 'warning'}
+                        color={txn.status === 'confirmed' || txn.status === 'completed' ? 'success' : 'warning'}
                         variant="flat"
-                        startContent={txn.status === 'completed' ? <CheckCircleIcon className="w-3 h-3" /> : <ClockIcon className="w-3 h-3" />}
+                        startContent={(txn.status === 'confirmed' || txn.status === 'completed') ? <CheckCircleIcon className="w-3 h-3" /> : <ClockIcon className="w-3 h-3" />}
                       >
-                        {txn.status === 'completed' ? 'สำเร็จ' : 'รอดำเนินการ'}
+                        {txn.status === 'confirmed' || txn.status === 'completed' ? 'สำเร็จ' : 'รอดำเนินการ'}
                       </Chip>
                     </TableCell>
                   </TableRow>

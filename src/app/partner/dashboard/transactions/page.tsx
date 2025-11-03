@@ -32,15 +32,60 @@ function PartnerTransactionsContent() {
   const supabase = createClient();
   const [user, setUser] = useState<{ email?: string } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [transactions, setTransactions] = useState<any[]>([]);
+  const [gym, setGym] = useState<any>(null);
 
   useEffect(() => {
     async function loadUser() {
       const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
+      
+      if (user) {
+        // Load gym first
+        const { data: gymData } = await supabase
+          .from('gyms')
+          .select('*')
+          .eq('user_id', user.id)
+          .maybeSingle();
+        
+        setGym(gymData);
+        
+        // Load transactions (bookings with payment_status=paid)
+        if (gymData) {
+          await loadTransactions(gymData.id);
+        }
+      }
+      
       setIsLoading(false);
     }
     loadUser();
   }, [supabase]);
+  
+  const loadTransactions = async (gymId: string) => {
+    try {
+      const { data: bookingsData } = await supabase
+        .from('bookings')
+        .select('*')
+        .eq('gym_id', gymId)
+        .eq('payment_status', 'paid')
+        .order('created_at', { ascending: false });
+      
+      if (bookingsData) {
+        const mappedTransactions = bookingsData.map(b => ({
+          id: b.booking_number,
+          date: b.created_at,
+          type: 'รายได้',
+          description: `การจอง ${b.package_name} - ${b.customer_name}`,
+          amount: Number(b.price_paid || 0),
+          status: b.status === 'confirmed' || b.status === 'completed' ? 'completed' : 'pending',
+        }));
+        
+        setTransactions(mappedTransactions);
+      }
+    } catch (error) {
+      console.error('Error loading transactions:', error);
+    }
+  };
 
   const menuItems: MenuItem[] = [
     { label: 'ข้อมูลยิม', href: '/partner/dashboard/gym', icon: BuildingStorefrontIcon },
@@ -49,25 +94,16 @@ function PartnerTransactionsContent() {
     { label: 'สถิติ', href: '/partner/dashboard/analytics', icon: ChartBarIcon },
     { label: 'ตั้งค่า', href: '/partner/dashboard/settings', icon: Cog6ToothIcon },
   ];
-
-  const mockTransactions = [
-    {
-      id: 'TXN001',
-      date: '2024-10-20',
-      type: 'รายได้',
-      description: 'การจอง Private Class - สมชาย ใจดี',
-      amount: '+฿500',
-      status: 'completed',
-    },
-    {
-      id: 'TXN002',
-      date: '2024-10-19',
-      type: 'ถอนเงิน',
-      description: 'ถอนเงินเข้าบัญชี xxx-xxx-1234',
-      amount: '-฿5,000',
-      status: 'completed',
-    },
-  ];
+  
+  // Calculate stats from real data
+  const totalBalance = transactions.reduce((sum, t) => sum + t.amount, 0);
+  const monthlyIncome = transactions
+    .filter(t => {
+      const txDate = new Date(t.date);
+      const now = new Date();
+      return txDate.getMonth() === now.getMonth() && txDate.getFullYear() === now.getFullYear();
+    })
+    .reduce((sum, t) => sum + t.amount, 0);
 
   if (isLoading) {
     return (
@@ -100,7 +136,7 @@ function PartnerTransactionsContent() {
           <Card className="bg-gradient-to-br from-success-500 to-success-700 border-none">
             <CardBody>
               <p className="mb-2 text-white/80 text-sm">ยอดคงเหลือ</p>
-              <p className="font-mono font-bold text-3xl">฿15,000</p>
+              <p className="font-mono font-bold text-3xl">฿{Number(totalBalance || 0).toLocaleString()}</p>
               <Button size="sm" className="bg-white/20 backdrop-blur-sm mt-4 text-white">
                 ถอนเงิน
               </Button>
@@ -109,13 +145,13 @@ function PartnerTransactionsContent() {
           <Card className="bg-default-100/50 backdrop-blur-sm border-none">
             <CardBody>
               <p className="mb-2 text-default-400 text-sm">รายได้เดือนนี้</p>
-              <p className="font-mono font-bold text-success text-2xl">+฿20,000</p>
+              <p className="font-mono font-bold text-success text-2xl">+฿{Number(monthlyIncome || 0).toLocaleString()}</p>
             </CardBody>
           </Card>
           <Card className="bg-default-100/50 backdrop-blur-sm border-none">
             <CardBody>
               <p className="mb-2 text-default-400 text-sm">ถอนเงินแล้ว</p>
-              <p className="font-mono font-bold text-warning text-2xl">฿5,000</p>
+              <p className="font-mono font-bold text-warning text-2xl">฿0</p>
             </CardBody>
           </Card>
         </div>
@@ -149,8 +185,8 @@ function PartnerTransactionsContent() {
                 <TableColumn>จำนวนเงิน</TableColumn>
                 <TableColumn>สถานะ</TableColumn>
               </TableHeader>
-              <TableBody>
-                {mockTransactions.map((txn) => (
+              <TableBody emptyContent="ยังไม่มีธุรกรรม">
+                {transactions.map((txn) => (
                   <TableRow key={txn.id}>
                     <TableCell className="font-mono text-white">{txn.id}</TableCell>
                     <TableCell className="text-default-400">
@@ -166,17 +202,17 @@ function PartnerTransactionsContent() {
                       </Chip>
                     </TableCell>
                     <TableCell className="text-default-400">{txn.description}</TableCell>
-                    <TableCell className={`font-mono font-bold ${txn.amount.startsWith('+') ? 'text-success' : 'text-warning'}`}>
-                      {txn.amount}
+                    <TableCell className="font-mono font-bold text-success">
+                      +฿{Number(txn.amount || 0).toLocaleString()}
                     </TableCell>
                     <TableCell>
                       <Chip
                         size="sm"
-                        color="success"
+                        color={txn.status === 'completed' ? 'success' : 'warning'}
                         variant="flat"
-                        startContent={<CheckCircleIcon className="w-3 h-3" />}
+                        startContent={txn.status === 'completed' ? <CheckCircleIcon className="w-3 h-3" /> : <ClockIcon className="w-3 h-3" />}
                       >
-                        สำเร็จ
+                        {txn.status === 'completed' ? 'สำเร็จ' : 'รอดำเนินการ'}
                       </Chip>
                     </TableCell>
                   </TableRow>

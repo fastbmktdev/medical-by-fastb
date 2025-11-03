@@ -33,7 +33,7 @@ export default function PointsHistory({ activities, className = '' }: PointsHist
       {activities.map((activity) => (
         <div
           key={activity.id}
-          className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+          className="flex items-center justify-between p-3 bg-zinc-900/50 rounded-lg hover:bg-zinc-800/50 transition-colors border border-zinc-800/50"
         >
           <div className="flex items-center space-x-3">
             <div className="text-2xl">
@@ -41,15 +41,15 @@ export default function PointsHistory({ activities, className = '' }: PointsHist
             </div>
             
             <div>
-              <div className="font-medium text-gray-900">
+              <div className="font-medium text-white">
                 {getActionTitle(activity.action_type)}
               </div>
               {activity.action_description && (
-                <div className="text-sm text-gray-600">
+                <div className="text-sm text-zinc-400">
                   {activity.action_description}
                 </div>
               )}
-              <div className="text-xs text-gray-500">
+              <div className="text-xs text-zinc-500">
                 {formatRelativeDate(activity.created_at)}
               </div>
             </div>

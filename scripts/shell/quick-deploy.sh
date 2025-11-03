@@ -7,7 +7,7 @@
 # This script automates the entire production deployment process.
 # Run this after creating your Supabase project.
 #
-# Usage: ./scripts/quick-deploy.sh
+# Usage: ./scripts/shell/quick-deploy.sh
 #
 # ============================================================================
 
@@ -132,7 +132,7 @@ deploy_schema() {
     print_status "Preparing deployment script with admin email: $ADMIN_EMAIL"
     
     # Replace the admin email in the production script
-    sed "s/thaikickmuaythai@gmail.com/$ADMIN_EMAIL/g" scripts/production-deploy.sql > "$TEMP_SQL_FILE"
+    sed "s/thaikickmuaythai@gmail.com/$ADMIN_EMAIL/g" scripts/sql/production-deploy.sql > "$TEMP_SQL_FILE"
     
     print_status "Executing database deployment..."
     

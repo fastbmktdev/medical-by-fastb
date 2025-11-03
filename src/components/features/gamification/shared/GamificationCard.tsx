@@ -20,13 +20,13 @@ export function GamificationCard({
   const getVariantClasses = () => {
     switch (variant) {
       case 'gradient':
-        return 'bg-gradient-to-br from-blue-50 to-purple-50 border border-blue-200';
+        return 'bg-gradient-to-br from-blue-950/50 to-purple-950/50 border border-blue-700/30';
       case 'bordered':
-        return 'bg-white border-2 border-gray-200 hover:border-blue-300';
+        return 'bg-zinc-950/50 border-2 border-zinc-700 hover:border-blue-600/50 backdrop-blur-sm';
       case 'elevated':
-        return 'bg-white shadow-lg border border-gray-100 hover:shadow-xl';
+        return 'bg-zinc-950/50 shadow-lg border border-zinc-800/50 hover:shadow-xl backdrop-blur-sm';
       default:
-        return 'bg-white border border-gray-200 hover:shadow-md';
+        return 'bg-zinc-950/50 border border-zinc-800/50 hover:shadow-md backdrop-blur-sm';
     }
   };
 
@@ -45,9 +45,9 @@ export function GamificationCard({
     return (
       <div className={`${getVariantClasses()} ${getSizeClasses()} ${className}`}>
         <div className="animate-pulse">
-          <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
-          <div className="h-3 bg-gray-200 rounded w-3/4 mb-2"></div>
-          <div className="h-8 bg-gray-200 rounded w-full"></div>
+          <div className="h-4 bg-zinc-800 rounded w-1/2 mb-2"></div>
+          <div className="h-3 bg-zinc-800 rounded w-3/4 mb-2"></div>
+          <div className="h-8 bg-zinc-800 rounded w-full"></div>
         </div>
       </div>
     );

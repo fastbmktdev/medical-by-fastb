@@ -65,14 +65,14 @@ export function GamificationEmptyState({
   const content = getDefaultContent();
 
   return (
-    <div className={`text-center py-8 text-gray-500 ${className}`}>
+    <div className={`text-center py-8 text-zinc-500 ${className}`}>
       <div className="mb-4">
         <GamificationIcon type={content.icon} size="xl" />
       </div>
-      <h3 className="text-lg font-medium text-gray-900 mb-2">
+      <h3 className="text-lg font-medium text-white mb-2">
         {content.title}
       </h3>
-      <p className="text-gray-600 mb-4 max-w-md mx-auto">
+      <p className="text-zinc-400 mb-4 max-w-md mx-auto">
         {content.message}
       </p>
       {action && (
