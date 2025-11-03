@@ -7,4 +7,5 @@ export { AchievementsShowcase } from './AchievementsShowcase';
 export { PrivacySettingsPanel } from './PrivacySettingsPanel';
 export { NotificationPreferencesPanel } from './NotificationPreferencesPanel';
 export { AccountDeletionDialog } from './AccountDeletionDialog';
+export { ConnectedAccountsPanel } from './ConnectedAccountsPanel';
 

@@ -26,6 +26,7 @@ import {
   PrivacySettingsPanel,
   NotificationPreferencesPanel,
   AccountDeletionDialog,
+  ConnectedAccountsPanel,
 } from '@/components/features/profile';
 
 function ProfileContent() {
@@ -394,6 +395,9 @@ function ProfileContent() {
 
           {/* Notification Preferences */}
           <NotificationPreferencesPanel />
+
+          {/* Connected Accounts */}
+          <ConnectedAccountsPanel />
 
           {/* Danger Zone */}
           <Card className="bg-gradient-to-br from-red-950/50 to-red-900/30 backdrop-blur-sm border border-red-800/50">

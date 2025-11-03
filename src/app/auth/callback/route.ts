@@ -47,6 +47,9 @@ export async function GET(request: NextRequest) {
         } else if (type === 'magiclink') {
           // Magic link - redirect to dashboard
           redirectUrl = '/dashboard';
+        } else if (type === 'oauth' || type === 'link') {
+          // OAuth callback (Google, etc.) - redirect to dashboard or profile
+          redirectUrl = '/dashboard/profile';
         }
 
         // Create redirect URL
@@ -55,6 +58,11 @@ export async function GET(request: NextRequest) {
         // Add success message for password reset
         if (type === 'recovery') {
           redirect.searchParams.set('message', 'password_reset_success');
+        }
+        
+        // Add success message for OAuth
+        if (type === 'oauth' || type === 'link') {
+          redirect.searchParams.set('message', 'account_linked_success');
         }
         
         return NextResponse.redirect(redirect);
