@@ -326,28 +326,34 @@ export default function AffiliateDashboardPage() {
           </CardHeader>
           <CardBody className="space-y-6">
             {[
-              { label: 'อัตราการแปลง', value: stats.conversionRate, color: 'primary' as 'primary', icon: '📊' },
-              { label: 'การเติบโตรายเดือน', value: stats.monthlyGrowth, color: (stats.monthlyGrowth >= 0 ? 'success' : 'danger') as 'success' | 'danger', icon: '📈' }
-            ].map(({ label, value, color, icon }) => (
-              <div key={label}>
-                <div className="flex justify-between items-center mb-3">
-                  <span className="text-zinc-300 flex items-center gap-2">
-                    <span>{icon}</span>
-                    {label}
-                  </span>
-                  <span className={`font-semibold text-lg ${label === 'การเติบโตรายเดือน' ? (value >= 0 ? 'text-green-400' : 'text-red-400') : 'text-blue-400'}`}>
-                    {label === 'การเติบโตรายเดือน' && value >= 0 ? '+' : ''}{value}%
-                  </span>
+              { label: 'อัตราการแปลง', value: stats.conversionRate, icon: '📊' },
+              { label: 'การเติบโตรายเดือน', value: stats.monthlyGrowth, icon: '📈' }
+            ].map(({ label, value, icon }) => {
+              const color: 'success' | 'danger' | 'primary' = label === 'การเติบโตรายเดือน' 
+                ? (value >= 0 ? 'success' : 'danger')
+                : 'primary';
+              
+              return (
+                <div key={label}>
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="text-zinc-300 flex items-center gap-2">
+                      <span>{icon}</span>
+                      {label}
+                    </span>
+                    <span className={`font-semibold text-lg ${label === 'การเติบโตรายเดือน' ? (value >= 0 ? 'text-green-400' : 'text-red-400') : 'text-blue-400'}`}>
+                      {label === 'การเติบโตรายเดือน' && value >= 0 ? '+' : ''}{value}%
+                    </span>
+                  </div>
+                  <Progress 
+                    value={Math.abs(value)} 
+                    className="w-full" 
+                    color={color}
+                    size="lg"
+                    showValueLabel={false}
+                  />
                 </div>
-                <Progress 
-                  value={Math.abs(value)} 
-                  className="w-full" 
-                  color={color}
-                  size="lg"
-                  showValueLabel={false}
-                />
-              </div>
-            ))}
+              );
+            })}
             <Divider className="my-4 bg-zinc-700/50" />
             <div className="flex justify-between items-center p-3 bg-zinc-700/30 rounded-lg">
               <span className="text-zinc-300 flex items-center gap-2">

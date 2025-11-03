@@ -89,9 +89,9 @@ export function PrivacySettingsPanel() {
               trigger: "bg-zinc-950/50 border-zinc-700",
             }}
           >
-            <SelectItem key="public" value="public">สาธารณะ - ทุกคนสามารถดูได้</SelectItem>
-            <SelectItem key="private" value="private">ส่วนตัว - เฉพาะคุณเท่านั้น</SelectItem>
-            <SelectItem key="friends_only" value="friends_only">เพื่อนเท่านั้น</SelectItem>
+            <SelectItem key="public">สาธารณะ - ทุกคนสามารถดูได้</SelectItem>
+            <SelectItem key="private">ส่วนตัว - เฉพาะคุณเท่านั้น</SelectItem>
+            <SelectItem key="friends_only">เพื่อนเท่านั้น</SelectItem>
           </Select>
         </div>
 

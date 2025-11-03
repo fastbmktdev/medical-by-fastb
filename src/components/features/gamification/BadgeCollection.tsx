@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { UserBadge, Badge } from '@/types/gamification.types';
 import { 
   GamificationCard, 
@@ -127,9 +128,12 @@ export default function BadgeCollection({ badges, showAll = true, className = ''
               <div className="text-center mb-3">
                 <div className="text-4xl mb-2">
                   {badge.icon_url ? (
-                    <img 
+                    <Image 
                       src={badge.icon_url} 
                       alt={badge.name}
+                      width={100}
+                      height={100}
+                      fill
                       className="w-12 h-12 mx-auto object-contain"
                     />
                   ) : (

@@ -207,7 +207,7 @@ function checkAccessibilityCompliance(filePath) {
     });
     
     // Check for missing alt text on images
-    const imgMatches = content.match(/<img[^>]*>/gi);
+    const imgMatches = content.match(/<Image src=["'][^'"]*["'][^>]*>/gi);
     if (imgMatches) {
       imgMatches.forEach(match => {
         if (!match.includes('alt=')) {

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { Card, CardBody, Progress } from '@heroui/react';
-import { TrophyIcon, StarIcon } from '@heroicons/react/24/outline';
+import { useState, useEffect } from "react";
+import { Card, CardBody, Progress } from "@heroui/react";
+import { TrophyIcon, StarIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
 
 interface Badge {
   id: string;
@@ -32,9 +33,9 @@ export function AchievementsShowcase() {
 
   const loadAchievements = async () => {
     try {
-      const response = await fetch('/api/users/achievements');
+      const response = await fetch("/api/users/achievements");
       const data = await response.json();
-      
+
       if (data.success) {
         setEarnedBadges(data.data.earned_badges || []);
         setAllBadges(data.data.all_badges || []);
@@ -42,7 +43,7 @@ export function AchievementsShowcase() {
         setCurrentLevel(data.data.current_level || 1);
       }
     } catch (error) {
-      console.error('Failed to load achievements:', error);
+      console.error("Failed to load achievements:", error);
     } finally {
       setIsLoading(false);
     }
@@ -66,7 +67,9 @@ export function AchievementsShowcase() {
 
       {/* Earned Badges */}
       <div>
-        <h4 className="mb-3 font-medium text-white">Badges ที่ได้รับ ({earnedBadges.length})</h4>
+        <h4 className="mb-3 font-medium text-white">
+          Badges ที่ได้รับ ({earnedBadges.length})
+        </h4>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {earnedBadges.map((earned) => (
             <Card
@@ -76,14 +79,22 @@ export function AchievementsShowcase() {
               <CardBody className="items-center justify-center text-center p-4">
                 <div className="mb-2">
                   {earned.badges?.icon_url ? (
-                    <img src={earned.badges.icon_url} alt={earned.badges.name} className="w-12 h-12" />
+                    <Image
+                      src={earned.badges.icon_url}
+                      alt={earned.badges.name}
+                      width={96}
+                      height={96}
+                      fill
+                    />
                   ) : (
                     <TrophyIcon className="w-12 h-12 text-yellow-500" />
                   )}
                 </div>
-                <h5 className="font-semibold text-white text-sm">{earned.badges?.name}</h5>
+                <h5 className="font-semibold text-white text-sm">
+                  {earned.badges?.name}
+                </h5>
                 <p className="text-zinc-400 text-xs mt-1">
-                  {new Date(earned.earned_at).toLocaleDateString('th-TH')}
+                  {new Date(earned.earned_at).toLocaleDateString("th-TH")}
                 </p>
               </CardBody>
             </Card>
@@ -98,19 +109,27 @@ export function AchievementsShowcase() {
           {allBadges.slice(0, 5).map((badge: any) => (
             <Card
               key={badge.id}
-              className={`bg-zinc-950/50 border ${badge.earned ? 'border-yellow-500/50' : 'border-zinc-700'}`}
+              className={`bg-zinc-950/50 border ${badge.earned ? "border-yellow-500/50" : "border-zinc-700"}`}
             >
               <CardBody className="space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     {badge.icon_url ? (
-                      <img src={badge.icon_url} alt={badge.name} className="w-10 h-10" />
+                      <Image
+                        src={badge.icon_url}
+                        alt={badge.name}
+                        width={112}
+                        height={112}
+                        fill
+                      />
                     ) : (
                       <TrophyIcon className="w-10 h-10 text-zinc-400" />
                     )}
                     <div>
                       <h5 className="font-semibold text-white">{badge.name}</h5>
-                      <p className="text-zinc-400 text-xs">{badge.description}</p>
+                      <p className="text-zinc-400 text-xs">
+                        {badge.description}
+                      </p>
                     </div>
                   </div>
                   {badge.earned && (
@@ -125,7 +144,11 @@ export function AchievementsShowcase() {
                         {currentPoints} / {badge.points_required} Points
                       </span>
                     </div>
-                    <Progress value={badge.progress} color="warning" size="sm" />
+                    <Progress
+                      value={badge.progress}
+                      color="warning"
+                      size="sm"
+                    />
                   </div>
                 )}
               </CardBody>
@@ -136,4 +159,3 @@ export function AchievementsShowcase() {
     </div>
   );
 }
-
