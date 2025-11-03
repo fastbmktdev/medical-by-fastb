@@ -168,8 +168,12 @@ function AdminGymsContent() {
             <Table
               aria-label="Gyms table"
               classNames={{
-                wrapper: 'bg-transparent',
+                wrapper: 'bg-transparent border border-default-200 rounded-lg overflow-hidden',
+                th: 'bg-default-100/80 text-default-700 font-semibold text-sm border-b border-default-200 py-4',
+                td: 'border-b border-default-200/50 py-4',
+                tr: 'hover:bg-default-50/50 transition-colors',
               }}
+              removeWrapper={false}
             >
               <TableHeader>
                 <TableColumn>ชื่อยิม</TableColumn>
