@@ -107,10 +107,19 @@ export default function GymBookingPage() {
   const [orderId, setOrderId] = useState<string | null>(null);
   const [orderNumber, setOrderNumber] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchGymData();
-    loadUserProfile();
-  }, [gymId, fetchGymData]);
+  const fetchGymData = useCallback(async () => {
+    try {
+      const response = await fetch(`/api/gyms/${gymId}`);
+      if (!response.ok) throw new Error('Failed to fetch gym data');
+      const data = await response.json();
+      setGymData(data);
+    } catch (err) {
+      setError('ไม่สามารถโหลดข้อมูลค่ายมวยได้');
+      // Error occurred
+    } finally {
+      setLoading(false);
+    }
+  }, [gymId]);
 
   const loadUserProfile = async () => {
     try {
@@ -142,19 +151,10 @@ export default function GymBookingPage() {
     }
   };
 
-  const fetchGymData = useCallback(async () => {
-    try {
-      const response = await fetch(`/api/gyms/${gymId}`);
-      if (!response.ok) throw new Error('Failed to fetch gym data');
-      const data = await response.json();
-      setGymData(data);
-    } catch (err) {
-      setError('ไม่สามารถโหลดข้อมูลค่ายมวยได้');
-      // Error occurred
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    fetchGymData();
+    loadUserProfile();
+  }, [gymId, fetchGymData]);
 
   const calculateDuration = (start: string, end: string): number => {
     if (!start || !end) return 0;
