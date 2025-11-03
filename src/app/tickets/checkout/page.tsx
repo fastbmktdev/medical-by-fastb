@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { PaymentWrapper } from '@/components/features/payments';
 
@@ -20,16 +20,6 @@ function TicketCheckoutContent() {
   const ticketCount = parseInt(searchParams.get('ticketCount') || '1');
   const ticketType = searchParams.get('ticketType') || 'general';
   const amount = parseFloat(searchParams.get('amount') || '0');
-
-  useEffect(() => {
-    if (!eventId || !amount) {
-      setError('ข้อมูลการจองไม่ครบถ้วน');
-      setLoading(false);
-      return;
-    }
-
-    createPaymentIntent();
-  }, [eventId, amount, createPaymentIntent]);
 
   const createPaymentIntent = useCallback(async () => {
     try {
@@ -66,6 +56,16 @@ function TicketCheckoutContent() {
       setLoading(false);
     }
   }, [eventId, amount, eventName, eventDate, ticketCount, ticketType]);
+
+  useEffect(() => {
+    if (!eventId || !amount) {
+      setError('ข้อมูลการจองไม่ครบถ้วน');
+      setLoading(false);
+      return;
+    }
+
+    createPaymentIntent();
+  }, [eventId, amount, createPaymentIntent]);
 
   const handlePaymentSuccess = (paymentIntentId: string) => {
     router.push(`/tickets/booking-success?orderId=${orderId}&orderNumber=${orderNumber}`);
