@@ -78,11 +78,11 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     }
 
     const root = document.documentElement;
-    const allVariables = { ...cssVariables, ...customVariables };
+    const allVariables: Record<string, string> = { ...cssVariables, ...customVariables };
 
     // Set CSS custom properties
     Object.entries(allVariables).forEach(([property, value]) => {
-      root.style.setProperty(property, value);
+      root.style.setProperty(property, String(value));
     });
 
     // Cleanup function to remove variables on unmount

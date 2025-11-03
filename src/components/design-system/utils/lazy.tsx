@@ -20,18 +20,20 @@ export function createLazyComponent<T extends ComponentType<Record<string, unkno
     } catch (error) {
       console.error(`Failed to load lazy component ${displayName || 'Unknown'}:`, error);
       // Return a fallback component
+      const FallbackComponent: T = (() => (
+        <div className="p-4 text-center text-red-400">
+          Failed to load component
+        </div>
+      )) as unknown as T;
       return {
-        default: (() => (
-          <div className="p-4 text-center text-red-400">
-            Failed to load component
-          </div>
-        )) as T,
+        default: FallbackComponent,
       };
     }
   });
 
   if (displayName) {
-    LazyComponent.displayName = `Lazy(${displayName})`;
+    // Type assertion to set displayName on LazyExoticComponent
+    (LazyComponent as LazyExoticComponent<T> & { displayName?: string }).displayName = `Lazy(${displayName})`;
   }
 
   return LazyComponent;
@@ -70,43 +72,43 @@ export function createPreloadableLazyComponent<T extends ComponentType<Record<st
 export const LazyCompositions = {
   // Modal compositions
   Modal: createLazyComponent(
-    () => import('@/components/compositions/modals/Modal'),
+    () => import('@/components/compositions/modals/Modal').then(module => ({ default: module.Modal as unknown as ComponentType<Record<string, unknown>> })),
     'Modal'
   ),
   ConfirmationModal: createLazyComponent(
-    () => import('@/components/compositions/modals/ConfirmationModal'),
+    () => import('@/components/compositions/modals/ConfirmationModal').then(module => ({ default: module.ConfirmationModal as unknown as ComponentType<Record<string, unknown>> })),
     'ConfirmationModal'
   ),
   FormModal: createLazyComponent(
-    () => import('@/components/compositions/modals/FormModal'),
+    () => import('@/components/compositions/modals/FormModal').then(module => ({ default: module.FormModal as unknown as ComponentType<Record<string, unknown>> })),
     'FormModal'
   ),
   InfoModal: createLazyComponent(
-    () => import('@/components/compositions/modals/InfoModal'),
+    () => import('@/components/compositions/modals/InfoModal').then(module => ({ default: module.InfoModal as unknown as ComponentType<Record<string, unknown>> })),
     'InfoModal'
   ),
 
   // Data display compositions
   DataTable: createLazyComponent(
-    () => import('@/components/compositions/data/DataTable'),
+    () => import('@/components/compositions/data/DataTable').then(module => ({ default: module.DataTable as unknown as ComponentType<Record<string, unknown>> })),
     'DataTable'
   ),
   DataList: createLazyComponent(
-    () => import('@/components/compositions/data/DataList'),
+    () => import('@/components/compositions/data/DataList').then(module => ({ default: module.DataList as unknown as ComponentType<Record<string, unknown>> })),
     'DataList'
   ),
   DataGrid: createLazyComponent(
-    () => import('@/components/compositions/data/DataGrid'),
+    () => import('@/components/compositions/data/DataGrid').then(module => ({ default: module.DataGrid as unknown as ComponentType<Record<string, unknown>> })),
     'DataGrid'
   ),
 
   // Page compositions
   DashboardPage: createLazyComponent(
-    () => import('@/components/compositions/pages/DashboardPage'),
+    () => import('@/components/compositions/pages/DashboardPage').then(module => ({ default: module.DashboardPage as unknown as ComponentType<Record<string, unknown>> })),
     'DashboardPage'
   ),
   AuthPage: createLazyComponent(
-    () => import('@/components/compositions/pages/AuthPage'),
+    () => import('@/components/compositions/pages/AuthPage').then(module => ({ default: module.AuthPage as unknown as ComponentType<Record<string, unknown>> })),
     'AuthPage'
   ),
 };
@@ -116,15 +118,15 @@ export const LazyCompositions = {
  */
 export const PreloadableCompositions = {
   Modal: createPreloadableLazyComponent(
-    () => import('@/components/compositions/modals/Modal'),
+    () => import('@/components/compositions/modals/Modal').then(module => ({ default: module.Modal as unknown as ComponentType<Record<string, unknown>> })),
     'Modal'
   ),
   DataTable: createPreloadableLazyComponent(
-    () => import('@/components/compositions/data/DataTable'),
+    () => import('@/components/compositions/data/DataTable').then(module => ({ default: module.DataTable as unknown as ComponentType<Record<string, unknown>> })),
     'DataTable'
   ),
   FormModal: createPreloadableLazyComponent(
-    () => import('@/components/compositions/modals/FormModal'),
+    () => import('@/components/compositions/modals/FormModal').then(module => ({ default: module.FormModal as unknown as ComponentType<Record<string, unknown>> })),
     'FormModal'
   ),
 };
