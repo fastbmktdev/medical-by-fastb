@@ -27,6 +27,7 @@
     "supabase:keys": "node scripts/node/get-supabase-keys.js",
     "supabase:test": "node scripts/node/test-supabase-connection.js",
     "supabase:fix-keys": "bash scripts/shell/fix-supabase-keys.sh",
+    "test:smtp": "node scripts/node/test-smtp.js",
     "check:env": "node scripts/node/check-env-production.js",
     "check:env:production": "node scripts/node/check-env-production.js",
     "supabase:link": "npx supabase link",

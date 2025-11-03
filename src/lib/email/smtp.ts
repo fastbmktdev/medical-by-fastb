@@ -6,6 +6,15 @@
  */
 
 import nodemailer from 'nodemailer';
+import {
+  generateBookingConfirmationHtml,
+  generateBookingReminderHtml,
+  generatePaymentReceiptHtml,
+  generatePaymentFailedHtml,
+  generatePartnerApprovalHtml,
+  generatePartnerRejectionHtml,
+  generateAdminAlertHtml,
+} from './templates';
 
 /**
  * SMTP Configuration
@@ -186,5 +195,392 @@ function generateVerificationEmailHtml(data: { otp: string; fullName: string }):
       </body>
     </html>
   `;
+}
+
+// ============================================================================
+// BOOKING EMAILS
+// ============================================================================
+
+/**
+ * Booking confirmation email data
+ */
+export interface BookingConfirmationData {
+  to: string;
+  customerName: string;
+  bookingNumber: string;
+  gymName: string;
+  packageName: string;
+  packageType: 'one_time' | 'package';
+  startDate: string;
+  endDate?: string | null;
+  pricePaid: number;
+  customerPhone?: string;
+  specialRequests?: string;
+  bookingUrl?: string;
+}
+
+/**
+ * Send booking confirmation email via SMTP
+ */
+export async function sendBookingConfirmationEmail(data: BookingConfirmationData) {
+  if (!isSmtpConfigured()) {
+    console.warn('⚠️ SMTP not configured. Email not sent.');
+    return { success: false, error: 'Email service not configured' };
+  }
+
+  try {
+    const transporter = createTransporter();
+
+    const info = await transporter.sendMail({
+      from: EMAIL_CONFIG.from,
+      to: data.to,
+      subject: `ยืนยันการจองสำเร็จ - ${data.bookingNumber} | MUAYTHAI Platform`,
+      html: generateBookingConfirmationHtml({
+        customerName: data.customerName,
+        bookingNumber: data.bookingNumber,
+        gymName: data.gymName,
+        packageName: data.packageName,
+        packageType: data.packageType,
+        startDate: data.startDate,
+        endDate: data.endDate,
+        pricePaid: data.pricePaid,
+        customerPhone: data.customerPhone,
+        specialRequests: data.specialRequests,
+        bookingUrl: data.bookingUrl,
+      }),
+    });
+
+    return {
+      success: true,
+      id: info.messageId,
+    };
+  } catch (error) {
+    console.error('❌ Error sending booking confirmation email:', error);
+    return { success: false, error: 'Failed to send email' };
+  }
+}
+
+/**
+ * Booking reminder email data
+ */
+export interface BookingReminderData {
+  to: string;
+  customerName: string;
+  bookingNumber: string;
+  gymName: string;
+  packageName: string;
+  startDate: string;
+  startTime?: string;
+  gymAddress?: string;
+  gymPhone?: string;
+  bookingUrl?: string;
+}
+
+/**
+ * Send booking reminder email via SMTP
+ */
+export async function sendBookingReminderEmail(data: BookingReminderData) {
+  if (!isSmtpConfigured()) {
+    console.warn('⚠️ SMTP not configured. Email not sent.');
+    return { success: false, error: 'Email service not configured' };
+  }
+
+  try {
+    const transporter = createTransporter();
+
+    const info = await transporter.sendMail({
+      from: EMAIL_CONFIG.from,
+      to: data.to,
+      subject: `📅 เตือนความจำ: การจองของคุณจะเริ่มในอีก 1 วัน | MUAYTHAI Platform`,
+      html: generateBookingReminderHtml({
+        customerName: data.customerName,
+        bookingNumber: data.bookingNumber,
+        gymName: data.gymName,
+        packageName: data.packageName,
+        startDate: data.startDate,
+        startTime: data.startTime,
+        gymAddress: data.gymAddress,
+        gymPhone: data.gymPhone,
+        bookingUrl: data.bookingUrl,
+      }),
+    });
+
+    return {
+      success: true,
+      id: info.messageId,
+    };
+  } catch (error) {
+    console.error('❌ Error sending booking reminder email:', error);
+    return { success: false, error: 'Failed to send email' };
+  }
+}
+
+// ============================================================================
+// PAYMENT EMAILS
+// ============================================================================
+
+/**
+ * Payment receipt email data
+ */
+export interface PaymentReceiptData {
+  to: string;
+  customerName: string;
+  transactionNumber: string;
+  amount: number;
+  paymentMethod: string;
+  paymentDate: string;
+  items: Array<{
+    description: string;
+    quantity?: number;
+    amount: number;
+  }>;
+  receiptUrl?: string;
+}
+
+/**
+ * Send payment receipt email via SMTP
+ */
+export async function sendPaymentReceiptEmail(data: PaymentReceiptData) {
+  if (!isSmtpConfigured()) {
+    console.warn('⚠️ SMTP not configured. Email not sent.');
+    return { success: false, error: 'Email service not configured' };
+  }
+
+  try {
+    const transporter = createTransporter();
+
+    const info = await transporter.sendMail({
+      from: EMAIL_CONFIG.from,
+      to: data.to,
+      subject: `ใบเสร็จการชำระเงิน - ${data.transactionNumber} | MUAYTHAI Platform`,
+      html: generatePaymentReceiptHtml({
+        customerName: data.customerName,
+        transactionNumber: data.transactionNumber,
+        amount: data.amount,
+        paymentMethod: data.paymentMethod,
+        paymentDate: data.paymentDate,
+        items: data.items,
+        receiptUrl: data.receiptUrl,
+      }),
+    });
+
+    return {
+      success: true,
+      id: info.messageId,
+    };
+  } catch (error) {
+    console.error('❌ Error sending payment receipt email:', error);
+    return { success: false, error: 'Failed to send email' };
+  }
+}
+
+/**
+ * Payment failed email data
+ */
+export interface PaymentFailedData {
+  to: string;
+  customerName: string;
+  transactionNumber: string;
+  amount: number;
+  paymentMethod: string;
+  failureReason?: string;
+  retryUrl?: string;
+  supportEmail?: string;
+}
+
+/**
+ * Send payment failed email via SMTP
+ */
+export async function sendPaymentFailedEmail(data: PaymentFailedData) {
+  if (!isSmtpConfigured()) {
+    console.warn('⚠️ SMTP not configured. Email not sent.');
+    return { success: false, error: 'Email service not configured' };
+  }
+
+  try {
+    const transporter = createTransporter();
+
+    const info = await transporter.sendMail({
+      from: EMAIL_CONFIG.from,
+      to: data.to,
+      subject: `การชำระเงินไม่สำเร็จ - ${data.transactionNumber} | MUAYTHAI Platform`,
+      html: generatePaymentFailedHtml({
+        customerName: data.customerName,
+        transactionNumber: data.transactionNumber,
+        amount: data.amount,
+        paymentMethod: data.paymentMethod,
+        failureReason: data.failureReason,
+        retryUrl: data.retryUrl,
+        supportEmail: data.supportEmail,
+      }),
+    });
+
+    return {
+      success: true,
+      id: info.messageId,
+    };
+  } catch (error) {
+    console.error('❌ Error sending payment failed email:', error);
+    return { success: false, error: 'Failed to send email' };
+  }
+}
+
+// ============================================================================
+// PARTNER EMAILS
+// ============================================================================
+
+/**
+ * Partner approval email data
+ */
+export interface PartnerApprovalData {
+  to: string;
+  partnerName: string;
+  gymName: string;
+  approvalDate: string;
+  dashboardUrl?: string;
+}
+
+/**
+ * Send partner approval email via SMTP
+ */
+export async function sendPartnerApprovalEmail(data: PartnerApprovalData) {
+  if (!isSmtpConfigured()) {
+    console.warn('⚠️ SMTP not configured. Email not sent.');
+    return { success: false, error: 'Email service not configured' };
+  }
+
+  try {
+    const transporter = createTransporter();
+
+    const info = await transporter.sendMail({
+      from: EMAIL_CONFIG.from,
+      to: data.to,
+      subject: `🎉 ยินดีด้วย! การสมัครค่ายมวยของคุณได้รับการอนุมัติ | MUAYTHAI Platform`,
+      html: generatePartnerApprovalHtml({
+        partnerName: data.partnerName,
+        gymName: data.gymName,
+        approvalDate: data.approvalDate,
+        dashboardUrl: data.dashboardUrl,
+      }),
+    });
+
+    return {
+      success: true,
+      id: info.messageId,
+    };
+  } catch (error) {
+    console.error('❌ Error sending partner approval email:', error);
+    return { success: false, error: 'Failed to send email' };
+  }
+}
+
+/**
+ * Partner rejection email data
+ */
+export interface PartnerRejectionData {
+  to: string;
+  partnerName: string;
+  gymName: string;
+  rejectionReason?: string;
+  reapplyUrl?: string;
+  supportEmail?: string;
+}
+
+/**
+ * Send partner rejection email via SMTP
+ */
+export async function sendPartnerRejectionEmail(data: PartnerRejectionData) {
+  if (!isSmtpConfigured()) {
+    console.warn('⚠️ SMTP not configured. Email not sent.');
+    return { success: false, error: 'Email service not configured' };
+  }
+
+  try {
+    const transporter = createTransporter();
+
+    const info = await transporter.sendMail({
+      from: EMAIL_CONFIG.from,
+      to: data.to,
+      subject: `การสมัครค่ายมวยของคุณยังไม่ได้รับการอนุมัติ | MUAYTHAI Platform`,
+      html: generatePartnerRejectionHtml({
+        partnerName: data.partnerName,
+        gymName: data.gymName,
+        rejectionReason: data.rejectionReason,
+        reapplyUrl: data.reapplyUrl,
+        supportEmail: data.supportEmail,
+      }),
+    });
+
+    return {
+      success: true,
+      id: info.messageId,
+    };
+  } catch (error) {
+    console.error('❌ Error sending partner rejection email:', error);
+    return { success: false, error: 'Failed to send email' };
+  }
+}
+
+// ============================================================================
+// ADMIN ALERT EMAILS
+// ============================================================================
+
+/**
+ * Admin alert email data
+ */
+export interface AdminAlertData {
+  to: string | string[];
+  alertType: string;
+  title: string;
+  message: string;
+  details?: Record<string, any>;
+  actionUrl?: string;
+  priority?: 'low' | 'medium' | 'high' | 'critical';
+}
+
+/**
+ * Send admin alert email via SMTP
+ */
+export async function sendAdminAlertEmail(data: AdminAlertData) {
+  if (!isSmtpConfigured()) {
+    console.warn('⚠️ SMTP not configured. Email not sent.');
+    return { success: false, error: 'Email service not configured' };
+  }
+
+  try {
+    const transporter = createTransporter();
+
+    const priorityEmoji = {
+      low: '🔵',
+      medium: '🟡',
+      high: '🟠',
+      critical: '🔴',
+    };
+
+    // Convert to array if single email
+    const recipients = Array.isArray(data.to) ? data.to : [data.to];
+
+    const info = await transporter.sendMail({
+      from: EMAIL_CONFIG.from,
+      to: recipients.join(','),
+      subject: `${priorityEmoji[data.priority || 'medium']} [${data.priority?.toUpperCase() || 'MEDIUM'}] ${data.title} | MUAYTHAI Platform`,
+      html: generateAdminAlertHtml({
+        alertType: data.alertType,
+        title: data.title,
+        message: data.message,
+        details: data.details,
+        actionUrl: data.actionUrl,
+        priority: data.priority,
+      }),
+    });
+
+    return {
+      success: true,
+      id: info.messageId,
+    };
+  } catch (error) {
+    console.error('❌ Error sending admin alert email:', error);
+    return { success: false, error: 'Failed to send email' };
+  }
 }
 
