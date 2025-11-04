@@ -12,6 +12,10 @@ export async function middleware(request: NextRequest) {
     if (path.startsWith('/api/webhooks/')) {
       return await updateSession(request)
     }
+    // Skip protection for cron jobs (they have their own secret authentication)
+    if (path.startsWith('/api/cron/')) {
+      return await updateSession(request)
+    }
 
     // Apply CSRF protection first (before rate limiting)
     const csrfResponse = await csrfProtection(request)

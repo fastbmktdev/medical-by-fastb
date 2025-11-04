@@ -99,6 +99,10 @@ function shouldBypassCSRF(path: string, method: string): boolean {
     return true;
   }
 
+  if (path.startsWith('/api/cron/')) {
+    return true;
+  }
+
   if (path === '/api/health') {
     return true;
   }
