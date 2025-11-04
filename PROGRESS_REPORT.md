@@ -980,9 +980,23 @@
   - [x] Query รายได้เดือนนี้ (จาก `payments` ที่เกี่ยวข้องกับ bookings ของ gym) ✅ (จาก bookings ที่ payment_status = 'paid')
   - [x] เพิ่มกราฟรายได้ (รายเดือน/รายสัปดาห์) ✅ (bar chart แบบง่าย)
   - [x] แสดงบริการยอดนิยม (แพ็คเกจที่ถูกจองมากที่สุด) ✅
-- [ ] สร้าง Performance Metrics Dashboard
-- [ ] เพิ่ม Booking Calendar View
-- [ ] สร้าง Availability Management
+- [x] สร้าง Performance Metrics Dashboard ✅
+  - [x] สร้าง API endpoint `/api/partner/performance-metrics` ✅
+  - [x] สร้าง Performance Metrics Dashboard page (`/partner/dashboard/performance`) ✅
+  - [x] แสดง metrics: bookings, revenue, customers, conversion rate, retention rate ✅
+  - [x] แสดง trends, package performance, peak hours ✅
+- [x] เพิ่ม Booking Calendar View ✅
+  - [x] สร้าง Booking Calendar View page (`/partner/dashboard/bookings/calendar`) ✅
+  - [x] แสดงปฏิทินแบบ grid view พร้อม booking events ✅
+  - [x] รองรับการ navigate เดือน ✅
+  - [x] แสดงรายละเอียด booking เมื่อคลิก ✅
+- [x] สร้าง Availability Management ✅
+  - [x] สร้าง migration สำหรับ `gym_availability`, `gym_special_availability`, `gym_time_slots` ✅
+  - [x] สร้าง functions: `check_gym_availability()`, `get_available_capacity()` ✅
+  - [x] สร้าง API endpoint `/api/partner/availability` (GET, POST, DELETE) ✅
+  - [x] สร้าง Availability Management page (`/partner/dashboard/availability`) ✅
+  - [x] จัดการ regular availability (weekly schedule) ✅
+  - [x] จัดการ special availability (holidays, special dates) ✅
 
 #### Email Notification System (⚠️ ต้องพัฒนา)
 - [x] เพิ่ม Email Templates ครบทุกประเภท ✅
@@ -992,9 +1006,19 @@
   - [x] Query bookings ที่จะเริ่มในอีก 1 วัน (WHERE start_date = CURRENT_DATE + INTERVAL '1 day') ✅
   - [x] ส่ง reminder email และ notification สำหรับแต่ละ booking ✅
   - [x] ตั้งค่า Vercel Cron Job (หรือใช้ Supabase Edge Functions + pg_cron) ✅ (vercel.json configured: runs daily at 9 AM)
-- [ ] ตั้งค่า Email Queue System (Bull/Bee-Queue) - สำหรับจัดการ email queue
-- [ ] สร้าง Email Service Layer - สำหรับจัดการการส่ง email แบบ centralized
-- [ ] สร้าง Email Preferences ให้ User (มีตารางแล้ว แต่ยังไม่ได้เชื่อมต่อกับ email sending logic)
+- [x] ตั้งค่า Email Queue System (Database-based) ✅
+  - [x] สร้างตาราง `email_queue` พร้อม retry logic และ priority ✅
+  - [x] สร้าง Email Queue Service (`/lib/email/queue.ts`) ✅
+  - [x] สร้าง API endpoint `/api/cron/process-email-queue` ✅
+  - [x] ตั้งค่า Vercel Cron Job (ทุก 5 นาที) ✅
+- [x] สร้าง Email Service Layer - สำหรับจัดการการส่ง email แบบ centralized ✅
+  - [x] สร้าง `EmailService` class (`/lib/email/service.ts`) ✅
+  - [x] เชื่อมต่อกับ Email Queue System ✅
+  - [x] รองรับ email types ทั้งหมด (verification, booking, payment, partner, admin, etc.) ✅
+- [x] เชื่อมต่อ Email Preferences กับ email sending logic ✅
+  - [x] เช็ค `email_enabled` ก่อนเพิ่ม email เข้า queue ✅
+  - [x] เช็ค specific preferences (booking_confirmation, booking_reminder) ✅
+  - [x] อัพเดท booking reminders cron ให้ใช้ EmailService ✅
 
 ---
 

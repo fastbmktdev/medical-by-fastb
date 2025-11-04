@@ -90,6 +90,7 @@ function PartnerBookingsContent() {
     { label: 'แดชบอร์ด', href: '/partner/dashboard', icon: ChartBarIcon },
     { label: 'ข้อมูลยิม', href: '/partner/dashboard/gym', icon: BuildingStorefrontIcon },
     { label: 'ประวัติการจอง', href: '/partner/dashboard/bookings', icon: CalendarIcon },
+    { label: 'ปฏิทินการจอง', href: '/partner/dashboard/bookings/calendar', icon: CalendarIcon },
     { label: 'รายการธุรกรรม', href: '/partner/dashboard/transactions', icon: BanknotesIcon },
     { label: 'การจ่ายเงิน', href: '/partner/dashboard/payouts', icon: CurrencyDollarIcon },
     { label: 'สถิติ', href: '/partner/dashboard/analytics', icon: ChartBarIcon },

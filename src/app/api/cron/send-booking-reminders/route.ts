@@ -14,7 +14,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/database/supabase/server';
-import { sendBookingReminderEmail } from '@/lib/email';
+import { EmailService } from '@/lib/email/service';
 
 /**
  * Verify cron secret for authentication
@@ -197,9 +197,11 @@ async function handleBookingReminders(request: NextRequest) {
           day: 'numeric',
         });
 
-        // Send reminder email
-        const emailResult = await sendBookingReminderEmail({
+        // Send reminder email using EmailService (adds to queue)
+        const emailResult = await EmailService.sendBookingReminder({
           to: booking.customer_email,
+          userId: booking.user_id || undefined,
+          bookingId: booking.id,
           customerName: booking.customer_name || 'ลูกค้า',
           bookingNumber: booking.booking_number || '',
           gymName,
@@ -209,6 +211,8 @@ async function handleBookingReminders(request: NextRequest) {
           gymAddress: gym?.address || undefined,
           gymPhone: gym?.phone || undefined,
           bookingUrl: `/dashboard/bookings`,
+        }, {
+          priority: 'high',
         });
 
         if (emailResult.success) {

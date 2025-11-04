@@ -49,3 +49,29 @@ export {
 
 // Email Templates (for reference/testing)
 export * from './templates';
+
+// Email Queue System
+export {
+  addEmailToQueue,
+  getPendingEmails,
+  updateEmailQueueStatus,
+  calculateNextRetryTime,
+  getQueueStats,
+  type EmailQueueItem,
+  type EmailStatus,
+  type EmailPriority,
+  type EmailType,
+} from './queue';
+
+// Email Service Layer (Centralized Service)
+export {
+  EmailService,
+  type BookingConfirmationDataWithIds,
+  type BookingReminderDataWithIds,
+  type PaymentReceiptDataWithIds,
+  type PaymentFailedDataWithIds,
+  type PartnerApprovalDataWithIds,
+  type PartnerRejectionDataWithIds,
+  type AdminAlertDataWithTo,
+  type EmailServiceOptions,
+} from './service';
