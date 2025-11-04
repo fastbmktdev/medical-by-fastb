@@ -132,6 +132,79 @@ export interface PartnerPayout {
   updated_at: string;
 }
 
+// Email Queue Table
+export interface EmailQueue {
+  id: string;
+  user_id: string | null;
+  to_email: string;
+  from_email: string | null;
+  subject: string;
+  html_content: string;
+  text_content: string | null;
+  email_type: 'verification' | 'booking_confirmation' | 'booking_reminder' | 'payment_receipt' | 'payment_failed' | 'partner_approval' | 'partner_rejection' | 'admin_alert' | 'contact_form' | 'welcome' | 'other';
+  priority: 'low' | 'normal' | 'high' | 'urgent';
+  status: 'pending' | 'processing' | 'sent' | 'failed' | 'cancelled';
+  retry_count: number;
+  max_retries: number;
+  last_attempt_at: string | null;
+  next_retry_at: string | null;
+  scheduled_at: string;
+  sent_at: string | null;
+  error_message: string | null;
+  error_details: Record<string, unknown> | null;
+  provider: string;
+  provider_message_id: string | null;
+  metadata: Record<string, unknown>;
+  related_resource_type: string | null;
+  related_resource_id: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+// Gym Availability Tables
+export interface GymAvailability {
+  id: string;
+  gym_id: string;
+  day_of_week: 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+  is_open: boolean;
+  open_time: string | null;
+  close_time: string | null;
+  max_capacity: number | null;
+  current_bookings: number;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface GymSpecialAvailability {
+  id: string;
+  gym_id: string;
+  date: string;
+  is_open: boolean;
+  open_time: string | null;
+  close_time: string | null;
+  max_capacity: number | null;
+  reason: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface GymTimeSlot {
+  id: string;
+  gym_id: string;
+  date: string;
+  start_time: string;
+  end_time: string;
+  max_capacity: number | null;
+  current_bookings: number;
+  is_available: boolean;
+  price_multiplier: number;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 // Audit Logs Table
 export interface AuditLog {
   id: string;

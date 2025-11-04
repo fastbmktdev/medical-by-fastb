@@ -651,3 +651,72 @@ export function generateAdminAlertHtml(data: {
   return getBaseEmailTemplate(content);
 }
 
+/**
+ * Verification Email Template
+ */
+export function generateVerificationEmailHtml(data: { otp: string; fullName: string }): string {
+  const { otp, fullName } = data;
+
+  const content = `
+    <h2 style="color: #dc2626; margin-top: 0; font-size: 24px;">ยืนยันการสมัครสมาชิก 🎉</h2>
+    
+    <p style="font-size: 16px; color: #374151;">สวัสดี <strong>${fullName}</strong></p>
+    
+    <p style="color: #1f2937;">ขอบคุณที่สมัครสมาชิกกับเรา! กรุณายืนยันการสมัครสมาชิกโดยใช้รหัส OTP ด้านล่าง:</p>
+    
+    <div style="background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border: 2px dashed #dc2626; border-radius: 8px; padding: 30px; text-align: center; margin: 24px 0;">
+      <p style="margin: 0 0 10px 0; color: #6b7280; font-size: 14px;">รหัส OTP ของคุณคือ:</p>
+      <p style="margin: 0; color: #dc2626; font-size: 36px; font-weight: 700; letter-spacing: 8px; font-family: 'Courier New', monospace;">${otp}</p>
+    </div>
+    
+    <p style="color: #6b7280; font-size: 14px; margin-top: 30px;">
+      รหัสนี้จะหมดอายุใน 10 นาที กรุณาใช้รหัสนี้เพื่อยืนยันการสมัครสมาชิกของคุณ
+    </p>
+    
+    <p style="color: #9ca3af; font-size: 12px; margin-top: 20px;">
+      หากคุณไม่ได้สมัครสมาชิกกับเรา กรุณาไม่ต้องดำเนินการใดๆ
+    </p>
+  `;
+
+  return getBaseEmailTemplate(content);
+}
+
+/**
+ * Welcome Email Template
+ */
+export function generateWelcomeEmailHtml(data: { fullName: string }): string {
+  const { fullName } = data;
+
+  const content = `
+    <h2 style="color: #dc2626; margin-top: 0; font-size: 24px;">ยินดีต้อนรับสู่ MUAYTHAI Platform! 🥊</h2>
+    
+    <p style="font-size: 16px; color: #374151;">สวัสดี <strong>${fullName}</strong></p>
+    
+    <p style="color: #1f2937;">เราดีใจที่คุณมาร่วมเป็นส่วนหนึ่งของชุมชนมวยไทย เริ่มต้นสำรวจแพลตฟอร์มของเรา:</p>
+    
+    <div style="background: #f9fafb; border-radius: 8px; padding: 24px; margin: 24px 0; border-left: 4px solid #dc2626;">
+      <h3 style="color: #dc2626; margin-top: 0; font-size: 18px;">คุณสามารถทำอะไรได้บ้าง:</h3>
+      
+      <ul style="color: #1f2937; line-height: 1.8;">
+        <li>🔍 ค้นหาค่ายมวยใกล้คุณ</li>
+        <li>📅 จองคอร์สฝึกสอน</li>
+        <li>📚 อ่านบทความและเทคนิคมวยไทย</li>
+        <li>🎫 ซื้อตั๋วเข้าร่วมอีเว้นท์และการแข่งขัน</li>
+        <li>🏆 ติดตามคะแนนและความสำเร็จของคุณ</li>
+      </ul>
+    </div>
+    
+    <div style="text-align: center; margin: 30px 0;">
+      <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://muaythai.com'}/gyms" style="display: inline-block; background: #dc2626; color: white; padding: 14px 32px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px;">
+        เริ่มต้นสำรวจ
+      </a>
+    </div>
+    
+    <p style="color: #6b7280; font-size: 14px; margin-top: 30px;">
+      หากมีคำถามหรือต้องการความช่วยเหลือ กรุณาติดต่อ <a href="mailto:support@muaythai.com" style="color: #dc2626;">support@muaythai.com</a>
+    </p>
+  `;
+
+  return getBaseEmailTemplate(content);
+}
+
