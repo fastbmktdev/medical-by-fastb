@@ -232,6 +232,73 @@ export interface AuditLog {
   created_at: string;
 }
 
+// Custom Reports Table
+export interface CustomReport {
+  id: string;
+  created_by: string;
+  name: string;
+  description?: string | null;
+  table_name: string;
+  columns: string[];
+  column_headers?: string[] | null;
+  filters: Record<string, unknown>;
+  format: 'pdf' | 'csv' | 'excel';
+  include_summary: boolean;
+  include_charts: boolean;
+  metadata: Record<string, unknown>;
+  created_at: string;
+  updated_at: string;
+}
+
+// Scheduled Reports Table
+export interface ScheduledReport {
+  id: string;
+  created_by: string;
+  custom_report_id?: string | null;
+  name: string;
+  description?: string | null;
+  table_name: string;
+  columns?: string[] | null;
+  column_headers?: string[] | null;
+  filters: Record<string, unknown>;
+  format: 'pdf' | 'csv' | 'excel';
+  frequency: 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly' | 'custom';
+  schedule_config: Record<string, unknown>;
+  next_run_at?: string | null;
+  last_run_at?: string | null;
+  recipients: string[];
+  cc_recipients?: string[] | null;
+  bcc_recipients?: string[] | null;
+  status: 'active' | 'paused' | 'completed' | 'failed' | 'deleted';
+  is_active: boolean;
+  run_count: number;
+  success_count: number;
+  failure_count: number;
+  last_error_message?: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at?: string | null;
+}
+
+// Scheduled Report Executions Table
+export interface ScheduledReportExecution {
+  id: string;
+  scheduled_report_id: string;
+  started_at: string;
+  completed_at?: string | null;
+  status: 'running' | 'completed' | 'failed';
+  rows_processed?: number | null;
+  file_url?: string | null;
+  file_size_bytes?: number | null;
+  error_message?: string | null;
+  error_details?: Record<string, unknown> | null;
+  email_sent: boolean;
+  email_sent_at?: string | null;
+  email_recipients?: string[] | null;
+  email_queue_id?: string | null;
+  created_at: string;
+}
+
 // Response Types
 export interface DatabaseApiResponse<T> {
   data: T | null;

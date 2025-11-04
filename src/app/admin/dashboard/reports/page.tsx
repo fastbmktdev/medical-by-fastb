@@ -26,6 +26,8 @@ import {
 } from '@heroicons/react/24/outline';
 import { User } from '@supabase/supabase-js';
 import { toast, Toaster } from 'react-hot-toast';
+import { CustomReportBuilder } from '@/components/features/admin/CustomReportBuilder';
+import { ScheduledReportsManager } from '@/components/features/admin/ScheduledReportsManager';
 
 function AdminReportsContent() {
   const supabase = createClient();
@@ -303,18 +305,10 @@ function AdminReportsContent() {
         })}
       </div>
 
-      <Card className="bg-default-100/50 backdrop-blur-sm mt-8 border-none">
-        <CardHeader>
-          <h3 className="font-bold text-xl">รายงานกำหนดเอง</h3>
-        </CardHeader>
-        <CardBody className="justify-center items-center py-12 text-center">
-          <DocumentTextIcon className="mb-4 w-16 h-16 text-default-300" />
-          <p className="mb-6 text-default-400">สร้างรายงานตามช่วงเวลาและตัวกรองที่ต้องการ</p>
-          <Button color="danger">
-            สร้างรายงานกำหนดเอง
-          </Button>
-        </CardBody>
-      </Card>
+      <div className="mt-8 space-y-6">
+        <CustomReportBuilder />
+        <ScheduledReportsManager />
+      </div>
       </DashboardLayout>
     </>
   );
