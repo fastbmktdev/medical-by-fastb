@@ -1,50 +1,52 @@
 // Email Utilities Barrel Export
-// Legacy Resend exports (deprecated - use SMTP instead)
+// Resend Email Service (Primary)
 export { 
   sendContactEmail, 
   sendWelcomeEmail,
+  sendPasswordResetEmail,
   isEmailServiceConfigured,
   getEmailServiceStatus,
   type ContactEmailData,
-  // Verification Emails (Resend)
-  sendVerificationEmail as sendVerificationEmailResend,
+  type PasswordResetEmailData,
+  // Verification Emails (Resend - Primary)
+  sendVerificationEmail,
   type VerificationEmailData,
-  // Booking Emails (Resend - deprecated)
-  sendBookingConfirmationEmail as sendBookingConfirmationEmailResend,
-  sendBookingReminderEmail as sendBookingReminderEmailResend,
+  // Booking Emails (Resend - Primary)
+  sendBookingConfirmationEmail,
+  sendBookingReminderEmail,
   type BookingConfirmationData,
   type BookingReminderData,
-  // Payment Emails (Resend - deprecated)
-  sendPaymentReceiptEmail as sendPaymentReceiptEmailResend,
-  sendPaymentFailedEmail as sendPaymentFailedEmailResend,
+  // Payment Emails (Resend - Primary)
+  sendPaymentReceiptEmail,
+  sendPaymentFailedEmail,
   type PaymentReceiptData,
   type PaymentFailedData,
-  // Partner Emails (Resend - deprecated)
-  sendPartnerApprovalEmail as sendPartnerApprovalEmailResend,
-  sendPartnerRejectionEmail as sendPartnerRejectionEmailResend,
+  // Partner Emails (Resend - Primary)
+  sendPartnerApprovalEmail,
+  sendPartnerRejectionEmail,
   type PartnerApprovalData,
   type PartnerRejectionData,
-  // Admin Alerts (Resend - deprecated)
-  sendAdminAlertEmail as sendAdminAlertEmailResend,
+  // Admin Alerts (Resend - Primary)
+  sendAdminAlertEmail,
   type AdminAlertData,
 } from './resend';
 
-// SMTP Email Service (Primary - uses Google SMTP)
+// SMTP Email Service (Legacy/Fallback - deprecated)
 export {
-  sendVerificationEmail,
+  sendVerificationEmail as sendVerificationEmailSMTP,
   isSmtpConfigured,
   getSmtpStatus,
-  // Booking Emails
-  sendBookingConfirmationEmail,
-  sendBookingReminderEmail,
-  // Payment Emails
-  sendPaymentReceiptEmail,
-  sendPaymentFailedEmail,
-  // Partner Emails
-  sendPartnerApprovalEmail,
-  sendPartnerRejectionEmail,
-  // Admin Alerts
-  sendAdminAlertEmail,
+  // Booking Emails (SMTP - deprecated)
+  sendBookingConfirmationEmail as sendBookingConfirmationEmailSMTP,
+  sendBookingReminderEmail as sendBookingReminderEmailSMTP,
+  // Payment Emails (SMTP - deprecated)
+  sendPaymentReceiptEmail as sendPaymentReceiptEmailSMTP,
+  sendPaymentFailedEmail as sendPaymentFailedEmailSMTP,
+  // Partner Emails (SMTP - deprecated)
+  sendPartnerApprovalEmail as sendPartnerApprovalEmailSMTP,
+  sendPartnerRejectionEmail as sendPartnerRejectionEmailSMTP,
+  // Admin Alerts (SMTP - deprecated)
+  sendAdminAlertEmail as sendAdminAlertEmailSMTP,
 } from './smtp';
 
 // Email Templates (for reference/testing)

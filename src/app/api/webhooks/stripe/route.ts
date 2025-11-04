@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import { stripe } from '@/lib/payments';
 import { createClient } from '@/lib/database/supabase/server';
-import { sendPaymentReceiptEmail, sendPaymentFailedEmail } from '@/lib/email';
+import { sendPaymentReceiptEmail, sendPaymentFailedEmail } from '@/lib/email/resend';
 import Stripe from 'stripe';
 
 // Disable body parser to get raw body for signature verification

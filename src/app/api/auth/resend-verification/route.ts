@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/database/supabase/server';
-import { sendVerificationEmail } from '@/lib/email/smtp';
+import { sendVerificationEmail } from '@/lib/email/resend';
 
 /**
  * Resend Email Verification OTP API Endpoint

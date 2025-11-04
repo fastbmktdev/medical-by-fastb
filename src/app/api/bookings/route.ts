@@ -10,7 +10,7 @@ import { createClient } from '@/lib/database/supabase/server';
 import { NextRequest } from 'next/server';
 import { getBookings, createBooking } from '@/services';
 import { awardPoints, updateUserStreak } from '@/services/gamification.service';
-import { sendBookingConfirmationEmail } from '@/lib/email';
+import { sendBookingConfirmationEmail } from '@/lib/email/resend';
 
 /**
  * GET /api/bookings
