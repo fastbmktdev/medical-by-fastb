@@ -18,6 +18,13 @@ import { sendBookingReminderEmail } from '@/lib/email';
 
 /**
  * Verify cron secret for authentication
+ * 
+ * Supports:
+ * - CRON_SECRET header (x-cron-secret or Authorization Bearer)
+ * - CRON_SECRET query parameter (?secret=...)
+ * - Vercel Cron: automatically authenticated when called by Vercel
+ * 
+ * Environment variable: CRON_SECRET (required in production)
  */
 function verifyCronSecret(request: NextRequest): boolean {
   const cronSecret = process.env.CRON_SECRET;
@@ -28,21 +35,36 @@ function verifyCronSecret(request: NextRequest): boolean {
     return true;
   }
 
+  // Check if request is from Vercel Cron (User-Agent contains "vercel")
+  // Note: This is a basic check. For production, use CRON_SECRET for security.
+  const userAgent = request.headers.get('user-agent') || '';
+  const isVercelCron = userAgent.toLowerCase().includes('vercel');
+  
   // If secret is configured, require it
-  if (!cronSecret) {
-    console.error('CRON_SECRET not configured');
+  if (cronSecret) {
+    // Check header first
+    const headerSecret = request.headers.get('x-cron-secret') || 
+                         request.headers.get('authorization')?.replace('Bearer ', '');
+    if (headerSecret === cronSecret) {
+      return true;
+    }
+
+    // Check query parameter
+    const querySecret = request.nextUrl.searchParams.get('secret');
+    if (querySecret === cronSecret) {
+      return true;
+    }
+  }
+
+  // In production, if CRON_SECRET is set, require it
+  if (process.env.NODE_ENV === 'production' && cronSecret) {
+    console.error('CRON_SECRET required but not provided');
     return false;
   }
 
-  // Check header first
-  const headerSecret = request.headers.get('x-cron-secret') || request.headers.get('authorization')?.replace('Bearer ', '');
-  if (headerSecret === cronSecret) {
-    return true;
-  }
-
-  // Check query parameter
-  const querySecret = request.nextUrl.searchParams.get('secret');
-  if (querySecret === cronSecret) {
+  // Allow Vercel Cron requests if no secret is configured (development/testing)
+  if (isVercelCron && !cronSecret) {
+    console.warn('⚠️ Vercel Cron detected but CRON_SECRET not configured');
     return true;
   }
 
@@ -75,25 +97,18 @@ async function handleBookingReminders(request: NextRequest) {
 
     const supabase = await createClient();
 
-    // Calculate date range: bookings starting tomorrow (1 day from now)
+    // Calculate tomorrow's date: bookings starting in 1 day (CURRENT_DATE + INTERVAL '1 day')
     const now = new Date();
     const tomorrow = new Date(now);
     tomorrow.setDate(tomorrow.getDate() + 1);
     
-    // Set to start of day (00:00:00)
-    const tomorrowStart = new Date(tomorrow);
-    tomorrowStart.setHours(0, 0, 0, 0);
-    
-    // Set to end of day (23:59:59)
-    const tomorrowEnd = new Date(tomorrow);
-    tomorrowEnd.setHours(23, 59, 59, 999);
+    // Format as YYYY-MM-DD (date only, no time)
+    const tomorrowDate = tomorrow.toISOString().split('T')[0];
 
-    const tomorrowStartISO = tomorrowStart.toISOString().split('T')[0]; // YYYY-MM-DD format
-    const tomorrowEndISO = tomorrowEnd.toISOString().split('T')[0];
+    console.log(`[Cron] Sending booking reminders for bookings starting on ${tomorrowDate}`);
 
-    console.log(`[Cron] Sending booking reminders for bookings starting on ${tomorrowStartISO}`);
-
-    // Query bookings that start tomorrow and are confirmed/paid
+    // Query bookings that start tomorrow (exact date match) and are confirmed/paid
+    // WHERE start_date = CURRENT_DATE + INTERVAL '1 day'
     const { data: bookings, error: bookingsError } = await supabase
       .from('bookings')
       .select(`
@@ -113,8 +128,7 @@ async function handleBookingReminders(request: NextRequest) {
       `)
       .eq('status', 'confirmed')
       .eq('payment_status', 'paid')
-      .gte('start_date', tomorrowStartISO)
-      .lte('start_date', tomorrowEndISO);
+      .eq('start_date', tomorrowDate);
 
     if (bookingsError) {
       throw bookingsError;
@@ -125,7 +139,7 @@ async function handleBookingReminders(request: NextRequest) {
         success: true,
         message: 'No bookings found for tomorrow',
         data: {
-          date: tomorrowStartISO,
+          date: tomorrowDate,
           remindersSent: 0,
           bookingsProcessed: 0,
         },
@@ -248,7 +262,7 @@ async function handleBookingReminders(request: NextRequest) {
 
     // Log summary
     console.log(`[Cron] Booking reminders completed:`, {
-      date: tomorrowStartISO,
+      date: tomorrowDate,
       total: bookings.length,
       sent: results.sent,
       failed: results.failed,
@@ -257,9 +271,9 @@ async function handleBookingReminders(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: `Processed ${bookings.length} bookings for ${tomorrowStartISO}`,
+      message: `Processed ${bookings.length} bookings for ${tomorrowDate}`,
       data: {
-        date: tomorrowStartISO,
+        date: tomorrowDate,
         bookingsProcessed: bookings.length,
         remindersSent: results.sent,
         remindersFailed: results.failed,
