@@ -30,6 +30,7 @@ import {
 import { Toaster, toast } from 'react-hot-toast';
 import type { Gym, GymPackage } from '@/types/database.types';
 import { CustomInput, CustomTextarea, CustomSelect } from '@/components/shared';
+import { validatePackageType, validateDurationMonths, validatePrice } from '@/lib/utils/validation';
 
 interface PackageFormData {
   package_type: 'one_time' | 'package' | '';
@@ -81,6 +82,7 @@ function PartnerDashboardContent() {
     features: [],
   });
   const [featureInput, setFeatureInput] = useState('');
+  const [packageErrors, setPackageErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     async function loadData() {
@@ -214,16 +216,36 @@ function PartnerDashboardContent() {
   };
 
   const handleSubmitPackage = async () => {
-    try {
-      if (!formData.package_type || !formData.name || !formData.price) {
-        toast.error('กรุณากรอกข้อมูลให้ครบถ้วน');
-        return;
-      }
+    // Validate form
+    const newErrors: Record<string, string> = {};
 
-      if (formData.package_type === 'package' && !formData.duration_months) {
-        toast.error('กรุณาเลือกระยะเวลาแพ็คเกจ');
-        return;
-      }
+    // Validate package type
+    const typeError = validatePackageType(formData.package_type);
+    if (typeError) newErrors.package_type = typeError;
+
+    // Validate name
+    if (!formData.name || formData.name.trim().length < 3) {
+      newErrors.name = 'ชื่อแพ็คเกจต้องมีอย่างน้อย 3 ตัวอักษร';
+    }
+
+    // Validate price
+    const priceError = validatePrice(formData.price);
+    if (priceError) newErrors.price = priceError;
+
+    // Validate duration months for package type
+    if (formData.package_type === 'package') {
+      const durationError = validateDurationMonths(formData.duration_months, true);
+      if (durationError) newErrors.duration_months = durationError;
+    }
+
+    setPackageErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      toast.error('กรุณากรอกข้อมูลให้ถูกต้อง');
+      return;
+    }
+
+    try {
 
       const url = editingPackage
         ? `/api/partner/packages/${editingPackage.id}`

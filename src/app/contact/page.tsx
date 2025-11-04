@@ -9,7 +9,16 @@ import {
   PaperAirplaneIcon
 } from "@heroicons/react/24/outline";
 import { PageHeader } from "@/components/shared";
-import { showSuccessToast } from "@/lib/utils";
+import { showSuccessToast, showErrorToast } from "@/lib/utils";
+import { validateName, validateEmail, validatePhone, validateSubject, validateMessage } from "@/lib/utils/validation";
+
+interface FormErrors {
+  name?: string;
+  email?: string;
+  phone?: string;
+  subject?: string;
+  message?: string;
+}
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -21,7 +30,37 @@ export default function ContactPage() {
     inquiryType: "general"
   });
 
+  const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
+
+    // Validate name
+    const nameError = validateName(formData.name, 'ชื่อ-นามสกุล');
+    if (nameError) newErrors.name = nameError;
+
+    // Validate email
+    const emailError = validateEmail(formData.email);
+    if (emailError) newErrors.email = emailError;
+
+    // Validate phone (optional)
+    if (formData.phone) {
+      const phoneError = validatePhone(formData.phone, false);
+      if (phoneError) newErrors.phone = phoneError;
+    }
+
+    // Validate subject
+    const subjectError = validateSubject(formData.subject);
+    if (subjectError) newErrors.subject = subjectError;
+
+    // Validate message
+    const messageError = validateMessage(formData.message);
+    if (messageError) newErrors.message = messageError;
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -29,25 +68,83 @@ export default function ContactPage() {
       ...prev,
       [name]: value
     }));
+
+    // Clear error when user starts typing
+    if (errors[name as keyof FormErrors]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name as keyof FormErrors];
+        return newErrors;
+      });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate form
+    if (!validateForm()) {
+      showErrorToast("กรุณากรอกข้อมูลให้ถูกต้อง");
+      return;
+    }
+
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    showSuccessToast("ส่งข้อความเรียบร้อยแล้ว! ทีมงานจะติดต่อกลับภายใน 24 ชั่วโมง");
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      subject: "",
-      message: "",
-      inquiryType: "general"
-    });
-    setIsSubmitting(false);
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: `${formData.subject}\n\nประเภท: ${formData.inquiryType}${formData.phone ? `\nเบอร์โทร: ${formData.phone}` : ''}\n\n${formData.message}`,
+        }),
+      });
+
+      // Check for CSRF error (HTTP 403)
+      if (response.status === 403) {
+        const data = await response.json().catch(() => ({}));
+        if (data.code === 'CSRF_ERROR') {
+          showErrorToast('Invalid request origin. Please refresh the page and try again.');
+          return;
+        }
+      }
+
+      // Check for rate limit error (HTTP 429)
+      if (response.status === 429) {
+        const { checkRateLimitError, formatRateLimitMessageThai } = await import('@/lib/utils/rate-limit-error');
+        const rateLimitError = await checkRateLimitError(response);
+        
+        if (rateLimitError) {
+          showErrorToast(formatRateLimitMessageThai(rateLimitError));
+          return;
+        }
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        showSuccessToast("ส่งข้อความเรียบร้อยแล้ว! ทีมงานจะติดต่อกลับภายใน 24 ชั่วโมง");
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          subject: "",
+          message: "",
+          inquiryType: "general"
+        });
+        setErrors({});
+      } else {
+        showErrorToast(data.error || 'เกิดข้อผิดพลาดในการส่งข้อความ');
+      }
+    } catch (error) {
+      console.error('Contact form submission error:', error);
+      showErrorToast('เกิดข้อผิดพลาดในการส่งข้อความ กรุณาลองใหม่อีกครั้ง');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
@@ -171,10 +268,18 @@ export default function ContactPage() {
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      required
-                      className="bg-zinc-700 px-3 py-2 border border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white"
+                      className={`bg-zinc-700 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white ${
+                        errors.name ? 'border-red-500' : 'border-zinc-600'
+                      }`}
                       placeholder="กรอกชื่อ-นามสกุล"
+                      aria-invalid={!!errors.name}
+                      aria-describedby={errors.name ? "name-error" : undefined}
                     />
+                    {errors.name && (
+                      <p id="name-error" className="mt-1 text-red-400 text-sm">
+                        {errors.name}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <label htmlFor="email" className="block mb-2 font-medium text-zinc-300 text-sm">
@@ -186,10 +291,18 @@ export default function ContactPage() {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      required
-                      className="bg-zinc-700 px-3 py-2 border border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white"
+                      className={`bg-zinc-700 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white ${
+                        errors.email ? 'border-red-500' : 'border-zinc-600'
+                      }`}
                       placeholder="กรอกอีเมล"
+                      aria-invalid={!!errors.email}
+                      aria-describedby={errors.email ? "email-error" : undefined}
                     />
+                    {errors.email && (
+                      <p id="email-error" className="mt-1 text-red-400 text-sm">
+                        {errors.email}
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -204,9 +317,18 @@ export default function ContactPage() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="bg-zinc-700 px-3 py-2 border border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white"
+                      className={`bg-zinc-700 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white ${
+                        errors.phone ? 'border-red-500' : 'border-zinc-600'
+                      }`}
                       placeholder="กรอกเบอร์โทรศัพท์"
+                      aria-invalid={!!errors.phone}
+                      aria-describedby={errors.phone ? "phone-error" : undefined}
                     />
+                    {errors.phone && (
+                      <p id="phone-error" className="mt-1 text-red-400 text-sm">
+                        {errors.phone}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <label htmlFor="inquiryType" className="block mb-2 font-medium text-zinc-300 text-sm">
@@ -217,7 +339,6 @@ export default function ContactPage() {
                       name="inquiryType"
                       value={formData.inquiryType}
                       onChange={handleInputChange}
-                      required
                       className="bg-zinc-700 px-3 py-2 border border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white"
                     >
                       {inquiryTypes.map((type) => (
@@ -239,10 +360,18 @@ export default function ContactPage() {
                     name="subject"
                     value={formData.subject}
                     onChange={handleInputChange}
-                    required
-                    className="bg-zinc-700 px-3 py-2 border border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white"
+                    className={`bg-zinc-700 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white ${
+                      errors.subject ? 'border-red-500' : 'border-zinc-600'
+                    }`}
                     placeholder="กรอกหัวข้อ"
+                    aria-invalid={!!errors.subject}
+                    aria-describedby={errors.subject ? "subject-error" : undefined}
                   />
+                  {errors.subject && (
+                    <p id="subject-error" className="mt-1 text-red-400 text-sm">
+                      {errors.subject}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -254,11 +383,19 @@ export default function ContactPage() {
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
-                    required
                     rows={6}
-                    className="bg-zinc-700 px-3 py-2 border border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white"
+                    className={`bg-zinc-700 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white ${
+                      errors.message ? 'border-red-500' : 'border-zinc-600'
+                    }`}
                     placeholder="กรอกรายละเอียดข้อความ"
+                    aria-invalid={!!errors.message}
+                    aria-describedby={errors.message ? "message-error" : undefined}
                   />
+                  {errors.message && (
+                    <p id="message-error" className="mt-1 text-red-400 text-sm">
+                      {errors.message}
+                    </p>
+                  )}
                 </div>
 
                 <button

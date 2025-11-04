@@ -17,6 +17,7 @@ import {
 import Link from "next/link";
 import { notFound, useRouter } from "next/navigation";
 import { PaymentWrapper } from "@/components/features/payments";
+import { validateName, validateEmail, validatePhone, validateDate } from "@/lib/utils/validation";
 
 // Booking Steps
 const STEPS = [
@@ -183,10 +184,24 @@ export default function BookingPage({
         newErrors.package = "กรุณาเลือกแพ็คเกจ";
       }
     } else if (step === 2) {
-      if (!formData.fullName.trim()) newErrors.fullName = "กรุณากรอกชื่อ-นามสกุล";
-      if (!formData.email.trim()) newErrors.email = "กรุณากรอกอีเมล";
-      if (!formData.phone.trim()) newErrors.phone = "กรุณากรอกเบอร์โทรศัพท์";
-      if (!formData.startDate) newErrors.startDate = "กรุณาเลือกวันที่เริ่มต้น";
+      // Validate full name
+      const nameError = validateName(formData.fullName, 'ชื่อ-นามสกุล');
+      if (nameError) newErrors.fullName = nameError;
+
+      // Validate email
+      const emailError = validateEmail(formData.email);
+      if (emailError) newErrors.email = emailError;
+
+      // Validate phone
+      const phoneError = validatePhone(formData.phone);
+      if (phoneError) newErrors.phone = phoneError;
+
+      // Validate start date
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(0, 0, 0, 0);
+      const dateError = validateDate(formData.startDate, true, tomorrow);
+      if (dateError) newErrors.startDate = dateError;
     }
 
     setErrors(newErrors);
