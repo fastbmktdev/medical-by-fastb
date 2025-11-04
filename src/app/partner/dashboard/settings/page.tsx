@@ -17,6 +17,7 @@ import {
   ChartBarIcon,
   CalendarIcon,
   BanknotesIcon,
+  CurrencyDollarIcon,
   Cog6ToothIcon,
   HomeIcon,
   BellIcon,
@@ -43,6 +44,7 @@ function PartnerSettingsContent() {
     { label: 'ข้อมูลยิม', href: '/partner/dashboard/gym', icon: BuildingStorefrontIcon },
     { label: 'ประวัติการจอง', href: '/partner/dashboard/bookings', icon: CalendarIcon },
     { label: 'รายการธุรกรรม', href: '/partner/dashboard/transactions', icon: BanknotesIcon },
+    { label: 'การจ่ายเงิน', href: '/partner/dashboard/payouts', icon: CurrencyDollarIcon },
     { label: 'สถิติ', href: '/partner/dashboard/analytics', icon: ChartBarIcon },
     { label: 'ตั้งค่า', href: '/partner/dashboard/settings', icon: Cog6ToothIcon },
   ];

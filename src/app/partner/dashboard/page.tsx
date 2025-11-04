@@ -362,6 +362,7 @@ function PartnerDashboardContent() {
     { label: 'Dashboard', href: '/partner/dashboard', icon: HomeIcon },
     { label: 'รายการจอง', href: '/partner/dashboard/bookings', icon: CalendarIcon },
     { label: 'รายการธุรกรรม', href: '/partner/dashboard/transactions', icon: BanknotesIcon },
+    { label: 'การจ่ายเงิน', href: '/partner/dashboard/payouts', icon: CurrencyDollarIcon },
     { label: 'สถิติ', href: '/partner/dashboard/analytics', icon: ChartBarIcon },
   ];
 

@@ -10,6 +10,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/database/supabase/server';
+import { fetchPlaceReviews } from '@/lib/utils/googlePlaces';
 
 export async function GET(request: NextRequest) {
   try {
@@ -42,7 +43,7 @@ export async function GET(request: NextRequest) {
     // ดึงค่ายของ partner
     const { data: gym, error: gymError } = await supabase
       .from('gyms')
-      .select('id, gym_name, location, status')
+      .select('id, gym_name, location, status, google_place_id')
       .eq('user_id', user.id)
       .maybeSingle();
 
@@ -119,11 +120,25 @@ export async function GET(request: NextRequest) {
       .select('*', { count: 'exact', head: true })
       .eq('gym_id', gym.id);
 
-    // 3. Query คะแนนเฉลี่ย (from gym reviews if available)
-    // Note: Since there's no reviews table, we'll calculate from bookings with feedback
-    // For now, we'll return null and partner can use Google Places API rating
-    const averageRating = null; // Will be calculated from reviews table if available
-    const totalRatings = 0; // Placeholder
+    // 3. Query คะแนนเฉลี่ย (from Google Places API if available)
+    let averageRating: number | null = null;
+    let totalRatings = 0;
+    
+    if (gym.google_place_id) {
+      try {
+        const googleReviews = await fetchPlaceReviews({ 
+          placeId: gym.google_place_id 
+        });
+        
+        if (googleReviews.rating !== undefined) {
+          averageRating = googleReviews.rating;
+          totalRatings = googleReviews.user_ratings_total || 0;
+        }
+      } catch (error) {
+        // Silently fail - Google Places API might not be configured or rate limited
+        console.warn('Failed to fetch Google Places rating:', error);
+      }
+    }
 
     // 4. Query อันดับในพื้นที่ (compare with other gyms in same location)
     // Get all gyms in the same location
