@@ -230,6 +230,26 @@ export default function GymBookingPage() {
         }),
       });
 
+      // Check for CSRF error (HTTP 403)
+      if (response.status === 403) {
+        const data = await response.json().catch(() => ({}));
+        if (data.code === 'CSRF_ERROR') {
+          setError('Invalid request origin. Please refresh the page and try again.');
+          return;
+        }
+      }
+
+      // Check for rate limit error (HTTP 429)
+      if (response.status === 429) {
+        const { checkRateLimitError, formatRateLimitMessageThai } = await import('@/lib/utils/rate-limit-error');
+        const rateLimitError = await checkRateLimitError(response);
+        
+        if (rateLimitError) {
+          setError(formatRateLimitMessageThai(rateLimitError));
+          return;
+        }
+      }
+
       if (!response.ok) {
         throw new Error('Failed to create payment intent');
       }
@@ -251,7 +271,7 @@ export default function GymBookingPage() {
     if (!selectedPackage) return;
 
     try {
-      await fetch('/api/bookings/gym', {
+      const bookingResponse = await fetch('/api/bookings/gym', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -270,6 +290,26 @@ export default function GymBookingPage() {
           notes: contactInfo.notes,
         }),
       });
+
+      // Check for CSRF error (HTTP 403)
+      if (bookingResponse.status === 403) {
+        const data = await bookingResponse.json().catch(() => ({}));
+        if (data.code === 'CSRF_ERROR') {
+          setError('Invalid request origin. Please refresh the page and try again.');
+          return;
+        }
+      }
+
+      // Check for rate limit error (HTTP 429)
+      if (bookingResponse.status === 429) {
+        const { checkRateLimitError, formatRateLimitMessageThai } = await import('@/lib/utils/rate-limit-error');
+        const rateLimitError = await checkRateLimitError(bookingResponse);
+        
+        if (rateLimitError) {
+          setError(formatRateLimitMessageThai(rateLimitError));
+          return;
+        }
+      }
     } catch (err) {
       // Error creating gym booking
     }

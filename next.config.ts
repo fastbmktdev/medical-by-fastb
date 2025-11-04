@@ -44,6 +44,11 @@ const securityHeaders = [
     key: "Permissions-Policy",
     value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
   },
+  // HSTS (HTTP Strict Transport Security) - only in production
+  ...(isDevelopment ? [] : [{
+    key: "Strict-Transport-Security",
+    value: "max-age=31536000; includeSubDomains; preload",
+  }]),
 ];
 
 const nextConfig: NextConfig = {

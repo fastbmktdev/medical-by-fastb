@@ -4,9 +4,6 @@
  * Components for providing user feedback including loading states, errors, and empty states.
  */
 
-// Loading components
-export { default as Loading, type LoadingProps } from './Loading';
-
 // Error components
 export { default as ErrorDisplay, type ErrorDisplayProps } from './ErrorDisplay';
 export { 

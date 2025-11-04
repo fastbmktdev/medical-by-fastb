@@ -69,6 +69,32 @@ export function ContactForm({ onSubmit, className }: ContactFormProps = {}) {
           body: JSON.stringify(formData),
         });
 
+        // Check for CSRF error (HTTP 403)
+        if (response.status === 403) {
+          const data = await response.json().catch(() => ({}));
+          if (data.code === 'CSRF_ERROR') {
+            setSubmitStatus({
+              type: 'error',
+              message: 'Invalid request origin. Please refresh the page and try again.',
+            });
+            return;
+          }
+        }
+
+        // Check for rate limit error (HTTP 429)
+        if (response.status === 429) {
+          const { checkRateLimitError, formatRateLimitMessageThai } = await import('@/lib/utils/rate-limit-error');
+          const rateLimitError = await checkRateLimitError(response);
+          
+          if (rateLimitError) {
+            setSubmitStatus({
+              type: 'error',
+              message: formatRateLimitMessageThai(rateLimitError),
+            });
+            return;
+          }
+        }
+
         const data = await response.json();
 
         if (data.success) {

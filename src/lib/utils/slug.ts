@@ -1,36 +1,30 @@
 /**
- * Utility functions for generating URL-friendly slugs
+ * Slug Utilities
+ * Functions for generating and validating URL-friendly slugs
  */
 
 /**
- * Generates a URL-friendly slug from input text
- * @param text - The text to convert to a slug
- * @returns A URL-friendly slug
+ * Converts a string to a URL-friendly slug.
+ * Supports English and Thai characters.
+ * @param text - The text to slugify.
+ * @returns The slugified string.
  */
 export function generateSlug(text: string): string {
+  if (!text || text.trim() === '') {
+    return '';
+  }
   return text
+    .toString()
     .toLowerCase()
     .trim()
-    .replace(/[^\w\s-]/g, '') // Remove special characters
-    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/[^\w\s-]+/g, '') // Remove special characters but keep Thai/unicode
+    .replace(/[\s_-]+/g, '-') // Replace spaces/underscores with hyphens
     .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
     .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
 }
 
 /**
- * Validates if a string is a valid slug format
- * @param slug - The slug to validate
- * @returns True if the slug is valid
- */
-export function isValidSlug(slug: string): boolean {
-  // Slug should only contain lowercase letters, numbers, and hyphens
-  // Should not start or end with a hyphen
-  const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-  return slugRegex.test(slug);
-}
-
-/**
- * Preview what a slug will look like without saving
+ * Preview what a slug will look like
  * @param text - The text to preview as a slug
  * @returns The slug preview
  */
@@ -41,3 +35,15 @@ export function previewSlug(text: string): string {
   return generateSlug(text);
 }
 
+/**
+ * Validates if a string is a valid slug format
+ * @param slug - The slug to validate
+ * @returns True if the slug is valid
+ */
+export function isValidSlug(slug: string): boolean {
+  if (!slug || slug.trim() === '') {
+    return false;
+  }
+  const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+  return slugRegex.test(slug);
+}

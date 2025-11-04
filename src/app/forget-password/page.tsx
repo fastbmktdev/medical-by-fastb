@@ -97,6 +97,19 @@ function ForgetPasswordPageContent() {
             }),
           });
 
+          // Check for rate limit error (HTTP 429)
+          if (smtpResponse.status === 429) {
+            const { checkRateLimitError, formatRateLimitMessageThai } = await import('@/lib/utils/rate-limit-error');
+            const rateLimitError = await checkRateLimitError(smtpResponse);
+            
+            if (rateLimitError) {
+              setErrors({
+                general: formatRateLimitMessageThai(rateLimitError),
+              });
+              return;
+            }
+          }
+
           if (smtpResponse.ok) {
             setIsSuccess(true);
             return;
