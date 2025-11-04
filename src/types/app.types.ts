@@ -116,13 +116,41 @@ export interface Article {
   is_new?: boolean;
   is_published?: boolean;
   published_at?: string | null; // ISO timestamp
+  scheduled_publish_at?: string | null; // ISO timestamp for content scheduling
   views_count?: number;
   likes_count?: number;
   created_at?: string; // ISO timestamp
   updated_at?: string; // ISO timestamp
+  // SEO fields
+  meta_title?: string | null;
+  meta_description?: string | null;
+  meta_keywords?: string[] | null;
+  og_image?: string | null;
+  og_title?: string | null;
+  og_description?: string | null;
+  twitter_card?: string | null;
+  canonical_url?: string | null;
   // Legacy/computed fields for backward compatibility
   author?: string; // Computed: author_name || 'Unknown'
   isNew?: boolean; // Alias for is_new
+}
+
+export interface ArticleVersion {
+  id: string;
+  article_id: string;
+  version_number: number;
+  title: string;
+  excerpt: string;
+  content: string;
+  category: string;
+  image?: string | null;
+  tags?: string[];
+  meta_title?: string | null;
+  meta_description?: string | null;
+  meta_keywords?: string[] | null;
+  created_by?: string | null;
+  created_at: string;
+  change_summary?: string | null;
 }
 
 export interface ApiResponse<T> {

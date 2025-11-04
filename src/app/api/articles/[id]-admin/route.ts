@@ -74,6 +74,17 @@ export async function PUT(
       tags,
       is_new,
       date,
+      // SEO fields
+      meta_title,
+      meta_description,
+      meta_keywords,
+      og_image,
+      og_title,
+      og_description,
+      twitter_card,
+      canonical_url,
+      // Scheduling
+      scheduled_publish_at,
     } = body;
 
     // Build update object
@@ -105,6 +116,23 @@ export async function PUT(
     if (tags !== undefined) updateData.tags = tags;
     if (is_new !== undefined) updateData.is_new = is_new;
     if (date !== undefined) updateData.date = new Date(date).toISOString().split('T')[0];
+    
+    // SEO fields
+    if (meta_title !== undefined) updateData.meta_title = meta_title;
+    if (meta_description !== undefined) updateData.meta_description = meta_description;
+    if (meta_keywords !== undefined) updateData.meta_keywords = meta_keywords;
+    if (og_image !== undefined) updateData.og_image = og_image;
+    if (og_title !== undefined) updateData.og_title = og_title;
+    if (og_description !== undefined) updateData.og_description = og_description;
+    if (twitter_card !== undefined) updateData.twitter_card = twitter_card;
+    if (canonical_url !== undefined) updateData.canonical_url = canonical_url;
+    
+    // Scheduling
+    if (scheduled_publish_at !== undefined) {
+      updateData.scheduled_publish_at = scheduled_publish_at 
+        ? new Date(scheduled_publish_at).toISOString() 
+        : null;
+    }
 
     // Validate category if provided
     if (category !== undefined) {

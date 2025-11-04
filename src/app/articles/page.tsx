@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { ARTICLES } from "@/lib/data";
+import { Article } from "@/types";
 import {
   CalendarIcon,
   UserIcon,
@@ -15,7 +15,9 @@ import {
 import { PageHeader } from "@/components/shared";
 
 // Helper function to get appropriate image based on category
-function getArticleImage(category: string) {
+function getArticleImage(category: string, image?: string | null) {
+  if (image) return image;
+  
   const imageMap: { [key: string]: string } = {
     ประวัติศาสตร์: "/assets/images/bg-main.jpg",
     เทคนิค: "/assets/images/fallback-img.jpg",
@@ -34,6 +36,8 @@ function ArticlesContent() {
   const [activeTab, setActiveTab] = useState<"articles" | "news">("articles");
   const [selectedCategory, setSelectedCategory] = useState<string>("ทั้งหมด");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Handle URL parameter for tab
   useEffect(() => {
@@ -43,14 +47,35 @@ function ArticlesContent() {
     }
   }, [searchParams]);
 
-  // Separate articles and news
-  const articles = ARTICLES.filter((a) => a.category !== "ข่าวสาร");
-  const news = ARTICLES.filter((a) => a.category === "ข่าวสาร");
+  // Fetch articles from API
+  useEffect(() => {
+    async function fetchArticles() {
+      try {
+        setIsLoading(true);
+        const response = await fetch('/api/articles?published=true');
+        const result = await response.json();
+        
+        if (result.success && result.data) {
+          setArticles(result.data);
+        }
+      } catch (error) {
+        console.error('Error fetching articles:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    
+    fetchArticles();
+  }, []);
 
-  const currentData = activeTab === "articles" ? articles : news;
+  // Separate articles and news
+  const allArticles = articles.filter((a) => a.category !== "ข่าวสาร");
+  const news = articles.filter((a) => a.category === "ข่าวสาร");
+
+  const currentData = activeTab === "articles" ? allArticles : news;
   const categories =
     activeTab === "articles"
-      ? ["ทั้งหมด", ...Array.from(new Set(articles.map((a) => a.category)))]
+      ? ["ทั้งหมด", ...Array.from(new Set(allArticles.map((a) => a.category)))]
       : ["ทั้งหมด", "ข่าวสาร"];
 
   // Filter by category and search
@@ -67,6 +92,27 @@ function ArticlesContent() {
 
     return matchesCategory && matchesSearch;
   });
+
+  // Transform article data to include legacy author field
+  const transformedArticles = filteredArticles.map(article => ({
+    ...article,
+    author: article.author_name || 'Unknown',
+    isNew: article.is_new,
+  }));
+
+  if (isLoading) {
+    return (
+      <div className="bg-transparent min-h-screen text-white">
+        <PageHeader
+          title={activeTab === "articles" ? "บทความมวยไทย" : "ข่าวสารมวยไทย"}
+          description="กำลังโหลด..."
+        />
+        <div className="flex justify-center items-center py-20">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-transparent min-h-screen text-white">
@@ -179,12 +225,12 @@ function ArticlesContent() {
               <span>
                 {searchQuery ? (
                   <>
-                    พบ {filteredArticles.length} รายการ
+                    พบ {transformedArticles.length} รายการ
                     {selectedCategory !== "ทั้งหมด" && ` • ${selectedCategory}`}
                   </>
                 ) : (
                   <>
-                    {filteredArticles.length} รายการ
+                    {transformedArticles.length} รายการ
                     {selectedCategory !== "ทั้งหมด" && ` • ${selectedCategory}`}
                   </>
                 )}
@@ -197,7 +243,7 @@ function ArticlesContent() {
       {/* Articles Grid */}
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
         <div className="gap-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {filteredArticles.map((article) => (
+          {transformedArticles.map((article) => (
             <Link
               key={article.id}
               href={`/articles/${article.slug}`}
@@ -206,7 +252,7 @@ function ArticlesContent() {
               {/* Article Image */}
               <div className="relative w-full h-48 overflow-hidden">
                 <Image
-                  src={getArticleImage(article.category)}
+                  src={getArticleImage(article.category, article.image)}
                   alt={article.title}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -272,7 +318,7 @@ function ArticlesContent() {
           ))}
         </div>
 
-        {filteredArticles.length === 0 && (
+        {transformedArticles.length === 0 && (
           <div className="py-20 text-center">
             <p className="text-zinc-500 text-xl">ไม่พบบทความในหมวดหมู่นี้</p>
           </div>

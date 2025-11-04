@@ -138,6 +138,17 @@ const postArticleHandler = withAdminAuth(async (
       tags = [],
       is_new = false,
       date,
+      // SEO fields
+      meta_title,
+      meta_description,
+      meta_keywords = [],
+      og_image,
+      og_title,
+      og_description,
+      twitter_card,
+      canonical_url,
+      // Scheduling
+      scheduled_publish_at,
     } = body;
 
     // Validation
@@ -191,22 +202,39 @@ const postArticleHandler = withAdminAuth(async (
     const authorName = profile?.display_name || profile?.full_name || user.email || 'Admin';
 
     // Insert article
+    const articleData: any = {
+      slug,
+      title,
+      excerpt,
+      content,
+      category,
+      image: image || null,
+      tags: tags || [],
+      is_new: is_new || false,
+      author_id: user.id,
+      author_name: authorName,
+      date: date ? new Date(date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+      is_published: false, // Default: not published
+    };
+
+    // Add SEO fields if provided
+    if (meta_title) articleData.meta_title = meta_title;
+    if (meta_description) articleData.meta_description = meta_description;
+    if (meta_keywords && meta_keywords.length > 0) articleData.meta_keywords = meta_keywords;
+    if (og_image) articleData.og_image = og_image;
+    if (og_title) articleData.og_title = og_title;
+    if (og_description) articleData.og_description = og_description;
+    if (twitter_card) articleData.twitter_card = twitter_card;
+    if (canonical_url) articleData.canonical_url = canonical_url;
+
+    // Add scheduling if provided
+    if (scheduled_publish_at) {
+      articleData.scheduled_publish_at = new Date(scheduled_publish_at).toISOString();
+    }
+
     const { data, error } = await supabase
       .from('articles')
-      .insert({
-        slug,
-        title,
-        excerpt,
-        content,
-        category,
-        image: image || null,
-        tags: tags || [],
-        is_new: is_new || false,
-        author_id: user.id,
-        author_name: authorName,
-        date: date ? new Date(date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
-        is_published: false, // Default: not published
-      })
+      .insert(articleData)
       .select()
       .single();
 

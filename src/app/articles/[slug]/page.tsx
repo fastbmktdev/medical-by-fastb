@@ -1,10 +1,10 @@
 "use client";
 
-import { use } from "react";
+import { use, useEffect, useState } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { ARTICLES } from "@/lib/data";
+import { Article } from "@/types";
 import {
   CalendarIcon,
   UserIcon,
@@ -16,7 +16,9 @@ import {
 } from "@heroicons/react/24/outline";
 
 // Helper function to get appropriate image based on category
-function getArticleImage(category: string) {
+function getArticleImage(category: string, image?: string | null) {
+  if (image) return image;
+  
   const imageMap: { [key: string]: string } = {
     ประวัติศาสตร์: "/assets/images/bg-main.jpg",
     เทคนิค: "/assets/images/fallback-img.jpg",
@@ -35,16 +37,71 @@ export default function ArticleDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = use(params);
-  const article = ARTICLES.find((a) => a.slug === slug);
+  const [article, setArticle] = useState<Article | null>(null);
+  const [relatedArticles, setRelatedArticles] = useState<Article[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [notFoundArticle, setNotFoundArticle] = useState(false);
 
-  if (!article) {
-    notFound();
+  useEffect(() => {
+    async function fetchArticle() {
+      try {
+        setIsLoading(true);
+        const response = await fetch(`/api/articles/${slug}`);
+        const result = await response.json();
+
+        if (result.success && result.data) {
+          const articleData = {
+            ...result.data,
+            author: result.data.author_name || 'Unknown',
+            isNew: result.data.is_new,
+          };
+          setArticle(articleData as Article);
+
+          // Fetch related articles
+          const relatedResponse = await fetch(
+            `/api/articles?category=${encodeURIComponent(result.data.category)}&published=true&limit=4`
+          );
+          const relatedResult = await relatedResponse.json();
+
+          if (relatedResult.success && relatedResult.data) {
+            const related = relatedResult.data
+              .filter((a: Article) => a.slug !== slug)
+              .slice(0, 3)
+              .map((a: Article) => ({
+                ...a,
+                author: a.author_name || 'Unknown',
+                isNew: a.is_new,
+              }));
+            setRelatedArticles(related);
+          }
+        } else {
+          setNotFoundArticle(true);
+        }
+      } catch (error) {
+        console.error('Error fetching article:', error);
+        setNotFoundArticle(true);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchArticle();
+  }, [slug]);
+
+  if (isLoading) {
+    return (
+      <div className="bg-transparent min-h-screen mt-16 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500 mx-auto mb-4"></div>
+          <p className="text-zinc-400">กำลังโหลด...</p>
+        </div>
+      </div>
+    );
   }
 
-  // Get related articles from same category
-  const relatedArticles = ARTICLES.filter(
-    (a) => a.category === article.category && a.id !== article.id
-  ).slice(0, 3);
+  if (notFoundArticle || !article) {
+    notFound();
+  }
 
   return (
     <div className="bg-transparent min-h-screen mt-16">
@@ -124,7 +181,7 @@ export default function ArticleDetailPage({
         {/* Featured Image */}
         <div className="relative mb-8 rounded-xl w-full h-64 md:h-96 overflow-hidden">
           <Image
-            src={getArticleImage(article.category)}
+            src={getArticleImage(article.category, article.image)}
             alt={article.title}
             fill
             className="object-cover"
@@ -193,7 +250,7 @@ export default function ArticleDetailPage({
                 >
                   <div className="relative w-full h-32">
                     <Image
-                      src={getArticleImage(related.category)}
+                      src={getArticleImage(related.category, related.image)}
                       alt={related.title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
