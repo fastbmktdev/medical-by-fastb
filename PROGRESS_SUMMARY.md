@@ -139,7 +139,12 @@
    - ✅ Email Service Layer (`src/lib/email/service.ts`) - ใช้ queue system (ไม่ส่งโดยตรง)
    - ✅ สร้าง test script (`test-resend-emails.js`) สำหรับทดสอบ Resend emails
    - ✅ เพิ่ม npm script `test:resend` สำหรับทดสอบ
-   - ⚠️ อัปเดต environment variables documentation (ถ้ามี)
+   - ✅ อัปเดต environment variables documentation (`GOOGLE_SMTP_SETUP.md`) แล้ว
+     * ✅ เพิ่ม Resend setup guide (Step-by-step)
+     * ✅ เพิ่มข้อมูลเกี่ยวกับ test:resend script
+     * ✅ เพิ่ม comparison table (Resend vs Google SMTP)
+     * ✅ อัปเดต production environment variables section
+     * ✅ เพิ่ม testing instructions สำหรับทั้ง Resend และ SMTP
    - ℹ️ Contact form ใช้ Resend อยู่แล้ว (ไม่ต้องเปลี่ยน)
 
 **หมายเหตุ**: 
@@ -197,20 +202,20 @@
 - ✅ **Shop Frontend Integration**: Shop Frontend เชื่อมต่อกับ Products API แล้ว (ไม่ใช้ Static Data)
 - ✅ **Products Admin UI**: Admin UI สำหรับจัดการสินค้าเสร็จสมบูรณ์
 - ✅ **Promotions Admin UI**: Admin UI สำหรับจัดการโปรโมชั่นเสร็จสมบูรณ์
-- ✅ **Partner Promotions**: Partner สามารถสร้างและจัดการ promotions สำหรับการจองค่ายมวยได้ (Backend 100% ✅, Frontend 100% ✅) - **เสร็จสมบูรณ์แล้ว**
+- ✅ **Partner Promotions**: Partner สามารถสร้างและจัดการ promotions สำหรับการจองค่ายมวยได้
   - ✅ API Endpoints (GET, POST, PATCH, DELETE)
   - ✅ Migration + RLS Policies
   - ✅ Frontend UI (หน้า /partner/dashboard/promotions)
   - ✅ Components (PromotionList, PromotionCreateModal, PromotionEditModal, PromotionDeleteDialog)
   - ✅ Menu Integration
-- ✅ **Migration Optimization**: สร้างสคริปต์ optimize-migrations.js เพื่อลดขนาดไฟล์ migrations (ลดได้ 15.8 KB / 6.8%) - เพิ่ม npm script `db:optimize-migrations`
-- ✅ **Code Cleanup**: ลบไฟล์ที่ไม่จำเป็น (migrate-articles-to-db.js, production-user-creation.js) ลดขนาดได้ 32 KB
+- ✅ **Migration Optimization**: สร้างสคริปต์ optimize-migrations.js เพื่อลดขนาดไฟล์ migrations
+- ✅ **Code Cleanup**: ลบไฟล์ที่ไม่จำเป็น
 - ✅ **Email Service Migration**: Email Queue Processor และ Direct API Routes ใช้ Resend แล้ว (98% เสร็จ)
   - ✅ Password Reset Email ใช้ Resend แล้ว
   - ✅ Email Queue Processor ใช้ Resend เป็น default provider
   - ✅ Direct API Routes ใช้ Resend แล้ว (booking, payment, verification)
   - ✅ รองรับทุก email type ผ่าน Resend (booking, payment, partner, admin, verification)
-  - ✅ สร้าง test script (`test-resend-emails.js`) และ npm script `test:resend`
+  - ✅ สร้าง test script (`test-resend-emails.js`) และ npm script `test:resend` สำหรับทดสอบว่าส่งเมลสำเร็จไหม
 
 ### 2025-11-04
 - ✅ **Newsletter & Promotional Emails System**: ระบบจดหมายข่าวและอีเมลโปรโมชั่นเสร็จสมบูรณ์

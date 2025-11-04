@@ -212,10 +212,14 @@
    - Partner/Admin emails ถูกส่งผ่าน queue system ซึ่งใช้ Resend เป็น default
 
 ✅ 9. Environment Variables Documentation
-   - อัปเดต `GOOGLE_SMTP_SETUP.md` แล้ว
-   - ระบุว่า Resend เป็น default provider และ SMTP เป็น fallback
-   - เพิ่ม section เกี่ยวกับ Resend setup
-   - อัปเดต email provider priority และ configuration
+   - ✅ อัปเดต `GOOGLE_SMTP_SETUP.md` แล้ว
+   - ✅ ระบุว่า Resend เป็น default provider และ SMTP เป็น fallback
+   - ✅ เพิ่ม section เกี่ยวกับ Resend setup (Step-by-step guide)
+   - ✅ เพิ่มข้อมูลเกี่ยวกับ test:resend script
+   - ✅ เพิ่ม comparison table (Resend vs Google SMTP)
+   - ✅ อัปเดต production environment variables section
+   - ✅ เพิ่ม testing instructions สำหรับทั้ง Resend และ SMTP
+   - ✅ อัปเดต email provider priority และ configuration
 
 ✅ 10. Testing (Test Script Available)
    - ✅ สร้าง test script แล้ว: `scripts/node/test-resend-emails.js`
