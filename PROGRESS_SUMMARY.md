@@ -193,29 +193,50 @@
 ## 📅 อัปเดตล่าสุด
 
 ### 2025-11-05 (วันนี้)
+
+#### 📊 สรุปงานที่ทำเสร็จในวันนี้:
+1. ✅ **Search Analytics System** - เสร็จสมบูรณ์ 100%
+2. ✅ **Shop Frontend Integration** - เชื่อมต่อกับ Products API
+3. ✅ **Products Admin UI** - เสร็จสมบูรณ์
+4. ✅ **Promotions Admin UI** - เสร็จสมบูรณ์
+5. ✅ **Partner Promotions** - เสร็จสมบูรณ์ 100%
+6. ✅ **Migration Optimization** - สร้างสคริปต์ optimize-migrations.js
+7. ✅ **Code Cleanup** - ลบไฟล์ที่ไม่จำเป็น
+8. ✅ **Email Service Migration** - 98% เสร็จ (ใช้ Resend แล้ว)
+
+#### 📝 รายละเอียด:
+
 - ✅ **Search Analytics**: ระบบ Analytics สำหรับคำค้นหายอดนิยมเสร็จสมบูรณ์ (100%)
   - Admin RLS Policy สำหรับ access search_history (Migration: 20251211000000_search_analytics_admin_access.sql)
   - Search Analytics API endpoint (`/api/admin/analytics/search`)
   - รองรับการกรองตามวันที่, ประเภทการค้นหา (gyms, events, articles, all), และ limit
   - แสดงสถิติ: จำนวนครั้งค้นหา, คำค้นหาที่ไม่ซ้ำ, ผลลัพธ์เฉลี่ย
   - ระบบ Search & Filter เสร็จสมบูรณ์ 100% (เพิ่มจาก 80%)
+
 - ✅ **Shop Frontend Integration**: Shop Frontend เชื่อมต่อกับ Products API แล้ว (ไม่ใช้ Static Data)
+
 - ✅ **Products Admin UI**: Admin UI สำหรับจัดการสินค้าเสร็จสมบูรณ์
+
 - ✅ **Promotions Admin UI**: Admin UI สำหรับจัดการโปรโมชั่นเสร็จสมบูรณ์
+
 - ✅ **Partner Promotions**: Partner สามารถสร้างและจัดการ promotions สำหรับการจองค่ายมวยได้
   - ✅ API Endpoints (GET, POST, PATCH, DELETE)
   - ✅ Migration + RLS Policies
   - ✅ Frontend UI (หน้า /partner/dashboard/promotions)
   - ✅ Components (PromotionList, PromotionCreateModal, PromotionEditModal, PromotionDeleteDialog)
   - ✅ Menu Integration
+
 - ✅ **Migration Optimization**: สร้างสคริปต์ optimize-migrations.js เพื่อลดขนาดไฟล์ migrations
+
 - ✅ **Code Cleanup**: ลบไฟล์ที่ไม่จำเป็น
+
 - ✅ **Email Service Migration**: Email Queue Processor และ Direct API Routes ใช้ Resend แล้ว (98% เสร็จ)
   - ✅ Password Reset Email ใช้ Resend แล้ว
   - ✅ Email Queue Processor ใช้ Resend เป็น default provider
   - ✅ Direct API Routes ใช้ Resend แล้ว (booking, payment, verification)
   - ✅ รองรับทุก email type ผ่าน Resend (booking, payment, partner, admin, verification)
   - ✅ สร้าง test script (`test-resend-emails.js`) และ npm script `test:resend` สำหรับทดสอบว่าส่งเมลสำเร็จไหม
+  - ✅ อัปเดต documentation (`GOOGLE_SMTP_SETUP.md`) แล้ว
 
 ### 2025-11-04
 - ✅ **Newsletter & Promotional Emails System**: ระบบจดหมายข่าวและอีเมลโปรโมชั่นเสร็จสมบูรณ์
