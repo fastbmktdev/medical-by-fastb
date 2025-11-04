@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Textarea, Button } from '@heroui/react';
 import { PencilIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
+import { sanitizeHTML, sanitizeText } from '@/lib/utils/sanitize';
 
 const MAX_BIO_LENGTH = 500;
 
@@ -124,9 +125,14 @@ export function BioEditor() {
         </div>
       ) : (
         <div className="bg-zinc-950/50 p-4 rounded-lg min-h-[100px]">
-          <p className="text-white whitespace-pre-wrap">
-            {bio || 'ยังไม่ได้เพิ่มข้อมูลเกี่ยวกับตัวคุณ'}
-          </p>
+          {bio ? (
+            <div 
+              className="text-white whitespace-pre-wrap prose prose-invert max-w-none"
+              dangerouslySetInnerHTML={{ __html: sanitizeHTML(bio) }}
+            />
+          ) : (
+            <p className="text-white">ยังไม่ได้เพิ่มข้อมูลเกี่ยวกับตัวคุณ</p>
+          )}
         </div>
       )}
     </div>

@@ -57,9 +57,9 @@ function AdminDashboardContent() {
     approvedGyms: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
-  const [pendingApplications, setPendingApplications] = useState<GymApplication[]>([]);
-  const [selectedApplication, setSelectedApplication] = useState<GymApplication | null>(null);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [_pendingApplications, _setPendingApplications] = useState<GymApplication[]>([]);
+  const [_selectedApplication, _setSelectedApplication] = useState<GymApplication | null>(null);
+  const { isOpen: _isOpen, onOpen: _onOpen, onClose: _onClose } = useDisclosure();
 
   const loadData = async () => {
     try {
@@ -89,7 +89,7 @@ function AdminDashboardContent() {
         .order('created_at', { ascending: false })
         .limit(5);
 
-      setPendingApplications(applications || []);
+      _setPendingApplications(applications || []);
     } catch {
       // Silently handle errors
     } finally {

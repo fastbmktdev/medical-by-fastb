@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { createClient } from '@/lib/database/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { Card, CardBody, CardHeader, Button, Input, Chip, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Divider, Tooltip, Tabs, Tab } from '@heroui/react';
+import { Card, CardBody, CardHeader, Button, Input, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Divider, Tooltip, Tabs, Tab } from '@heroui/react';
 import {
   ShareIcon,
   UserPlusIcon,
@@ -14,8 +14,7 @@ import {
   GiftIcon,
   SparklesIcon,
   FireIcon,
-  CheckCircleIcon,
-  ArrowRightIcon
+  CheckCircleIcon
 } from '@heroicons/react/24/outline';
 import { showSuccessToast, showErrorToast } from '@/lib/utils';
 import { Loading } from '@/components/design-system/primitives/Loading';

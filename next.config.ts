@@ -64,21 +64,7 @@ const nextConfig: NextConfig = {
     // Only ignore in development if explicitly set via env var
     // Set IGNORE_TYPESCRIPT_BUILD_ERRORS=true to ignore TypeScript errors during builds
     // ⚠️ RECOMMENDED: Fix errors instead of ignoring them
-    // Note: Analysis tools in src/analysis/ are dev utilities, not part of production build
-    // Exclude them from type checking during build
     ignoreBuildErrors: false,
-  },
-  // Exclude analysis tools from build completely
-  serverExternalPackages: ['chokidar'],
-  // Exclude analysis tools from build
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        'chokidar': false,
-      };
-    }
-    return config;
   },
   images: {
     remotePatterns: [

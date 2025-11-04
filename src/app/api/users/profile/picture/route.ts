@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/database/supabase/server';
+import { validateFile, sanitizeFilename } from '@/lib/utils/file-validation';
 
 /**
  * Profile Picture Upload API
@@ -7,10 +8,13 @@ import { createClient } from '@/lib/database/supabase/server';
  * 
  * FormData:
  * - file: File
+ * 
+ * Security Features:
+ * - Comprehensive file validation with magic bytes verification
+ * - Virus/malware pattern detection
+ * - Filename sanitization
+ * - MIME type and extension validation
  */
-
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
 export async function POST(request: NextRequest) {
   try {
@@ -36,25 +40,33 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate file type
-    if (!ALLOWED_TYPES.includes(file.type)) {
+    // Comprehensive file validation with security checks
+    const validation = await validateFile(file, ['image_jpeg', 'image_png', 'image_webp']);
+    
+    if (!validation.isValid) {
       return NextResponse.json(
-        { success: false, error: 'Invalid file type. Only JPEG, PNG, and WebP are allowed' },
+        { 
+          success: false, 
+          error: 'File validation failed',
+          details: validation.errors,
+          warnings: validation.warnings
+        },
         { status: 400 }
       );
     }
 
-    // Validate file size
-    if (file.size > MAX_FILE_SIZE) {
-      return NextResponse.json(
-        { success: false, error: 'File size exceeds 5MB limit' },
-        { status: 400 }
-      );
+    // Log warnings if any (for monitoring)
+    if (validation.warnings.length > 0) {
+      console.warn('File upload warnings:', {
+        filename: file.name,
+        warnings: validation.warnings
+      });
     }
 
-    // Generate unique filename
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${Date.now()}.${fileExt}`;
+    // Sanitize filename and generate unique name
+    const sanitized = sanitizeFilename(file.name);
+    const fileExt = sanitized.split('.').pop() || 'jpg';
+    const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
     const filePath = `${user.id}/${fileName}`;
 
     // Convert File to ArrayBuffer

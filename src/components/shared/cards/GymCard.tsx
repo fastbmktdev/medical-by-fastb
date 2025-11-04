@@ -43,9 +43,15 @@ export function GymCard({ gym }: GymCardProps) {
 
         {/* Details */}
         {gym.gym_details && (
-          <p className="mb-4 text-zinc-400 text-sm line-clamp-3">
-            {gym.gym_details}
-          </p>
+          <div 
+            className="mb-4 text-zinc-400 text-sm line-clamp-3"
+            dangerouslySetInnerHTML={{ 
+              // eslint-disable-next-line @typescript-eslint/no-require-imports
+              __html: require('@/lib/utils/sanitize').sanitizeHTML(
+                gym.gym_details.replace(/\n/g, '<br />')
+              ) 
+            }}
+          />
         )}
 
         {/* CTA */}

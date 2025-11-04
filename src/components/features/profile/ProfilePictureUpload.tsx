@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import { Avatar, Button, Spinner } from '@heroui/react';
 import { CameraIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
+import { validateFileClient } from '@/lib/utils/file-validation';
 
 interface ProfilePictureUploadProps {
   currentAvatarUrl?: string | null;
@@ -19,17 +20,24 @@ export function ProfilePictureUpload({ currentAvatarUrl, onUploadSuccess }: Prof
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file type
-    const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
-    if (!validTypes.includes(file.type)) {
-      toast.error('รองรับเฉพาะไฟล์ JPEG, PNG หรือ WebP เท่านั้น');
+    // Client-side validation with security checks
+    const validation = validateFileClient(file, ['image_jpeg', 'image_png', 'image_webp']);
+    
+    if (!validation.isValid) {
+      // Show first error
+      toast.error(validation.errors[0] || 'ไฟล์ไม่ถูกต้อง');
+      // Clear file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
       return;
     }
 
-    // Validate file size (5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error('ไฟล์ต้องไม่เกิน 5MB');
-      return;
+    // Show warnings if any
+    if (validation.warnings.length > 0) {
+      validation.warnings.forEach(warning => {
+        toast(warning, { icon: '⚠️' });
+      });
     }
 
     // Create preview
@@ -39,7 +47,7 @@ export function ProfilePictureUpload({ currentAvatarUrl, onUploadSuccess }: Prof
     };
     reader.readAsDataURL(file);
 
-    // Upload file
+    // Upload file (server-side will do comprehensive validation)
     uploadFile(file);
   };
 
@@ -57,6 +65,10 @@ export function ProfilePictureUpload({ currentAvatarUrl, onUploadSuccess }: Prof
       const data = await response.json();
 
       if (!response.ok || !data.success) {
+        // Show detailed error messages from server validation
+        if (data.details && Array.isArray(data.details) && data.details.length > 0) {
+          throw new Error(data.details[0] || data.error || 'Failed to upload');
+        }
         throw new Error(data.error || 'Failed to upload');
       }
 

@@ -125,7 +125,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if favorite already exists
-    const { data: existing, error: checkError } = await supabase
+    const { data: existing } = await supabase
       .from('user_favorites')
       .select('id')
       .eq('user_id', user.id)

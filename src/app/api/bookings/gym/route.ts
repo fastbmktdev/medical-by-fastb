@@ -26,7 +26,6 @@ export async function POST(request: NextRequest) {
       durationDays,
       packageType,
       packageName,
-      packageNameEn,
       unitPrice,
       totalPrice,
       notes,

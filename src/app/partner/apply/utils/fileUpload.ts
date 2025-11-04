@@ -1,21 +1,17 @@
 import { SupabaseClient } from "@supabase/supabase-js";
+import { validateFileClient, sanitizeFilename } from "@/lib/utils/file-validation";
 
 /**
- * Validate file before upload
+ * Validate file before upload (client-side lightweight validation)
+ * For comprehensive server-side validation, see /api routes
  */
 export const validateFile = (file: File): string | null => {
-  // Check file type (jpg, jpeg, png only)
-  const validTypes = ["image/jpeg", "image/jpg", "image/png"];
-  if (!validTypes.includes(file.type)) {
-    return `${file.name}: ไฟล์ต้องเป็น JPG หรือ PNG เท่านั้น`;
+  const validation = validateFileClient(file, ['image_jpeg', 'image_png']);
+  
+  if (!validation.isValid && validation.errors.length > 0) {
+    return `${file.name}: ${validation.errors[0]}`;
   }
-
-  // Check file size (max 5MB)
-  const maxSize = 5 * 1024 * 1024; // 5MB in bytes
-  if (file.size > maxSize) {
-    return `${file.name}: ขนาดไฟล์เกิน 5MB`;
-  }
-
+  
   return null;
 };
 
@@ -32,8 +28,9 @@ export const uploadImages = async (
 
   for (const file of files) {
     try {
-      // Generate unique file name
-      const fileExt = file.name.split(".").pop();
+      // Sanitize filename for security
+      const sanitized = sanitizeFilename(file.name);
+      const fileExt = sanitized.split(".").pop() || 'jpg';
       const fileName = `${userId}/${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
       
       // Upload to Supabase Storage bucket 'gym-images'

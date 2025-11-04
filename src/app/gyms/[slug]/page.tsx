@@ -88,9 +88,17 @@ const AboutSection = memo(function AboutSection({ details }: { details?: string 
   return (
     <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
       <h2 className="mb-4 font-bold text-2xl">เกี่ยวกับค่ายมวย</h2>
-      <p className="text-zinc-300 leading-relaxed">
-        {details || "ไม่มีรายละเอียดเพิ่มเติม"}
-      </p>
+      {details ? (
+        <div 
+          className="text-zinc-300 leading-relaxed prose prose-invert max-w-none"
+          dangerouslySetInnerHTML={{ 
+            // eslint-disable-next-line @typescript-eslint/no-require-imports
+            __html: require('@/lib/utils/sanitize').sanitizeHTML(details) 
+          }}
+        />
+      ) : (
+        <p className="text-zinc-300 leading-relaxed">ไม่มีรายละเอียดเพิ่มเติม</p>
+      )}
     </div>
   );
 });

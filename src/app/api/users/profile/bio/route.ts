@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/database/supabase/server';
+import { sanitizeHTML } from '@/lib/utils/sanitize';
 
 /**
  * Update Bio API
@@ -28,9 +29,14 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { bio } = body;
+    let { bio } = body;
 
-    // Validate bio length
+    // Sanitize HTML content to prevent XSS attacks
+    if (bio && typeof bio === 'string') {
+      bio = sanitizeHTML(bio);
+    }
+
+    // Validate bio length (after sanitization)
     if (bio && bio.length > MAX_BIO_LENGTH) {
       return NextResponse.json(
         { success: false, error: `Bio must be ${MAX_BIO_LENGTH} characters or less` },

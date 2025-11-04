@@ -22,3 +22,24 @@ export {
 
 // Alias for backward compatibility
 export { slugify as generateSlug } from './text-utils';
+
+// File validation utilities
+export { 
+  validateFile, 
+  validateFiles, 
+  validateFileClient,
+  sanitizeFilename,
+  FILE_TYPE_CONFIGS,
+  type FileValidationResult,
+  type FileTypeConfig
+} from './file-validation';
+
+// XSS Sanitization utilities
+export {
+  sanitizeHTML,
+  sanitizeText,
+  sanitizeAttribute,
+  sanitizeURL,
+  getSanitizedHTMLProps,
+  containsDangerousHTML
+} from './sanitize';
