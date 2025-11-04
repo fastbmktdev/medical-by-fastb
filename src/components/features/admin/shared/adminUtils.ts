@@ -48,6 +48,28 @@ export async function handleApiResponse<T>(
   successMessage?: string
 ): Promise<{ success: boolean; data?: T; error?: string }> {
   try {
+    // Check for CSRF error first (HTTP 403)
+    if (response.status === 403) {
+      const result = await response.json().catch(() => ({}));
+      if (result.code === 'CSRF_ERROR') {
+        const errorMessage = 'Invalid request origin. Please refresh the page and try again.';
+        showErrorToast(errorMessage);
+        return { success: false, error: errorMessage };
+      }
+    }
+
+    // Check for rate limit error (HTTP 429)
+    if (response.status === 429) {
+      const { checkRateLimitError, formatRateLimitMessageThai } = await import('@/lib/utils/rate-limit-error');
+      const rateLimitError = await checkRateLimitError(response);
+      
+      if (rateLimitError) {
+        const errorMessage = formatRateLimitMessageThai(rateLimitError);
+        showErrorToast(errorMessage);
+        return { success: false, error: errorMessage };
+      }
+    }
+
     const result = await response.json();
     
     if (result.success) {

@@ -11,12 +11,14 @@ export {
   formatPhoneNumber 
 } from './formatters';
 
-// Slug utilities
-export { generateSlug, previewSlug, isValidSlug } from './slug';
-
-// Text utilities
-export { 
-  truncateText, 
+// Text and Slug utilities (consolidated in text-utils)
+export {
+  truncateText,
   slugify,
-  getInitials
+  getInitials,
+  isValidSlug,
+  previewSlug
 } from './text-utils';
+
+// Alias for backward compatibility
+export { slugify as generateSlug } from './text-utils';

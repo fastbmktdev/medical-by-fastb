@@ -229,6 +229,24 @@ export default function BookingPage({
         }),
       });
 
+      // Check for CSRF error (HTTP 403)
+      if (paymentResponse.status === 403) {
+        const data = await paymentResponse.json().catch(() => ({}));
+        if (data.code === 'CSRF_ERROR') {
+          throw new Error('Invalid request origin. Please refresh the page and try again.');
+        }
+      }
+
+      // Check for rate limit error (HTTP 429)
+      if (paymentResponse.status === 429) {
+        const { checkRateLimitError, formatRateLimitMessageThai } = await import('@/lib/utils/rate-limit-error');
+        const rateLimitError = await checkRateLimitError(paymentResponse);
+        
+        if (rateLimitError) {
+          throw new Error(formatRateLimitMessageThai(rateLimitError));
+        }
+      }
+
       const paymentData = await paymentResponse.json();
 
       if (!paymentResponse.ok) {
@@ -255,6 +273,24 @@ export default function BookingPage({
           payment_method: 'stripe',
         }),
       });
+
+      // Check for CSRF error (HTTP 403)
+      if (bookingResponse.status === 403) {
+        const data = await bookingResponse.json().catch(() => ({}));
+        if (data.code === 'CSRF_ERROR') {
+          throw new Error('Invalid request origin. Please refresh the page and try again.');
+        }
+      }
+
+      // Check for rate limit error (HTTP 429)
+      if (bookingResponse.status === 429) {
+        const { checkRateLimitError, formatRateLimitMessageThai } = await import('@/lib/utils/rate-limit-error');
+        const rateLimitError = await checkRateLimitError(bookingResponse);
+        
+        if (rateLimitError) {
+          throw new Error(formatRateLimitMessageThai(rateLimitError));
+        }
+      }
 
       const bookingResult = await bookingResponse.json();
 

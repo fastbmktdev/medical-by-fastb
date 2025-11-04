@@ -11,6 +11,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { AuthLayout } from "@/components/compositions/layouts";
 import { Button } from "@/components/shared";
+import toast from "react-hot-toast";
 
 /**
  * Interface for signup form data
@@ -294,6 +295,19 @@ export default function SignupPage() {
             }),
           });
 
+          // Check for rate limit error (HTTP 429)
+          if (resendResponse.status === 429) {
+            const { checkRateLimitError, formatRateLimitMessageThai } = await import('@/lib/utils/rate-limit-error');
+            const rateLimitError = await checkRateLimitError(resendResponse);
+            
+            if (rateLimitError) {
+              setErrors({
+                general: formatRateLimitMessageThai(rateLimitError),
+              });
+              return;
+            }
+          }
+
           if (resendResponse.ok) {
             setShowOTPModal(true);
           } else {
@@ -499,6 +513,17 @@ export default function SignupPage() {
           fullName: formData.fullName,
         }),
       });
+
+      // Check for rate limit error (HTTP 429)
+      if (response.status === 429) {
+        const { checkRateLimitError, formatRateLimitMessageThai } = await import('@/lib/utils/rate-limit-error');
+        const rateLimitError = await checkRateLimitError(response);
+        
+        if (rateLimitError) {
+          toast.error(formatRateLimitMessageThai(rateLimitError));
+          return;
+        }
+      }
 
       if (response.ok) {
         setErrors({
