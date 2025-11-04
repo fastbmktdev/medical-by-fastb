@@ -156,6 +156,16 @@ const updatePromotionHandler = withAdminAuth(async (
       updateData.link_text = linkText?.trim() || null;
     }
     
+    // Get current promotion to check if is_active is being changed to true
+    const { data: currentPromotion } = await supabase
+      .from('promotions')
+      .select('is_active, title, description, link_url')
+      .eq('id', id)
+      .single();
+    
+    const wasInactive = currentPromotion && !currentPromotion.is_active;
+    const isBeingActivated = updateData.is_active === true && wasInactive;
+    
     // Update promotion
     const { data: updatedPromotion, error } = await supabase
       .from('promotions')
@@ -170,6 +180,48 @@ const updatePromotionHandler = withAdminAuth(async (
         { success: false, error: 'Failed to update promotion', details: error.message },
         { status: 500 }
       );
+    }
+    
+    // Send notifications if promotion is being activated
+    if (isBeingActivated && updatedPromotion) {
+      try {
+        // Get all users who have opted in for promotion notifications
+        const { data: users, error: usersError } = await supabase
+          .from('notification_preferences')
+          .select('user_id')
+          .eq('promotions', true);
+        
+        if (!usersError && users && users.length > 0) {
+          const promotionTitle = updatedPromotion.title || currentPromotion?.title || 'โปรโมชั่นใหม่';
+          const promotionDescription = updatedPromotion.description || currentPromotion?.description || '';
+          const promotionLink = updatedPromotion.link_url || currentPromotion?.link_url || '/';
+          
+          // Create notifications in batch
+          const notifications = users.map((user) => ({
+            user_id: user.user_id,
+            type: 'promotion',
+            title: '🎉 โปรโมชั่นใหม่!',
+            message: promotionTitle,
+            link_url: promotionLink,
+            metadata: {
+              promotion_id: updatedPromotion.id,
+              title: promotionTitle,
+              description: promotionDescription,
+              link_url: promotionLink,
+            },
+          }));
+          
+          // Insert notifications (batch insert)
+          await supabase
+            .from('notifications')
+            .insert(notifications);
+          
+          console.log(`Sent promotion notifications to ${users.length} users`);
+        }
+      } catch (notificationError) {
+        // Don't fail promotion update if notification fails
+        console.warn('Failed to send promotion notifications:', notificationError);
+      }
     }
     
     return NextResponse.json({

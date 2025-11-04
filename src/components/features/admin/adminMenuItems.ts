@@ -5,7 +5,7 @@ import {
   ChartBarIcon,
   ClockIcon,
   DocumentTextIcon,
-  Cog6ToothIcon,
+  ShieldCheckIcon,
 } from '@heroicons/react/24/outline';
 
 /**
@@ -18,5 +18,6 @@ export const adminMenuItems: MenuItem[] = [
   { label: 'อนุมัติยิม', href: '/admin/dashboard/approvals', icon: ClockIcon },
   { label: 'รายงาน', href: '/admin/dashboard/reports', icon: DocumentTextIcon },
   { label: 'สถิติ', href: '/admin/dashboard/analytics', icon: ChartBarIcon },
+  { label: 'Audit Logs', href: '/admin/dashboard/audit-logs', icon: ShieldCheckIcon },
   // { label: 'ตั้งค่าระบบ', href: '/admin/dashboard/settings', icon: Cog6ToothIcon },
 ];

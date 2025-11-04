@@ -12,6 +12,7 @@ import {
 import { AuthLayout } from "@/components/compositions/layouts";
 import { Button } from "@/components/shared";
 import toast from "react-hot-toast";
+import { validatePasswordStrong } from "@/lib/utils/validation";
 
 /**
  * Interface for signup form data
@@ -82,7 +83,7 @@ export default function SignupPage() {
   const [showOTPModal, setShowOTPModal] = useState(false);
   const [otp, setOtp] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
-  const [rateLimitHit, setRateLimitHit] = useState(false);
+  const [_rateLimitHit, setRateLimitHit] = useState(false);
 
   /**
    * Check if user is already authenticated
@@ -125,13 +126,25 @@ export default function SignupPage() {
    */
   const getPasswordStrength = (password: string) => {
     if (!password) return { level: "", color: "" };
+    
+    // Check for all required character types
+    const hasLower = /[a-z]/.test(password);
+    const hasUpper = /[A-Z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+    
+    const requiredTypesCount = [hasLower, hasUpper, hasNumber, hasSpecial].filter(Boolean).length;
+    
     if (password.length < 6) return { level: "อ่อน", color: "text-red-400" };
-    if (password.length < 10)
+    if (password.length < 8 || requiredTypesCount < 2) {
       return { level: "ปานกลาง", color: "text-yellow-400" };
+    }
     if (
-      password.length >= 10 &&
-      /[A-Z]/.test(password) &&
-      /[0-9]/.test(password)
+      password.length >= 8 &&
+      hasLower &&
+      hasUpper &&
+      hasNumber &&
+      hasSpecial
     ) {
       return { level: "แข็งแรง", color: "text-green-400" };
     }
@@ -176,11 +189,10 @@ export default function SignupPage() {
       newErrors.email = "รูปแบบอีเมลไม่ถูกต้อง";
     }
 
-    // Password validation
-    if (!formData.password) {
-      newErrors.password = "กรุณากรอกรหัสผ่าน";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร";
+    // Password validation with strength requirements
+    const passwordError = validatePasswordStrong(formData.password, true);
+    if (passwordError) {
+      newErrors.password = passwordError;
     }
 
     // Confirm password validation

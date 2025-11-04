@@ -193,6 +193,44 @@ const createPromotionHandler = withAdminAuth(async (
       );
     }
     
+    // Send notifications to all users if promotion is active
+    if (isActive && promotion) {
+      try {
+        // Get all users who have opted in for promotion notifications
+        const { data: users, error: usersError } = await supabase
+          .from('notification_preferences')
+          .select('user_id')
+          .eq('promotions', true);
+        
+        if (!usersError && users && users.length > 0) {
+          // Create notifications in batch
+          const notifications = users.map((user) => ({
+            user_id: user.user_id,
+            type: 'promotion',
+            title: '🎉 โปรโมชั่นใหม่!',
+            message: title,
+            link_url: linkUrl || '/',
+            metadata: {
+              promotion_id: promotion.id,
+              title: title,
+              description: description,
+              link_url: linkUrl,
+            },
+          }));
+          
+          // Insert notifications (batch insert)
+          await supabase
+            .from('notifications')
+            .insert(notifications);
+          
+          console.log(`Sent promotion notifications to ${users.length} users`);
+        }
+      } catch (notificationError) {
+        // Don't fail promotion creation if notification fails
+        console.warn('Failed to send promotion notifications:', notificationError);
+      }
+    }
+    
     return NextResponse.json({
       success: true,
       data: promotion,

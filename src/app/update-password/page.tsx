@@ -13,6 +13,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { AuthLayout } from "@/components/compositions/layouts";
 import { Button } from "@/components/shared";
+import { validatePasswordStrong } from "@/lib/utils/validation";
 
 /**
  * Interface for update password form data
@@ -126,11 +127,10 @@ function UpdatePasswordForm() {
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
-    // Password validation
-    if (!formData.password) {
-      newErrors.password = "กรุณากรอกรหัสผ่านใหม่";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร";
+    // Password validation with strength requirements
+    const passwordError = validatePasswordStrong(formData.password, true);
+    if (passwordError) {
+      newErrors.password = passwordError;
     }
 
     // Confirm password validation

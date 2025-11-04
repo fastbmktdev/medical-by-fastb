@@ -4,54 +4,22 @@ import { useState, useEffect } from 'react';
 import { Button, Popover, PopoverTrigger, PopoverContent } from '@heroui/react';
 import { BellIcon } from '@heroicons/react/24/outline';
 import { NotificationList } from './NotificationList';
+import { useRealtimeNotifications } from '@/lib/hooks/useRealtimeNotifications';
 
 interface NotificationBellProps {
   className?: string;
 }
 
 export function NotificationBell({ className = '' }: NotificationBellProps) {
-  const [unreadCount, setUnreadCount] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const { unreadCount, isConnected, refreshNotifications } = useRealtimeNotifications();
 
-  // Fetch unread count
-  useEffect(() => {
-    async function fetchUnreadCount() {
-      try {
-        const response = await fetch('/api/notifications?unread=true&limit=1');
-        const result = await response.json();
-
-        if (result.success) {
-          setUnreadCount(result.unread_count || 0);
-        }
-      } catch (error) {
-        console.error('Error fetching unread count:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchUnreadCount();
-
-    // Poll for updates every 30 seconds
-    const interval = setInterval(fetchUnreadCount, 30000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Refresh count when popover opens
+  // Refresh notifications when popover opens
   useEffect(() => {
     if (isOpen) {
-      fetch('/api/notifications?unread=true&limit=1')
-        .then(res => res.json())
-        .then(result => {
-          if (result.success) {
-            setUnreadCount(result.unread_count || 0);
-          }
-        })
-        .catch(console.error);
+      refreshNotifications();
     }
-  }, [isOpen]);
+  }, [isOpen, refreshNotifications]);
 
   return (
     <Popover
@@ -73,13 +41,17 @@ export function NotificationBell({ className = '' }: NotificationBellProps) {
               {unreadCount > 9 ? '9+' : unreadCount}
             </span>
           )}
+          {!isConnected && (
+            <span className="absolute -bottom-1 -right-1 bg-warning text-white text-xs rounded-full w-2 h-2" 
+                  title="Using polling mode (real-time connection unavailable)" />
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[400px] max-h-[600px] p-0">
         <NotificationList
           onClose={() => setIsOpen(false)}
-          onMarkAsRead={() => setUnreadCount(prev => Math.max(0, prev - 1))}
-          onMarkAllRead={() => setUnreadCount(0)}
+          onMarkAsRead={() => {}}
+          onMarkAllRead={() => {}}
         />
       </PopoverContent>
     </Popover>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Card, CardBody, Button, ScrollShadow, Divider } from '@heroui/react';
+import { Card, CardBody, Button, ScrollShadow, Divider, Chip } from '@heroui/react';
 import {
   XMarkIcon,
   CheckIcon,
@@ -9,6 +9,7 @@ import {
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
+import { useRealtimeNotifications } from '@/lib/hooks/useRealtimeNotifications';
 
 interface Notification {
   id: string;
@@ -32,31 +33,13 @@ export function NotificationList({
   onMarkAsRead,
   onMarkAllRead,
 }: NotificationListProps) {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const { notifications, unreadCount, isConnected, refreshNotifications } = useRealtimeNotifications();
   const [isLoading, setIsLoading] = useState(true);
-  const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
-    fetchNotifications();
-  }, []);
-
-  const fetchNotifications = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch('/api/notifications?limit=50');
-      const result = await response.json();
-
-      if (result.success) {
-        setNotifications(result.data || []);
-        setUnreadCount(result.unread_count || 0);
-      }
-    } catch (error) {
-      console.error('Error fetching notifications:', error);
-      toast.error('ไม่สามารถโหลดการแจ้งเตือนได้');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    // Initial load
+    refreshNotifications().finally(() => setIsLoading(false));
+  }, [refreshNotifications]);
 
   const handleMarkAsRead = async (id: string) => {
     try {
@@ -69,13 +52,10 @@ export function NotificationList({
       const result = await response.json();
 
       if (result.success) {
-        setNotifications(prev =>
-          prev.map(notif =>
-            notif.id === id ? { ...notif, is_read: true } : notif
-          )
-        );
-        setUnreadCount(prev => Math.max(0, prev - 1));
+        // Notification will be updated via real-time stream
         onMarkAsRead?.(id);
+        // Refresh to get updated data
+        refreshNotifications();
       }
     } catch (error) {
       console.error('Error marking as read:', error);
@@ -92,12 +72,10 @@ export function NotificationList({
       const result = await response.json();
 
       if (result.success) {
-        setNotifications(prev =>
-          prev.map(notif => ({ ...notif, is_read: true }))
-        );
-        setUnreadCount(0);
         onMarkAllRead?.();
         toast.success('ทำเครื่องหมายอ่านทั้งหมดแล้ว');
+        // Refresh to get updated data
+        refreshNotifications();
       }
     } catch (error) {
       console.error('Error marking all as read:', error);
@@ -114,7 +92,7 @@ export function NotificationList({
       const result = await response.json();
 
       if (result.success) {
-        setNotifications(prev => prev.filter(notif => notif.id !== id));
+        await refreshNotifications();
         toast.success('ลบการแจ้งเตือนแล้ว');
       }
     } catch (error) {
@@ -184,6 +162,11 @@ export function NotificationList({
             <span className="bg-danger text-white text-xs font-bold rounded-full px-2 py-1">
               {unreadCount}
             </span>
+          )}
+          {isConnected && (
+            <Chip size="sm" color="success" variant="flat">
+              Real-time
+            </Chip>
           )}
         </div>
         <div className="flex items-center gap-2">

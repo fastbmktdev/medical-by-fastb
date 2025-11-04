@@ -114,6 +114,15 @@ export async function awardPoints(request: AwardPointsRequest): Promise<PointsAw
   const supabase = await createClient();
 
   try {
+    // Get current level before awarding points to detect level changes
+    const { data: currentUserPoints } = await supabase
+      .from('user_points')
+      .select('current_level')
+      .eq('user_id', request.user_id)
+      .single();
+    
+    const previousLevel = currentUserPoints?.current_level || 1;
+
     // Call the database function to award points
     const { data, error } = await supabase.rpc('award_points', {
       target_user_id: request.user_id,
@@ -143,6 +152,8 @@ export async function awardPoints(request: AwardPointsRequest): Promise<PointsAw
       throw new Error(`Failed to get updated user points: ${pointsError.message}`);
     }
 
+    const newLevel = userPoints?.current_level || 1;
+
     // Check for new badges
     const { data: newBadges, error: badgesError } = await supabase.rpc('check_and_award_badges', {
       target_user_id: request.user_id,
@@ -152,10 +163,55 @@ export async function awardPoints(request: AwardPointsRequest): Promise<PointsAw
       // Badge check failed, continue anyway
     }
 
+    // Send notifications for new badges
+    if (newBadges && newBadges.length > 0) {
+      for (const badge of newBadges) {
+        try {
+          await supabase
+            .from('notifications')
+            .insert({
+              user_id: request.user_id,
+              type: 'badge_earned',
+              title: 'ได้รับเหรียญใหม่! 🏅',
+              message: `ยินดีด้วย! คุณได้รับเหรียญ: ${badge.badge_name}`,
+              link_url: '/dashboard/gamification',
+              metadata: {
+                badge_id: badge.badge_id,
+                badge_name: badge.badge_name,
+              },
+            });
+        } catch (notificationError) {
+          console.warn('Failed to send badge notification:', notificationError);
+        }
+      }
+    }
+
+    // Send notification for level up
+    if (newLevel > previousLevel) {
+      try {
+        await supabase
+          .from('notifications')
+          .insert({
+            user_id: request.user_id,
+            type: 'level_up',
+            title: 'เลื่อนระดับ! ⭐',
+            message: `ยินดีด้วย! คุณขึ้นไประดับ ${newLevel} แล้ว`,
+            link_url: '/dashboard/gamification',
+            metadata: {
+              previous_level: previousLevel,
+              new_level: newLevel,
+              total_points: userPoints?.total_points || 0,
+            },
+          });
+      } catch (notificationError) {
+        console.warn('Failed to send level up notification:', notificationError);
+      }
+    }
+
     return {
       points_awarded: request.points,
       new_total_points: userPoints?.total_points || 0,
-      new_level: userPoints?.current_level || 1,
+      new_level: newLevel,
       badges_earned: newBadges || [],
       message: `ได้รับ ${request.points} คะแนน!`,
     };

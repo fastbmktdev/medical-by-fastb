@@ -108,7 +108,8 @@ async function handleBookingReminders(request: NextRequest) {
         package_type,
         gym_id,
         status,
-        payment_status
+        payment_status,
+        user_id
       `)
       .eq('status', 'confirmed')
       .eq('payment_status', 'paid')
@@ -206,6 +207,30 @@ async function handleBookingReminders(request: NextRequest) {
             error: emailResult.error || 'Unknown email error',
           });
           console.error(`[Cron] Failed to send reminder email for booking ${booking.booking_number}:`, emailResult.error);
+        }
+
+        // Send in-app notification if user_id exists
+        if (booking.user_id) {
+          try {
+            await supabase
+              .from('notifications')
+              .insert({
+                user_id: booking.user_id,
+                type: 'booking_reminder',
+                title: 'เตือนความจำ: การจองของคุณจะเริ่มในอีก 1 วัน 📅',
+                message: `การจอง ${booking.booking_number} ของคุณจะเริ่มในวันที่ ${startDateFormatted} ที่ ${gymName}`,
+                link_url: '/dashboard/bookings',
+                metadata: {
+                  booking_id: booking.id,
+                  booking_number: booking.booking_number,
+                  start_date: booking.start_date,
+                  gym_id: booking.gym_id,
+                },
+              });
+            console.log(`[Cron] Sent in-app notification for booking ${booking.booking_number} to user ${booking.user_id}`);
+          } catch (notificationError) {
+            console.warn(`[Cron] Failed to send in-app notification for booking ${booking.booking_number}:`, notificationError);
+          }
         }
 
         // Small delay to avoid rate limiting
