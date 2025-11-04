@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/database/supabase/server';
 import { awardPoints, updateUserStreak } from '@/services/gamification.service';
-import { sendBookingConfirmationEmail } from '@/lib/email';
+import { sendBookingConfirmationEmail } from '@/lib/email/resend';
 
 export async function POST(request: NextRequest) {
   try {

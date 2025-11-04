@@ -164,6 +164,7 @@ export async function addEmailToQueue(params: AddEmailToQueueParams): Promise<{ 
         max_retries: maxRetries,
         scheduled_at: scheduledAt.toISOString(),
         next_retry_at: scheduledAt.toISOString(),
+        provider: 'resend', // Default to Resend
         metadata,
         related_resource_type: relatedResourceType || null,
         related_resource_id: relatedResourceId || null,

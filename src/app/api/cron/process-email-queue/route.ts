@@ -62,9 +62,11 @@ export async function POST(request: NextRequest) {
         // Update status to processing
         await updateEmailQueueStatus(emailItem.id, 'processing');
 
-        // Determine which provider to use
-        const useSmtp = emailItem.provider === 'smtp' || (!isEmailServiceConfigured() && isSmtpConfigured());
-        const useResend = emailItem.provider === 'resend' || (isEmailServiceConfigured() && !useSmtp);
+        // Determine which provider to use (default to Resend)
+        // If provider is explicitly set to 'smtp', use SMTP (if configured)
+        // Otherwise, default to Resend (if configured), fallback to SMTP
+        const useSmtp = emailItem.provider === 'smtp' && isSmtpConfigured();
+        const useResend = !useSmtp && (emailItem.provider === 'resend' || !emailItem.provider || isEmailServiceConfigured());
 
         let sendResult: { success: boolean; id?: string; error?: string } = { success: false };
         

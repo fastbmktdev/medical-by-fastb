@@ -7,8 +7,8 @@
  * - Provides unified interface for sending emails
  */
 
-import { addEmailToQueue, type EmailType, type EmailPriority } from './queue';
-import { triggerEmailProcessing, shouldProcessImmediately } from './processor';
+import { addEmailToQueue, type EmailPriority } from './queue';
+// import { triggerEmailProcessing, shouldProcessImmediately } from './processor'; // Disabled - using CRON instead
 import { 
   generateBookingConfirmationHtml,
   generateBookingReminderHtml,
@@ -145,10 +145,8 @@ export class EmailService {
       },
     });
 
-    // Trigger processing if high priority or immediate
-    if (result.success && shouldProcessImmediately(options?.priority || 'high')) {
-      triggerEmailProcessing(true);
-    }
+    // CRON job will process emails automatically (/api/cron/process-email-queue runs every 5 minutes)
+    // No need to trigger processing immediately - let CRON handle it
 
     return result;
   }
@@ -192,10 +190,8 @@ export class EmailService {
       relatedResourceId: data.bookingId,
     });
 
-    // Trigger processing if high priority or immediate
-    if (result.success && shouldProcessImmediately(options?.priority || 'normal')) {
-      triggerEmailProcessing(true);
-    }
+    // CRON job will process emails automatically (/api/cron/process-email-queue runs every 5 minutes)
+    // No need to trigger processing immediately - let CRON handle it
 
     return result;
   }
@@ -237,10 +233,8 @@ export class EmailService {
       relatedResourceId: data.bookingId,
     });
 
-    // Trigger processing if high priority or immediate
-    if (result.success && shouldProcessImmediately(options?.priority || 'high')) {
-      triggerEmailProcessing(true);
-    }
+    // CRON job will process emails automatically (/api/cron/process-email-queue runs every 5 minutes)
+    // No need to trigger processing immediately - let CRON handle it
 
     return result;
   }
@@ -280,10 +274,8 @@ export class EmailService {
       relatedResourceId: data.paymentId,
     });
 
-    // Trigger processing if high priority or immediate
-    if (result.success && shouldProcessImmediately(options?.priority || 'normal')) {
-      triggerEmailProcessing(true);
-    }
+    // CRON job will process emails automatically (/api/cron/process-email-queue runs every 5 minutes)
+    // No need to trigger processing immediately - let CRON handle it
 
     return result;
   }
@@ -322,10 +314,8 @@ export class EmailService {
       relatedResourceId: data.paymentId,
     });
 
-    // Trigger processing if high priority or immediate
-    if (result.success && shouldProcessImmediately(options?.priority || 'high')) {
-      triggerEmailProcessing(true);
-    }
+    // CRON job will process emails automatically (/api/cron/process-email-queue runs every 5 minutes)
+    // No need to trigger processing immediately - let CRON handle it
 
     return result;
   }
@@ -361,10 +351,8 @@ export class EmailService {
       relatedResourceId: data.applicationId,
     });
 
-    // Trigger processing if high priority or immediate
-    if (result.success && shouldProcessImmediately(options?.priority || 'normal')) {
-      triggerEmailProcessing(true);
-    }
+    // CRON job will process emails automatically (/api/cron/process-email-queue runs every 5 minutes)
+    // No need to trigger processing immediately - let CRON handle it
 
     return result;
   }
@@ -401,10 +389,8 @@ export class EmailService {
       relatedResourceId: data.applicationId,
     });
 
-    // Trigger processing if high priority or immediate
-    if (result.success && shouldProcessImmediately(options?.priority || 'normal')) {
-      triggerEmailProcessing(true);
-    }
+    // CRON job will process emails automatically (/api/cron/process-email-queue runs every 5 minutes)
+    // No need to trigger processing immediately - let CRON handle it
 
     return result;
   }
@@ -437,11 +423,8 @@ export class EmailService {
       },
     });
 
-    // Trigger processing if high priority or immediate
-    const priority = options?.priority || (data.severity === 'error' ? 'urgent' : 'normal');
-    if (result.success && shouldProcessImmediately(priority)) {
-      triggerEmailProcessing(true);
-    }
+    // CRON job will process emails automatically (/api/cron/process-email-queue runs every 5 minutes)
+    // No need to trigger processing immediately - let CRON handle it
 
     return result;
   }
@@ -479,10 +462,8 @@ export class EmailService {
       },
     });
 
-    // Trigger processing if high priority or immediate
-    if (result.success && shouldProcessImmediately(options?.priority || 'normal')) {
-      triggerEmailProcessing(true);
-    }
+    // CRON job will process emails automatically (/api/cron/process-email-queue runs every 5 minutes)
+    // No need to trigger processing immediately - let CRON handle it
 
     return result;
   }
@@ -513,10 +494,8 @@ export class EmailService {
       },
     });
 
-    // Trigger processing if high priority or immediate
-    if (result.success && shouldProcessImmediately(options?.priority || 'normal')) {
-      triggerEmailProcessing(true);
-    }
+    // CRON job will process emails automatically (/api/cron/process-email-queue runs every 5 minutes)
+    // No need to trigger processing immediately - let CRON handle it
 
     return result;
   }
