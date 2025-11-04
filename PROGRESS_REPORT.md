@@ -261,6 +261,7 @@
 - ✅ **events** - อีเวนต์ ✅ (migration: 20251201000000)
 - ✅ **affiliate_conversions** - ติดตาม conversion จาก affiliate ✅ (migration: 20251201000000)
 - ✅ **analytics_events** - เก็บข้อมูลการใช้งาน ✅ (migration: 20251201000000)
+- ✅ **search_history** - ประวัติการค้นหา ✅ (migration: 20251203000000)
 
 ### ตารางที่มีแต่ใช้งานไม่สมบูรณ์:
 - ⚠️ **promotions** - ✅ มีตารางแล้ว (migration: 20251019000001) - แต่ไม่มี UI จัดการ
@@ -281,8 +282,9 @@
 - ✅ `/api/events` - อีเวนต์ ✅ (GET, POST, PUT/[id], DELETE/[id], POST/[id]/book)
 - ✅ `/api/tickets` - จองตั๋วอีเวนต์ ✅ (GET, POST, PUT/[id], DELETE/[id], POST/[id]/check-in)
 - ✅ `/api/analytics` - เก็บข้อมูลการใช้งาน ✅ (GET, POST)
-- ✅ `/api/search` - ค้นหาขั้นสูง ✅ (GET)
+- ✅ `/api/search` - ค้นหาขั้นสูง ✅ (GET) - Full-text search, filters, sorting
 - ✅ `/api/search/suggestions` - Search suggestions ✅ (GET)
+- ✅ `/api/search/history` - ประวัติการค้นหา ✅ (GET, DELETE)
 - ✅ `/api/admin/reports` - สร้างรายงาน (PDF/CSV) ✅ (POST /export)
 - ✅ `/api/admin/analytics` - ข้อมูล analytics จริง ✅ (GET with date filtering)
 - ✅ `/api/admin/promotions` - จัดการโปรโมชั่น ✅ (GET, POST, PUT/[id], DELETE/[id])
@@ -299,8 +301,8 @@
 
 ### ฟีเจอร์สำคัญที่ยังไม่มี:
 - ❌ **จัดการข้อพิพาท (Dispute)**
-- ❌ **สร้างใบเสร็จ (Receipt Generation)**
-- ❌ **สร้างใบแจ้งหนี้ (Invoice)**
+- ✅ **สร้างใบเสร็จ (Receipt Generation)** - เสร็จแล้ว (PDF Generator + API)
+- ✅ **สร้างใบแจ้งหนี้ (Invoice)** - เสร็จแล้ว (`/api/payments/[id]/invoice`)
 - ❌ **ลองชำระเงินใหม่ (Retry Failed Payment)**
 - ❌ **จัดการบัตรเครดิต (Save Cards)**
 - ❌ **ระบบ Subscription** - ชำระเงินแบบรายเดือน
@@ -368,7 +370,7 @@
 
 ---
 
-## 7. 🛒 ระบบร้านค้า - Static Data (High Priority)
+## 7. 🛒 ระบบร้านค้า - เชื่อมต่อ API แล้ว (80%) (High Priority)
 
 ### สถานะปัจจุบัน:
 - ✅ หน้าแสดงร้านค้า
@@ -376,11 +378,10 @@
 - ✅ Checkout Page
 - ✅ **API Endpoints ครบ 6 endpoints** (POST, GET, GET/[id], PUT/[id], DELETE/[id], PUT/[id]/inventory)
 - ✅ ตารางสินค้าในฐานข้อมูล (products, product_categories, product_variants, product_images)
-- ⚠️ **ยังใช้ Static Data ใน Frontend** (ต้องเชื่อมต่อ API)
+- ✅ **เชื่อมต่อ Frontend กับ Products API แล้ว** - ใช้ `/api/products` ใน Shop page แล้ว
 
 ### ยังขาด:
 - ❌ Admin UI สำหรับจัดการสินค้า
-- ❌ เชื่อมต่อ Frontend กับ Products API
 - ❌ ระบบจัดการสต็อก (มี API แล้ว แต่ยังไม่มี UI)
 - ⚠️ Variants (สี, ไซส์) - มีตารางและ API แล้ว แต่ยังไม่มี UI
 - ⚠️ อัปโหลดรูปภาพสินค้า - มี API แล้ว แต่ยังไม่มี UI
@@ -595,13 +596,13 @@
 |---------|-------|----------|
 | **Database Tables** | 100% | ✅ ตารางครบถ้วนแล้ว (42 ตาราง) |
 | **API Endpoints** | 82% | ✅ มี 94 endpoints, ขาด 20 endpoints (Critical features ครบแล้ว) |
-| **Payment Features** | 80% | ขาด Receipt/Invoice generation |
+| **Payment Features** | 90% | ✅ Receipt/Invoice generation เสร็จแล้ว (PDF) - ขาด Retry Payment, Save Cards |
 | **Notification System** | 90% | ✅ มี API ครบ, ตารางครบ, UI Components ครบ - ✅ การส่งอัตโนมัติส่วนใหญ่เสร็จแล้ว (booking, payment, badge, level up, reminder, promotion) |
 | **Review System** | 100% | ✅ ใช้ Google Maps Reviews |
 | **User Profile** | 100% | ✅ เสร็จสมบูรณ์แล้ว รวมถึง Connected Accounts (Google OAuth) |
 | **Favorites System** | 90% | ✅ มี API ครบ, ตารางครบ, UI Components ครบ - รองรับ Product/Event แล้ว |
-| **Search & Filter** | 40% | พื้นฐานเท่านั้น - ขาด Full-text search, Autocomplete, Advanced filters |
-| **Shop System** | 60% | ✅ มี API ครบ (Products: 6 endpoints) - ขาด Admin UI และการเชื่อมต่อ Frontend |
+| **Search & Filter** | 80% | ✅ Full-text search, Autocomplete, Search History, Advanced filters, Sorting - ขาด Analytics |
+| **Shop System** | 80% | ✅ มี API ครบ (Products: 6 endpoints) - ✅ เชื่อมต่อ Frontend แล้ว - ขาด Admin UI |
 | **Event System** | 60% | ✅ มี API ครบ (Events: 6 endpoints) - ขาด Admin UI และการเชื่อมต่อ Frontend |
 | **Admin Analytics** | 100% | ✅ มี API พร้อม date filtering และ chart data |
 | **Partner Dashboard** | 85% | ✅ มี Analytics API, Payout API (3 endpoints), ตาราง Payout แล้ว |
@@ -616,7 +617,7 @@
 | **Authentication** | 100% | ✅ เสร็จสมบูรณ์ - Signup, Login, OAuth, Password Reset |
 | **Bookings** | 90% | ✅ ระบบจองครบ - ไม่มีระบบยกเลิก (ตามนโยบายธุรกิจ) |
 
-### **ความสมบูรณ์โดยรวม: 78-80%** ⬆️ (เพิ่มขึ้นจาก Admin Promotions, Partner Payouts, Cron Jobs, Audit Logs, Gamification Notifications)
+### **ความสมบูรณ์โดยรวม: 80-82%** ⬆️ (เพิ่มขึ้นจาก Invoice/Receipt Generation, Full-text Search, Search History, Shop Frontend Integration)
 
 ---
 
@@ -732,8 +733,10 @@
 - [x] POST `/api/analytics` - Track event
 
 #### API Endpoints - Search
-- [x] GET `/api/search` - Advanced search
-- [x] GET `/api/search/suggestions` - Search suggestions
+- [x] GET `/api/search` - Advanced search ✅ (Full-text search, filters, sorting)
+- [x] GET `/api/search/suggestions` - Search suggestions ✅
+- [x] GET `/api/search/history` - ประวัติการค้นหา ✅
+- [x] DELETE `/api/search/history` - ลบประวัติการค้นหา ✅
 
 #### API Endpoints - Admin Analytics (🔴 CRITICAL)
 - [x] GET `/api/admin/analytics` - ข้อมูล analytics จริง - **Critical: ต้องสร้างเพื่อแก้ Analytics Page**
@@ -909,18 +912,18 @@
 ### 🟠 Priority 2: High Priority (เดือนที่ 2-3)
 
 #### Search & Filter
-- [ ] เพิ่ม Full-text Search (PostgreSQL Full Text Search)
-- [ ] สร้าง Autocomplete/Search Suggestions
-- [ ] เพิ่มตัวกรองช่วงราคา
-- [ ] เพิ่มตัวกรองระยะทาง/ตำแหน่ง
-- [ ] เพิ่มการเรียงลำดับ (Sort by rating, price, popularity)
-- [ ] บันทึกประวัติการค้นหา
-- [ ] API `/api/search` - Advanced Search
+- [x] เพิ่ม Full-text Search (PostgreSQL Full Text Search) ✅ (migration: 20251203000000)
+- [x] สร้าง Autocomplete/Search Suggestions ✅ (enhanced with relevance scoring)
+- [x] เพิ่มตัวกรองช่วงราคา ✅ (price_min, price_max parameters)
+- [x] เพิ่มตัวกรองระยะทาง/ตำแหน่ง ✅ (lat, lon, radius parameters)
+- [x] เพิ่มการเรียงลำดับ (Sort by rating, price, popularity) ✅ (sort_by: relevance, price_asc, price_desc, popularity, distance)
+- [x] บันทึกประวัติการค้นหา ✅ (search_history table + API endpoint)
+- [x] API `/api/search` - Advanced Search ✅ (enhanced with all filters and sorting)
 
 #### Shop System
 - [x] สร้าง API Endpoints สำหรับ Products ✅ (6 endpoints)
 - [x] ตารางสินค้าในฐานข้อมูล ✅ (products, product_categories, product_variants, product_images)
-- [ ] เชื่อมต่อ Frontend กับ Products API (แทน Static Data)
+- [x] เชื่อมต่อ Frontend กับ Products API (แทน Static Data) ✅ (Shop Page และ Product Detail Page)
 - [ ] สร้าง Admin UI จัดการสินค้า
 - [ ] สร้าง UI สำหรับระบบจัดการสต็อก (มี API แล้ว)
 - [ ] สร้าง UI สำหรับ Product Variants (มีตารางและ API แล้ว)

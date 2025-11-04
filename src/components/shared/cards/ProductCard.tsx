@@ -2,19 +2,29 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Product } from "@/types";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import { BaseCard } from "./BaseCard";
 
 interface ProductCardProps {
-  product: Product;
+  product: {
+    id: string | number;
+    slug: string;
+    nameThai?: string | null;
+    nameEnglish?: string | null;
+    description?: string | null;
+    price: number;
+    stock: number;
+    category?: string | null;
+    image?: string | null;
+    images?: string[];
+  };
   showAddToCart?: boolean;
 }
 
 export function ProductCard({ product, showAddToCart = true }: ProductCardProps) {
   const productName = product.nameEnglish || product.nameThai;
   const isOutOfStock = product.stock <= 0;
-  const imageUrl = product.images?.[0] || "/assets/images/fallback-img.jpg";
+  const imageUrl = product.image || product.images?.[0] || "/assets/images/fallback-img.jpg";
 
   return (
     <BaseCard>

@@ -1,7 +1,6 @@
 "use client";
 
-import { use, useState } from "react";
-import { PRODUCTS } from "@/lib/data";
+import { use, useState, useEffect } from "react";
 import {
   ArrowLeftIcon,
   ShoppingCartIcon,
@@ -11,7 +10,39 @@ import {
 } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
+
+interface Product {
+  id: string;
+  slug: string;
+  nameThai?: string | null;
+  nameEnglish?: string | null;
+  description?: string | null;
+  price: number;
+  stock: number;
+  category?: {
+    id: string;
+    nameThai?: string | null;
+    nameEnglish?: string | null;
+    slug?: string | null;
+  } | null;
+  images?: string[];
+  image?: string | null;
+  variants?: Array<{
+    id: string;
+    type: string;
+    name: string;
+    value: string;
+    priceAdjustment: number;
+    stock: number;
+    isDefault: boolean;
+  }>;
+  weightKg?: number | null;
+  dimensions?: string | null;
+  viewsCount?: number;
+  salesCount?: number;
+}
 
 export default function ProductDetailPage({
   params,
@@ -19,19 +50,102 @@ export default function ProductDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = use(params);
-  const product = PRODUCTS.find((p) => p.slug === slug);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
+  const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchProduct() {
+      try {
+        setIsLoading(true);
+        
+        // Find product by slug
+        const productsResponse = await fetch(`/api/products?active=true&limit=1000`);
+        const productsData = await productsResponse.json();
+        
+        if (!productsData.success) {
+          notFound();
+          return;
+        }
+
+        const foundProduct = productsData.data?.find((p: Product) => p.slug === slug);
+        
+        if (!foundProduct) {
+          notFound();
+          return;
+        }
+
+        // Fetch full product details
+        const detailResponse = await fetch(`/api/products/${foundProduct.id}`);
+        const detailData = await detailResponse.json();
+        
+        if (detailData.success) {
+          setProduct(detailData.data);
+          
+          // Set default variant if available
+          if (detailData.data.variants && detailData.data.variants.length > 0) {
+            const defaultVariant = detailData.data.variants.find((v: any) => v.isDefault);
+            if (defaultVariant) {
+              setSelectedVariant(defaultVariant.id);
+            }
+          }
+        } else {
+          notFound();
+        }
+
+        // Fetch related products (same category)
+        if (detailData.data?.category?.id) {
+          const relatedResponse = await fetch(
+            `/api/products?category=${detailData.data.category.id}&active=true&limit=5`
+          );
+          const relatedData = await relatedResponse.json();
+          
+          if (relatedData.success) {
+            const related = relatedData.data
+              ?.filter((p: Product) => p.id !== foundProduct.id)
+              .slice(0, 4) || [];
+            setRelatedProducts(related);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error);
+        notFound();
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchProduct();
+  }, [slug]);
+
+  if (isLoading) {
+    return (
+      <div className="bg-zinc-950 min-h-screen flex justify-center items-center">
+        <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+      </div>
+    );
+  }
 
   if (!product) {
     notFound();
   }
 
   const productName = product.nameThai || product.nameEnglish || "สินค้า";
-  const isOutOfStock = product.stock <= 0;
-  const totalPrice = product.price * quantity;
+  const currentVariant = product.variants?.find(v => v.id === selectedVariant);
+  const finalPrice = currentVariant 
+    ? product.price + currentVariant.priceAdjustment 
+    : product.price;
+  const availableStock = currentVariant 
+    ? currentVariant.stock 
+    : product.stock;
+  const isOutOfStock = availableStock <= 0;
+  const totalPrice = finalPrice * quantity;
+  const primaryImage = product.image || product.images?.[0] || "/assets/images/fallback-img.jpg";
 
   const handleQuantityChange = (newQuantity: number) => {
-    if (newQuantity >= 1 && newQuantity <= product.stock) {
+    if (newQuantity >= 1 && newQuantity <= availableStock) {
       setQuantity(newQuantity);
     }
   };
@@ -55,12 +169,33 @@ export default function ProductDetailPage({
         <div className="gap-12 grid grid-cols-1 lg:grid-cols-2">
           {/* Product Images */}
           <div>
-            <div className="flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-950 mb-4 rounded-lg aspect-square">
-              <div className="text-center">
-                <div className="mb-4 text-zinc-600 text-9xl">🥊</div>
-                <p className="text-zinc-400">ภาพสินค้าจะมาเร็วๆ นี้</p>
-              </div>
+            <div className="relative flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-950 mb-4 rounded-lg aspect-square overflow-hidden">
+              <Image
+                src={primaryImage}
+                alt={productName}
+                fill
+                className="object-cover"
+                priority
+              />
             </div>
+            {/* Additional images */}
+            {product.images && product.images.length > 1 && (
+              <div className="gap-2 grid grid-cols-4">
+                {product.images.slice(0, 4).map((img, idx) => (
+                  <div
+                    key={idx}
+                    className="relative aspect-square bg-zinc-800 rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
+                  >
+                    <Image
+                      src={img}
+                      alt={`${productName} ${idx + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Product Info */}
@@ -69,7 +204,7 @@ export default function ProductDetailPage({
             <div className="mb-6">
               {product.category && (
                 <span className="inline-block bg-brand-primary mb-3 px-3 py-1 rounded-full font-semibold text-sm">
-                  {product.category}
+                  {product.category.nameThai || product.category.nameEnglish}
                 </span>
               )}
               <h1 className="mb-2 font-bold text-4xl">
@@ -92,16 +227,48 @@ export default function ProductDetailPage({
                   />
                 ))}
               </div>
-              <span className="text-zinc-400 text-sm">(รีวิว 127 รายการ)</span>
+              <span className="text-zinc-400 text-sm">
+                ({product.viewsCount || 0} วิว)
+              </span>
             </div>
 
             {/* Price */}
             <div className="mb-6 pb-6 border-zinc-700 border-b">
               <p className="mb-2 text-zinc-400 text-sm">ราคา</p>
               <p className="font-bold text-red-500 text-4xl">
-                ฿{product.price.toLocaleString()}
+                ฿{finalPrice.toLocaleString()}
               </p>
+              {currentVariant && currentVariant.priceAdjustment !== 0 && (
+                <p className="text-zinc-400 text-sm mt-1">
+                  ราคาพื้นฐาน: ฿{product.price.toLocaleString()}
+                </p>
+              )}
             </div>
+
+            {/* Variants */}
+            {product.variants && product.variants.length > 0 && (
+              <div className="mb-6">
+                <label className="block mb-2 font-semibold text-white">
+                  {product.variants[0].type || "ตัวเลือก"}
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {product.variants.map((variant) => (
+                    <button
+                      key={variant.id}
+                      onClick={() => setSelectedVariant(variant.id)}
+                      className={`px-4 py-2 rounded-lg border transition-colors ${
+                        selectedVariant === variant.id
+                          ? "border-red-500 bg-red-500/10 text-red-500"
+                          : "border-zinc-700 bg-zinc-950 text-zinc-300 hover:border-zinc-600"
+                      }`}
+                    >
+                      {variant.name || variant.value}
+                      {variant.stock <= 0 && " (หมด)"}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Description */}
             {product.description && (
@@ -109,9 +276,26 @@ export default function ProductDetailPage({
                 <h2 className="mb-2 font-semibold text-xl">
                   รายละเอียดสินค้า
                 </h2>
-                <p className="text-zinc-300 leading-relaxed">
+                <p className="text-zinc-300 leading-relaxed whitespace-pre-line">
                   {product.description}
                 </p>
+              </div>
+            )}
+
+            {/* Product Details */}
+            {(product.weightKg || product.dimensions) && (
+              <div className="mb-6">
+                <h2 className="mb-2 font-semibold text-xl">
+                  ข้อมูลสินค้า
+                </h2>
+                <div className="space-y-1 text-zinc-300">
+                  {product.weightKg && (
+                    <p>น้ำหนัก: {product.weightKg} กิโลกรัม</p>
+                  )}
+                  {product.dimensions && (
+                    <p>ขนาด: {product.dimensions}</p>
+                  )}
+                </div>
               </div>
             )}
 
@@ -126,7 +310,7 @@ export default function ProductDetailPage({
                 <div className="flex items-center gap-2 text-green-500">
                   <CheckCircleIcon className="w-5 h-5" />
                   <span className="font-semibold">
-                    มีสินค้าในสต็อก ({product.stock} ชิ้น)
+                    มีสินค้าในสต็อก ({availableStock} ชิ้น)
                   </span>
                 </div>
               )}
@@ -149,7 +333,7 @@ export default function ProductDetailPage({
                   <input
                     type="number"
                     min="1"
-                    max={product.stock}
+                    max={availableStock}
                     value={quantity}
                     onChange={(e) =>
                       handleQuantityChange(parseInt(e.target.value) || 1)
@@ -158,7 +342,7 @@ export default function ProductDetailPage({
                   />
                   <button
                     onClick={() => handleQuantityChange(quantity + 1)}
-                    disabled={quantity >= product.stock}
+                    disabled={quantity >= availableStock}
                     className="bg-zinc-700 hover:bg-zinc-600 disabled:opacity-50 px-4 py-2 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed"
                   >
                     +
@@ -208,21 +392,25 @@ export default function ProductDetailPage({
         </div>
 
         {/* Related Products Section */}
-        <div className="mt-16">
-          <h2 className="mb-6 font-bold text-2xl">
-            สินค้าที่เกี่ยวข้อง
-          </h2>
-          <div className="gap-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {PRODUCTS.filter((p) => p.id !== product.id)
-              .slice(0, 4)
-              .map((relatedProduct) => (
+        {relatedProducts.length > 0 && (
+          <div className="mt-16">
+            <h2 className="mb-6 font-bold text-2xl">
+              สินค้าที่เกี่ยวข้อง
+            </h2>
+            <div className="gap-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {relatedProducts.map((relatedProduct) => (
                 <Link
                   key={relatedProduct.id}
                   href={`/shop/${relatedProduct.slug}`}
                   className="group bg-zinc-950 hover:shadow-lg hover:shadow-red-500/20 border border-zinc-700 hover:border-red-500 rounded-lg overflow-hidden transition-all"
                 >
-                  <div className="flex justify-center items-center bg-gradient-to-br from-zinc-700 to-zinc-950 aspect-square">
-                    <div className="text-zinc-600 text-5xl">🥊</div>
+                  <div className="relative aspect-square bg-gradient-to-br from-zinc-700 to-zinc-950">
+                    <Image
+                      src={relatedProduct.image || relatedProduct.images?.[0] || "/assets/images/fallback-img.jpg"}
+                      alt={relatedProduct.nameThai || relatedProduct.nameEnglish || "Product"}
+                      fill
+                      className="object-cover"
+                    />
                   </div>
                   <div className="p-3">
                     <p className="mb-1 font-semibold group-hover:text-red-400 text-sm line-clamp-2 transition-colors">
@@ -234,10 +422,10 @@ export default function ProductDetailPage({
                   </div>
                 </Link>
               ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
 }
-

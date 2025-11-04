@@ -6,6 +6,8 @@ import {
   ClockIcon,
   DocumentTextIcon,
   ShieldCheckIcon,
+  CubeIcon,
+  TagIcon,
 } from '@heroicons/react/24/outline';
 
 /**
@@ -15,6 +17,8 @@ import {
 export const adminMenuItems: MenuItem[] = [
   { label: 'จัดการผู้ใช้', href: '/admin/dashboard/users', icon: UsersIcon },
   { label: 'จัดการยิม', href: '/admin/dashboard/gyms', icon: BuildingStorefrontIcon },
+  { label: 'จัดการสินค้า', href: '/admin/dashboard/products', icon: CubeIcon },
+  { label: 'หมวดหมู่สินค้า', href: '/admin/dashboard/products/categories', icon: TagIcon },
   { label: 'อนุมัติยิม', href: '/admin/dashboard/approvals', icon: ClockIcon },
   { label: 'รายงาน', href: '/admin/dashboard/reports', icon: DocumentTextIcon },
   { label: 'สถิติ', href: '/admin/dashboard/analytics', icon: ChartBarIcon },

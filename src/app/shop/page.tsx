@@ -1,42 +1,123 @@
 "use client";
 
-import { useState, ChangeEvent } from "react";
-import { PRODUCTS } from "@/lib/data";
-import { PageHeader } from "@/components/shared";
+import { useState, useEffect, ChangeEvent } from "react";
 import { ProductCard } from "@/components/shared";
+import { PageHeader } from "@/components/shared";
 import { MagnifyingGlassIcon, FunnelIcon } from "@heroicons/react/24/outline";
 
-const getUniqueCategories = () => [
-  "all",
-  ...Array.from(new Set(PRODUCTS.map(product => product.category).filter(Boolean))),
-];
+interface Product {
+  id: string;
+  slug: string;
+  nameThai?: string | null;
+  nameEnglish?: string | null;
+  description?: string | null;
+  price: number;
+  stock: number;
+  category?: {
+    id: string;
+    nameThai?: string | null;
+    nameEnglish?: string | null;
+    slug?: string | null;
+  } | null;
+  image?: string | null;
+  isActive?: boolean;
+  isFeatured?: boolean;
+}
 
-const filterProducts = (search: string, category: string) =>
-  PRODUCTS.filter(product => {
-    const keyword = search.toLowerCase();
-    const matchesSearch =
-      product.nameThai?.toLowerCase().includes(keyword) ||
-      product.nameEnglish?.toLowerCase().includes(keyword) ||
-      product.description?.toLowerCase().includes(keyword);
-
-    const matchesCategory = category === "all" || product.category === category;
-    return matchesSearch && matchesCategory;
-  });
+interface Category {
+  id: string;
+  nameThai?: string | null;
+  nameEnglish?: string | null;
+  slug?: string | null;
+}
 
 export default function ShopPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const categories = getUniqueCategories();
-  const filteredProducts = filterProducts(searchQuery, selectedCategory);
+  // Fetch categories first
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        // For now, we'll fetch products and extract categories
+        // Later we'll create a dedicated categories API
+        const response = await fetch('/api/products?limit=100&active=true');
+        const data = await response.json();
+        
+        if (data.success && data.data) {
+          const uniqueCategories = new Map<string, Category>();
+          data.data.forEach((product: Product) => {
+            if (product.category) {
+              uniqueCategories.set(product.category.id, product.category);
+            }
+          });
+          setCategories(Array.from(uniqueCategories.values()));
+        }
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+      }
+    }
+    
+    fetchCategories();
+  }, []);
 
-  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value);
-  const handleCategory = (e: ChangeEvent<HTMLSelectElement>) => setSelectedCategory(e.target.value);
+  // Fetch products
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const productsParams = new URLSearchParams();
+        productsParams.append("active", "true");
+        productsParams.append("limit", "100");
+        
+        if (selectedCategory !== "all") {
+          productsParams.append("category", selectedCategory);
+        }
+        
+        if (searchQuery.trim()) {
+          productsParams.append("search", searchQuery.trim());
+        }
+
+        const productsResponse = await fetch(`/api/products?${productsParams.toString()}`);
+        const productsData = await productsResponse.json();
+
+        if (productsData.success) {
+          setProducts(productsData.data || []);
+        } else {
+          setError(productsData.error || "Failed to load products");
+        }
+
+      } catch (err) {
+        console.error("Error fetching products:", err);
+        setError("Failed to load products");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchProducts();
+  }, [searchQuery, selectedCategory]);
+
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleCategory = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCategory(e.target.value);
+  };
 
   const handleReset = () => {
     setSearchQuery("");
     setSelectedCategory("all");
   };
+
+  const filteredProducts = products;
 
   return (
     <div className="bg-zinc-950 min-h-screen">
@@ -70,13 +151,11 @@ export default function ShopPage() {
                 className="bg-zinc-950 py-3 pr-4 pl-10 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full appearance-none cursor-pointer"
               >
                 <option value="all">หมวดหมู่ทั้งหมด</option>
-                {categories
-                  .filter(cat => cat !== "all")
-                  .map(category => (
-                    <option key={category} value={category}>
-                      {category}
-                    </option>
-                  ))}
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.nameThai || category.nameEnglish || "Unknown"}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
@@ -84,28 +163,71 @@ export default function ShopPage() {
 
         {/* Results Count */}
         <div className="mb-6 text-zinc-400">
-          พบ {filteredProducts.length} สินค้า
+          {isLoading ? (
+            "กำลังโหลด..."
+          ) : error ? (
+            <span className="text-red-500">{error}</span>
+          ) : (
+            `พบ ${filteredProducts.length} สินค้า`
+          )}
         </div>
 
-        {/* Products Grid */}
-        {filteredProducts.length === 0 ? (
+        {/* Loading State */}
+        {isLoading && (
+          <div className="flex justify-center items-center py-20">
+            <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && !isLoading && (
           <div className="py-20 text-center">
-            <p className="text-zinc-400 text-xl">
-              ไม่พบสินค้าที่ตรงกับการค้นหา
-            </p>
+            <p className="text-red-500 text-xl mb-4">{error}</p>
             <button
-              onClick={handleReset}
-              className="bg-brand-primary hover:bg-red-700 mt-4 px-6 py-2 rounded-lg transition-colors"
-             aria-label="Button">
-              ล้างการค้นหา
+              onClick={() => window.location.reload()}
+              className="bg-brand-primary hover:bg-red-700 px-6 py-2 rounded-lg transition-colors"
+            >
+              ลองใหม่อีกครั้ง
             </button>
           </div>
-        ) : (
-          <div className="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filteredProducts.map(product => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+        )}
+
+        {/* Products Grid */}
+        {!isLoading && !error && (
+          <>
+            {filteredProducts.length === 0 ? (
+              <div className="py-20 text-center">
+                <p className="text-zinc-400 text-xl">
+                  ไม่พบสินค้าที่ตรงกับการค้นหา
+                </p>
+                <button
+                  onClick={handleReset}
+                  className="bg-brand-primary hover:bg-red-700 mt-4 px-6 py-2 rounded-lg transition-colors"
+                  aria-label="Button">
+                  ล้างการค้นหา
+                </button>
+              </div>
+            ) : (
+              <div className="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {filteredProducts.map((product) => (
+                  <ProductCard 
+                    key={product.id} 
+                    product={{
+                      id: product.id,
+                      slug: product.slug,
+                      nameThai: product.nameThai || undefined,
+                      nameEnglish: product.nameEnglish || undefined,
+                      description: product.description || undefined,
+                      price: product.price,
+                      stock: product.stock,
+                      category: product.category?.nameThai || product.category?.nameEnglish || undefined,
+                      image: product.image || undefined,
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

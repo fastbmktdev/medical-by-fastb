@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { BuildingStorefrontIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { TermsModal } from "@/components/features/modals";
 import { usePartnerApplication } from "./hooks/usePartnerApplication";
@@ -249,9 +250,9 @@ export default function PartnerApplyPage() {
 
           <p className="pt-2 text-zinc-500 text-sm text-center">
             หากมีคำถามหรือต้องการความช่วยเหลือ กรุณาติดต่อ{" "}
-            <a href="/contact" className="text-red-500 hover:text-red-400">
+            <Link href="/contact" className="text-red-500 hover:text-red-400">
               support@muaythai.com
-            </a>
+            </Link>
           </p>
         </form>
       </div>
