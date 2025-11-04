@@ -20,6 +20,8 @@ export type EmailType =
   | 'admin_alert'
   | 'contact_form'
   | 'welcome'
+  | 'newsletter'
+  | 'promotional'
   | 'other';
 
 export interface EmailQueueItem {
@@ -93,7 +95,7 @@ export async function addEmailToQueue(params: AddEmailToQueueParams): Promise<{ 
     if (userId) {
       const { data: preferences } = await supabase
         .from('user_notification_preferences')
-        .select('email_enabled, booking_confirmation, booking_reminder')
+        .select('email_enabled, booking_confirmation, booking_reminder, promotions_news')
         .eq('user_id', userId)
         .single();
 
@@ -110,6 +112,38 @@ export async function addEmailToQueue(params: AddEmailToQueueParams): Promise<{ 
 
         if (emailType === 'booking_reminder' && !preferences.booking_reminder) {
           return { success: false, error: 'Booking reminder emails disabled by user' };
+        }
+
+        if (emailType === 'promotional' && !preferences.promotions_news) {
+          return { success: false, error: 'Promotional emails disabled by user' };
+        }
+      }
+    }
+
+    // For newsletter and promotional emails, also check newsletter subscription status
+    if (emailType === 'newsletter' || emailType === 'promotional') {
+      const { data: subscription } = await supabase
+        .from('newsletter_subscriptions')
+        .select('is_active, preferences')
+        .eq('email', to.toLowerCase())
+        .maybeSingle();
+
+      // If subscription doesn't exist or is inactive, skip for newsletter
+      if (emailType === 'newsletter' && (!subscription || !subscription.is_active)) {
+        return { success: false, error: 'Not subscribed to newsletter' };
+      }
+
+      // For promotional emails, check subscription and preferences
+      if (emailType === 'promotional' && (!subscription || !subscription.is_active)) {
+        // Check if user has promotions_news enabled in notification preferences
+        const { data: userPrefs } = userId ? await supabase
+          .from('user_notification_preferences')
+          .select('promotions_news')
+          .eq('user_id', userId)
+          .maybeSingle() : { data: null };
+
+        if (!userPrefs?.promotions_news) {
+          return { success: false, error: 'Promotional emails not enabled' };
         }
       }
     }
