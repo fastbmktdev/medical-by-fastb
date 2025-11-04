@@ -15,7 +15,6 @@ import {
   UsersIcon,
   BuildingStorefrontIcon,
   ChartBarIcon,
-  DocumentTextIcon,
   ArrowDownTrayIcon,
   DocumentChartBarIcon,
   StarIcon,

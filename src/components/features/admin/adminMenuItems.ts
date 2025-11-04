@@ -11,6 +11,7 @@ import {
   CalendarIcon,
   QrCodeIcon,
   NewspaperIcon,
+  MegaphoneIcon,
 } from '@heroicons/react/24/outline';
 
 /**
@@ -26,6 +27,7 @@ export const adminMenuItems: MenuItem[] = [
   { label: 'หมวดหมู่อีเวนต์', href: '/admin/dashboard/events/categories', icon: TagIcon },
   { label: 'เช็คอินตั๋ว', href: '/admin/dashboard/events/check-in', icon: QrCodeIcon },
   { label: 'จัดการบทความ', href: '/admin/dashboard/articles', icon: NewspaperIcon },
+  { label: 'จัดการโปรโมชั่น', href: '/admin/dashboard/promotions', icon: MegaphoneIcon },
   { label: 'อนุมัติยิม', href: '/admin/dashboard/approvals', icon: ClockIcon },
   { label: 'รายงาน', href: '/admin/dashboard/reports', icon: DocumentTextIcon },
   { label: 'สถิติ', href: '/admin/dashboard/analytics', icon: ChartBarIcon },

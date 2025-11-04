@@ -253,22 +253,45 @@ export default function ArticleEditModal({ isOpen, onClose, onSuccess, article }
                 <h3 className="font-semibold text-lg">SEO Settings</h3>
                 <Input
                   label="Meta Title"
+                  placeholder="SEO title (defaults to article title)"
                   value={formData.meta_title}
                   onChange={(e) => setFormData((prev) => ({ ...prev, meta_title: e.target.value }))}
                 />
                 <Textarea
                   label="Meta Description"
+                  placeholder="SEO description"
                   value={formData.meta_description}
                   onChange={(e) => setFormData((prev) => ({ ...prev, meta_description: e.target.value }))}
                   minRows={2}
                 />
                 <Input
-                  label="Meta Keywords"
+                  label="Meta Keywords (คั่นด้วย comma)"
+                  placeholder="keyword1, keyword2, keyword3"
                   value={formData.meta_keywords}
                   onChange={(e) => setFormData((prev) => ({ ...prev, meta_keywords: e.target.value }))}
                 />
                 <Input
+                  label="OG Image URL"
+                  placeholder="https://example.com/og-image.jpg"
+                  value={formData.og_image}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, og_image: e.target.value }))}
+                />
+                <Input
+                  label="OG Title"
+                  placeholder="Open Graph title"
+                  value={formData.og_title}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, og_title: e.target.value }))}
+                />
+                <Textarea
+                  label="OG Description"
+                  placeholder="Open Graph description"
+                  value={formData.og_description}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, og_description: e.target.value }))}
+                  minRows={2}
+                />
+                <Input
                   label="Canonical URL"
+                  placeholder="https://example.com/article"
                   value={formData.canonical_url}
                   onChange={(e) => setFormData((prev) => ({ ...prev, canonical_url: e.target.value }))}
                 />
