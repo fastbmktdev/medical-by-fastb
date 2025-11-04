@@ -38,6 +38,7 @@ import {
   PlusIcon,
   TrashIcon,
   PencilIcon,
+  MegaphoneIcon,
 } from '@heroicons/react/24/outline';
 import { Toaster, toast } from 'react-hot-toast';
 
@@ -218,6 +219,7 @@ function AvailabilityManagementContent() {
   const menuItems: MenuItem[] = [
     { label: 'แดชบอร์ด', href: '/partner/dashboard', icon: HomeIcon },
     { label: 'ข้อมูลยิม', href: '/partner/dashboard/gym', icon: BuildingStorefrontIcon },
+    { label: 'โปรโมชั่น', href: '/partner/dashboard/promotions', icon: MegaphoneIcon },
     { label: 'ประวัติการจอง', href: '/partner/dashboard/bookings', icon: CalendarIcon },
     { label: 'ปฏิทินการจอง', href: '/partner/dashboard/bookings/calendar', icon: CalendarIcon },
     { label: 'จัดการความพร้อมใช้งาน', href: '/partner/dashboard/availability', icon: CalendarIcon },

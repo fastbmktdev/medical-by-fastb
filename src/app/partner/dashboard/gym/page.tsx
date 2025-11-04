@@ -31,6 +31,7 @@ import {
   EnvelopeIcon,
   XMarkIcon,
   TrashIcon,
+  MegaphoneIcon,
 } from '@heroicons/react/24/outline';
 import type { Gym } from '@/types';
 import { uploadImages, validateFile } from '@/app/partner/apply/utils/fileUpload';
@@ -231,6 +232,7 @@ function GymPageContent() {
 
   const menuItems: MenuItem[] = [
     { label: 'ข้อมูลยิม', href: '/partner/dashboard/gym', icon: BuildingStorefrontIcon },
+    { label: 'โปรโมชั่น', href: '/partner/dashboard/promotions', icon: MegaphoneIcon },
     { label: 'ประวัติการจอง', href: '/partner/dashboard/bookings', icon: CalendarIcon },
     { label: 'รายการธุรกรรม', href: '/partner/dashboard/transactions', icon: BanknotesIcon },
     { label: 'การจ่ายเงิน', href: '/partner/dashboard/payouts', icon: CurrencyDollarIcon },

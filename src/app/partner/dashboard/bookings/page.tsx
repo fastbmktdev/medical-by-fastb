@@ -37,6 +37,7 @@ import {
   ClockIcon,
   XCircleIcon,
   EyeIcon,
+  MegaphoneIcon,
 } from '@heroicons/react/24/outline';
 import type { Booking as BookingType, Gym } from '@/types';
 
@@ -89,6 +90,7 @@ function PartnerBookingsContent() {
   const menuItems: MenuItem[] = [
     { label: 'แดชบอร์ด', href: '/partner/dashboard', icon: ChartBarIcon },
     { label: 'ข้อมูลยิม', href: '/partner/dashboard/gym', icon: BuildingStorefrontIcon },
+    { label: 'โปรโมชั่น', href: '/partner/dashboard/promotions', icon: MegaphoneIcon },
     { label: 'ประวัติการจอง', href: '/partner/dashboard/bookings', icon: CalendarIcon },
     { label: 'ปฏิทินการจอง', href: '/partner/dashboard/bookings/calendar', icon: CalendarIcon },
     { label: 'รายการธุรกรรม', href: '/partner/dashboard/transactions', icon: BanknotesIcon },

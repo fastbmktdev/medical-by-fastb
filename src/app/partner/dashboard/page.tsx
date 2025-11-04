@@ -26,6 +26,7 @@ import {
   PlusIcon,
   TrashIcon,
   XMarkIcon,
+  MegaphoneIcon,
 } from '@heroicons/react/24/outline';
 import { Toaster, toast } from 'react-hot-toast';
 import type { Gym, GymPackage } from '@/types/database.types';
@@ -360,6 +361,8 @@ function PartnerDashboardContent() {
   // Menu items for sidebar
   const menuItems: MenuItem[] = [
     { label: 'Dashboard', href: '/partner/dashboard', icon: HomeIcon },
+    { label: 'ข้อมูลยิม', href: '/partner/dashboard/gym', icon: BuildingStorefrontIcon },
+    { label: 'โปรโมชั่น', href: '/partner/dashboard/promotions', icon: MegaphoneIcon },
     { label: 'รายการจอง', href: '/partner/dashboard/bookings', icon: CalendarIcon },
     { label: 'รายการธุรกรรม', href: '/partner/dashboard/transactions', icon: BanknotesIcon },
     { label: 'การจ่ายเงิน', href: '/partner/dashboard/payouts', icon: CurrencyDollarIcon },
