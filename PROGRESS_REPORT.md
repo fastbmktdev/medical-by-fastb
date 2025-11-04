@@ -10,7 +10,7 @@
 - ระบบหลัก (Authentication, Booking, Payment, Review, Gamification) พร้อมใช้งานเกือบ 100%
 - ระบบผู้ใช้, โปรไฟล์, ระบบเชื่อมต่อ OAuth และ Notification/Newsletter เสร็จสมบูรณ์
 - รายงานอัตโนมัติ, QR Code, Check-in, Shop, Admin (Products/Promotions) เสร็จสมบูรณ์
-- เหลือ Google Maps Integration & ระบบ Affiliate Commission (ของจริง), Migrate Email Service
+- เหลือ Google Maps API Integration (Gym pages ใช้ embed map แล้ว 75%), ระบบ Affiliate Commission (ของจริง), Migrate Email Service (98% เสร็จแล้ว)
 
 ---
 
@@ -44,7 +44,7 @@
 
 | ฟีเจอร์                      | สถานะ       | หมายเหตุ                         |
 |------------------------------|-------------|-----------------------------------|
-| Google Maps Integration      | ⏳          | ยังไม่ได้เชื่อมต่อ (Show "coming soon") |
+| Google Maps Integration      | ⏳75%        | Gym pages ใช้ embed map แล้ว (ไม่ต้องใช้ API key), Contact page ยังแสดง "coming soon" |
 | Affiliate Commission System  | ⏳60%        | ยังใช้ mock data                 |
 | Email Service Migration      | ⏳98%        | Email Queue Processor และ Direct API Routes ใช้ Resend แล้ว, เหลืออัปเดต documentation (optional) |
 | Leaderboard "View All"       | ⏳          | ยังไม่สมบูรณ์                    |
@@ -93,16 +93,16 @@
 ---
 
 ## 6. ประเด็นสำคัญที่ต้องดำเนินการ (Next Steps)
-- เชื่อม Google Maps จริง
+- เชื่อม Google Maps API จริง (ตอนนี้ใช้ embed map ใน Gym pages แล้ว แต่ Contact page ยังแสดง "coming soon")
 - พัฒนา Affiliate Commission ของจริง
-- Migrate Email Service จาก SMTP → Resend ให้ครบ
+- Migrate Email Service จาก SMTP → Resend ให้ครบ (98% เสร็จแล้ว)
 - เพิ่ม Analytics/Tracking (Google Analytics)
 - Multi-language, Advanced Marketing, A/B
 
 ---
 
 ## 7. Issues/Checklists (ไม่ซ้ำ/เฉพาะ Work-in-Progress)
-- [ ] Google Maps Integration
+- [ ] Google Maps Integration (75% - Gym pages ใช้ embed map แล้ว, Contact page ยังแสดง "coming soon", ต้องเชื่อม Google Maps API จริงสำหรับ features เพิ่มเติม)
 - [ ] Affiliate Commission Real Logic
 - [ ] Email Service: Switch to Resend (98% เสร็จ - Email Queue Processor และ Direct API Routes ใช้ Resend แล้ว, เหลืออัปเดต documentation ถ้ามี)
 - [ ] Leaderboard "View All" Implementation
@@ -217,37 +217,49 @@
    - เพิ่ม section เกี่ยวกับ Resend setup
    - อัปเดต email provider priority และ configuration
 
-⚠️ 10. Testing (Optional - สำหรับ production)
-   - ทดสอบส่ง email ทุกประเภทผ่าน Resend ใน production environment
-   - ตรวจสอบว่า email queue ทำงานถูกต้อง
-   - ตรวจสอบ error handling และ retry logic
+✅ 10. Testing (Test Script Available)
+   - ✅ สร้าง test script แล้ว: `scripts/node/test-resend-emails.js`
+   - ✅ เพิ่ม npm script: `npm run test:resend <email>`
+   - ✅ ทดสอบส่ง email ทุกประเภทผ่าน Resend ได้ใน development
+   - ⚠️ ทดสอบใน production environment (optional - เมื่อพร้อม deploy)
+   - ⚠️ ตรวจสอบ email queue ทำงานถูกต้องใน production
+   - ⚠️ ตรวจสอบ error handling และ retry logic ใน production
 ```
 
 **Note**: Email Queue Processor และ Direct API Routes ใช้ Resend แล้วทั้งหมด! ระบบ email เกือบเสร็จสมบูรณ์แล้ว (98%) - สิ่งที่เหลือเป็น optional documentation updates เท่านั้น
 
 ---
 
-### 🔴 Priority: Google Maps Integration
+### 🔴 Priority: Google Maps Integration (75% เสร็จ)
 
-**Task**: เชื่อมต่อ Google Maps API จริง (ตอนนี้แสดง "coming soon")
+**Task**: เชื่อมต่อ Google Maps API จริง (ตอนนี้ Gym pages ใช้ embed map แล้ว แต่ยังไม่ใช่ full API integration)
 
+**สถานะปัจจุบัน**:
+- ✅ Gym Detail Pages (`/gyms/[slug]`) ใช้ Google Maps embed แล้ว (แสดงแผนที่ด้วย iframe)
+- ✅ Component `GymMap.tsx` สร้างแล้วและใช้งานได้
+- ❌ Contact page ยังแสดง "coming soon"
+- ❌ ยังไม่ใช้ Google Maps JavaScript API (ยังไม่มี API key integration)
+- ❌ ยังไม่ใช้ Places API สำหรับ reviews และ features เพิ่มเติม
+
+**สิ่งที่ต้องทำต่อ**:
 ```
 1. ตั้งค่า Google Maps API
    - สร้าง API key ใน Google Cloud Console
    - Enable Maps JavaScript API, Places API, Geocoding API
    - ตั้งค่า environment variables: NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
 
-2. แก้ไข Gym Details Page
-   - ไฟล์: src/app/gyms/[id]/page.tsx หรือ component ที่เกี่ยวข้อง
+2. แก้ไข Contact Page
+   - ไฟล์: src/app/contact/page.tsx
    - แทนที่ "coming soon" ด้วย Google Maps component
-   - แสดง map ด้วย latitude/longitude จาก gym data
+   - แสดงแผนที่สำนักงาน
 
-3. สร้าง Google Maps Component
+3. อัปเกรด Google Maps Component (Optional)
+   - อัปเดต GymMap component ให้ใช้ Google Maps JavaScript API แทน embed
    - ใช้ @react-google-maps/api หรือ google-map-react
    - แสดง marker สำหรับ gym location
    - แสดง info window พร้อม gym details
 
-4. Integrate Places API
+4. Integrate Places API (Optional)
    - ดึงข้อมูล reviews จาก Google Places API
    - แสดง reviews และ rating จาก Google Maps
    - ไฟล์: src/app/api/gyms/[id]/reviews/route.ts (ถ้ามี)

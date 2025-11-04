@@ -19,7 +19,7 @@
 - ✅ **Code Cleanup**: ลบไฟล์ที่ไม่จำเป็น (ลดขนาดได้ 32 KB)
 
 **สิ่งที่ยังเหลือ**:
-- ⚠️ Google Maps Integration (ยังขึ้น "coming soon")
+- ⚠️ Google Maps Integration (75% - Gym pages ใช้ embed map แล้ว, Contact page ยังแสดง "coming soon", ยังไม่ใช้ Google Maps API จริง)
 - ⚠️ Affiliate Commission System (ใช้ mock data)
 - ⚠️ Google Analytics Integration
 - ⚠️ Migration Email Service: เปลี่ยนการส่ง emails จาก Gmail SMTP เป็น Resend (98% เสร็จ - Email Queue Processor และ Direct API Routes ใช้ Resend แล้ว)
@@ -115,8 +115,12 @@
 
 ## ⚠️ สิ่งที่ยังไม่เสร็จ
 
-1. **Google Maps Integration**
-   - ยังไม่ได้เชื่อมต่อจริง (ขึ้น "coming soon")
+1. **Google Maps Integration** (75% เสร็จ)
+   - ✅ Gym Detail Pages ใช้ Google Maps embed แล้ว (แสดงแผนที่ด้วย iframe)
+   - ✅ Component `GymMap.tsx` สร้างแล้วและใช้งานได้
+   - ❌ Contact page ยังแสดง "coming soon"
+   - ❌ ยังไม่ใช้ Google Maps JavaScript API (ยังไม่มี API key integration)
+   - ❌ ยังไม่ใช้ Places API สำหรับ reviews และ features เพิ่มเติม
 
 2. **Affiliate Commission System**
    - ใช้ mock data ต้องพัฒนาระบบคำนวณ Commission จริง
@@ -156,7 +160,8 @@
 | Booking System | 90% ✅ |
 | Payment System | 95% ✅ |
 | Gamification | 95% ✅ |
-| Affiliate | 90% ✅ |
+| Affiliate | 60% ⚠️ |
+| Google Maps | 75% ⚠️ |
 | User Profile | 100% ✅ |
 | Connected Accounts | 90% ✅ |
 | API Endpoints | 104% ✅ |
@@ -249,7 +254,7 @@
 - ✅ **Critical Features**: ครบแล้ว 100%
 
 ### ⚠️ ระบบที่ยังไม่เสร็จ
-- ⚠️ **Google Maps Integration**: ยังไม่ได้เชื่อมต่อจริง (ขึ้น "coming soon")
+- ⚠️ **Google Maps Integration** (75%): Gym pages ใช้ embed map แล้ว แต่ Contact page ยังแสดง "coming soon" และยังไม่ใช้ Google Maps API จริง
 - ⚠️ **Affiliate Commission**: ใช้ mock data - ต้องพัฒนาระบบคำนวณ Commission จริง
 - ⚠️ **Google Analytics**: ยังไม่ได้ติดตั้งและเชื่อมต่อ
 
@@ -280,6 +285,6 @@
 - ✅ Production Build
 
 ### ⚠️ สิ่งที่ยังไม่เสร็จ
-- ⚠️ Google Maps Integration
-- ⚠️ Affiliate Commission System
+- ⚠️ Google Maps Integration (75% - Gym pages ใช้ embed map แล้ว, Contact page ยังแสดง "coming soon")
+- ⚠️ Affiliate Commission System (60% - ใช้ mock data)
 - ⚠️ Google Analytics Integration
