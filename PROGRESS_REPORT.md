@@ -965,18 +965,19 @@
 - [x] สร้าง API และ UI สำหรับหมวดหมู่อีเวนต์ ✅ (`/api/event-categories`, `/admin/dashboard/events/categories`)
 
 #### Partner Features
-- [ ] สร้าง Partner Payout System
-  - [ ] สร้างตาราง `partner_payouts`
-  - [ ] API `/api/partner/payouts`
-  - [ ] UI Partner Payout Dashboard
-- [ ] เพิ่ม Partner Revenue Analytics (ข้อมูลจริง) - **Critical: ตอนนี้แสดง 0 ทั้งหมด**
-  - [ ] Query จำนวนลูกค้าทั้งหมด (นับจาก bookings ที่ gym_id = partner's gym)
-  - [ ] Query จำนวนการจองเดือนนี้ (จาก `bookings` ที่ gym_id = partner's gym)
-  - [ ] Query คะแนนเฉลี่ย (จาก Google Reviews หรือ ratings)
-  - [ ] Query อันดับในพื้นที่ (จาก ratings/reviews)
-  - [ ] Query รายได้เดือนนี้ (จาก `payments` ที่เกี่ยวข้องกับ bookings ของ gym)
-  - [ ] เพิ่มกราฟรายได้ (รายเดือน/รายสัปดาห์)
-  - [ ] แสดงบริการยอดนิยม (แพ็คเกจที่ถูกจองมากที่สุด)
+- [x] สร้าง Partner Payout System ✅
+  - [x] สร้างตาราง `partner_payouts` ✅ (มีอยู่แล้วใน migration)
+  - [x] API `/api/partner/payouts` ✅ (GET, POST)
+  - [x] API `/api/partner/payouts/[id]` ✅ (GET)
+  - [x] UI Partner Payout Dashboard ✅ (`/partner/dashboard/payouts`)
+- [x] เพิ่ม Partner Revenue Analytics (ข้อมูลจริง) ✅
+  - [x] Query จำนวนลูกค้าทั้งหมด (นับจาก bookings ที่ gym_id = partner's gym) ✅
+  - [x] Query จำนวนการจองเดือนนี้ (จาก `bookings` ที่ gym_id = partner's gym) ✅
+  - [x] Query คะแนนเฉลี่ย (จาก Google Reviews หรือ ratings) ✅ (ดึงจาก Google Places API ถ้ามี google_place_id)
+  - [x] Query อันดับในพื้นที่ (จาก ratings/reviews) ✅ (เปรียบเทียบจำนวน bookings กับ gyms อื่นในพื้นที่เดียวกัน)
+  - [x] Query รายได้เดือนนี้ (จาก `payments` ที่เกี่ยวข้องกับ bookings ของ gym) ✅ (จาก bookings ที่ payment_status = 'paid')
+  - [x] เพิ่มกราฟรายได้ (รายเดือน/รายสัปดาห์) ✅ (bar chart แบบง่าย)
+  - [x] แสดงบริการยอดนิยม (แพ็คเกจที่ถูกจองมากที่สุด) ✅
 - [ ] สร้าง Performance Metrics Dashboard
 - [ ] เพิ่ม Booking Calendar View
 - [ ] สร้าง Availability Management

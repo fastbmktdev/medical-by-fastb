@@ -38,7 +38,7 @@
 
 **หมายเหตุ**: การยกเลิกการจองและการคืนเงินจะต้องติดต่อโดยตรง ไม่มีระบบอัตโนมัติ
 
-**จำนวน**: **104 API Endpoints** (91% ของทั้งหมด), 50+ Pages, 100+ Components, **44 Database Tables** (เพิ่ม shipping_methods, shipping_history)
+**จำนวน**: **107 API Endpoints** (94% ของทั้งหมด), 50+ Pages, 100+ Components, **44 Database Tables** (เพิ่ม shipping_methods, shipping_history)
 
 ---
 
@@ -76,7 +76,10 @@
 - Authentication, Booking, Payment, Gamification ใช้งานได้จริง
 - User Profile System เสร็จสมบูรณ์
 - **Database Tables ครบ 44 ตารางแล้ว (100%)** ✅ (เพิ่ม shipping_methods, shipping_history)
-- **API Endpoints 104 จุด (91%)** - รวม Events, Shop, Variants, Images, Orders, Shipping, Notifications, Favorites, Search, Analytics, Promotions, Payouts, Cron Jobs, Audit Logs ✅
+- **API Endpoints 107 จุด (94%)** - รวม Events, Shop, Variants, Images, Orders, Shipping, Notifications, Favorites, Search, Analytics, Promotions, Payouts, Cron Jobs, Audit Logs, Event Categories, Ticket Check-in ✅
+- **QR Code System** - ระบบ QR Code สำหรับตั๋วอีเวนต์เสร็จแล้ว ✅
+- **Check-in System** - ระบบเช็คอินตั๋วสำหรับ Admin เสร็จแล้ว ✅
+- **Event Categories** - ระบบจัดการหมวดหมู่อีเวนต์เสร็จแล้ว (API + Admin UI) ✅
 - **Notification System 90%** - การส่งอัตโนมัติส่วนใหญ่เสร็จแล้ว (booking, payment, badge, level up, reminder, promotion)
 - **Critical Features ครบแล้ว** - Admin Analytics, Partner Analytics, Promotions, Payouts, Cron Jobs, Audit Logs
 - Production build ผ่านเรียบร้อย
@@ -103,11 +106,11 @@
 | Affiliate | 90% ✅ |
 | User Profile | 100% ✅ |
 | Connected Accounts | 90% ✅ (Google OAuth) |
-| **API Endpoints** | **91%** ✅ (104/114 endpoints) |
+| **API Endpoints** | **94%** ✅ (107/114 endpoints) |
 | Notifications | 90% ✅ (API + DB + UI Components + Auto-send) |
 | Favorites | 100% ✅ (API + DB) |
 | E-commerce | 95% ✅ (API ครบ: Products, Variants, Images, Orders, Shipping - เชื่อมต่อ Frontend แล้ว - ✅ Admin UI ครบแล้ว) |
-| Events | 85% ✅ (API ครบ, Admin UI เสร็จแล้ว, Frontend เชื่อมต่อแล้ว) |
+| Events | 95% ✅ (API ครบ, Admin UI เสร็จแล้ว, Frontend เชื่อมต่อแล้ว, QR Code + Check-in System, Event Categories) |
 | Search | 80% ✅ (Full-text search, Autocomplete, Search History, Advanced filters, Sorting) |
 | Payment Features | 90% ✅ (Receipt/Invoice generation เสร็จแล้ว) |
 | Admin Analytics | 100% ✅ (API พร้อม date filtering) |
@@ -126,14 +129,28 @@
 ## 📈 ความคืบหน้าล่าสุด
 
 **อัปเดต 2025-11-04 (วันนี้)**:
+- ✅ **QR Code System สำหรับตั๋ว**: สร้างระบบ QR Code สำหรับตั๋วอีเวนต์เสร็จแล้ว
+  - สร้าง utility functions สำหรับสร้าง QR Code (DataURL, Buffer, String)
+  - QR Code จะถูกสร้างอัตโนมัติเมื่อมีการจองตั๋ว
+  - QR Code ประกอบด้วย Ticket ID, Booking Reference และ Timestamp
+- ✅ **ระบบ Check-in ตั๋ว (Admin)**: สร้าง UI สำหรับระบบเช็คอินตั๋วอีเวนต์
+  - หน้า `/admin/dashboard/events/check-in` สำหรับเช็คอินตั๋ว
+  - รองรับการเช็คอินด้วย Ticket ID หรือ Booking Reference
+  - รองรับการสแกน QR Code (พร้อมสำหรับการพัฒนาต่อ)
+  - แสดงสถานะการเช็คอินและข้อมูลตั๋ว
+- ✅ **Event Categories Management**: สร้างระบบจัดการหมวดหมู่อีเวนต์
+  - API ครบ CRUD operations (`/api/event-categories`, `/api/event-categories/[id]`)
+  - Admin UI สำหรับจัดการหมวดหมู่ (`/admin/dashboard/events/categories`)
+  - รองรับการสร้าง, แก้ไข, ลบ และจัดการลำดับการแสดงผล
+  - ตรวจสอบว่าหมวดหมู่ถูกใช้งานอยู่หรือไม่ก่อนลบ
+- ✅ **Build System & Cleanup**: 
+  - Production build ผ่านเรียบร้อย (121 pages/routes)
+  - อัปเดต `.gitignore` เพื่อ ignore ไฟล์ที่ไม่จำเป็น (build files, cache, temporary files)
+  - เพิ่ม ignore patterns สำหรับ test scripts และ development files
 - ✅ **Admin Events Management UI**: สร้าง Admin UI สำหรับจัดการ Events ครบถ้วน - มี page `/admin/dashboard/events` พร้อม CRUD operations
 - ✅ **Event Management Components**: สร้าง components ครบ 5 ตัว (EventCreateModal, EventEditModal, EventDetailModal, EventDeleteDialog, EventTicketsModal)
 - ✅ **Events API Refactoring**: ปรับโครงสร้าง API จาก `/api/events/[id]` เป็น `/api/events/[slug]` เพื่อรองรับทั้ง slug และ UUID
 - ✅ **Events Frontend Integration**: เชื่อมต่อ Frontend กับ Events API แล้ว (หน้า `/events` และ `/events/[slug]`)
-- ✅ **Email Confirmation Testing**: เพิ่ม script `test-email-confirmation.sh` สำหรับทดสอบ flow การยืนยันอีเมล
-- ✅ **Auth Callback Improvements**: ปรับปรุง auth callback route สำหรับจัดการ email confirmation
-- ✅ **RoleGuard Updates**: อัปเดต RoleGuard component
-- ✅ **Admin Menu Items**: เพิ่ม Events management ใน admin menu
 
 **อัปเดต 2025-11-03 (ล่าสุด)**:
 - ✅ **Shipping System**: ระบบจัดส่งเสร็จแล้ว - มีตาราง `shipping_methods` และ `shipping_history`, API ครบ 5 endpoints (GET, POST, PUT/[id], DELETE/[id])
@@ -160,5 +177,4 @@
 
 ---
 
-**สรุป**: ระบบพร้อมใช้งานได้ **99%** - ฟีเจอร์หลักใช้งานได้จริง Database และ API เกือบครบถ้วนแล้ว (104/114 endpoints, 91%) Critical Features ครบแล้ว รวมถึง Shipping System และ Orders Management ยังเหลือเพียงการสร้าง Admin UI บางส่วน
-
+**สรุป**: ระบบพร้อมใช้งานได้ **99%** - ฟีเจอร์หลักใช้งานได้จริง Database และ API เกือบครบถ้วนแล้ว (107/114 endpoints, 94%) Critical Features ครบแล้ว รวมถึง Shipping System, Orders Management, QR Code System, Check-in System และ Event Categories ยังเหลือเพียงการสร้าง Admin UI บางส่วนและ Real-time Notifications
