@@ -1,9 +1,8 @@
--- ============================================================================
+-- ---
 -- GYM AVAILABILITY SYSTEM MIGRATION
--- ============================================================================
+-- ---
 -- This migration creates tables and functions for managing gym availability,
 -- opening hours, capacity, and time slot management
-
 -- Create enum for day of week
 CREATE TYPE day_of_week AS ENUM (
   'monday',
@@ -233,11 +232,9 @@ BEGIN
   RETURN v_available_capacity;
 END;
 $$ LANGUAGE plpgsql STABLE;
-
--- ============================================================================
+-- ---
 -- ROW LEVEL SECURITY POLICIES
--- ============================================================================
-
+-- ---
 ALTER TABLE gym_availability ENABLE ROW LEVEL SECURITY;
 ALTER TABLE gym_special_availability ENABLE ROW LEVEL SECURITY;
 ALTER TABLE gym_time_slots ENABLE ROW LEVEL SECURITY;
@@ -293,11 +290,9 @@ CREATE POLICY "public_can_view_gym_time_slots"
   USING (TRUE);
 
 -- Service role has full access (implicit)
-
--- ============================================================================
+-- ---
 -- PERMISSIONS AND GRANTS
--- ============================================================================
-
+-- ---
 GRANT SELECT ON gym_availability TO authenticated;
 GRANT INSERT, UPDATE, DELETE ON gym_availability TO authenticated;
 
@@ -306,14 +301,11 @@ GRANT INSERT, UPDATE, DELETE ON gym_special_availability TO authenticated;
 
 GRANT SELECT ON gym_time_slots TO authenticated;
 GRANT INSERT, UPDATE, DELETE ON gym_time_slots TO authenticated;
-
--- ============================================================================
+-- ---
 -- COMMENTS AND DOCUMENTATION
--- ============================================================================
-
+-- ---
 COMMENT ON TABLE gym_availability IS 'Regular weekly availability schedule for gyms';
 COMMENT ON TABLE gym_special_availability IS 'Special availability for holidays, maintenance, or events';
 COMMENT ON TABLE gym_time_slots IS 'Specific time slots with capacity management';
 COMMENT ON FUNCTION check_gym_availability IS 'Checks if a gym is available on a specific date/time';
 COMMENT ON FUNCTION get_available_capacity IS 'Returns available capacity for a date/time slot';
-

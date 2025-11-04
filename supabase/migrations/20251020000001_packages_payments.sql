@@ -1,11 +1,9 @@
 -- Consolidated Packages and Payments Migration
 -- Migration: 20251020000001_packages_payments.sql
 -- Consolidates: create_gym_packages.sql, seed_gym_packages.sql, create_payments_tables.sql, add_partner_booking_update_policy.sql
-
--- =============================================================================
+-- ---
 -- PART 1: GYM PACKAGES AND BOOKINGS SYSTEM
--- =============================================================================
-
+-- ---
 -- Create gym_packages table
 CREATE TABLE IF NOT EXISTS gym_packages (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -88,11 +86,9 @@ CREATE TABLE IF NOT EXISTS bookings (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW())
 );
-
--- =============================================================================
+-- ---
 -- PART 2: COMPREHENSIVE PAYMENTS SYSTEM
--- =============================================================================
-
+-- ---
 -- Create enum for payment status
 CREATE TYPE payment_status AS ENUM (
   'pending',
@@ -269,11 +265,9 @@ CREATE TABLE IF NOT EXISTS gym_bookings (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
-
--- =============================================================================
+-- ---
 -- PART 3: INDEXES FOR PERFORMANCE
--- =============================================================================
-
+-- ---
 -- Indexes for gym_packages
 CREATE INDEX IF NOT EXISTS idx_gym_packages_gym_id ON gym_packages(gym_id);
 CREATE INDEX IF NOT EXISTS idx_gym_packages_type ON gym_packages(package_type);
@@ -312,11 +306,9 @@ CREATE INDEX idx_gym_bookings_user_id ON gym_bookings(user_id);
 CREATE INDEX idx_gym_bookings_gym_id ON gym_bookings(gym_id);
 CREATE INDEX idx_gym_bookings_start_date ON gym_bookings(start_date);
 CREATE INDEX idx_gym_bookings_end_date ON gym_bookings(end_date);
-
--- =============================================================================
+-- ---
 -- PART 4: FUNCTIONS AND TRIGGERS
--- =============================================================================
-
+-- ---
 -- Function to generate booking number
 CREATE OR REPLACE FUNCTION generate_booking_number()
 RETURNS TEXT AS $$
@@ -404,11 +396,9 @@ CREATE TRIGGER update_gym_bookings_updated_at
   BEFORE UPDATE ON gym_bookings
   FOR EACH ROW
   EXECUTE FUNCTION update_updated_at_column();
-
--- =============================================================================
+-- ---
 -- PART 5: ROW LEVEL SECURITY POLICIES
--- =============================================================================
-
+-- ---
 -- Enable RLS on all tables
 ALTER TABLE gym_packages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE bookings ENABLE ROW LEVEL SECURITY;
@@ -596,22 +586,18 @@ CREATE POLICY "Users can insert their own gym bookings"
 CREATE POLICY "Users can update their own gym bookings"
   ON gym_bookings FOR UPDATE
   USING (auth.uid() = user_id);
-
--- =============================================================================
+-- ---
 -- PART 6: PERMISSIONS AND GRANTS
--- =============================================================================
-
+-- ---
 -- Grant permissions for gym_packages and bookings
 GRANT SELECT ON gym_packages TO authenticated, anon;
 GRANT INSERT, UPDATE ON gym_packages TO authenticated;
 
 GRANT SELECT, INSERT ON bookings TO authenticated;
 GRANT UPDATE ON bookings TO authenticated;
-
--- =============================================================================
+-- ---
 -- PART 7: SEED DATA FOR GYM PACKAGES
--- =============================================================================
-
+-- ---
 -- Insert sample packages for existing gyms
 DO $$
 DECLARE
@@ -683,11 +669,9 @@ BEGIN
     RAISE NOTICE 'No approved gyms found. Please create gym packages manually.';
   END IF;
 END $$;
-
--- =============================================================================
+-- ---
 -- PART 8: COMMENTS AND DOCUMENTATION
--- =============================================================================
-
+-- ---
 -- Table comments
 COMMENT ON TABLE gym_packages IS 'Stores gym pricing packages (one-time and subscription packages)';
 COMMENT ON TABLE bookings IS 'Stores user bookings for gym sessions and packages';

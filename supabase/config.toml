@@ -31,7 +31,8 @@ enable_signup = true
 # เปิดการยืนยันอีเมลสำหรับทดสอบ email confirmation
 enable_confirmations = true
 
-[auth.security]
+# [auth.security]
 # Enable manual identity linking (beta)
 # Allows users to link multiple OAuth accounts to the same user account
-manual_linking_enabled = true
+# Note: This section may not be supported in current Supabase CLI version
+# manual_linking_enabled = true

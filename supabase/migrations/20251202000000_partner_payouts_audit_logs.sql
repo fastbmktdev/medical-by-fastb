@@ -1,11 +1,9 @@
 -- Partner Payouts and Audit Logs Migration
 -- Migration: 20251202000000_partner_payouts_audit_logs.sql
 -- Creates supplementary tables: partner_payouts and audit_logs
-
--- ============================================================================
+-- ---
 -- PART 1: PARTNER PAYOUTS TABLE
--- ============================================================================
-
+-- ---
 -- Create enum for payout status
 CREATE TYPE payout_status AS ENUM (
   'pending',
@@ -83,11 +81,9 @@ CREATE INDEX IF NOT EXISTS idx_partner_payouts_payout_number ON partner_payouts(
 CREATE INDEX IF NOT EXISTS idx_partner_payouts_period ON partner_payouts(period_start_date, period_end_date);
 CREATE INDEX IF NOT EXISTS idx_partner_payouts_created ON partner_payouts(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_partner_payouts_requested ON partner_payouts(requested_at DESC);
-
--- ============================================================================
+-- ---
 -- PART 2: AUDIT LOGS TABLE
--- ============================================================================
-
+-- ---
 -- Create enum for audit action types
 CREATE TYPE audit_action_type AS ENUM (
   'create',
@@ -208,11 +204,9 @@ CREATE INDEX IF NOT EXISTS idx_audit_logs_resource_type_id ON audit_logs(resourc
 CREATE INDEX IF NOT EXISTS idx_audit_logs_old_values_gin ON audit_logs USING GIN(old_values);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_new_values_gin ON audit_logs USING GIN(new_values);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_metadata_gin ON audit_logs USING GIN(metadata);
-
--- ============================================================================
+-- ---
 -- PART 3: FUNCTIONS AND TRIGGERS
--- ============================================================================
-
+-- ---
 -- Function to generate payout number
 CREATE OR REPLACE FUNCTION generate_payout_number()
 RETURNS TEXT AS $$
@@ -327,11 +321,9 @@ BEGIN
   RETURN v_log_id;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
-
--- ============================================================================
+-- ---
 -- PART 4: ROW LEVEL SECURITY POLICIES
--- ============================================================================
-
+-- ---
 -- Enable RLS on tables
 ALTER TABLE partner_payouts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
@@ -395,7 +387,6 @@ CREATE POLICY "authenticated_can_insert_audit_logs"
   ON audit_logs FOR INSERT
   TO authenticated
   WITH CHECK (true); -- Allow authenticated users to log their own actions
-
 -- Admins can insert audit logs
 CREATE POLICY "admins_can_insert_audit_logs"
   ON audit_logs FOR INSERT
@@ -406,11 +397,9 @@ CREATE POLICY "admins_can_insert_audit_logs"
       WHERE user_id = auth.uid() AND role = 'admin'
     )
   );
-
--- ============================================================================
+-- ---
 -- PART 5: PERMISSIONS AND GRANTS
--- ============================================================================
-
+-- ---
 -- Grant permissions for partner_payouts
 GRANT SELECT ON partner_payouts TO authenticated;
 GRANT INSERT, UPDATE ON partner_payouts TO authenticated;
@@ -422,11 +411,9 @@ GRANT INSERT ON audit_logs TO authenticated;
 -- Grant execute permission on helper functions
 GRANT EXECUTE ON FUNCTION log_audit_event TO authenticated;
 GRANT EXECUTE ON FUNCTION generate_payout_number TO authenticated;
-
--- ============================================================================
+-- ---
 -- PART 6: COMMENTS AND DOCUMENTATION
--- ============================================================================
-
+-- ---
 -- Table comments
 COMMENT ON TABLE partner_payouts IS 'Tracks payouts to gym owners/partners for their bookings and revenue';
 COMMENT ON TABLE audit_logs IS 'Comprehensive audit log for tracking system changes, user actions, and security events';
@@ -455,4 +442,3 @@ COMMENT ON COLUMN audit_logs.user_role IS 'User role at the time of action';
 -- Function comments
 COMMENT ON FUNCTION generate_payout_number IS 'Generates unique payout number in format POYYYYMMXXXX';
 COMMENT ON FUNCTION log_audit_event IS 'Helper function to log audit events with user context and change tracking';
-

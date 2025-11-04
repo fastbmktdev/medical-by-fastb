@@ -14,6 +14,8 @@ import {
   ClockIcon,
   CheckCircleIcon,
   ChevronRightIcon,
+  CubeIcon,
+  MegaphoneIcon,
 } from '@heroicons/react/24/outline';
 import { User } from '@supabase/supabase-js';
 
@@ -22,6 +24,10 @@ interface Stats {
   totalGyms: number;
   pendingApprovals: number;
   approvedGyms: number;
+  totalProducts: number;
+  activeProducts: number;
+  totalPromotions: number;
+  activePromotions: number;
 }
 
 interface GymApplication {
@@ -55,6 +61,10 @@ function AdminDashboardContent() {
     totalGyms: 0,
     pendingApprovals: 0,
     approvedGyms: 0,
+    totalProducts: 0,
+    activeProducts: 0,
+    totalPromotions: 0,
+    activePromotions: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
   const [_pendingApplications, _setPendingApplications] = useState<GymApplication[]>([]);
@@ -67,11 +77,15 @@ function AdminDashboardContent() {
       setUser(user);
 
       // Fetch statistics
-      const [usersCount, gymsCount, pendingCount, approvedCount] = await Promise.all([
+      const [usersCount, gymsCount, pendingCount, approvedCount, productsCount, activeProductsCount, promotionsCount, activePromotionsCount] = await Promise.all([
         supabase.from('user_roles').select('*', { count: 'exact', head: true }),
         supabase.from('gyms').select('*', { count: 'exact', head: true }),
         supabase.from('gyms').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
         supabase.from('gyms').select('*', { count: 'exact', head: true }).eq('status', 'approved'),
+        supabase.from('products').select('*', { count: 'exact', head: true }),
+        supabase.from('products').select('*', { count: 'exact', head: true }).eq('is_active', true),
+        supabase.from('promotions').select('*', { count: 'exact', head: true }),
+        supabase.from('promotions').select('*', { count: 'exact', head: true }).eq('is_active', true),
       ]);
 
       setStats({
@@ -79,6 +93,10 @@ function AdminDashboardContent() {
         totalGyms: gymsCount.count || 0,
         pendingApprovals: pendingCount.count || 0,
         approvedGyms: approvedCount.count || 0,
+        totalProducts: productsCount.count || 0,
+        activeProducts: activeProductsCount.count || 0,
+        totalPromotions: promotionsCount.count || 0,
+        activePromotions: activePromotionsCount.count || 0,
       });
 
       // Fetch pending applications
@@ -120,11 +138,25 @@ function AdminDashboardContent() {
       color: 'success',
     },
     {
+      title: 'จัดการสินค้า',
+      description: `จัดการสินค้าทั้งหมด ${stats.totalProducts} รายการ`,
+      icon: CubeIcon,
+      href: '/admin/dashboard/products',
+      color: 'warning',
+    },
+    {
+      title: 'จัดการโปรโมชั่น',
+      description: `จัดการโปรโมชั่น ${stats.totalPromotions} รายการ`,
+      icon: MegaphoneIcon,
+      href: '/admin/dashboard/promotions',
+      color: 'secondary',
+    },
+    {
       title: 'รายงาน',
       description: 'ดูรายงานและสถิติของระบบ',
       icon: ChartBarIcon,
       href: '/admin/dashboard/reports',
-      color: 'secondary',
+      color: 'danger',
     },
     // {
     //   title: 'ตั้งค่าระบบ',
@@ -186,10 +218,64 @@ function AdminDashboardContent() {
         </Card>
       )}
 
+      {/* Quick Stats */}
+      <section className="mb-8">
+        <h2 className="mb-6 font-bold text-2xl">สถิติโดยรวม</h2>
+        <div className="gap-4 grid grid-cols-1 md:grid-cols-4">
+          <Card className="bg-default-100/50 backdrop-blur-sm border-none">
+            <CardBody>
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="text-default-400 text-sm">สินค้าทั้งหมด</p>
+                  <p className="font-bold text-2xl">{stats.totalProducts}</p>
+                  <p className="text-success text-xs mt-1">เปิดใช้งาน {stats.activeProducts}</p>
+                </div>
+                <CubeIcon className="w-8 h-8 text-warning" />
+              </div>
+            </CardBody>
+          </Card>
+          <Card className="bg-default-100/50 backdrop-blur-sm border-none">
+            <CardBody>
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="text-default-400 text-sm">โปรโมชั่นทั้งหมด</p>
+                  <p className="font-bold text-2xl">{stats.totalPromotions}</p>
+                  <p className="text-success text-xs mt-1">เปิดใช้งาน {stats.activePromotions}</p>
+                </div>
+                <MegaphoneIcon className="w-8 h-8 text-secondary" />
+              </div>
+            </CardBody>
+          </Card>
+          <Card className="bg-default-100/50 backdrop-blur-sm border-none">
+            <CardBody>
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="text-default-400 text-sm">ผู้ใช้ทั้งหมด</p>
+                  <p className="font-bold text-2xl">{stats.totalUsers}</p>
+                </div>
+                <UsersIcon className="w-8 h-8 text-primary" />
+              </div>
+            </CardBody>
+          </Card>
+          <Card className="bg-default-100/50 backdrop-blur-sm border-none">
+            <CardBody>
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="text-default-400 text-sm">ยิมทั้งหมด</p>
+                  <p className="font-bold text-2xl">{stats.totalGyms}</p>
+                  <p className="text-success text-xs mt-1">อนุมัติแล้ว {stats.approvedGyms}</p>
+                </div>
+                <BuildingStorefrontIcon className="w-8 h-8 text-success" />
+              </div>
+            </CardBody>
+          </Card>
+        </div>
+      </section>
+
       {/* Admin Tools */}
       <section className="mb-8">
         <h2 className="mb-6 font-bold text-2xl">เครื่องมือผู้ดูแล</h2>
-        <div className="gap-6 grid grid-cols-1 md:grid-cols-2">
+        <div className="gap-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {adminTools.map((tool, index) => {
             const Icon = tool.icon;
             return (

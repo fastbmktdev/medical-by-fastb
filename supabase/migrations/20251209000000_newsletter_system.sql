@@ -1,16 +1,13 @@
--- ============================================================================
+-- ---
 -- NEWSLETTER AND PROMOTIONAL EMAIL SYSTEM MIGRATION
 -- Migration: 20251209000000_newsletter_system.sql
--- ============================================================================
-
+-- ---
 -- Add new email types to existing enum
 ALTER TYPE email_type ADD VALUE IF NOT EXISTS 'newsletter';
 ALTER TYPE email_type ADD VALUE IF NOT EXISTS 'promotional';
-
--- ============================================================================
+-- ---
 -- NEWSLETTER SUBSCRIPTIONS TABLE
--- ============================================================================
-
+-- ---
 CREATE TABLE IF NOT EXISTS newsletter_subscriptions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -43,11 +40,9 @@ CREATE INDEX IF NOT EXISTS idx_newsletter_subscriptions_email ON newsletter_subs
 CREATE INDEX IF NOT EXISTS idx_newsletter_subscriptions_user_id ON newsletter_subscriptions(user_id);
 CREATE INDEX IF NOT EXISTS idx_newsletter_subscriptions_active ON newsletter_subscriptions(is_active) WHERE is_active = TRUE;
 CREATE INDEX IF NOT EXISTS idx_newsletter_subscriptions_unsubscribe_token ON newsletter_subscriptions(unsubscribe_token) WHERE unsubscribe_token IS NOT NULL;
-
--- ============================================================================
+-- ---
 -- NEWSLETTER CAMPAIGNS TABLE
--- ============================================================================
-
+-- ---
 CREATE TABLE IF NOT EXISTS newsletter_campaigns (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   title TEXT NOT NULL,
@@ -73,11 +68,9 @@ CREATE TABLE IF NOT EXISTS newsletter_campaigns (
 CREATE INDEX IF NOT EXISTS idx_newsletter_campaigns_status ON newsletter_campaigns(status);
 CREATE INDEX IF NOT EXISTS idx_newsletter_campaigns_scheduled_at ON newsletter_campaigns(scheduled_at) WHERE scheduled_at IS NOT NULL;
 CREATE INDEX IF NOT EXISTS idx_newsletter_campaigns_created_by ON newsletter_campaigns(created_by);
-
--- ============================================================================
+-- ---
 -- FUNCTIONS
--- ============================================================================
-
+-- ---
 -- Function to update updated_at
 CREATE OR REPLACE FUNCTION update_newsletter_updated_at()
 RETURNS TRIGGER AS $$
@@ -105,11 +98,9 @@ BEGIN
   RETURN encode(gen_random_bytes(32), 'hex');
 END;
 $$ LANGUAGE plpgsql;
-
--- ============================================================================
+-- ---
 -- ROW LEVEL SECURITY (RLS)
--- ============================================================================
-
+-- ---
 -- Enable RLS
 ALTER TABLE newsletter_subscriptions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE newsletter_campaigns ENABLE ROW LEVEL SECURITY;
@@ -137,11 +128,9 @@ CREATE POLICY "Admins can manage campaigns"
   TO authenticated
   USING (EXISTS (SELECT 1 FROM user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'))
   WITH CHECK (EXISTS (SELECT 1 FROM user_roles WHERE user_roles.user_id = auth.uid() AND user_roles.role = 'admin'));
-
--- ============================================================================
+-- ---
 -- COMMENTS
--- ============================================================================
-
+-- ---
 COMMENT ON TABLE newsletter_subscriptions IS 'Newsletter email subscriptions';
 COMMENT ON TABLE newsletter_campaigns IS 'Newsletter campaign management';
 COMMENT ON COLUMN newsletter_subscriptions.unsubscribe_token IS 'Unique token for unsubscribe links';

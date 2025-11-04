@@ -1,17 +1,14 @@
--- ============================================
+-- ---
 -- User Profiles and Authentication Enhancement
--- ============================================
+-- ---
 -- This migration consolidates user profile and authentication improvements:
 -- - Adds phone column to profiles table
 -- - Enhances username support and validation
 -- - Improves user roles RLS policies for better security
 -- - Adds helper functions for user management
--- ============================================
-
--- ============================================
+-- ---
 -- PROFILES TABLE ENHANCEMENTS
--- ============================================
-
+-- ---
 -- Add phone column to profiles table if it doesn't exist
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS phone TEXT;
 
@@ -20,11 +17,9 @@ CREATE INDEX IF NOT EXISTS idx_profiles_phone ON profiles(phone);
 
 -- Add comment for phone column
 COMMENT ON COLUMN profiles.phone IS 'User phone number';
-
--- ============================================
+-- ---
 -- ENHANCED USER ROLES RLS POLICIES
--- ============================================
-
+-- ---
 -- Drop existing user_roles policies for clean slate
 DROP POLICY IF EXISTS "users_can_read_own_role" ON user_roles;
 DROP POLICY IF EXISTS "users_can_insert_own_role" ON user_roles;
@@ -78,11 +73,9 @@ CREATE POLICY "admins_can_view_all_roles"
       AND ur.role = 'admin'
     )
   );
-
--- ============================================
+-- ---
 -- ENHANCED PROFILES POLICIES
--- ============================================
-
+-- ---
 -- Drop existing profiles policies for clean slate
 DROP POLICY IF EXISTS "anyone_can_view_profiles" ON profiles;
 DROP POLICY IF EXISTS "users_can_insert_own_profile" ON profiles;
@@ -108,11 +101,9 @@ CREATE POLICY "Users can insert own profile"
   ON profiles FOR INSERT
   TO authenticated
   WITH CHECK (auth.uid() = user_id);
-
--- ============================================
+-- ---
 -- ENHANCED PERMISSIONS
--- ============================================
-
+-- ---
 -- Grant necessary permissions for user_roles
 GRANT SELECT ON user_roles TO authenticated;
 GRANT INSERT ON user_roles TO authenticated;
@@ -122,11 +113,9 @@ GRANT ALL ON user_roles TO service_role;
 -- Grant necessary permissions for profiles
 GRANT SELECT, INSERT, UPDATE ON profiles TO authenticated;
 GRANT SELECT ON profiles TO anon, public;
-
--- ============================================
+-- ---
 -- ENHANCED TRIGGER FUNCTIONS
--- ============================================
-
+-- ---
 -- Update the handle_new_user function to include phone and improved error handling
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
@@ -148,11 +137,9 @@ BEGIN
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
-
--- ============================================
+-- ---
 -- ENHANCED HELPER FUNCTIONS
--- ============================================
-
+-- ---
 -- Enhanced function to get user role (bypasses RLS for easier access)
 CREATE OR REPLACE FUNCTION get_user_role(target_user_id UUID)
 RETURNS TEXT
@@ -190,33 +177,28 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 -- Grant execute permission on get_user_by_username_or_email function
 GRANT EXECUTE ON FUNCTION public.get_user_by_username_or_email(TEXT) TO authenticated;
 GRANT EXECUTE ON FUNCTION public.get_user_by_username_or_email(TEXT) TO anon;
-
--- ============================================
+-- ---
 -- ENHANCED INDEXES
--- ============================================
-
+-- ---
 -- Ensure all necessary indexes exist for optimal performance
 CREATE INDEX IF NOT EXISTS idx_profiles_username ON public.profiles(username);
 CREATE INDEX IF NOT EXISTS idx_profiles_phone ON profiles(phone);
 CREATE INDEX IF NOT EXISTS idx_user_roles_role ON user_roles(role);
 CREATE INDEX IF NOT EXISTS idx_user_roles_user_id ON user_roles(user_id);
-
--- ============================================
+-- ---
 -- COMMENTS AND DOCUMENTATION
--- ============================================
-
+-- ---
 COMMENT ON FUNCTION get_user_role IS 'Helper function to get user role, bypasses RLS for easier access';
 COMMENT ON FUNCTION public.get_user_by_username_or_email IS 'Find user by username or email for authentication purposes';
 COMMENT ON COLUMN profiles.phone IS 'User phone number for contact and verification';
 COMMENT ON COLUMN profiles.username IS 'Unique username for login and identification';
-
--- ============================================
+-- ---
 -- Migration Complete!
--- ============================================
+-- ---
 -- This migration provides:
 -- 1. Phone number support in user profiles
 -- 2. Enhanced username-based authentication
 -- 3. Improved RLS policies for better security
 -- 4. Helper functions for user management
 -- 5. Optimized indexes for better performance
--- ============================================
+-- ---

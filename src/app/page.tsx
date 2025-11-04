@@ -1,6 +1,6 @@
 import { HeroSection, QuickSearchBar, FeaturedSection, LatestProducts, NewsBanner } from "@/components/features/homepage";
 import { Marquee } from "@/components/shared/ui";
-import { GYMS, EVENTS, PRODUCTS } from "@/lib/data";
+import { GYMS, EVENTS } from "@/lib/data";
 
 export default function Home() {
   return (
@@ -21,7 +21,7 @@ export default function Home() {
       <FeaturedSection gyms={GYMS} events={EVENTS} />
 
       {/* Latest Products */}
-      <LatestProducts products={PRODUCTS} />
+      <LatestProducts />
     </>
   );
 }

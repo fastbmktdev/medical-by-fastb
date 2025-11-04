@@ -33,29 +33,41 @@ interface Category {
 
 export default function ShopPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Debounce search query
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
   // Fetch categories first
   useEffect(() => {
     async function fetchCategories() {
       try {
-        // For now, we'll fetch products and extract categories
-        // Later we'll create a dedicated categories API
-        const response = await fetch('/api/products?limit=100&active=true');
+        const response = await fetch('/api/product-categories?active=true');
         const data = await response.json();
         
         if (data.success && data.data) {
-          const uniqueCategories = new Map<string, Category>();
-          data.data.forEach((product: Product) => {
-            if (product.category) {
-              uniqueCategories.set(product.category.id, product.category);
-            }
-          });
-          setCategories(Array.from(uniqueCategories.values()));
+          setCategories(data.data.map((cat: {
+            id: string;
+            nameThai?: string | null;
+            nameEnglish?: string | null;
+            slug?: string | null;
+          }) => ({
+            id: cat.id,
+            nameThai: cat.nameThai,
+            nameEnglish: cat.nameEnglish,
+            slug: cat.slug,
+          })));
         }
       } catch (err) {
         console.error("Error fetching categories:", err);
@@ -80,8 +92,8 @@ export default function ShopPage() {
           productsParams.append("category", selectedCategory);
         }
         
-        if (searchQuery.trim()) {
-          productsParams.append("search", searchQuery.trim());
+        if (debouncedSearchQuery.trim()) {
+          productsParams.append("search", debouncedSearchQuery.trim());
         }
 
         const productsResponse = await fetch(`/api/products?${productsParams.toString()}`);
@@ -102,7 +114,7 @@ export default function ShopPage() {
     }
 
     fetchProducts();
-  }, [searchQuery, selectedCategory]);
+  }, [debouncedSearchQuery, selectedCategory]);
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);

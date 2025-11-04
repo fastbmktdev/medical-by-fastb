@@ -1,11 +1,9 @@
 -- Consolidated Optimization Migration
 -- Migration: 20251020100000_optimization_final.sql
 -- Consolidates: refactor_remove_duplicates.sql, optimize_triggers.sql, add_helper_functions.sql, optimize_indexes.sql, test_refactoring.sql
-
--- ============================================================================
+-- ---
 -- PART 1: HELPER FUNCTIONS (Consolidated)
--- ============================================================================
-
+-- ---
 -- 1. Create reusable admin check function
 CREATE OR REPLACE FUNCTION is_admin(check_user_id UUID DEFAULT auth.uid())
 RETURNS BOOLEAN AS $$
@@ -101,11 +99,9 @@ BEGIN
   RETURN generate_reference_number('ORD-', 'YYYYMMDD-', 4);
 END;
 $$ LANGUAGE plpgsql;
-
--- ============================================================================
+-- ---
 -- PART 2: GYM HELPER FUNCTIONS
--- ============================================================================
-
+-- ---
 -- Get gym by slug (public function)
 CREATE OR REPLACE FUNCTION get_gym_by_slug(slug_param TEXT)
 RETURNS TABLE (
@@ -194,11 +190,9 @@ $$ LANGUAGE plpgsql SECURITY DEFINER STABLE;
 GRANT EXECUTE ON FUNCTION get_gym_packages(UUID) TO authenticated, anon;
 
 COMMENT ON FUNCTION get_gym_packages IS 'Get active packages for a gym, sorted by type and duration';
-
--- ============================================================================
+-- ---
 -- PART 3: BOOKING HELPER FUNCTIONS
--- ============================================================================
-
+-- ---
 -- Get user bookings with gym details
 CREATE OR REPLACE FUNCTION get_user_bookings(user_id_param UUID DEFAULT auth.uid())
 RETURNS TABLE (
@@ -366,11 +360,9 @@ $$ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION validate_booking_dates(DATE, DATE, TEXT) TO authenticated;
 
 COMMENT ON FUNCTION validate_booking_dates IS 'Validate booking date logic';
-
--- ============================================================================
+-- ---
 -- PART 4: UPDATE RLS POLICIES TO USE is_admin() FUNCTION
--- ============================================================================
-
+-- ---
 -- Drop old admin policies
 DROP POLICY IF EXISTS "admins_can_manage_all_gyms" ON gyms;
 DROP POLICY IF EXISTS "admins_can_manage_all_packages" ON gym_packages;
@@ -413,11 +405,9 @@ CREATE POLICY "admins_can_update_all_orders"
   TO authenticated
   USING (is_admin())
   WITH CHECK (is_admin());
-
--- ============================================================================
+-- ---
 -- PART 5: CONSOLIDATE BOOKINGS TABLES
--- ============================================================================
-
+-- ---
 -- Add missing columns to bookings table to replace gym_bookings
 ALTER TABLE bookings
 ADD COLUMN IF NOT EXISTS order_id UUID REFERENCES orders(id) ON DELETE SET NULL,
@@ -522,11 +512,9 @@ END $$;
 DROP TABLE IF EXISTS gym_bookings CASCADE;
 
 COMMENT ON TABLE bookings IS 'Unified bookings table for all gym reservations (consolidated from gym_bookings)';
-
--- ============================================================================
+-- ---
 -- PART 6: OPTIMIZE TRIGGERS
--- ============================================================================
-
+-- ---
 -- Function to automatically add updated_at trigger to any table
 CREATE OR REPLACE FUNCTION add_updated_at_trigger(table_name TEXT)
 RETURNS VOID AS $$
@@ -674,11 +662,9 @@ CREATE TRIGGER trigger_auto_generate_order_number
   EXECUTE FUNCTION auto_generate_order_number();
 
 COMMENT ON FUNCTION auto_generate_order_number IS 'Auto-generate order_number if not provided';
-
--- ============================================================================
+-- ---
 -- PART 7: OPTIMIZE INDEXES
--- ============================================================================
-
+-- ---
 -- Profiles table
 CREATE INDEX IF NOT EXISTS idx_profiles_user_id ON profiles(user_id);
 CREATE INDEX IF NOT EXISTS idx_profiles_email ON profiles((user_id)) WHERE user_id IS NOT NULL;
@@ -751,11 +737,9 @@ CREATE INDEX IF NOT EXISTS idx_gyms_name_search ON gyms
 CREATE INDEX IF NOT EXISTS idx_gyms_location_search ON gyms 
   USING GIN(to_tsvector('simple', COALESCE(location, '') || ' ' || COALESCE(address, '')))
   WHERE status = 'approved';
-
--- ============================================================================
+-- ---
 -- PART 8: ADD CONSTRAINTS FOR DATA INTEGRITY
--- ============================================================================
-
+-- ---
 -- Ensure booking dates are logical
 ALTER TABLE bookings DROP CONSTRAINT IF EXISTS check_booking_dates;
 ALTER TABLE bookings ADD CONSTRAINT check_booking_dates 
@@ -780,11 +764,9 @@ ALTER TABLE payments ADD CONSTRAINT check_positive_amount
 ALTER TABLE orders DROP CONSTRAINT IF EXISTS check_positive_total;
 ALTER TABLE orders ADD CONSTRAINT check_positive_total 
   CHECK (total_amount >= 0);
-
--- ============================================================================
+-- ---
 -- PART 9: ANALYZE TABLES FOR QUERY PLANNER
--- ============================================================================
-
+-- ---
 -- Update statistics for better query planning
 ANALYZE user_roles;
 ANALYZE profiles;
@@ -795,11 +777,9 @@ ANALYZE payments;
 ANALYZE orders;
 ANALYZE product_orders;
 ANALYZE ticket_bookings;
-
--- ============================================================================
+-- ---
 -- PART 10: VALIDATION AND TESTING
--- ============================================================================
-
+-- ---
 DO $$
 DECLARE
   test_result BOOLEAN;
@@ -1028,11 +1008,9 @@ BEGIN
   END IF;
   
 END $$;
-
--- ============================================================================
+-- ---
 -- SUMMARY
--- ============================================================================
-
+-- ---
 COMMENT ON SCHEMA public IS 'Consolidated optimization migration completed successfully. This migration includes:
 ✅ Helper functions (is_admin, is_partner, owns_gym, generate_reference_number)
 ✅ Gym helper functions (get_gym_by_slug, get_gym_packages)

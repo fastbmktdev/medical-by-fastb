@@ -1,11 +1,9 @@
 -- Gym Enhancements Migration
 -- Consolidates: add_gym_public_fields.sql, remove_unique_user_gym.sql, add_slug_generation.sql
 -- This migration adds public-facing fields, removes constraints, and implements slug generation
-
--- ============================================================================
+-- ---
 -- STEP 1: Add public-facing fields to gyms table
--- ============================================================================
-
+-- ---
 -- Add public-facing fields to gyms table for /gyms page
 ALTER TABLE gyms
 ADD COLUMN IF NOT EXISTS gym_name_english TEXT,
@@ -23,19 +21,15 @@ ADD COLUMN IF NOT EXISTS slug TEXT;
 -- Remove rating column and its constraints
 ALTER TABLE gyms
 DROP COLUMN IF EXISTS rating;
-
--- ============================================================================
+-- ---
 -- STEP 2: Remove unique constraint for multiple gyms per user
--- ============================================================================
-
+-- ---
 -- Remove unique constraint that prevents one user from having multiple gyms
 -- This allows system user to create multiple approved gyms for display
 ALTER TABLE gyms DROP CONSTRAINT IF EXISTS unique_user_gym;
-
--- ============================================================================
+-- ---
 -- STEP 3: Implement slug generation system
--- ============================================================================
-
+-- ---
 -- Function to generate slug from English name
 CREATE OR REPLACE FUNCTION generate_slug(text_input TEXT)
 RETURNS TEXT AS $$
@@ -105,21 +99,17 @@ CREATE TRIGGER trigger_auto_generate_gym_slug
   BEFORE INSERT OR UPDATE ON gyms
   FOR EACH ROW
   EXECUTE FUNCTION auto_generate_gym_slug();
-
--- ============================================================================
+-- ---
 -- STEP 4: Create indexes and constraints
--- ============================================================================
-
+-- ---
 -- Create index for approved gyms
 CREATE INDEX IF NOT EXISTS idx_gyms_approved ON gyms(status) WHERE status = 'approved';
 
 -- Create index for slug
 CREATE INDEX IF NOT EXISTS idx_gyms_slug ON gyms(slug);
-
--- ============================================================================
+-- ---
 -- STEP 5: Populate existing records and finalize constraints
--- ============================================================================
-
+-- ---
 -- Update existing gyms to have slugs
 UPDATE gyms 
 SET slug = ensure_unique_slug(
@@ -137,11 +127,9 @@ ALTER COLUMN slug SET NOT NULL;
 -- Add unique constraint for slug (matches original migration behavior)
 ALTER TABLE gyms 
 ADD CONSTRAINT gyms_slug_unique UNIQUE (slug);
-
--- ============================================================================
+-- ---
 -- STEP 6: Add comments for documentation
--- ============================================================================
-
+-- ---
 COMMENT ON TABLE gyms IS 'Gyms table - users can own multiple gyms (unique constraint removed)';
 
 COMMENT ON COLUMN gyms.gym_name_english IS 'English name of the gym for international visitors';

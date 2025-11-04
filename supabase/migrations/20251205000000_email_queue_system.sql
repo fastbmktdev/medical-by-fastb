@@ -1,9 +1,8 @@
--- ============================================================================
+-- ---
 -- EMAIL QUEUE SYSTEM MIGRATION
--- ============================================================================
+-- ---
 -- This migration creates an email queue system for managing email sending
 -- with retry logic, priority, and status tracking
-
 -- Create enum for email status
 CREATE TYPE email_status AS ENUM (
   'pending',
@@ -130,11 +129,9 @@ BEGIN
   RETURN v_next_retry;
 END;
 $$ LANGUAGE plpgsql IMMUTABLE;
-
--- ============================================================================
+-- ---
 -- ROW LEVEL SECURITY POLICIES
--- ============================================================================
-
+-- ---
 -- Enable RLS on email_queue
 ALTER TABLE email_queue ENABLE ROW LEVEL SECURITY;
 
@@ -157,21 +154,17 @@ CREATE POLICY "admins_can_view_all_email_queue"
 
 -- Service role can manage all email queue items
 -- (This is implicit - service role bypasses RLS)
-
--- ============================================================================
+-- ---
 -- PERMISSIONS AND GRANTS
--- ============================================================================
-
+-- ---
 -- Grant permissions for email_queue
 GRANT SELECT ON email_queue TO authenticated;
 GRANT INSERT ON email_queue TO authenticated;
 
 -- Service role has full access (implicit)
-
--- ============================================================================
+-- ---
 -- COMMENTS AND DOCUMENTATION
--- ============================================================================
-
+-- ---
 COMMENT ON TABLE email_queue IS 'Queue system for managing email sending with retry logic and priority';
 COMMENT ON COLUMN email_queue.status IS 'Current status of the email (pending, processing, sent, failed, cancelled)';
 COMMENT ON COLUMN email_queue.priority IS 'Email priority level (low, normal, high, urgent)';
@@ -185,4 +178,3 @@ COMMENT ON COLUMN email_queue.related_resource_type IS 'Type of related resource
 COMMENT ON COLUMN email_queue.related_resource_id IS 'ID of related resource';
 
 COMMENT ON FUNCTION calculate_next_retry_time IS 'Calculates next retry time using exponential backoff algorithm';
-

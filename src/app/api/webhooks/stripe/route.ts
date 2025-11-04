@@ -93,6 +93,14 @@ export async function POST(request: NextRequest) {
         break;
       }
 
+      case 'charge.dispute.created':
+      case 'charge.dispute.updated':
+      case 'charge.dispute.closed': {
+        const dispute = event.data.object as Stripe.Dispute;
+        await handleDispute(supabase, dispute);
+        break;
+      }
+
       default:
         console.log(`Unhandled event type: ${event.type}`);
     }
@@ -285,7 +293,6 @@ async function handlePaymentFailed(
         .single();
 
       if (booking) {
-        const gymName = booking.gyms?.gym_name || booking.gyms?.gym_name_english || 'ค่ายมวย';
         const failureReason = paymentIntent.last_payment_error?.message || 'ไม่สามารถดำเนินการได้';
 
         await sendPaymentFailedEmail({
@@ -387,6 +394,139 @@ async function handleRefund(supabase: Awaited<ReturnType<typeof createClient>>, 
         updated_at: new Date().toISOString(),
       })
       .eq('payment_id', payment.id);
+  }
+}
+
+// ============================================================================
+// DISPUTE HANDLERS
+// ============================================================================
+
+async function handleDispute(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  dispute: Stripe.Dispute
+) {
+  console.log('Dispute event:', dispute.id, dispute.status);
+
+  if (!stripe) {
+    console.error('Stripe is not configured');
+    return;
+  }
+
+  try {
+    // Get payment by charge ID
+    const chargeId = typeof dispute.charge === 'string' ? dispute.charge : dispute.charge.id;
+    
+    // Find payment by charge ID (we need to get charge details first)
+    const charge = await stripe.charges.retrieve(chargeId);
+    const paymentIntentId = typeof charge.payment_intent === 'string'
+      ? charge.payment_intent
+      : charge.payment_intent?.id;
+
+    if (!paymentIntentId) {
+      console.error('No payment intent ID found for dispute');
+      return;
+    }
+
+    // Find payment record
+    const { data: payment, error: paymentError } = await supabase
+      .from('payments')
+      .select('id, user_id')
+      .eq('stripe_payment_intent_id', paymentIntentId)
+      .maybeSingle();
+
+    if (paymentError || !payment) {
+      console.error('Payment not found for dispute:', paymentError);
+      return;
+    }
+
+    // Map Stripe dispute status to our enum
+    const statusMap: Record<string, string> = {
+      'warning_needs_response': 'warning_needs_response',
+      'warning_under_review': 'warning_under_review',
+      'warning_closed': 'warning_closed',
+      'needs_response': 'needs_response',
+      'under_review': 'under_review',
+      'charge_refunded': 'charge_refunded',
+      'won': 'won',
+      'lost': 'lost',
+    };
+
+    const disputeStatus = statusMap[dispute.status] || dispute.status;
+
+    // Check if dispute already exists
+    const { data: existingDispute } = await supabase
+      .from('payment_disputes')
+      .select('id')
+      .eq('stripe_dispute_id', dispute.id)
+      .maybeSingle();
+
+    const disputeData = {
+      payment_id: payment.id,
+      user_id: payment.user_id,
+      stripe_dispute_id: dispute.id,
+      stripe_charge_id: chargeId,
+      status: disputeStatus,
+      reason: dispute.reason || null,
+      amount: dispute.amount / 100, // Convert from cents
+      currency: dispute.currency,
+      evidence_due_by: dispute.evidence_details?.due_by
+        ? new Date(dispute.evidence_details.due_by * 1000).toISOString()
+        : null,
+      response_deadline: dispute.evidence_details?.past_due
+        ? new Date().toISOString()
+        : null,
+      metadata: {
+        evidence_submission_count: dispute.evidence_details?.submission_count || 0,
+        has_evidence: dispute.evidence_details?.has_evidence || false,
+        past_due: dispute.evidence_details?.past_due || false,
+      },
+      updated_at: new Date().toISOString(),
+    };
+
+    if (existingDispute) {
+      // Update existing dispute
+      await supabase
+        .from('payment_disputes')
+        .update(disputeData)
+        .eq('id', existingDispute.id);
+
+      // If dispute is resolved, set resolved_at
+      if (['won', 'lost', 'warning_closed', 'charge_refunded'].includes(disputeStatus)) {
+        await supabase
+          .from('payment_disputes')
+          .update({ resolved_at: new Date().toISOString() })
+          .eq('id', existingDispute.id);
+      }
+    } else {
+      // Create new dispute
+      const { error: insertError } = await supabase
+        .from('payment_disputes')
+        .insert({
+          ...disputeData,
+          created_at: new Date().toISOString(),
+        });
+
+      if (insertError) {
+        console.error('Error creating dispute record:', insertError);
+      } else {
+        // Create notification for user
+        await supabase
+          .from('notifications')
+          .insert({
+            user_id: payment.user_id,
+            type: 'payment_dispute',
+            title: 'มีการแจ้งข้อพิพาทการชำระเงิน',
+            message: `มีการแจ้งข้อพิพาทสำหรับการชำระเงินของคุณ กรุณาติดต่อฝ่ายสนับสนุน`,
+            link_url: '/dashboard/transactions',
+            metadata: {
+              dispute_id: dispute.id,
+              payment_id: payment.id,
+            },
+          });
+      }
+    }
+  } catch (error) {
+    console.error('Error handling dispute:', error);
   }
 }
 

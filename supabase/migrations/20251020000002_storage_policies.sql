@@ -3,12 +3,10 @@
 -- Created: 2025-10-24
 -- Consolidates backup migrations: create_gym_images_bucket.sql, create_bucket_only.sql, setup-storage.sql
 -- Note: Basic storage setup already exists in initial_schema.sql
-
 -- Enable storage extension if not already enabled
 -- Note: Storage extension is automatically enabled in Supabase Cloud
 -- For local development, this may not be available
 -- CREATE EXTENSION IF NOT EXISTS "storage" SCHEMA "extensions";
-
 -- Update existing gym-images bucket with enhanced configuration
 -- Add file size limits and MIME type restrictions for better security
 -- Note: This is for production use only, local development may not have storage extension
@@ -17,7 +15,6 @@
 --   file_size_limit = 52428800, -- 50MB limit
 --   allowed_mime_types = ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/gif']
 -- WHERE id = 'gym-images';
-
 -- Enhance upload policy to include folder-based security
 -- This ensures users can only upload to their own folders
 -- DROP POLICY IF EXISTS "Authenticated users can upload gym images" ON storage.objects;
@@ -28,7 +25,6 @@
 --     AND auth.role() = 'authenticated'
 --     AND (storage.foldername(name))[1] = auth.uid()::text
 --   );
-
 -- Update existing policies to ensure they have WITH CHECK clauses for better security
 -- Note: These policies are for production use only, local development may not have storage extension
 -- DROP POLICY IF EXISTS "Users can update their own gym images" ON storage.objects;
@@ -42,10 +38,8 @@
 --     bucket_id = 'gym-images'
 --     AND auth.uid()::text = (storage.foldername(name))[1]
 --   );
-
 -- Create additional storage buckets that may be needed in the future
 -- These are based on patterns from backup migrations but prepared for expansion
-
 -- Placeholder for additional buckets (uncomment and modify as needed)
 /*
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)

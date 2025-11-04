@@ -18,5 +18,3 @@ COMMENT ON COLUMN gyms.verified_location IS 'Mark when an admin verified the loc
 COMMENT ON COLUMN gyms.geocoding_status IS 'Status of last geocoding attempt (ok, zero_results, denied, etc.)';
 COMMENT ON COLUMN gyms.geocoding_error IS 'Error message for last geocoding failure';
 COMMENT ON COLUMN gyms.last_geocoded_at IS 'Timestamp of the last geocoding attempt';
-
-

@@ -1,11 +1,9 @@
 -- Search Enhancements Migration
 -- Migration: 20251203000000_search_enhancements.sql
 -- Adds full-text search capabilities and search history tracking
-
--- ============================================================================
+-- ---
 -- PART 1: FULL-TEXT SEARCH INDEXES
--- ============================================================================
-
+-- ---
 -- Add full-text search columns to gyms table
 ALTER TABLE gyms
 ADD COLUMN IF NOT EXISTS search_vector tsvector;
@@ -96,11 +94,9 @@ UPDATE articles SET search_vector = NULL WHERE search_vector IS NULL;
 
 -- Create GIN index for fast full-text search
 CREATE INDEX IF NOT EXISTS idx_articles_search_vector ON articles USING GIN(search_vector);
-
--- ============================================================================
+-- ---
 -- PART 2: SEARCH HISTORY TABLE
--- ============================================================================
-
+-- ---
 -- Create search_history table
 CREATE TABLE IF NOT EXISTS search_history (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -145,11 +141,9 @@ CREATE POLICY "Users can delete own search history"
   ON search_history
   FOR DELETE
   USING (auth.uid() = user_id);
-
--- ============================================================================
+-- ---
 -- PART 3: HELPER FUNCTIONS FOR SEARCH
--- ============================================================================
-
+-- ---
 -- Function to calculate distance between two coordinates (Haversine formula)
 CREATE OR REPLACE FUNCTION calculate_distance(
   lat1 DECIMAL,
@@ -222,4 +216,3 @@ GRANT EXECUTE ON FUNCTION get_gym_price_range(UUID) TO authenticated, anon;
 COMMENT ON FUNCTION calculate_distance IS 'Calculate distance in kilometers between two coordinates using Haversine formula';
 COMMENT ON FUNCTION get_gym_popularity IS 'Get gym popularity based on confirmed booking count';
 COMMENT ON FUNCTION get_gym_price_range IS 'Get min and max price for a gym from active packages';
-

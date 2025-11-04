@@ -1,11 +1,9 @@
 -- Articles SEO, Scheduling, and Versioning Migration
 -- Migration: 20251208000000_articles_seo_versioning.sql
 -- Adds SEO fields, scheduling, and content versioning to articles
-
--- ============================================================================
+-- ---
 -- PART 1: ADD SEO FIELDS TO ARTICLES TABLE
--- ============================================================================
-
+-- ---
 -- Add SEO fields to articles table
 ALTER TABLE articles
   ADD COLUMN IF NOT EXISTS meta_title TEXT,
@@ -24,11 +22,9 @@ ALTER TABLE articles
 -- Add index for scheduled articles
 CREATE INDEX IF NOT EXISTS idx_articles_scheduled ON articles(scheduled_publish_at)
   WHERE scheduled_publish_at IS NOT NULL AND is_published = FALSE;
-
--- ============================================================================
+-- ---
 -- PART 2: ARTICLE VERSIONS TABLE
--- ============================================================================
-
+-- ---
 -- Create article_versions table for content versioning
 CREATE TABLE IF NOT EXISTS article_versions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -65,11 +61,9 @@ BEGIN
   ) + 1;
 END;
 $$ LANGUAGE plpgsql;
-
--- ============================================================================
+-- ---
 -- PART 3: ROW LEVEL SECURITY POLICIES
--- ============================================================================
-
+-- ---
 -- Article versions policies
 CREATE POLICY "Anyone can view article versions"
   ON article_versions FOR SELECT
@@ -92,11 +86,9 @@ CREATE POLICY "Admins can manage all article versions"
   TO authenticated
   USING (is_admin())
   WITH CHECK (is_admin());
-
--- ============================================================================
+-- ---
 -- PART 4: TRIGGER TO CREATE VERSION ON UPDATE
--- ============================================================================
-
+-- ---
 -- Function to create version before update (optional - can be called manually)
 CREATE OR REPLACE FUNCTION create_article_version()
 RETURNS TRIGGER AS $$

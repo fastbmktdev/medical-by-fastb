@@ -1,6 +1,6 @@
--- ============================================
+-- ---
 -- User Profile Enhancements Migration
--- ============================================
+-- ---
 -- This migration adds comprehensive user profile features:
 -- - Social Media Links
 -- - Fitness Goals Tracking
@@ -8,12 +8,9 @@
 -- - Notification Preferences
 -- - Connected Accounts (OAuth)
 -- - Account Deletion Support
--- ============================================
-
--- ============================================
+-- ---
 -- 1. ENHANCE PROFILES TABLE
--- ============================================
-
+-- ---
 -- Bio field already exists, no need to add
 -- But ensure it has proper constraint
 DO $$
@@ -28,11 +25,9 @@ BEGIN
       CHECK (bio IS NULL OR char_length(bio) <= 500);
   END IF;
 END $$;
-
--- ============================================
+-- ---
 -- 2. SOCIAL MEDIA LINKS TABLE
--- ============================================
-
+-- ---
 CREATE TABLE IF NOT EXISTS user_social_links (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -46,11 +41,9 @@ CREATE TABLE IF NOT EXISTS user_social_links (
 );
 
 CREATE INDEX IF NOT EXISTS idx_user_social_links_user_id ON user_social_links(user_id);
-
--- ============================================
+-- ---
 -- 3. FITNESS GOALS TABLE
--- ============================================
-
+-- ---
 CREATE TABLE IF NOT EXISTS user_fitness_goals (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -70,11 +63,9 @@ CREATE TABLE IF NOT EXISTS user_fitness_goals (
 
 CREATE INDEX IF NOT EXISTS idx_user_fitness_goals_user_id ON user_fitness_goals(user_id);
 CREATE INDEX IF NOT EXISTS idx_user_fitness_goals_completed ON user_fitness_goals(is_completed);
-
--- ============================================
+-- ---
 -- 4. PRIVACY SETTINGS TABLE
--- ============================================
-
+-- ---
 CREATE TABLE IF NOT EXISTS user_privacy_settings (
   user_id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   profile_visibility TEXT DEFAULT 'public',
@@ -87,11 +78,9 @@ CREATE TABLE IF NOT EXISTS user_privacy_settings (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()),
   CONSTRAINT valid_profile_visibility CHECK (profile_visibility IN ('public', 'private', 'friends_only'))
 );
-
--- ============================================
+-- ---
 -- 5. NOTIFICATION PREFERENCES TABLE
--- ============================================
-
+-- ---
 CREATE TABLE IF NOT EXISTS user_notification_preferences (
   user_id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   email_enabled BOOLEAN DEFAULT TRUE,
@@ -104,11 +93,9 @@ CREATE TABLE IF NOT EXISTS user_notification_preferences (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW())
 );
-
--- ============================================
+-- ---
 -- 6. CONNECTED ACCOUNTS TABLE
--- ============================================
-
+-- ---
 CREATE TABLE IF NOT EXISTS user_connected_accounts (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -126,11 +113,9 @@ CREATE TABLE IF NOT EXISTS user_connected_accounts (
 );
 
 CREATE INDEX IF NOT EXISTS idx_user_connected_accounts_user_id ON user_connected_accounts(user_id);
-
--- ============================================
+-- ---
 -- 7. ACCOUNT DELETION TABLE
--- ============================================
-
+-- ---
 CREATE TABLE IF NOT EXISTS deleted_accounts (
   user_id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   deleted_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()),
@@ -139,11 +124,9 @@ CREATE TABLE IF NOT EXISTS deleted_accounts (
   restored_at TIMESTAMP WITH TIME ZONE,
   CONSTRAINT grace_period_ends CHECK (grace_period_ends_at > deleted_at)
 );
-
--- ============================================
+-- ---
 -- 8. ROW LEVEL SECURITY (RLS) POLICIES
--- ============================================
-
+-- ---
 -- Enable RLS on all new tables
 ALTER TABLE user_social_links ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_fitness_goals ENABLE ROW LEVEL SECURITY;
@@ -236,11 +219,9 @@ CREATE POLICY "Service role can manage deleted accounts"
   TO service_role
   USING (true)
   WITH CHECK (true);
-
--- ============================================
+-- ---
 -- 9. TRIGGERS
--- ============================================
-
+-- ---
 -- Update triggers for updated_at
 CREATE TRIGGER update_user_social_links_updated_at
   BEFORE UPDATE ON user_social_links
@@ -284,11 +265,9 @@ CREATE TRIGGER on_new_user_profile_settings
   AFTER INSERT ON auth.users
   FOR EACH ROW
   EXECUTE FUNCTION public.handle_new_user_profile_settings();
-
--- ============================================
+-- ---
 -- 10. STORAGE BUCKET FOR AVATARS
--- ============================================
-
+-- ---
 -- Create storage bucket for user avatars
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 VALUES (
@@ -330,11 +309,9 @@ CREATE POLICY "Users can delete own avatar"
     bucket_id = 'avatars'
     AND auth.uid()::text = (storage.foldername(name))[1]
   );
-
--- ============================================
+-- ---
 -- 11. GRANTS
--- ============================================
-
+-- ---
 GRANT SELECT, INSERT, UPDATE, DELETE ON user_social_links TO authenticated;
 GRANT SELECT, INSERT, UPDATE, DELETE ON user_fitness_goals TO authenticated;
 GRANT SELECT, INSERT, UPDATE, DELETE ON user_privacy_settings TO authenticated;
@@ -347,4 +324,3 @@ GRANT ALL ON user_privacy_settings TO service_role;
 GRANT ALL ON user_notification_preferences TO service_role;
 GRANT ALL ON user_connected_accounts TO service_role;
 GRANT ALL ON deleted_accounts TO service_role;
-

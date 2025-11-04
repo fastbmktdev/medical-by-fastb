@@ -74,4 +74,3 @@ INSERT INTO promotions (title, title_english, is_active, show_in_marquee, priori
   ('🥊 เปิดใหม่! ค่ายมวยยิมใหม่เข้าร่วมกับเราแล้ว', '🥊 New! Latest gyms just joined us', true, true, 5, NOW(), NOW() + INTERVAL '15 days'),
   ('⚡ สมัครวันนี้ รับส่วนลดเพิ่ม 10%', '⚡ Sign up today and get extra 10% discount', true, true, 3, NOW(), NOW() + INTERVAL '7 days')
 ON CONFLICT DO NOTHING;
-

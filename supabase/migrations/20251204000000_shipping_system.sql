@@ -1,9 +1,8 @@
--- ============================================================================
+-- ---
 -- SHIPPING SYSTEM MIGRATION
--- ============================================================================
+-- ---
 -- This migration adds shipping methods, shipping status tracking, and
 -- enhanced shipping management for product orders
-
 -- Create shipping methods table
 CREATE TABLE IF NOT EXISTS shipping_methods (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -145,4 +144,3 @@ COMMENT ON TABLE shipping_methods IS 'Shipping methods available for product ord
 COMMENT ON TABLE shipping_history IS 'History of shipping status updates for tracking';
 COMMENT ON COLUMN product_orders.shipping_status IS 'Current shipping status of the order';
 COMMENT ON COLUMN product_orders.tracking_number IS 'Tracking number for the shipment';
-

@@ -1,11 +1,9 @@
 -- Content Tables Migration
 -- Migration: 20251201000000_content_tables.sql
 -- Creates tables for articles, products, events, analytics, and affiliate conversions
-
--- ============================================================================
+-- ---
 -- PART 1: ARTICLES TABLE
--- ============================================================================
-
+-- ---
 -- Create articles table
 CREATE TABLE IF NOT EXISTS articles (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -48,11 +46,9 @@ CREATE INDEX IF NOT EXISTS idx_articles_date ON articles(date DESC);
 CREATE INDEX IF NOT EXISTS idx_articles_tags_gin ON articles USING GIN(tags);
 CREATE INDEX IF NOT EXISTS idx_articles_search ON articles 
   USING GIN(to_tsvector('simple', COALESCE(title, '') || ' ' || COALESCE(excerpt, '') || ' ' || COALESCE(content, '')));
-
--- ============================================================================
+-- ---
 -- PART 2: PRODUCTS TABLES
--- ============================================================================
-
+-- ---
 -- Create product_categories table
 CREATE TABLE IF NOT EXISTS product_categories (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -131,11 +127,9 @@ CREATE INDEX IF NOT EXISTS idx_product_images_primary ON product_images(product_
 
 CREATE INDEX IF NOT EXISTS idx_product_categories_slug ON product_categories(slug);
 CREATE INDEX IF NOT EXISTS idx_product_categories_active ON product_categories(is_active) WHERE is_active = TRUE;
-
--- ============================================================================
+-- ---
 -- PART 3: EVENTS TABLES
--- ============================================================================
-
+-- ---
 -- Create event_categories table
 CREATE TABLE IF NOT EXISTS event_categories (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -225,11 +219,9 @@ CREATE INDEX IF NOT EXISTS idx_event_tickets_type ON event_tickets(event_id, tic
 
 CREATE INDEX IF NOT EXISTS idx_event_categories_slug ON event_categories(slug);
 CREATE INDEX IF NOT EXISTS idx_event_categories_active ON event_categories(is_active) WHERE is_active = TRUE;
-
--- ============================================================================
+-- ---
 -- PART 4: ANALYTICS EVENTS TABLE
--- ============================================================================
-
+-- ---
 -- Create analytics_events table for tracking user behavior
 CREATE TABLE IF NOT EXISTS analytics_events (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -280,11 +272,9 @@ CREATE INDEX IF NOT EXISTS idx_analytics_user_type_date ON analytics_events(user
 -- Partition by date for better performance (optional, for large datasets)
 -- CREATE TABLE analytics_events_2025_01 PARTITION OF analytics_events
 --   FOR VALUES FROM ('2025-01-01') TO ('2025-02-01');
-
--- ============================================================================
+-- ---
 -- PART 5: AFFILIATE CONVERSIONS TABLE
--- ============================================================================
-
+-- ---
 -- Create affiliate_conversions table for tracking affiliate conversions
 CREATE TABLE IF NOT EXISTS affiliate_conversions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -322,11 +312,9 @@ CREATE INDEX IF NOT EXISTS idx_affiliate_conversions_created ON affiliate_conver
 CREATE INDEX IF NOT EXISTS idx_affiliate_conversions_code ON affiliate_conversions(affiliate_code);
 CREATE INDEX IF NOT EXISTS idx_affiliate_conversions_reference ON affiliate_conversions(reference_type, reference_id);
 CREATE INDEX IF NOT EXISTS idx_affiliate_conversions_metadata_gin ON affiliate_conversions USING GIN(metadata);
-
--- ============================================================================
+-- ---
 -- PART 6: ROW LEVEL SECURITY (RLS)
--- ============================================================================
-
+-- ---
 -- Enable RLS on all tables
 ALTER TABLE articles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE products ENABLE ROW LEVEL SECURITY;
@@ -499,11 +487,9 @@ CREATE POLICY "Admins can manage affiliate conversions"
   TO authenticated
   USING (is_admin())
   WITH CHECK (is_admin());
-
--- ============================================================================
+-- ---
 -- PART 7: TRIGGERS
--- ============================================================================
-
+-- ---
 -- Add updated_at triggers
 CREATE TRIGGER update_articles_updated_at
   BEFORE UPDATE ON articles
@@ -622,11 +608,9 @@ CREATE TRIGGER ensure_single_primary_product_image_trigger
   BEFORE INSERT OR UPDATE ON product_images
   FOR EACH ROW
   EXECUTE FUNCTION ensure_single_primary_product_image();
-
--- ============================================================================
+-- ---
 -- PART 8: HELPER FUNCTIONS
--- ============================================================================
-
+-- ---
 -- Function to get product with variants and images
 CREATE OR REPLACE FUNCTION get_product_with_details(product_slug_param TEXT)
 RETURNS TABLE (
@@ -741,11 +725,9 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER STABLE;
 
 GRANT EXECUTE ON FUNCTION get_event_with_tickets(TEXT) TO authenticated, anon;
-
--- ============================================================================
+-- ---
 -- PART 9: PERMISSIONS
--- ============================================================================
-
+-- ---
 GRANT SELECT ON articles TO authenticated, anon;
 GRANT INSERT, UPDATE ON articles TO authenticated;
 GRANT SELECT ON products TO authenticated, anon;
@@ -760,11 +742,9 @@ GRANT INSERT ON analytics_events TO authenticated, anon;
 GRANT SELECT ON analytics_events TO authenticated;
 GRANT SELECT ON affiliate_conversions TO authenticated;
 GRANT INSERT ON affiliate_conversions TO authenticated;
-
--- ============================================================================
+-- ---
 -- PART 10: COMMENTS
--- ============================================================================
-
+-- ---
 COMMENT ON TABLE articles IS 'Stores articles and blog posts';
 COMMENT ON TABLE products IS 'Stores product information';
 COMMENT ON TABLE product_categories IS 'Product categories';
@@ -786,4 +766,3 @@ COMMENT ON COLUMN affiliate_conversions.commission_rate IS 'Commission percentag
 
 COMMENT ON FUNCTION get_product_with_details IS 'Get product with all variants and images';
 COMMENT ON FUNCTION get_event_with_tickets IS 'Get event with all available tickets';
-

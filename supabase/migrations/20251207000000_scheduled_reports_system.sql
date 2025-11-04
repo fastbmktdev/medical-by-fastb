@@ -1,9 +1,8 @@
--- ============================================================================
+-- ---
 -- SCHEDULED REPORTS & CUSTOM REPORTS SYSTEM MIGRATION
--- ============================================================================
+-- ---
 -- This migration creates tables for managing custom report configurations
 -- and scheduled report generation
-
 -- Create enum for report schedule frequency
 CREATE TYPE report_schedule_frequency AS ENUM (
   'daily',
@@ -161,11 +160,9 @@ CREATE TRIGGER update_scheduled_reports_updated_at
   BEFORE UPDATE ON scheduled_reports
   FOR EACH ROW
   EXECUTE FUNCTION update_updated_at_column();
-
--- ============================================================================
+-- ---
 -- ROW LEVEL SECURITY POLICIES
--- ============================================================================
-
+-- ---
 ALTER TABLE custom_reports ENABLE ROW LEVEL SECURITY;
 ALTER TABLE scheduled_reports ENABLE ROW LEVEL SECURITY;
 ALTER TABLE scheduled_report_executions ENABLE ROW LEVEL SECURITY;
@@ -229,19 +226,15 @@ CREATE POLICY "admins_can_see_all_report_executions"
         AND user_roles.role = 'admin'
     )
   );
-
--- ============================================================================
+-- ---
 -- PERMISSIONS AND GRANTS
--- ============================================================================
-
+-- ---
 GRANT SELECT, INSERT, UPDATE, DELETE ON custom_reports TO authenticated;
 GRANT SELECT, INSERT, UPDATE, DELETE ON scheduled_reports TO authenticated;
 GRANT SELECT ON scheduled_report_executions TO authenticated;
-
--- ============================================================================
+-- ---
 -- COMMENTS AND DOCUMENTATION
--- ============================================================================
-
+-- ---
 COMMENT ON TABLE custom_reports IS 'Saved custom report configurations that can be reused';
 COMMENT ON TABLE scheduled_reports IS 'Scheduled automatic report generation and email delivery';
 COMMENT ON TABLE scheduled_report_executions IS 'Execution history for scheduled reports';

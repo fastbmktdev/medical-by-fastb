@@ -15,6 +15,7 @@ import {
   formatAmount,
   PaymentRecord
 } from './shared';
+import RetryPaymentButton from './RetryPaymentButton';
 
 export default function PaymentHistory() {
   const { payments, loading, error, refreshPayments } = usePaymentData();
@@ -106,13 +107,21 @@ export default function PaymentHistory() {
                   <p className="text-2xl font-bold text-white">
                     {formatAmount(payment.amount)}
                   </p>
-                  <button
-                    onClick={() => setSelectedPayment(payment)}
-                    className="mt-2 flex items-center space-x-1 text-red-400 hover:text-red-300 text-sm font-medium transition-colors"
-                  >
-                    <EyeIcon className="w-4 h-4" />
-                    <span>ดูรายละเอียด</span>
-                  </button>
+                  <div className="mt-2 flex items-center justify-end space-x-2">
+                    {payment.status === 'failed' && (
+                      <RetryPaymentButton
+                        payment={payment}
+                        onRetrySuccess={refreshPayments}
+                      />
+                    )}
+                    <button
+                      onClick={() => setSelectedPayment(payment)}
+                      className="flex items-center space-x-1 text-red-400 hover:text-red-300 text-sm font-medium transition-colors"
+                    >
+                      <EyeIcon className="w-4 h-4" />
+                      <span>ดูรายละเอียด</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

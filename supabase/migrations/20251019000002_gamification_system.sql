@@ -1,14 +1,11 @@
--- ============================================
+-- ---
 -- Gamification System Migration
--- ============================================
+-- ---
 -- This migration creates a comprehensive gamification system for the Muay Thai platform
 -- Features: Points, Badges, Levels, Achievements, Leaderboards, Streaks, Challenges
--- ============================================
-
--- ============================================
+-- ---
 -- USER POINTS AND LEVELS
--- ============================================
-
+-- ---
 -- Create user_points table to track total points and level
 CREATE TABLE IF NOT EXISTS user_points (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -33,11 +30,9 @@ CREATE TABLE IF NOT EXISTS points_history (
   reference_type TEXT, -- 'booking', 'article', 'review', etc.
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW())
 );
-
--- ============================================
+-- ---
 -- BADGES AND ACHIEVEMENTS
--- ============================================
-
+-- ---
 -- Create badges table (achievement definitions)
 CREATE TABLE IF NOT EXISTS badges (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -63,11 +58,9 @@ CREATE TABLE IF NOT EXISTS user_badges (
   
   UNIQUE(user_id, badge_id)
 );
-
--- ============================================
+-- ---
 -- STREAKS SYSTEM
--- ============================================
-
+-- ---
 -- Create user_streaks table
 CREATE TABLE IF NOT EXISTS user_streaks (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -81,11 +74,9 @@ CREATE TABLE IF NOT EXISTS user_streaks (
   
   UNIQUE(user_id, streak_type)
 );
-
--- ============================================
+-- ---
 -- CHALLENGES SYSTEM
--- ============================================
-
+-- ---
 -- Create challenges table
 CREATE TABLE IF NOT EXISTS challenges (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -119,11 +110,9 @@ CREATE TABLE IF NOT EXISTS user_challenges (
   
   UNIQUE(user_id, challenge_id)
 );
-
--- ============================================
+-- ---
 -- LEADERBOARDS
--- ============================================
-
+-- ---
 -- Create leaderboards table
 CREATE TABLE IF NOT EXISTS leaderboards (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -151,11 +140,9 @@ CREATE TABLE IF NOT EXISTS leaderboard_entries (
   
   UNIQUE(leaderboard_id, user_id, period_start)
 );
-
--- ============================================
+-- ---
 -- GAMIFICATION RULES AND CONFIGURATION
--- ============================================
-
+-- ---
 -- Create gamification_rules table
 CREATE TABLE IF NOT EXISTS gamification_rules (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -167,11 +154,9 @@ CREATE TABLE IF NOT EXISTS gamification_rules (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW())
 );
-
--- ============================================
+-- ---
 -- INDEXES FOR PERFORMANCE
--- ============================================
-
+-- ---
 -- User points indexes
 CREATE INDEX IF NOT EXISTS idx_user_points_user_id ON user_points(user_id);
 CREATE INDEX IF NOT EXISTS idx_user_points_level ON user_points(current_level);
@@ -204,11 +189,9 @@ CREATE INDEX IF NOT EXISTS idx_leaderboard_entries_user_id ON leaderboard_entrie
 -- Gamification rules indexes
 CREATE INDEX IF NOT EXISTS idx_gamification_rules_action_type ON gamification_rules(action_type);
 CREATE INDEX IF NOT EXISTS idx_gamification_rules_active ON gamification_rules(is_active);
-
--- ============================================
+-- ---
 -- ROW LEVEL SECURITY POLICIES
--- ============================================
-
+-- ---
 -- User points policies
 CREATE POLICY "Users can view own points" ON user_points
   FOR SELECT TO authenticated
@@ -263,11 +246,9 @@ CREATE POLICY "Anyone can view leaderboards" ON leaderboards
 CREATE POLICY "Anyone can view leaderboard entries" ON leaderboard_entries
   FOR SELECT TO public
   USING (true);
-
--- ============================================
+-- ---
 -- GRANT PERMISSIONS
--- ============================================
-
+-- ---
 -- Grant permissions for user_points
 GRANT SELECT, INSERT, UPDATE ON user_points TO authenticated;
 GRANT SELECT ON user_points TO anon, public;
@@ -302,11 +283,9 @@ GRANT SELECT ON leaderboard_entries TO authenticated, anon, public;
 
 -- Grant permissions for gamification_rules
 GRANT SELECT ON gamification_rules TO authenticated, anon, public;
-
--- ============================================
+-- ---
 -- HELPER FUNCTIONS
--- ============================================
-
+-- ---
 -- Function to calculate user level based on points
 CREATE OR REPLACE FUNCTION calculate_user_level(total_points INTEGER)
 RETURNS INTEGER
@@ -491,11 +470,9 @@ EXCEPTION
     RETURN FALSE;
 END;
 $$;
-
--- ============================================
+-- ---
 -- TRIGGERS
--- ============================================
-
+-- ---
 -- Trigger to automatically update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
@@ -537,11 +514,9 @@ CREATE TRIGGER update_leaderboard_entries_updated_at
 CREATE TRIGGER update_gamification_rules_updated_at
   BEFORE UPDATE ON gamification_rules
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-
--- ============================================
+-- ---
 -- SEED DATA
--- ============================================
-
+-- ---
 -- Insert default badges
 INSERT INTO badges (name, name_english, description, description_english, points_required, category, rarity) VALUES
 -- Booking badges
@@ -597,11 +572,9 @@ INSERT INTO leaderboards (name, name_english, description, leaderboard_type, per
 ('คะแนนรายเดือน', 'Monthly Points', 'ผู้เล่นที่มีคะแนนสูงสุดในเดือนนี้', 'points', 'monthly'),
 ('การจองมากที่สุด', 'Most Bookings', 'ผู้เล่นที่จองค่ายมวยมากที่สุด', 'bookings', 'all_time'),
 ('สตรีคการจอง', 'Booking Streak', 'ผู้เล่นที่มีสตรีคการจองยาวนานที่สุด', 'streak', 'all_time');
-
--- ============================================
+-- ---
 -- COMMENTS AND DOCUMENTATION
--- ============================================
-
+-- ---
 COMMENT ON TABLE user_points IS 'User points and level tracking for gamification system';
 COMMENT ON TABLE points_history IS 'History of all point transactions for users';
 COMMENT ON TABLE badges IS 'Achievement badges that users can earn';
@@ -612,10 +585,9 @@ COMMENT ON TABLE user_challenges IS 'User participation in challenges';
 COMMENT ON TABLE leaderboards IS 'Leaderboard definitions';
 COMMENT ON TABLE leaderboard_entries IS 'Leaderboard rankings and scores';
 COMMENT ON TABLE gamification_rules IS 'Rules for awarding points based on user actions';
-
--- ============================================
+-- ---
 -- Migration Complete!
--- ============================================
+-- ---
 -- This migration provides:
 -- 1. Complete gamification system with points, badges, levels
 -- 2. Streak tracking for user engagement
@@ -625,4 +597,4 @@ COMMENT ON TABLE gamification_rules IS 'Rules for awarding points based on user 
 -- 6. Helper functions for gamification logic
 -- 7. Proper RLS policies for security
 -- 8. Seed data for immediate use
--- ============================================
+-- ---

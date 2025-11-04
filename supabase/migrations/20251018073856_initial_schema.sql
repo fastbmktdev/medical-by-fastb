@@ -1,10 +1,8 @@
 -- Initial schema for MUAYTHAI Platform
 -- Creates tables, policies, triggers, and functions
-
--- ============================================================================
+-- ---
 -- TABLES
--- ============================================================================
-
+-- ---
 -- Create user_roles table
 CREATE TABLE IF NOT EXISTS user_roles (
   user_id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -46,11 +44,9 @@ CREATE TABLE IF NOT EXISTS profiles (
   CONSTRAINT username_length CHECK (char_length(username) >= 3 AND char_length(username) <= 30),
   CONSTRAINT username_format CHECK (username ~ '^[a-zA-Z0-9_-]+$')
 );
-
--- ============================================================================
+-- ---
 -- ROW LEVEL SECURITY (RLS)
--- ============================================================================
-
+-- ---
 -- Enable RLS
 ALTER TABLE user_roles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE gyms ENABLE ROW LEVEL SECURITY;
@@ -124,11 +120,9 @@ CREATE POLICY "users_can_update_own_profile"
   ON profiles FOR UPDATE
   TO authenticated
   USING (auth.uid() = user_id);
-
--- ============================================================================
+-- ---
 -- PERMISSIONS
--- ============================================================================
-
+-- ---
 GRANT USAGE ON SCHEMA public TO authenticated, anon;
 
 GRANT SELECT ON user_roles TO authenticated, anon;
@@ -139,21 +133,17 @@ GRANT SELECT, INSERT, UPDATE ON gyms TO authenticated;
 
 GRANT SELECT, INSERT, UPDATE ON profiles TO authenticated;
 GRANT SELECT ON profiles TO anon, public;
-
--- ============================================================================
+-- ---
 -- INDEXES
--- ============================================================================
-
+-- ---
 CREATE INDEX IF NOT EXISTS idx_user_roles_role ON user_roles(role);
 CREATE INDEX IF NOT EXISTS idx_gyms_user_id ON gyms(user_id);
 CREATE INDEX IF NOT EXISTS idx_gyms_status ON gyms(status);
 CREATE INDEX IF NOT EXISTS idx_gyms_created_at ON gyms(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_profiles_username ON profiles(username);
-
--- ============================================================================
+-- ---
 -- TRIGGERS AND FUNCTIONS
--- ============================================================================
-
+-- ---
 -- Function to automatically update updated_at column
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
@@ -230,11 +220,9 @@ CREATE TRIGGER on_gym_application_submitted
   AFTER INSERT ON gyms
   FOR EACH ROW
   EXECUTE FUNCTION public.handle_gym_application();
-
--- ============================================================================
+-- ---
 -- STORAGE
--- ============================================================================
-
+-- ---
 -- Create storage bucket for gym images
 INSERT INTO storage.buckets (id, name, public)
 VALUES ('gym-images', 'gym-images', true)
@@ -271,11 +259,9 @@ CREATE POLICY "Users can delete their own gym images"
     bucket_id = 'gym-images'
     AND auth.uid()::text = (storage.foldername(name))[1]
   );
-
--- ============================================================================
+-- ---
 -- HELPER FUNCTIONS
--- ============================================================================
-
+-- ---
 -- Helper function to get user role
 CREATE OR REPLACE FUNCTION get_user_role(target_user_id UUID)
 RETURNS TEXT
@@ -310,11 +296,9 @@ AS $$
 $$;
 
 GRANT EXECUTE ON FUNCTION get_user_by_username_or_email(TEXT) TO authenticated, anon;
-
--- ============================================================================
+-- ---
 -- COMMENTS
--- ============================================================================
-
+-- ---
 COMMENT ON TABLE user_roles IS 'Stores user roles for authorization';
 COMMENT ON TABLE gyms IS 'Stores gym partner applications and information';
 COMMENT ON TABLE profiles IS 'Stores user profiles with username support';

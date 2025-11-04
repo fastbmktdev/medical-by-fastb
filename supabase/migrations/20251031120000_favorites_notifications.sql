@@ -1,11 +1,9 @@
 -- Favorites and Notifications Migration
 -- Migration: 20251031120000_favorites_notifications.sql
 -- Creates tables for user favorites and in-app notifications
-
--- ============================================================================
+-- ---
 -- PART 1: FAVORITES TABLE
--- ============================================================================
-
+-- ---
 -- Create user_favorites table
 CREATE TABLE IF NOT EXISTS user_favorites (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -23,11 +21,9 @@ CREATE TABLE IF NOT EXISTS user_favorites (
 CREATE INDEX IF NOT EXISTS idx_user_favorites_user_id ON user_favorites(user_id);
 CREATE INDEX IF NOT EXISTS idx_user_favorites_item ON user_favorites(item_type, item_id);
 CREATE INDEX IF NOT EXISTS idx_user_favorites_created ON user_favorites(created_at DESC);
-
--- ============================================================================
+-- ---
 -- PART 2: NOTIFICATIONS TABLE
--- ============================================================================
-
+-- ---
 -- Create notifications table
 CREATE TABLE IF NOT EXISTS notifications (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -59,11 +55,9 @@ CREATE INDEX IF NOT EXISTS idx_notifications_user_id ON notifications(user_id);
 CREATE INDEX IF NOT EXISTS idx_notifications_user_unread ON notifications(user_id, is_read) WHERE is_read = FALSE;
 CREATE INDEX IF NOT EXISTS idx_notifications_created ON notifications(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_notifications_type ON notifications(type);
-
--- ============================================================================
+-- ---
 -- PART 3: ROW LEVEL SECURITY (RLS)
--- ============================================================================
-
+-- ---
 -- Enable RLS
 ALTER TABLE user_favorites ENABLE ROW LEVEL SECURITY;
 ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
@@ -100,11 +94,9 @@ CREATE POLICY "System can insert notifications"
   ON notifications FOR INSERT
   TO authenticated
   WITH CHECK (true); -- System/user actions can create notifications
-
--- ============================================================================
+-- ---
 -- PART 4: TRIGGERS
--- ============================================================================
-
+-- ---
 -- Add updated_at trigger for favorites
 CREATE TRIGGER update_user_favorites_updated_at
   BEFORE UPDATE ON user_favorites
@@ -129,11 +121,9 @@ CREATE TRIGGER update_notification_read_at_trigger
   BEFORE UPDATE ON notifications
   FOR EACH ROW
   EXECUTE FUNCTION update_notification_read_at();
-
--- ============================================================================
+-- ---
 -- PART 5: HELPER FUNCTIONS
--- ============================================================================
-
+-- ---
 -- Function to get user favorites with gym details
 CREATE OR REPLACE FUNCTION get_user_favorites_with_details(user_id_param UUID DEFAULT auth.uid())
 RETURNS TABLE (
@@ -179,22 +169,17 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER STABLE;
 
 GRANT EXECUTE ON FUNCTION get_unread_notification_count(UUID) TO authenticated;
-
--- ============================================================================
+-- ---
 -- PART 6: PERMISSIONS
--- ============================================================================
-
+-- ---
 GRANT SELECT, INSERT, DELETE ON user_favorites TO authenticated;
 GRANT SELECT, INSERT, UPDATE ON notifications TO authenticated;
-
--- ============================================================================
+-- ---
 -- PART 7: COMMENTS
--- ============================================================================
-
+-- ---
 COMMENT ON TABLE user_favorites IS 'Stores user favorites (gyms, products, events)';
 COMMENT ON TABLE notifications IS 'Stores in-app notifications for users';
 COMMENT ON COLUMN notifications.metadata IS 'JSON metadata for additional notification data';
 COMMENT ON COLUMN user_favorites.item_type IS 'Type of favorited item: gym, product, or event';
 COMMENT ON FUNCTION get_user_favorites_with_details IS 'Get user favorites with gym details';
 COMMENT ON FUNCTION get_unread_notification_count IS 'Get count of unread notifications for a user';
-

@@ -15,6 +15,8 @@ export interface PaymentRecord {
   updated_at: string;
   order_number?: string;
   metadata?: Record<string, unknown>;
+  retry_count?: number;
+  failure_reason?: string;
 }
 
 export interface UsePaymentDataResult {

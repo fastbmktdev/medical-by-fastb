@@ -21,7 +21,17 @@ export {
 export { 
   createPaymentIntent, 
   getUserPayments, 
-  getPaymentById 
+  getPaymentById,
+  retryFailedPayment,
+  createSetupIntent,
+  savePaymentMethod,
+  getSavedPaymentMethods,
+  deleteSavedPaymentMethod,
+  setDefaultPaymentMethod,
+  getUserDisputes,
+  getAllDisputes,
+  getDisputeById,
+  respondToDispute
 } from './payment.service';
 
 export { 
