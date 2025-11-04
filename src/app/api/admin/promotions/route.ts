@@ -193,18 +193,24 @@ const createPromotionHandler = withAdminAuth(async (
       );
     }
     
-    // Send notifications to all users if promotion is active
+    // Send notifications and promotional emails to all users if promotion is active
     if (isActive && promotion) {
       try {
         // Get all users who have opted in for promotion notifications
-        const { data: users, error: usersError } = await supabase
-          .from('notification_preferences')
-          .select('user_id')
-          .eq('promotions', true);
+        const { data: usersWithPrefs, error: usersError } = await supabase
+          .from('user_notification_preferences')
+          .select('user_id, promotions_news')
+          .eq('promotions_news', true);
         
-        if (!usersError && users && users.length > 0) {
-          // Create notifications in batch
-          const notifications = users.map((user) => ({
+        // Get all active newsletter subscribers who want promotions
+        const { data: newsletterSubscribers, error: newsletterError } = await supabase
+          .from('newsletter_subscriptions')
+          .select('email, user_id, preferences')
+          .eq('is_active', true);
+
+        if (!usersError && usersWithPrefs && usersWithPrefs.length > 0) {
+          // Create in-app notifications in batch
+          const notifications = usersWithPrefs.map((user) => ({
             user_id: user.user_id,
             type: 'promotion',
             title: '🎉 โปรโมชั่นใหม่!',
@@ -223,11 +229,54 @@ const createPromotionHandler = withAdminAuth(async (
             .from('notifications')
             .insert(notifications);
           
-          console.log(`Sent promotion notifications to ${users.length} users`);
+          console.log(`Sent promotion notifications to ${usersWithPrefs.length} users`);
+        }
+
+        // Send promotional emails
+        if (!newsletterError && newsletterSubscribers && newsletterSubscribers.length > 0) {
+          const { addEmailToQueue } = await import('@/lib/email/queue');
+          const { generatePromotionalEmailHtml } = await import('@/lib/email/templates');
+          
+          const promotionalEmails = newsletterSubscribers
+            .filter(sub => {
+              // Check newsletter preferences
+              const prefs = sub.preferences as { promotions?: boolean };
+              if (prefs && prefs.promotions === false) {
+                return false;
+              }
+              // Check if user preferences allow promotional emails
+              const userPref = usersWithPrefs?.find(u => u.user_id === sub.user_id);
+              return !sub.user_id || userPref?.promotions_news !== false;
+            })
+            .map(sub => ({
+              to: sub.email,
+              subject: `🎉 ${title} - โปรโมชั่นพิเศษจาก MUAYTHAI`,
+              htmlContent: generatePromotionalEmailHtml({
+                title: title,
+                description: description || '',
+                linkUrl: linkUrl || '/',
+                linkText: linkText || 'ดูรายละเอียด',
+              }),
+              emailType: 'promotional' as const,
+              priority: 'normal' as const,
+              userId: sub.user_id || undefined,
+              metadata: {
+                promotion_id: promotion.id,
+              },
+            }));
+
+          // Add emails to queue in batches
+          const batchSize = 50;
+          for (let i = 0; i < promotionalEmails.length; i += batchSize) {
+            const batch = promotionalEmails.slice(i, i + batchSize);
+            await Promise.all(batch.map(email => addEmailToQueue(email)));
+          }
+          
+          console.log(`Queued promotional emails to ${promotionalEmails.length} subscribers`);
         }
       } catch (notificationError) {
         // Don't fail promotion creation if notification fails
-        console.warn('Failed to send promotion notifications:', notificationError);
+        console.warn('Failed to send promotion notifications/emails:', notificationError);
       }
     }
     

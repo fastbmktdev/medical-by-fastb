@@ -141,7 +141,7 @@ export interface EmailQueue {
   subject: string;
   html_content: string;
   text_content: string | null;
-  email_type: 'verification' | 'booking_confirmation' | 'booking_reminder' | 'payment_receipt' | 'payment_failed' | 'partner_approval' | 'partner_rejection' | 'admin_alert' | 'contact_form' | 'welcome' | 'other';
+  email_type: 'verification' | 'booking_confirmation' | 'booking_reminder' | 'payment_receipt' | 'payment_failed' | 'partner_approval' | 'partner_rejection' | 'admin_alert' | 'contact_form' | 'welcome' | 'newsletter' | 'promotional' | 'other';
   priority: 'low' | 'normal' | 'high' | 'urgent';
   status: 'pending' | 'processing' | 'sent' | 'failed' | 'cancelled';
   retry_count: number;

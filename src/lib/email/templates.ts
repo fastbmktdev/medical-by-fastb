@@ -720,3 +720,58 @@ export function generateWelcomeEmailHtml(data: { fullName: string }): string {
   return getBaseEmailTemplate(content);
 }
 
+/**
+ * Generate HTML for promotional email
+ */
+export function generatePromotionalEmailHtml(data: {
+  title: string;
+  description: string;
+  linkUrl: string;
+  linkText: string;
+}): string {
+  const { title, description, linkUrl, linkText } = data;
+  
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f4f4f4; }
+        .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; }
+        .header { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 40px 30px; text-align: center; }
+        .header h1 { margin: 0; font-size: 28px; }
+        .content { padding: 30px; }
+        .promotion-box { background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-left: 4px solid #dc2626; padding: 20px; margin: 20px 0; border-radius: 8px; }
+        .promotion-title { font-size: 24px; font-weight: bold; color: #dc2626; margin-bottom: 10px; }
+        .promotion-description { font-size: 16px; color: #555; margin-bottom: 20px; }
+        .cta-button { display: inline-block; background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; margin: 20px 0; }
+        .footer { background-color: #f9fafb; padding: 20px; text-align: center; color: #6b7280; font-size: 12px; border-top: 1px solid #e5e7eb; }
+        .footer a { color: #6b7280; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>🥊 MUAYTHAI Platform</h1>
+        </div>
+        <div class="content">
+          <p>สวัสดี!</p>
+          <div class="promotion-box">
+            <div class="promotion-title">${title}</div>
+            ${description ? `<div class="promotion-description">${description}</div>` : ''}
+            <a href="${linkUrl}" class="cta-button">${linkText}</a>
+          </div>
+          <p>อย่าพลาดโอกาสพิเศษนี้! 🎯</p>
+        </div>
+        <div class="footer">
+          <p>© 2025 MUAYTHAI Platform. สงวนลิขสิทธิ์.</p>
+          <p>หากคุณไม่ต้องการรับอีเมลโปรโมชั่นอีกต่อไป <a href="{{unsubscribe_url}}">คลิกที่นี่เพื่อยกเลิกการสมัครสมาชิก</a></p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+}
+

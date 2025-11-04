@@ -159,7 +159,7 @@ const updatePromotionHandler = withAdminAuth(async (
     // Get current promotion to check if is_active is being changed to true
     const { data: currentPromotion } = await supabase
       .from('promotions')
-      .select('is_active, title, description, link_url')
+      .select('is_active, title, description, link_url, link_text')
       .eq('id', id)
       .single();
     
@@ -186,18 +186,24 @@ const updatePromotionHandler = withAdminAuth(async (
     if (isBeingActivated && updatedPromotion) {
       try {
         // Get all users who have opted in for promotion notifications
-        const { data: users, error: usersError } = await supabase
-          .from('notification_preferences')
-          .select('user_id')
-          .eq('promotions', true);
+        const { data: usersWithPrefs, error: usersError } = await supabase
+          .from('user_notification_preferences')
+          .select('user_id, promotions_news')
+          .eq('promotions_news', true);
         
-        if (!usersError && users && users.length > 0) {
+        // Get all active newsletter subscribers who want promotions
+        const { data: newsletterSubscribers, error: newsletterError } = await supabase
+          .from('newsletter_subscriptions')
+          .select('email, user_id, preferences')
+          .eq('is_active', true);
+
+        if (!usersError && usersWithPrefs && usersWithPrefs.length > 0) {
           const promotionTitle = updatedPromotion.title || currentPromotion?.title || 'โปรโมชั่นใหม่';
           const promotionDescription = updatedPromotion.description || currentPromotion?.description || '';
           const promotionLink = updatedPromotion.link_url || currentPromotion?.link_url || '/';
           
-          // Create notifications in batch
-          const notifications = users.map((user) => ({
+          // Create in-app notifications in batch
+          const notifications = usersWithPrefs.map((user) => ({
             user_id: user.user_id,
             type: 'promotion',
             title: '🎉 โปรโมชั่นใหม่!',
@@ -216,7 +222,55 @@ const updatePromotionHandler = withAdminAuth(async (
             .from('notifications')
             .insert(notifications);
           
-          console.log(`Sent promotion notifications to ${users.length} users`);
+          console.log(`Sent promotion notifications to ${usersWithPrefs.length} users`);
+        }
+
+        // Send promotional emails
+        if (!newsletterError && newsletterSubscribers && newsletterSubscribers.length > 0) {
+          const { addEmailToQueue } = await import('@/lib/email/queue');
+          const { generatePromotionalEmailHtml } = await import('@/lib/email/templates');
+          
+          const promotionTitle = updatedPromotion.title || currentPromotion?.title || 'โปรโมชั่นใหม่';
+          const promotionDescription = updatedPromotion.description || currentPromotion?.description || '';
+          const promotionLink = updatedPromotion.link_url || currentPromotion?.link_url || '/';
+          const promotionLinkText = updatedPromotion.link_text || currentPromotion?.link_text || 'ดูรายละเอียด';
+          
+          const promotionalEmails = newsletterSubscribers
+            .filter(sub => {
+              // Check newsletter preferences
+              const prefs = sub.preferences as { promotions?: boolean };
+              if (prefs && prefs.promotions === false) {
+                return false;
+              }
+              // Check if user preferences allow promotional emails
+              const userPref = usersWithPrefs?.find(u => u.user_id === sub.user_id);
+              return !sub.user_id || userPref?.promotions_news !== false;
+            })
+            .map(sub => ({
+              to: sub.email,
+              subject: `🎉 ${promotionTitle} - โปรโมชั่นพิเศษจาก MUAYTHAI`,
+              htmlContent: generatePromotionalEmailHtml({
+                title: promotionTitle,
+                description: promotionDescription,
+                linkUrl: promotionLink,
+                linkText: promotionLinkText,
+              }),
+              emailType: 'promotional' as const,
+              priority: 'normal' as const,
+              userId: sub.user_id || undefined,
+              metadata: {
+                promotion_id: updatedPromotion.id,
+              },
+            }));
+
+          // Add emails to queue in batches
+          const batchSize = 50;
+          for (let i = 0; i < promotionalEmails.length; i += batchSize) {
+            const batch = promotionalEmails.slice(i, i + batchSize);
+            await Promise.all(batch.map(email => addEmailToQueue(email)));
+          }
+          
+          console.log(`Queued promotional emails to ${promotionalEmails.length} subscribers`);
         }
       } catch (notificationError) {
         // Don't fail promotion update if notification fails
