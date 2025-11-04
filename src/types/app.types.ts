@@ -58,17 +58,27 @@ export interface Product {
 }
 
 export interface Article {
-  id: number;
+  id: string; // UUID
   slug: string;
   title: string;
   excerpt: string;
   content: string;
-  author: string;
-  date: string;
+  author_id?: string | null; // UUID reference to auth.users
+  author_name?: string | null; // Fallback author name
+  date: string; // ISO date string
   category: string;
-  image?: string;
+  image?: string | null;
   tags?: string[];
-  isNew?: boolean;
+  is_new?: boolean;
+  is_published?: boolean;
+  published_at?: string | null; // ISO timestamp
+  views_count?: number;
+  likes_count?: number;
+  created_at?: string; // ISO timestamp
+  updated_at?: string; // ISO timestamp
+  // Legacy/computed fields for backward compatibility
+  author?: string; // Computed: author_name || 'Unknown'
+  isNew?: boolean; // Alias for is_new
 }
 
 export interface ApiResponse<T> {

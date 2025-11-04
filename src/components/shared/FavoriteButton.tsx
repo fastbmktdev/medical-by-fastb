@@ -33,14 +33,13 @@ export function FavoriteButton({
   useEffect(() => {
     async function checkFavorite() {
       try {
-        const response = await fetch(`/api/favorites?type=${itemType}`);
+        const response = await fetch(
+          `/api/favorites/check?item_type=${itemType}&item_id=${itemId}`
+        );
         const result = await response.json();
 
-        if (result.success && result.data) {
-          const favorite = result.data.find(
-            (fav: any) => fav.item_id === itemId && fav.item_type === itemType
-          );
-          setIsFavorite(!!favorite);
+        if (result.success) {
+          setIsFavorite(result.isFavorite || false);
         }
       } catch (error) {
         console.error('Error checking favorite:', error);
