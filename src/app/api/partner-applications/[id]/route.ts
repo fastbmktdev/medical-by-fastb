@@ -24,6 +24,7 @@ export async function PATCH(
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
     if (authError || !user) {
+      console.error('[PATCH /api/partner-applications] Auth error:', authError);
       return NextResponse.json(
         { error: 'Unauthorized - กรุณาเข้าสู่ระบบ' },
         { status: 401 }
@@ -37,21 +38,41 @@ export async function PATCH(
       .eq('user_id', user.id)
       .maybeSingle();
 
+    if (roleError) {
+      console.error('[PATCH /api/partner-applications] Role query error:', roleError);
+      console.error('[PATCH /api/partner-applications] User ID:', user.id);
+    }
+
     if (roleError || roleData?.role !== 'admin') {
+      console.error('[PATCH /api/partner-applications] Forbidden:', {
+        userId: user.id,
+        userEmail: user.email,
+        roleData,
+        roleError: roleError?.message,
+      });
       return NextResponse.json(
-        { error: 'Forbidden - คุณไม่มีสิทธิ์เข้าถึง' },
+        { 
+          error: 'Forbidden - คุณไม่มีสิทธิ์เข้าถึง',
+          details: roleError ? `Role query error: ${roleError.message}` : `Current role: ${roleData?.role || 'none'}`
+        },
         { status: 403 }
       );
     }
 
     // อ่าน request body
     const body = await request.json();
-    const { status, reason } = body;
+    const { reason } = body;
+    let status = body.status;
+
+    // แปลง 'rejected' เป็น 'denied' เพื่อรองรับ frontend
+    if (status === 'rejected') {
+      status = 'denied';
+    }
 
     // ตรวจสอบ status ที่ส่งมา
     if (!status || !['approved', 'denied', 'pending'].includes(status)) {
       return NextResponse.json(
-        { error: 'Invalid status - status ต้องเป็น approved, denied หรือ pending' },
+        { error: 'Invalid status - status ต้องเป็น approved, denied/rejected หรือ pending' },
         { status: 400 }
       );
     }

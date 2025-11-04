@@ -272,10 +272,22 @@ function AdminApprovalsContent() {
       const response = await fetch(`/api/partner-applications/${appId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // ส่ง cookies เพื่อ authentication
         body: JSON.stringify({ status }),
       });
 
       const result = await response.json();
+
+      if (!response.ok) {
+        console.error('API Error:', {
+          status: response.status,
+          statusText: response.statusText,
+          error: result.error,
+          details: result.details,
+        });
+        showErrorToast(`Error: ${result.error}${result.details ? ` - ${result.details}` : ''}`);
+        return;
+      }
 
       if (result.success) {
         await loadApplications();

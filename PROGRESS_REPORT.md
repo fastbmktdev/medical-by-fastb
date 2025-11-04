@@ -136,9 +136,9 @@
 ## 📈 ข้อมูลและสถิติ
 
 ### API Endpoints
-- ✅ **สร้างแล้ว**: 94 จุดเชื่อมต่อ (82%)
-- ❌ **ยังไม่มี**: 20 จุดเชื่อมต่อ (18%)
-- ✅ **Critical Features**: ครบถ้วนแล้ว (Admin Analytics, Partner Analytics, Booking Reminders Cron, Admin Promotions, Partner Payouts, Audit Logs)
+- ✅ **สร้างแล้ว**: 104 จุดเชื่อมต่อ (91%)
+- ❌ **ยังไม่มี**: 10 จุดเชื่อมต่อ (9%)
+- ✅ **Critical Features**: ครบถ้วนแล้ว (Admin Analytics, Partner Analytics, Booking Reminders Cron, Admin Promotions, Partner Payouts, Audit Logs, Shipping System, Orders)
 
 **รายละเอียด API Endpoints ที่มีอยู่แล้ว**:
 - ✅ Authentication (6), Users (18), Gyms (7), Bookings (4), Payments (4)
@@ -148,6 +148,8 @@
 - ✅ Partner Analytics (1), Partner Payouts (3)
 - ✅ Contact (2), Health (1)
 - ✅ Articles (6), Products (6), Events (6), Tickets (4)
+- ✅ Products Variants (4), Products Images (3)
+- ✅ Orders (3), Shipping Methods (5)
 - ✅ Cron Jobs (1 - Booking Reminders)
 
 **รายละเอียด API Endpoints ที่ยังไม่มี**:
@@ -262,6 +264,8 @@
 - ✅ **affiliate_conversions** - ติดตาม conversion จาก affiliate ✅ (migration: 20251201000000)
 - ✅ **analytics_events** - เก็บข้อมูลการใช้งาน ✅ (migration: 20251201000000)
 - ✅ **search_history** - ประวัติการค้นหา ✅ (migration: 20251203000000)
+- ✅ **shipping_methods** - วิธีการจัดส่ง ✅ (migration: 20251204000000)
+- ✅ **shipping_history** - ประวัติการจัดส่ง ✅ (migration: 20251204000000)
 
 ### ตารางที่มีแต่ใช้งานไม่สมบูรณ์:
 - ⚠️ **promotions** - ✅ มีตารางแล้ว (migration: 20251019000001) - แต่ไม่มี UI จัดการ
@@ -279,6 +283,8 @@
 - ✅ `/api/notifications` - ระบบแจ้งเตือน ✅ (GET, POST, PUT/[id], DELETE/[id], POST /mark-all-read)
 - ✅ `/api/articles` - บทความ ✅ (GET, POST, PUT/[id], DELETE/[id], GET/[slug], POST/[id]/publish)
 - ✅ `/api/products` - สินค้า ✅ (GET, POST, PUT/[id], DELETE/[id], PUT/[id]/inventory)
+- ✅ `/api/products/[id]/variants` - Product Variants ✅ (GET, POST, PUT/[variantId], DELETE/[variantId])
+- ✅ `/api/products/[id]/images` - Product Images ✅ (GET, POST, DELETE/[imageId])
 - ✅ `/api/events` - อีเวนต์ ✅ (GET, POST, PUT/[id], DELETE/[id], POST/[id]/book)
 - ✅ `/api/tickets` - จองตั๋วอีเวนต์ ✅ (GET, POST, PUT/[id], DELETE/[id], POST/[id]/check-in)
 - ✅ `/api/analytics` - เก็บข้อมูลการใช้งาน ✅ (GET, POST)
@@ -292,6 +298,11 @@
 - ✅ `/api/partner/messages` - Partner ส่งข้อความถึงลูกค้า ✅ (POST, GET)
 - ✅ `/api/cron/send-booking-reminders` - ส่ง Booking Reminder Emails ✅ (GET/POST)
 - ✅ `/api/admin/audit-logs` - ดู Audit Logs ✅ (GET with filters)
+- ✅ `/api/orders/products` - จัดการ Orders ✅ (GET)
+- ✅ `/api/orders/products/[id]` - Order Details ✅ (GET, PUT)
+- ✅ `/api/orders/products/[id]/tracking` - ติดตาม Order ✅ (GET)
+- ✅ `/api/shipping/methods` - Shipping Methods ✅ (GET, POST)
+- ✅ `/api/shipping/methods/[id]` - Shipping Method Details ✅ (GET, PUT, DELETE)
 
 **สรุป**: API ครบ 14/14 endpoints แล้ว! ✅ (Admin Promotions, Partner Payouts, Partner Messages, และ Audit Logs เสร็จแล้ว)
 
@@ -370,7 +381,7 @@
 
 ---
 
-## 7. 🛒 ระบบร้านค้า - เชื่อมต่อ API แล้ว (80%) (High Priority)
+## 7. 🛒 ระบบร้านค้า - เสร็จสมบูรณ์แล้ว (95%) (High Priority)
 
 ### สถานะปัจจุบัน:
 - ✅ หน้าแสดงร้านค้า
@@ -381,13 +392,14 @@
 - ✅ **เชื่อมต่อ Frontend กับ Products API แล้ว** - ใช้ `/api/products` ใน Shop page แล้ว
 
 ### ยังขาด:
-- ❌ Admin UI สำหรับจัดการสินค้า
-- ❌ ระบบจัดการสต็อก (มี API แล้ว แต่ยังไม่มี UI)
-- ⚠️ Variants (สี, ไซส์) - มีตารางและ API แล้ว แต่ยังไม่มี UI
-- ⚠️ อัปโหลดรูปภาพสินค้า - มี API แล้ว แต่ยังไม่มี UI
-- ⚠️ หมวดหมู่สินค้า - มีตารางแล้ว แต่ยังไม่มี API/UI
-- ❌ ระบบจัดส่ง
-- ❌ ติดตามพัสดุ
+- ✅ **Admin UI สำหรับจัดการสินค้า** - เสร็จแล้ว (`/admin/dashboard/products`) ✅
+- ✅ **ระบบจัดการสต็อก** - เสร็จแล้ว (ProductInventoryModal) ✅
+- ✅ **Variants (สี, ไซส์)** - มีตาราง, API และ UI ครบแล้ว (ProductVariantsModal) ✅
+- ✅ **อัปโหลดรูปภาพสินค้า** - มี API และ UI ครบแล้ว (ProductImagesModal) ✅
+- ✅ **หมวดหมู่สินค้า** - มีตารางและ UI แล้ว (`/admin/dashboard/products/categories`) ✅
+- ✅ **ระบบจัดส่ง** - เสร็จแล้ว (Shipping Methods API + Database: `shipping_methods`, `shipping_history`) ✅
+- ✅ **ติดตามพัสดุ** - เสร็จแล้ว (`/api/orders/products/[id]/tracking`) ✅
+- ✅ **ระบบจัดการ Orders** - เสร็จแล้ว (GET `/api/orders/products`, GET `/api/orders/products/[id]`) ✅
 
 ---
 
@@ -594,15 +606,15 @@
 
 | หมวดหมู่ | สถานะ | หมายเหตุ |
 |---------|-------|----------|
-| **Database Tables** | 100% | ✅ ตารางครบถ้วนแล้ว (42 ตาราง) |
-| **API Endpoints** | 82% | ✅ มี 94 endpoints, ขาด 20 endpoints (Critical features ครบแล้ว) |
+| **Database Tables** | 100% | ✅ ตารางครบถ้วนแล้ว (44 ตาราง - เพิ่ม shipping_methods, shipping_history) |
+| **API Endpoints** | 91% | ✅ มี 104 endpoints, ขาด 10 endpoints (Critical features ครบแล้ว) |
 | **Payment Features** | 90% | ✅ Receipt/Invoice generation เสร็จแล้ว (PDF) - ขาด Retry Payment, Save Cards |
 | **Notification System** | 90% | ✅ มี API ครบ, ตารางครบ, UI Components ครบ - ✅ การส่งอัตโนมัติส่วนใหญ่เสร็จแล้ว (booking, payment, badge, level up, reminder, promotion) |
 | **Review System** | 100% | ✅ ใช้ Google Maps Reviews |
 | **User Profile** | 100% | ✅ เสร็จสมบูรณ์แล้ว รวมถึง Connected Accounts (Google OAuth) |
 | **Favorites System** | 90% | ✅ มี API ครบ, ตารางครบ, UI Components ครบ - รองรับ Product/Event แล้ว |
 | **Search & Filter** | 80% | ✅ Full-text search, Autocomplete, Search History, Advanced filters, Sorting - ขาด Analytics |
-| **Shop System** | 80% | ✅ มี API ครบ (Products: 6 endpoints) - ✅ เชื่อมต่อ Frontend แล้ว - ขาด Admin UI |
+| **Shop System** | 95% | ✅ มี API ครบ (Products: 6, Variants: 4, Images: 3, Orders: 3, Shipping: 5) - ✅ เชื่อมต่อ Frontend แล้ว - ✅ Shipping System เสร็จแล้ว - ✅ Admin UI ครบแล้ว (Products, Variants, Images, Inventory, Categories) |
 | **Event System** | 60% | ✅ มี API ครบ (Events: 6 endpoints) - ขาด Admin UI และการเชื่อมต่อ Frontend |
 | **Admin Analytics** | 100% | ✅ มี API พร้อม date filtering และ chart data |
 | **Partner Dashboard** | 85% | ✅ มี Analytics API, Payout API (3 endpoints), ตาราง Payout แล้ว |
@@ -617,7 +629,7 @@
 | **Authentication** | 100% | ✅ เสร็จสมบูรณ์ - Signup, Login, OAuth, Password Reset |
 | **Bookings** | 90% | ✅ ระบบจองครบ - ไม่มีระบบยกเลิก (ตามนโยบายธุรกิจ) |
 
-### **ความสมบูรณ์โดยรวม: 80-82%** ⬆️ (เพิ่มขึ้นจาก Invoice/Receipt Generation, Full-text Search, Search History, Shop Frontend Integration)
+### **ความสมบูรณ์โดยรวม: 82-85%** ⬆️ (เพิ่มขึ้นจาก Shipping System, Orders Management, Product Variants/Images APIs)
 
 ---
 
@@ -656,7 +668,7 @@
 
 | Timeline | Target Completion |
 |----------|-------------------|
-| **ปัจจุบัน (2025-01-21)** | 78-80% |
+| **ปัจจุบัน (2025-01-21)** | 82-85% |
 | **2 เดือน** | 70% |
 | **3 เดือน** | 85% |
 | **4 เดือน** | 95% (Fully Functional) |
@@ -713,6 +725,13 @@
 - [x] PUT `/api/products/[id]` - แก้ไขสินค้า (Admin) ✅
 - [x] DELETE `/api/products/[id]` - ลบสินค้า (Admin) ✅
 - [x] PUT `/api/products/[id]/inventory` - อัปเดตสต็อก (Admin) ✅
+- [x] GET `/api/products/[id]/variants` - ดู variants ✅
+- [x] POST `/api/products/[id]/variants` - สร้าง variant ✅
+- [x] PUT `/api/products/[id]/variants/[variantId]` - แก้ไข variant ✅
+- [x] DELETE `/api/products/[id]/variants/[variantId]` - ลบ variant ✅
+- [x] GET `/api/products/[id]/images` - ดู images ✅
+- [x] POST `/api/products/[id]/images` - อัปโหลด image ✅
+- [x] DELETE `/api/products/[id]/images/[imageId]` - ลบ image ✅
 
 #### API Endpoints - Events (✅ เสร็จแล้ว)
 - [x] POST `/api/events` - สร้างอีเวนต์ (Admin) ✅
@@ -922,15 +941,21 @@
 
 #### Shop System
 - [x] สร้าง API Endpoints สำหรับ Products ✅ (6 endpoints)
+- [x] สร้าง API Endpoints สำหรับ Product Variants ✅ (4 endpoints)
+- [x] สร้าง API Endpoints สำหรับ Product Images ✅ (3 endpoints)
 - [x] ตารางสินค้าในฐานข้อมูล ✅ (products, product_categories, product_variants, product_images)
 - [x] เชื่อมต่อ Frontend กับ Products API (แทน Static Data) ✅ (Shop Page และ Product Detail Page)
-- [ ] สร้าง Admin UI จัดการสินค้า
-- [ ] สร้าง UI สำหรับระบบจัดการสต็อก (มี API แล้ว)
-- [ ] สร้าง UI สำหรับ Product Variants (มีตารางและ API แล้ว)
-- [ ] สร้าง UI สำหรับอัปโหลดรูปภาพสินค้า (มี API แล้ว)
-- [ ] สร้าง API และ UI สำหรับหมวดหมู่สินค้า (มีตารางแล้ว)
-- [ ] เพิ่มระบบจัดส่ง (Shipping)
-- [ ] เพิ่มการติดตามพัสดุ
+- [x] สร้าง API สำหรับ Orders ✅ (GET `/api/orders/products`, GET `/api/orders/products/[id]`, GET `/api/orders/products/[id]/tracking`)
+- [x] สร้างระบบจัดส่ง (Shipping) ✅
+  - [x] สร้างตาราง `shipping_methods` และ `shipping_history` ✅ (migration: 20251204000000)
+  - [x] สร้าง API Endpoints สำหรับ Shipping Methods ✅ (GET, POST, PUT/[id], DELETE/[id])
+  - [x] เพิ่ม shipping columns ใน `product_orders` table ✅
+- [x] เพิ่มการติดตามพัสดุ ✅ (`/api/orders/products/[id]/tracking`)
+- [x] สร้าง Admin UI จัดการสินค้า ✅ (มี `/admin/dashboard/products` พร้อม ProductCreateModal, ProductEditModal, ProductDeleteDialog, ProductDetailModal)
+- [x] สร้าง UI สำหรับระบบจัดการสต็อก ✅ (มี ProductInventoryModal)
+- [x] สร้าง UI สำหรับ Product Variants ✅ (มี ProductVariantsModal)
+- [x] สร้าง UI สำหรับอัปโหลดรูปภาพสินค้า ✅ (มี ProductImagesModal)
+- [x] สร้าง UI สำหรับหมวดหมู่สินค้า ✅ (มี `/admin/dashboard/products/categories`)
 
 #### Event System
 - [x] สร้าง API Endpoints สำหรับ Events ✅ (6 endpoints)
