@@ -414,11 +414,11 @@ async function handleUnifiedCron(request: NextRequest) {
       tasks.bookingReminders = remindersResult;
     }
 
-    // Generate scheduled reports at the start of each hour (when this cron runs hourly)
-    // Note: For Vercel Hobby Plan, we can only run once per day, so this will only run once
-    // But we check if there are reports due and generate them
-    if (currentMinute === 0 || currentMinute < 5) {
-      const reportsResult = await generateScheduledReports();
+    // Generate scheduled reports - check for any due reports regardless of time
+    // Note: For Vercel Hobby Plan, we can only run once per day, so we check all reports
+    // that are due and generate them in a single run
+    const reportsResult = await generateScheduledReports();
+    if (reportsResult.generated > 0) {
       tasks.scheduledReports = reportsResult;
     }
 
