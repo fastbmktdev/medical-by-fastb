@@ -145,7 +145,9 @@ async function processEmailQueue(): Promise<{ success: boolean; processed: numbe
         }
 
         if (sendResult.success) {
-          await updateEmailQueueStatus(emailItem.id, 'sent', null);
+          await updateEmailQueueStatus(emailItem.id, 'sent', {
+            providerMessageId: sendResult.id,
+          });
           processed++;
         } else {
           throw new Error(sendResult.error || 'Failed to send email');
@@ -156,9 +158,15 @@ async function processEmailQueue(): Promise<{ success: boolean; processed: numbe
         const retryCount = (emailItem.retry_count || 0) + 1;
         if (retryCount < (emailItem.max_retries || 3)) {
           const nextRetry = calculateNextRetryTime(retryCount);
-          await updateEmailQueueStatus(emailItem.id, 'pending', nextRetry.toISOString(), retryCount);
+          await updateEmailQueueStatus(emailItem.id, 'pending', {
+            nextRetryAt: nextRetry,
+            retryCount: retryCount,
+          });
         } else {
-          await updateEmailQueueStatus(emailItem.id, 'failed', null, retryCount);
+          await updateEmailQueueStatus(emailItem.id, 'failed', {
+            errorMessage: error instanceof Error ? error.message : 'Unknown error',
+            retryCount: retryCount,
+          });
         }
       }
     }
@@ -392,27 +400,18 @@ async function handleUnifiedCron(request: NextRequest) {
     const currentMinute = now.getMinutes();
     const dayOfWeek = now.getDay();
 
-    const results: Record<string, unknown> = {
-      timestamp: now.toISOString(),
-      tasks: {},
-    };
+    const tasks: Record<string, unknown> = {};
 
     // Always process email queue (runs every 5 minutes, but for Vercel Hobby Plan we run it once per day)
     // Note: For Vercel Hobby Plan, cron jobs can only run once per day
     // So we process email queue every time this endpoint is called
     const emailQueueResult = await processEmailQueue();
-    results.tasks = {
-      ...results.tasks,
-      emailQueue: emailQueueResult,
-    };
+    tasks.emailQueue = emailQueueResult;
 
     // Send booking reminders at 9 AM daily (when this cron runs at 9 AM)
     if (currentHour === 9 && currentMinute === 0) {
       const remindersResult = await sendBookingReminders();
-      results.tasks = {
-        ...results.tasks,
-        bookingReminders: remindersResult,
-      };
+      tasks.bookingReminders = remindersResult;
     }
 
     // Generate scheduled reports at the start of each hour (when this cron runs hourly)
@@ -420,11 +419,13 @@ async function handleUnifiedCron(request: NextRequest) {
     // But we check if there are reports due and generate them
     if (currentMinute === 0 || currentMinute < 5) {
       const reportsResult = await generateScheduledReports();
-      results.tasks = {
-        ...results.tasks,
-        scheduledReports: reportsResult,
-      };
+      tasks.scheduledReports = reportsResult;
     }
+
+    const results = {
+      timestamp: now.toISOString(),
+      tasks,
+    };
 
     // Check if any task was run
     const taskCount = Object.keys(results.tasks).length;
