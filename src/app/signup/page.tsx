@@ -110,11 +110,21 @@ export default function SignupPage() {
     checkAuthentication();
   }, [supabase, router]);
 
-  // Check for referral code in URL
+  // Check for referral code in URL or sessionStorage
   useEffect(() => {
+    // First check sessionStorage (persists across navigation)
+    const storedRefCode = sessionStorage.getItem("referralCode");
+    
+    // Then check URL query params (takes precedence)
     const urlParams = new URLSearchParams(window.location.search);
-    const refCode = urlParams.get("ref");
+    const urlRefCode = urlParams.get("ref");
+    
+    // Use URL param if available, otherwise use stored value
+    const refCode = urlRefCode || storedRefCode;
+    
     if (refCode) {
+      // Store in sessionStorage for persistence
+      sessionStorage.setItem("referralCode", refCode);
       setFormData((prev) => ({ ...prev, referralCode: refCode }));
     }
   }, []);
@@ -366,14 +376,16 @@ export default function SignupPage() {
           await new Promise((resolve) => setTimeout(resolve, 1000));
 
           // Process referral code if provided
-          if (formData.referralCode.trim()) {
+          const referralCodeToProcess = formData.referralCode.trim() || sessionStorage.getItem("referralCode");
+          
+          if (referralCodeToProcess) {
             try {
               const response = await fetch("/api/affiliate/validate", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ code: formData.referralCode }),
+                body: JSON.stringify({ code: referralCodeToProcess }),
               });
 
               if (response.ok) {
@@ -385,9 +397,12 @@ export default function SignupPage() {
                   },
                   body: JSON.stringify({
                     referredUserId: data.user.id,
-                    referralCode: formData.referralCode,
+                    referralCode: referralCodeToProcess,
                   }),
                 });
+                
+                // Clear referral code from sessionStorage after successful processing
+                sessionStorage.removeItem("referralCode");
               }
             } catch {
               // Error processing referral

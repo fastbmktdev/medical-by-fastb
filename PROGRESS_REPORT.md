@@ -49,12 +49,21 @@
 - ✅ แจ้งเตือนในแอปเกี่ยวกับ Gamification
 - ⚠️ มีปุ่มเข้า Leaderboard View All, แต่ยังไม่พร้อมใช้งาน
 
-### 6. 🎯 ระบบแนะนำเพื่อน (Affiliate) (90%)
+### 6. 🎯 ระบบแนะนำเพื่อน (Affiliate) (85%)
 - ✅ สร้าง Referral Code ได้
 - ✅ แชร์ลิงก์ชวนเพื่อน
 - ✅ ติดตามสถิติการแนะนำ
-- ✅ ได้แต้มเมื่อแนะนำสำเร็จ
-- ⚠️ การคำนวณ Conversion Rate ใช้ mock data
+- ✅ เชื่อมต่อ Affiliate Conversions Table (ใช้ข้อมูลจริงจาก database)
+- ✅ GET `/api/affiliate` - อ่านข้อมูลจาก `affiliate_conversions` table
+- ✅ POST `/api/affiliate` - สร้าง affiliate_conversion record เมื่อ signup
+- ✅ `/api/affiliate/conversions` - API สำหรับสร้าง conversion records
+- ✅ Dashboard แสดงข้อมูลจาก conversions
+- ✅ Commission Calculation Logic - คำนวณ commission จาก conversion value และ rate
+- ✅ Commission Rate Constants - กำหนด commission rates สำหรับแต่ละ type
+- ✅ Booking Flow Integration - สร้าง affiliate conversion เมื่อ referred user จอง
+- ✅ Payment Flow Integration - อัปเดต conversion status เมื่อ payment สำเร็จ
+- ⚠️ Optional: Session storage สำหรับ referral code (optimization)
+- ⚠️ Optional: Commission rate config table (แทน constants)
 
 ### 7. 👥 ระบบจัดการผู้ใช้ (100%)
 - ✅ แก้ไขโปรไฟล์
@@ -87,7 +96,7 @@
 - ✅ Check-in System (Admin UI)
 - ✅ Event Categories Management
 
-### 10. 📧 ระบบ Email (98%)
+### 10. 📧 ระบบ Email (100%)
 - ✅ ระบบยืนยันอีเมล
 - ✅ รีเซ็ตรหัสผ่านผ่านอีเมล
 - ✅ อีเมลจากฟอร์มติดต่อ
@@ -96,7 +105,8 @@
 - ✅ Email Service Layer (Centralized)
 - ✅ Booking Reminder Emails (Automated)
 - ✅ Newsletter & Promotional Emails
-- ⚠️ Migration จาก Gmail SMTP → Resend: 98% เสร็จ (Email Queue Processor และ Direct API Routes ใช้ Resend แล้ว)
+- ✅ Scheduled Reports Email Sending (พร้อม attachment)
+- ✅ Migration จาก Gmail SMTP → Resend: 100% เสร็จสมบูรณ์ (ทุก routes ใช้ Resend แล้ว)
 
 ### 11. ⭐ ระบบรีวิวและให้คะแนน (100%)
 - ✅ ดึงรีวิวจาก Google Places API
@@ -109,8 +119,8 @@
 ## 🔄 ฟีเจอร์ที่ยังไม่เสร็จสมบูรณ์
 
 ### ⚠️ ระบบที่ยังเหลืออยู่
-1. **Affiliate Commission System** (60%) - ใช้ mock data, ยังไม่มีระบบคำนวณ Commission จริง
-2. **Google Analytics Integration** - ยังไม่ได้ติดตั้งและเชื่อมต่อ
+1. **Affiliate Commission System** (85%) - ระบบหลักเสร็จสมบูรณ์แล้ว เหลือเพียง optimization (session storage, config table)
+2. ~~**Google Analytics Integration**~~ - ✅ **เสร็จสมบูรณ์แล้ว (100%)**
 
 ---
 
@@ -279,12 +289,15 @@
 | **Audit Logging** | 100% | ✅ มี API + Admin UI ครบถ้วน |
 | **Security** | 95% | ✅ Rate Limiting, CSRF, File Upload Validation, XSS Sanitization, Security Headers, Audit Logging (`audit_logs`) เสร็จแล้ว - ขาดการใช้งาน Audit Log ใน API บางส่วน |
 | **Gamification** | 95% | ✅ มี UI, API ครบ, ลอจิกส่วนใหญ่เสร็จ - ✅ Notification เมื่อได้ Badge/Level Up เสร็จแล้ว |
-| **Affiliate** | 60% | Mock conversion data - ขาดระบบคำนวณ Commission จริง |
+| **Affiliate** | 85% | ✅ ระบบหลักเสร็จสมบูรณ์ (database, commission calculation, booking/payment integration) - ⚠️ Optional: session storage, config table |
 | **Build System** | 100% | ✅ Production build ผ่านเรียบร้อย (2025-11-05) |
 | **Authentication** | 100% | ✅ เสร็จสมบูรณ์ - Signup, Login, OAuth, Password Reset |
 | **Bookings** | 90% | ✅ ระบบจองครบ - ไม่มีระบบยกเลิก |
 
-### **ความสมบูรณ์โดยรวม: 99.9%** ✅ (ระบบหลักเสร็จสมบูรณ์แล้ว - เหลือเพียง Affiliate Commission และ Google Analytics)
+|| **Google Analytics** | 100% | ✅ เสร็จสมบูรณ์แล้ว (component, utility functions, integration) |
+|| **Email Service Migration** | 100% | ✅ Migration เสร็จสมบูรณ์ (ทุก routes ใช้ Resend) |
+
+### **ความสมบูรณ์โดยรวม: 99.8%** ✅ (ระบบหลักเสร็จสมบูรณ์แล้ว - Affiliate Commission System 85% เสร็จแล้ว)
 
 ---
 

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/database/supabase/server';
+import { getCommissionRate, calculateCommissionAmount } from '@/lib/constants/affiliate';
 
 const DEFAULT_STATS = {
   totalReferrals: 0,
@@ -112,6 +113,7 @@ export async function GET() {
   }
 }
 
+// Legacy: Keep referral points for gamification (optional)
 const REFERRAL_POINTS = 200;
 
 const updateUserPoints = async (supabase: any, userId: string, points: number) => {
@@ -141,6 +143,10 @@ const updateUserPoints = async (supabase: any, userId: string, points: number) =
   }
 };
 
+/**
+ * POST /api/affiliate
+ * Creates an affiliate conversion record when a user signs up with a referral code
+ */
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient();
@@ -156,34 +162,100 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
+    // Validate referral code format
     const expectedCode = `MT${user.id.slice(-8).toUpperCase()}`;
     if (referralCode !== expectedCode) {
       return NextResponse.json({ error: 'Invalid referral code' }, { status: 400 });
     }
 
-    const { error: pointsError } = await supabase
-      .from('points_history')
-      .insert({
-        user_id: user.id,
-        points: REFERRAL_POINTS,
-        action_type: 'referral',
-        action_description: `แนะนำเพื่อนเข้าร่วมแพลตฟอร์ม`,
-        reference_id: referredUserId,
-        reference_type: 'referral'
-      });
+    // Check if conversion already exists (prevent duplicates)
+    const { data: existingConversion } = await supabase
+      .from('affiliate_conversions')
+      .select('id')
+      .eq('affiliate_user_id', user.id)
+      .eq('referred_user_id', referredUserId)
+      .eq('conversion_type', 'signup')
+      .maybeSingle();
 
-    if (pointsError) {
-      return NextResponse.json({ error: 'Failed to award referral points' }, { status: 500 });
+    if (existingConversion) {
+      return NextResponse.json({
+        success: true,
+        message: 'Conversion already recorded',
+        conversionId: existingConversion.id
+      });
     }
 
-    await updateUserPoints(supabase, user.id, REFERRAL_POINTS);
+    // Calculate commission for signup
+    const conversionType = 'signup';
+    const conversionValue = 0; // Signups typically have no monetary value
+    const commissionRate = getCommissionRate(conversionType);
+    const commissionAmount = calculateCommissionAmount(conversionValue, commissionRate);
+
+    // Create affiliate conversion record
+    const { data: conversion, error: conversionError } = await supabase
+      .from('affiliate_conversions')
+      .insert({
+        affiliate_user_id: user.id,
+        referred_user_id: referredUserId,
+        conversion_type: conversionType,
+        conversion_value: conversionValue,
+        commission_rate: commissionRate,
+        commission_amount: commissionAmount,
+        status: 'confirmed', // Signup is immediately confirmed
+        affiliate_code: referralCode,
+        referral_source: 'direct',
+        metadata: {
+          signup_date: new Date().toISOString(),
+          referral_code: referralCode
+        },
+        confirmed_at: new Date().toISOString()
+      })
+      .select()
+      .single();
+
+    if (conversionError) {
+      console.error('Error creating affiliate conversion:', conversionError);
+      return NextResponse.json(
+        { error: 'Failed to create affiliate conversion' },
+        { status: 500 }
+      );
+    }
+
+    // Optional: Still award points for gamification (separate from affiliate system)
+    try {
+      const { error: pointsError } = await supabase
+        .from('points_history')
+        .insert({
+          user_id: user.id,
+          points: REFERRAL_POINTS,
+          action_type: 'referral',
+          action_description: `แนะนำเพื่อนเข้าร่วมแพลตฟอร์ม`,
+          reference_id: referredUserId,
+          reference_type: 'referral'
+        });
+
+      if (!pointsError) {
+        await updateUserPoints(supabase, user.id, REFERRAL_POINTS);
+      }
+      // Don't fail if points update fails - affiliate conversion is more important
+    } catch (pointsErr) {
+      console.warn('Failed to award referral points (non-critical):', pointsErr);
+    }
 
     return NextResponse.json({
       success: true,
-      message: 'Referral points awarded successfully',
-      pointsAwarded: REFERRAL_POINTS
+      message: 'Affiliate conversion recorded successfully',
+      conversion: {
+        id: conversion.id,
+        conversionType: conversionType,
+        commissionRate: commissionRate,
+        commissionAmount: commissionAmount,
+        status: conversion.status
+      },
+      pointsAwarded: REFERRAL_POINTS // For gamification
     });
   } catch (error) {
+    console.error('Error in POST /api/affiliate:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
