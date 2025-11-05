@@ -97,18 +97,24 @@
 - ✅ ระบบรายงานอัตโนมัติ (Scheduled Reports) - 11 endpoints + Admin UI
 - ✅ Cron Jobs (ส่งอีเมลเตือน, สร้างรายงานอัตโนมัติ)
 
-### 7.1. ระบบ Partner Promotions (100%) ✅
-**Backend (100%)** ✅:
-- ✅ Partner สามารถสร้าง promotion สำหรับการจองค่ายมวยได้
-- ✅ API สำหรับ Partner Promotions (GET, POST, PATCH, DELETE)
-- ✅ RLS Policies สำหรับ security
-- ✅ Migration เพิ่ม `gym_id` ใน promotions table
+### 7.1. ระบบ Partner Promotions (80%) ✅
+**สรุป Partner Promotions** ✅
 
-**Frontend (100%)** ✅ - เสร็จสมบูรณ์:
-- ✅ สร้างหน้า `/partner/dashboard/promotions` แล้ว
-- ✅ สร้าง components ครบถ้วน (PromotionList, PromotionCreateModal, PromotionEditModal, PromotionDeleteDialog)
-- ✅ เพิ่ม menu item "โปรโมชั่น" ใน Partner Dashboard แล้ว
-- ✅ Update menu items ในทุกหน้า partner dashboard แล้ว
+**เสร็จแล้ว:**
+- ฝั่ง Backend:
+  - Partner สร้าง/แก้ไข/ลบ promotion ได้ (ครบทุก API: GET, POST, PATCH, DELETE)
+  - มีกฎ RLS เพิ่มความปลอดภัย
+  - promotions table มีฟิลด์ gym_id จาก migration ล่าสุด
+
+- ฝั่ง Frontend:
+  - มีหน้า `/partner/dashboard/promotions` สำหรับบริหารโปรโมชั่นโดยเฉพาะ
+  - มี components สำหรับทุกฟีเจอร์: PromotionList, PromotionCreateModal, PromotionEditModal, PromotionDeleteDialog
+  - เพิ่มเมนู "โปรโมชั่น" ใน Partner Dashboard และอัปเดตเมนูทุกหน้าแล้ว
+
+**ยังไม่เสร็จ:**
+- ⚠️ **ยังไม่มีระบบคำนวณส่วนลด** - Partner Promotions ยังเป็นแค่ระบบประกาศ/โฆษณา (marketing content)
+- ⚠️ **ยังไม่เชื่อมกับ Package** - ไม่มีฟิลด์ discount_percentage, discount_amount, หรือการเชื่อมโยงกับ package
+- ⚠️ **ยังไม่มีการคำนวณราคา** - หน้า booking ยังใช้ราคา package โดยตรง ไม่มีการตรวจสอบหรือคำนวณ promotion discount
 
 ### 8. ระบบสร้างแรงจูงใจ
 - ✅ ระบบ Gamification (คะแนน, เหรียญ, Leaderboard)
