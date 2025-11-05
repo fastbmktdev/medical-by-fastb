@@ -92,10 +92,11 @@ done
 # ENVIRONMENT DETECTION AND VALIDATION
 # ============================================================================
 
-# Read from environment variables or use local defaults
+# Read from environment variables (required - no hardcoded defaults for security)
+# For local development, get keys from: supabase status
 SUPABASE_URL="${SUPABASE_URL:-http://127.0.0.1:54321}"
-ANON_KEY="${SUPABASE_ANON_KEY:-REMOVED_SECRET}"
-SERVICE_ROLE_KEY="${SUPABASE_SERVICE_ROLE_KEY:-REMOVED_SECRET}"
+ANON_KEY="${SUPABASE_ANON_KEY}"
+SERVICE_ROLE_KEY="${SUPABASE_SERVICE_ROLE_KEY}"
 
 # Detect environment
 if [[ "$SUPABASE_URL" == *"127.0.0.1"* ]] || [[ "$SUPABASE_URL" == *"localhost"* ]]; then
@@ -142,6 +143,23 @@ check_dependencies() {
 # Function to validate environment configuration
 validate_environment() {
     log_info "Validating environment configuration..."
+    
+    # Check if required environment variables are set
+    if [[ -z "$ANON_KEY" ]]; then
+        log_error "SUPABASE_ANON_KEY is required but not set"
+        log_error "For local development, run: supabase status"
+        log_error "Then set: export SUPABASE_ANON_KEY=<your-anon-key>"
+        log_error "Or add to .env.local file: SUPABASE_ANON_KEY=<your-anon-key>"
+        exit 1
+    fi
+    
+    if [[ -z "$SERVICE_ROLE_KEY" ]]; then
+        log_error "SUPABASE_SERVICE_ROLE_KEY is required but not set"
+        log_error "For local development, run: supabase status"
+        log_error "Then set: export SUPABASE_SERVICE_ROLE_KEY=<your-service-role-key>"
+        log_error "Or add to .env.local file: SUPABASE_SERVICE_ROLE_KEY=<your-service-role-key>"
+        exit 1
+    fi
     
     # Check if .env files exist for local development
     if [[ "$ENVIRONMENT" == "LOCAL" ]]; then

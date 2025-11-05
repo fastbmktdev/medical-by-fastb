@@ -24,17 +24,22 @@ export async function createClient() {
 
   // Validate environment variables
   if (!supabaseUrl || !supabaseAnonKey) {
-    // Return a dummy client to prevent crashes
-    return createServerClient(
-      'https://placeholder.supabase.co',
-      'placeholder-key',
-      {
-        cookies: {
-          getAll() { return []; },
-          setAll() {},
-        },
-      }
-    );
+    const missingVars = [];
+    if (!supabaseUrl) missingVars.push('SUPABASE_URL');
+    if (!supabaseAnonKey) missingVars.push('SUPABASE_ANON_KEY');
+    
+    const errorMessage = `Missing Supabase environment variables: ${missingVars.join(', ')}. 
+    
+For local development: Please ensure these are set in your .env.local file and restart your dev server.
+
+For production: These variables must be set as environment variables in your deployment platform (Vercel, etc.).
+
+Current values:
+- SUPABASE_URL: ${supabaseUrl ? 'Set' : 'Missing'}
+- SUPABASE_ANON_KEY: ${supabaseAnonKey ? 'Set' : 'Missing'}`;
+    
+    console.error('❌ Supabase Server Client Error:', errorMessage);
+    throw new Error(errorMessage);
   }
 
   return createServerClient(
