@@ -9,12 +9,15 @@
 
 **สิ่งที่ทำเสร็จแล้ว**:
 - ✅ ระบบหลักทั้งหมดใช้งานได้ (Authentication, Booking, Payment, Gamification)
-- ✅ **121 API Endpoints** (105%)
-- ✅ **49 ตารางฐานข้อมูล** (100%)
+- ✅ **125+ API Endpoints** (105%+)
+- ✅ **49+ ตารางฐานข้อมูล** (100%) - รวม migrations ทั้งหมด 23 ไฟล์
 - ✅ Production build ผ่านเรียบร้อย
 - ✅ Shop Frontend เชื่อมต่อกับ Products API แล้ว
-- ✅ Admin UI สำหรับ Products/Promotions เสร็จแล้ว
+- ✅ Admin UI สำหรับ Products/Promotions/Events เสร็จแล้ว
 - ✅ **Search & Filter System**: เสร็จสมบูรณ์ 100% (รวม Search Analytics)
+- ✅ **Newsletter System**: เสร็จสมบูรณ์ 100% (สมัครรับ/ยกเลิก, Campaigns, Unsubscribe)
+- ✅ **Partner Promotions**: เสร็จสมบูรณ์ 100% (API + Frontend UI)
+- ✅ **Email Service Migration**: 98% เสร็จ (ใช้ Resend แล้ว)
 - ✅ **Migration Optimization**: ลดขนาด migrations ได้ 15.8 KB (6.8%)
 - ✅ **Code Cleanup**: ลบไฟล์ที่ไม่จำเป็น (ลดขนาดได้ 32 KB)
 
@@ -30,9 +33,10 @@
 
 | รายการ | จำนวน | สถานะ |
 |--------|-------|-------|
-| API Endpoints | 121 | ✅ 105% |
-| Database Tables | 49 | ✅ 100% |
-| Pages/Routes | 121 | ✅ |
+| API Endpoints | 125+ | ✅ 105%+ |
+| Database Tables | 49+ | ✅ 100% |
+| Migrations | 23 | ✅ |
+| Pages/Routes | 125+ | ✅ |
 | Components | 100+ | ✅ |
 
 ---
@@ -186,6 +190,7 @@
 | Build System | 100% ✅ |
 | Partner Promotions | 100% ✅ |
 | Email Service Migration | 98% ⚠️ (Email Queue Processor และ Direct API Routes ใช้ Resend แล้ว, เหลืออัปเดต documentation ถ้ามี) |
+| Newsletter System | 100% ✅ |
 | **รวม** | **99.8%** ✅ |
 
 ---
@@ -193,79 +198,33 @@
 ## 📅 อัปเดตล่าสุด
 
 ### 2025-11-05 (วันนี้)
-
-#### 📊 สรุปงานที่ทำเสร็จในวันนี้:
-1. ✅ **Search Analytics System** - เสร็จสมบูรณ์ 100%
-2. ✅ **Shop Frontend Integration** - เชื่อมต่อกับ Products API
-3. ✅ **Products Admin UI** - เสร็จสมบูรณ์
-4. ✅ **Promotions Admin UI** - เสร็จสมบูรณ์
-5. ✅ **Partner Promotions** - เสร็จสมบูรณ์ 100%
-6. ✅ **Migration Optimization** - สร้างสคริปต์ optimize-migrations.js
-7. ✅ **Code Cleanup** - ลบไฟล์ที่ไม่จำเป็น
-8. ✅ **Email Service Migration** - 98% เสร็จ (ใช้ Resend แล้ว)
-
-#### 📝 รายละเอียด:
-
-- ✅ **Search Analytics**: ระบบ Analytics สำหรับคำค้นหายอดนิยมเสร็จสมบูรณ์ (100%)
-  - Admin RLS Policy สำหรับ access search_history (Migration: 20251211000000_search_analytics_admin_access.sql)
-  - Search Analytics API endpoint (`/api/admin/analytics/search`)
-  - รองรับการกรองตามวันที่, ประเภทการค้นหา (gyms, events, articles, all), และ limit
-  - แสดงสถิติ: จำนวนครั้งค้นหา, คำค้นหาที่ไม่ซ้ำ, ผลลัพธ์เฉลี่ย
-  - ระบบ Search & Filter เสร็จสมบูรณ์ 100% (เพิ่มจาก 80%)
-
-- ✅ **Shop Frontend Integration**: Shop Frontend เชื่อมต่อกับ Products API แล้ว (ไม่ใช้ Static Data)
-
-- ✅ **Products Admin UI**: Admin UI สำหรับจัดการสินค้าเสร็จสมบูรณ์
-
-- ✅ **Promotions Admin UI**: Admin UI สำหรับจัดการโปรโมชั่นเสร็จสมบูรณ์
-
-- ✅ **Partner Promotions**: Partner สามารถสร้างและจัดการ promotions สำหรับการจองค่ายมวยได้
-  - ✅ API Endpoints (GET, POST, PATCH, DELETE)
-  - ✅ Migration + RLS Policies
-  - ✅ Frontend UI (หน้า /partner/dashboard/promotions)
-  - ✅ Components (PromotionList, PromotionCreateModal, PromotionEditModal, PromotionDeleteDialog)
-  - ✅ Menu Integration
-
-- ✅ **Migration Optimization**: สร้างสคริปต์ optimize-migrations.js เพื่อลดขนาดไฟล์ migrations
-
-- ✅ **Code Cleanup**: ลบไฟล์ที่ไม่จำเป็น
-
-- ✅ **Email Service Migration**: Email Queue Processor และ Direct API Routes ใช้ Resend แล้ว (98% เสร็จ)
-  - ✅ Password Reset Email ใช้ Resend แล้ว
-  - ✅ Email Queue Processor ใช้ Resend เป็น default provider
-  - ✅ Direct API Routes ใช้ Resend แล้ว (booking, payment, verification)
-  - ✅ รองรับทุก email type ผ่าน Resend (booking, payment, partner, admin, verification)
-  - ✅ สร้าง test script (`test-resend-emails.js`) และ npm script `test:resend` สำหรับทดสอบว่าส่งเมลสำเร็จไหม
-  - ✅ อัปเดต documentation (`GOOGLE_SMTP_SETUP.md`) แล้ว
+✅ **Search Analytics System** - เสร็จสมบูรณ์ 100%  
+✅ **Shop Frontend Integration** - เชื่อมต่อ Products API  
+✅ **Products Admin UI** - เสร็จสมบูรณ์  
+✅ **Promotions Admin UI** - เสร็จสมบูรณ์  
+✅ **Partner Promotions** - API + UI ครบถ้วน  
+✅ **Email Service Migration** - ใช้ Resend แล้ว (98%)  
+✅ **Code Cleanup** - ลบไฟล์ที่ไม่จำเป็น
 
 ### 2025-11-04
-- ✅ **Newsletter & Promotional Emails System**: ระบบจดหมายข่าวและอีเมลโปรโมชั่นเสร็จสมบูรณ์
-  - Newsletter Subscriptions API (Subscribe/Unsubscribe)
-  - Newsletter Campaigns (Database + RLS)
-  - Unsubscribe Page
-  - Integration กับ Email Queue System
-  - ส่ง Promotional emails อัตโนมัติเมื่อสร้าง/อัปเดต Promotion
-- ✅ **Scheduled Reports System**: ระบบรายงานอัตโนมัติเสร็จสมบูรณ์
-  - รองรับรายงานหลายรูปแบบ (PDF, CSV)
-  - ตั้งเวลาสร้างรายงานอัตโนมัติ (daily, weekly, monthly, etc.)
-  - ส่งอีเมลรายงานพร้อมไฟล์แนบ
-  - Admin UI สำหรับจัดการรายงาน
-- ✅ **QR Code System**: ระบบ QR Code สำหรับตั๋วอีเวนต์
-- ✅ **Check-in System**: UI สำหรับเช็คอินตั๋ว (Admin)
-- ✅ **Event Categories**: ระบบจัดการหมวดหมู่อีเวนต์ (API + Admin UI)
+✅ **Newsletter & Promotional Emails** - ระบบสมบูรณ์  
+✅ **Scheduled Reports System** - รายงานอัตโนมัติ (PDF/CSV)  
+✅ **QR Code System** - สำหรับตั๋วอีเวนต์  
+✅ **Check-in System** - UI สำหรับ Admin  
+✅ **Event Categories** - API + Admin UI
 
 ### 2025-11-03
-- ✅ Shipping System (5 endpoints)
-- ✅ Orders Management (3 endpoints)
-- ✅ Product Variants API (4 endpoints)
-- ✅ Product Images API (3 endpoints)
+✅ Shipping System (5 endpoints)  
+✅ Orders Management (3 endpoints)  
+✅ Product Variants API (4 endpoints)  
+✅ Product Images API (3 endpoints)
 
 ### 2025-10-31
-- ✅ Admin Promotions API (4 endpoints)
-- ✅ Partner Payouts API (3 endpoints)
-- ✅ Cron Jobs (Booking Reminders, Scheduled Reports)
-- ✅ Audit Logging System (API + Admin UI)
-- ✅ Gamification Notifications
+✅ Admin Promotions API (4 endpoints)  
+✅ Partner Payouts API (3 endpoints)  
+✅ Cron Jobs (Booking Reminders, Scheduled Reports)  
+✅ Audit Logging System (API + Admin UI)  
+✅ Gamification Notifications
 
 ---
 
@@ -292,7 +251,7 @@
 
 ## 📊 สรุปความคืบหน้า
 
-**ระบบพร้อมใช้งาน 99.8%** - ฟีเจอร์หลักใช้งานได้จริง Database และ API ครบถ้วน (121 endpoints, 49 tables)
+**ระบบพร้อมใช้งาน 99.8%** - ฟีเจอร์หลักใช้งานได้จริง Database และ API ครบถ้วน (125+ endpoints, 49+ tables, 23 migrations)
 
 ### ✅ สิ่งที่เสร็จแล้ว (99.8%)
 - ✅ Authentication & Authorization
