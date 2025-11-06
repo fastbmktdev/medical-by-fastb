@@ -484,7 +484,7 @@
   - [x] Filters work (if implemented)
   - [x] Status badges display correctly
   
-  **E2E Test**: `npm run test:affiliate:dashboard` หรือ `playwright test tests/e2e/affiliate-dashboard.spec.ts`
+  **E2E Test**: `npm run test:e2e:affiliate` หรือ `playwright test tests/e2e/affiliate/affiliate-dashboard.spec.ts`
   
   **Test Results**: ✅ **1/1 E2E test passed** (2025-11-06, 1.7m)
   - ✅ Test 1: Dashboard displays data correctly (1.7m)
