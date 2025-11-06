@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/database/supabase/server';
 import { awardPoints, updateUserStreak } from '@/services/gamification.service';
 import { sendBookingConfirmationEmail } from '@/lib/email/resend';
+import { getAffiliateUserIdForReferredUser } from '@/lib/utils/affiliate';
 
 export async function POST(request: NextRequest) {
   try {
@@ -125,6 +126,59 @@ export async function POST(request: NextRequest) {
     } catch (emailError) {
       // Don't fail the booking if email fails
       console.warn('Email notification error (booking still successful):', emailError);
+    }
+
+    // Create affiliate conversion if user was referred
+    try {
+      const affiliateUserId = await getAffiliateUserIdForReferredUser(user.id);
+      
+      if (affiliateUserId && booking) {
+        // Create conversion directly in database (server-side)
+        const { getCommissionRate, calculateCommissionAmount } = await import('@/lib/constants/affiliate');
+        const commissionRate = getCommissionRate('booking');
+        const commissionAmount = calculateCommissionAmount(totalPrice, commissionRate);
+
+        // Check if conversion already exists (prevent duplicates)
+        const { data: existingConversion } = await supabase
+          .from('affiliate_conversions')
+          .select('id')
+          .eq('affiliate_user_id', affiliateUserId)
+          .eq('referred_user_id', user.id)
+          .eq('conversion_type', 'booking')
+          .eq('reference_id', booking.id)
+          .eq('reference_type', 'booking')
+          .maybeSingle();
+
+        if (!existingConversion) {
+          const { error: conversionError } = await supabase
+            .from('affiliate_conversions')
+            .insert({
+              affiliate_user_id: affiliateUserId,
+              referred_user_id: user.id,
+              conversion_type: 'booking',
+              conversion_value: totalPrice,
+              commission_rate: commissionRate,
+              commission_amount: commissionAmount,
+              status: 'pending', // Will be updated to 'confirmed' when payment succeeds
+              reference_id: booking.id,
+              reference_type: 'booking',
+              referral_source: 'direct',
+              metadata: {
+                gym_id: gymId,
+                package_type: packageType,
+                package_name: packageName,
+                booking_number: booking.booking_number,
+              },
+            });
+
+          if (conversionError) {
+            console.warn('Failed to create affiliate conversion:', conversionError);
+          }
+        }
+      }
+    } catch (affiliateError) {
+      // Don't fail the booking if affiliate conversion fails
+      console.warn('Affiliate conversion error (booking still successful):', affiliateError);
     }
 
     // Award gamification points for booking

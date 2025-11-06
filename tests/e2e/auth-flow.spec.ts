@@ -200,20 +200,40 @@ test.describe('Complete Authentication Flow - 3 Roles', () => {
       const gymData = generateGymData(partnerUser.email);
 
       // Apply for partner
-      await applyForPartner(page, gymData);
+      const submissionSuccess = await applyForPartner(page, gymData);
 
-      // Wait for submission
+      // Wait for submission to complete
       await page.waitForTimeout(3000);
 
       // Take screenshot
       await takeDebugScreenshot(page, 'partner-application-submitted');
 
-      // Verify success message or redirect
-      const applicationUrl = page.url();
-      console.log('After partner application URL:', applicationUrl);
+      // Verify success
+      if (submissionSuccess) {
+        console.log('✅ Partner application submitted successfully');
+      } else {
+        console.log('⚠️ Partner application submission may have failed');
+        // Take error screenshot
+        await takeDebugScreenshot(page, 'partner-application-error');
+      }
+
+      // Verify success indicators
+      const currentUrl = page.url();
+      console.log('After partner application URL:', currentUrl);
+
+      // Check for success message or status view
+      const successMessage = page.locator('text=ส่งคำขอสำเร็จ')
+        .or(page.locator('text=สถานะการสมัคร'))
+        .or(page.locator('text=รอการอนุมัติ'));
+      
+      const hasSuccessMessage = await successMessage.isVisible({ timeout: 5000 });
+      
+      if (hasSuccessMessage) {
+        console.log('✅ Success message found');
+      }
 
       // Should see success message or be on application page
-      expect(applicationUrl).toBeTruthy();
+      expect(submissionSuccess || hasSuccessMessage || currentUrl.includes('/partner/apply')).toBeTruthy();
 
       // Logout
       await logoutUser(page);

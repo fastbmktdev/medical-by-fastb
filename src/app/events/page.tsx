@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Event } from "@/types";
 import {
   MagnifyingGlassIcon,
@@ -10,6 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { PageHeader } from "@/components/shared";
 import { EventCard } from "@/components/shared";
+import { trackSearch } from "@/lib/utils/analytics";
 
 type ViewMode = "list" | "grid";
 
@@ -80,6 +81,20 @@ export default function EventsPage() {
       return dateA - dateB;
     }
   );
+
+  const prevSearchQuery = useRef<string>("");
+
+  // Track search event when search query changes
+  useEffect(() => {
+    if (searchQuery.trim() && searchQuery.trim() !== prevSearchQuery.current) {
+      try {
+        trackSearch(searchQuery.trim(), selectedCity !== "all" ? selectedCity : "events", filteredEvents.length);
+        prevSearchQuery.current = searchQuery.trim();
+      } catch (error) {
+        console.warn('Analytics tracking error:', error);
+      }
+    }
+  }, [searchQuery, selectedCity, filteredEvents.length]);
 
   return (
     <div className="bg-zinc-950 min-h-screen">

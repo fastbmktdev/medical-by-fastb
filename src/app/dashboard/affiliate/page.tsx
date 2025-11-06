@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useCallback } from 'react';
-import { createClient } from '@/lib/database/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardBody, CardHeader, Button, Chip, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Divider, Progress, Tooltip } from '@heroui/react';
 import {
@@ -42,7 +41,6 @@ interface ReferralHistory {
 
 export default function AffiliateDashboardPage() {
   const { user } = useAuth();
-  const supabase = createClient();
   
   const [affiliateCode, setAffiliateCode] = useState('');
   const [affiliateLink, setAffiliateLink] = useState('');
@@ -64,12 +62,15 @@ export default function AffiliateDashboardPage() {
     setAffiliateLink(`${window.location.origin}/signup?ref=${code}`);
   }, [user]);
 
-  const calculateMonthlyGrowth = (referrals: any[], currentMonthReferrals: number) => {
+  const calculateMonthlyGrowth = (referralHistory: any[], currentMonthReferrals: number) => {
+    if (!referralHistory || referralHistory.length === 0) return 0;
+    
     const now = new Date();
     const lastMonth = now.getMonth() === 0 ? 11 : now.getMonth() - 1;
-    const lastMonthReferrals = referrals.filter(ref => {
+    const lastMonthYear = now.getMonth() === 0 ? now.getFullYear() - 1 : now.getFullYear();
+    const lastMonthReferrals = referralHistory.filter(ref => {
       const refDate = new Date(ref.created_at);
-      return refDate.getMonth() === lastMonth && refDate.getFullYear() === now.getFullYear();
+      return refDate.getMonth() === lastMonth && refDate.getFullYear() === lastMonthYear;
     }).length;
 
     return lastMonthReferrals > 0
@@ -81,46 +82,52 @@ export default function AffiliateDashboardPage() {
     if (!user) return;
 
     try {
-      const { data: referrals } = await supabase
-        .from('points_history')
-        .select('*')
-        .eq('user_id', user.id)
-        .eq('action_type', 'referral')
-        .order('created_at', { ascending: false });
+      // Fetch data from API endpoint which now uses affiliate_conversions
+      const response = await fetch('/api/affiliate');
+      if (!response.ok) {
+        throw new Error('Failed to fetch affiliate data');
+      }
+      
+      const data = await response.json();
+      
+      if (data.referralHistory) {
+        setReferralHistory(data.referralHistory.map((ref: any) => ({
+          id: ref.id,
+          referred_user_email: ref.referred_user_email || 'Unknown',
+          status: ref.status || 'pending',
+          points_earned: ref.points_earned || ref.commission_amount || 0,
+          created_at: ref.created_at,
+          source: ref.source || 'Direct'
+        })));
+      }
 
-      if (!referrals) return;
-
-      setReferralHistory(referrals.map(ref => ({
-        id: ref.id,
-        referred_user_email: ref.action_description || 'Unknown',
-        status: 'rewarded' as const,
-        points_earned: ref.points,
-        created_at: ref.created_at,
-        source: 'Direct'
-      })));
-
-      const now = new Date();
-      const totalReferrals = referrals.length;
-      const totalEarnings = referrals.reduce((sum, ref) => sum + ref.points, 0);
-      const currentMonthReferrals = referrals.filter(ref => {
-        const refDate = new Date(ref.created_at);
-        return refDate.getMonth() === now.getMonth() && refDate.getFullYear() === now.getFullYear();
-      }).length;
+      // Calculate top referral source
+      const sourceCounts: Record<string, number> = {};
+      (data.referralHistory || []).forEach((ref: any) => {
+        const source = ref.source || 'Direct';
+        sourceCounts[source] = (sourceCounts[source] || 0) + 1;
+      });
+      const topSource = Object.entries(sourceCounts)
+        .sort((a, b) => b[1] - a[1])[0]?.[0] || 'Direct';
 
       setStats({
-        totalReferrals,
-        totalEarnings,
-        currentMonthReferrals,
-        conversionRate: totalReferrals > 0 ? Math.min(Math.round((totalReferrals / 10) * 100), 100) : 0,
-        monthlyGrowth: calculateMonthlyGrowth(referrals, currentMonthReferrals),
-        topReferralSource: 'Direct'
+        totalReferrals: data.totalReferrals || 0,
+        totalEarnings: data.totalEarnings || 0,
+        currentMonthReferrals: data.currentMonthReferrals || 0,
+        conversionRate: data.conversionRate || 0,
+        monthlyGrowth: calculateMonthlyGrowth(
+          data.referralHistory || [], 
+          data.currentMonthReferrals || 0
+        ),
+        topReferralSource: topSource
       });
     } catch (error) {
+      console.error('Error loading affiliate data:', error);
       // Error handled silently
     } finally {
       setIsLoading(false);
     }
-  }, [user, supabase]);
+  }, [user]);
 
   useEffect(() => {
     if (user) {
@@ -445,7 +452,11 @@ export default function AffiliateDashboardPage() {
                       </TableCell>
                       <TableCell>
                         <Chip 
-                          color={referral.status === 'rewarded' ? 'success' : 'warning'} 
+                          color={
+                            referral.status === 'rewarded' ? 'success' : 
+                            referral.status === 'completed' ? 'primary' : 
+                            'warning'
+                          } 
                           size="sm"
                           variant="flat"
                         >
@@ -453,6 +464,11 @@ export default function AffiliateDashboardPage() {
                             <span className="flex items-center gap-1">
                               <CheckCircleIcon className="w-3 h-3" />
                               ได้รับแต้มแล้ว
+                            </span>
+                          ) : referral.status === 'completed' ? (
+                            <span className="flex items-center gap-1">
+                              <CheckCircleIcon className="w-3 h-3" />
+                              ยืนยันแล้ว
                             </span>
                           ) : (
                             'รอดำเนินการ'

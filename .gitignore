@@ -27,7 +27,8 @@ tests/**/.cache/
 playwright/**/*.trace
 playwright/**/*.webm
 playwright/**/*.png
-/tests/screenshots/
+tests/screenshots/**/*.png
+tests/screenshots/**/*.jpg
 /blob-report/
 playwright/.cache/
 
@@ -150,12 +151,11 @@ FIX_SUPABASE_LOCAL.md
 *_LOGIN.md
 *_FIX*.md
 *TROUBLESHOOT*.md
-PROGRESS_*.md
-DEPLOYMENT.md
 # Keep essential documentation
 !README.md
-!PROGRESS_REPORT.md
-!PROGRESS_SUMMARY.md
+!docs/**/*.md
+!scripts/**/*.md
+!tests/**/*.md
 
 # Debug files that may expose sensitive information
 src/app/login/debug.tsx

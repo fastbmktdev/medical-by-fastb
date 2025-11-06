@@ -144,6 +144,46 @@ export function trackUserLogin(userId: string, method: string = 'email'): void {
 }
 
 /**
+ * Track search event
+ * @param searchTerm - The search query
+ * @param category - Search category (gyms, events, shop, etc.)
+ * @param resultCount - Number of results (optional)
+ */
+export function trackSearch(
+  searchTerm: string,
+  category?: string,
+  resultCount?: number
+): void {
+  trackEvent('search', {
+    search_term: searchTerm,
+    search_category: category || 'all',
+    result_count: resultCount,
+  });
+}
+
+/**
+ * Track product view
+ * @param productId - Product ID
+ * @param productName - Product name
+ * @param category - Product category
+ * @param price - Product price
+ */
+export function trackProductView(
+  productId: string,
+  productName: string,
+  category?: string,
+  price?: number
+): void {
+  trackEvent('view_item', {
+    item_id: productId,
+    item_name: productName,
+    item_category: category,
+    value: price,
+    currency: 'THB',
+  });
+}
+
+/**
  * Check if Google Analytics is available
  */
 export function isAnalyticsAvailable(): boolean {

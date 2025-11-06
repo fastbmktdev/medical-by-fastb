@@ -1,23 +1,22 @@
 "use client";
 
 import { useEffect } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { trackPageView } from '@/lib/utils/analytics';
 
 /**
  * Hook to track page views automatically
  * 
  * Usage: Add `usePageView()` to any page component
+ * 
+ * Note: Only tracks pathname to avoid Suspense boundary issues with useSearchParams
  */
 export function usePageView() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
-    // Build full URL with query params
-    const url = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : '');
-    
-    // Track page view
-    trackPageView(url);
-  }, [pathname, searchParams]);
+    // Track page view with pathname only
+    // Query params are tracked by GA automatically via page_path
+    trackPageView(pathname);
+  }, [pathname]);
 }

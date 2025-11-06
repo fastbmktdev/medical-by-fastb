@@ -12,6 +12,7 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { trackProductView } from "@/lib/utils/analytics";
 
 interface Product {
   id: string;
@@ -83,6 +84,20 @@ export default function ProductDetailPage({
         
         if (detailData.success) {
           setProduct(detailData.data);
+          
+          // Track product view
+          try {
+            const productName = detailData.data.nameThai || detailData.data.nameEnglish || 'Unknown';
+            const category = detailData.data.category?.nameThai || detailData.data.category?.nameEnglish || undefined;
+            trackProductView(
+              detailData.data.id,
+              productName,
+              category,
+              detailData.data.price
+            );
+          } catch (error) {
+            console.warn('Analytics tracking error:', error);
+          }
           
           // Set default variant if available
           if (detailData.data.variants && detailData.data.variants.length > 0) {

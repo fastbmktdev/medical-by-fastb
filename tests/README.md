@@ -1,4 +1,4 @@
-# Unit Tests Documentation
+# Tests Documentation
 
 ## 📋 Overview
 
@@ -23,7 +23,7 @@ npm run test:coverage
 
 ### รัน Test File เฉพาะ
 ```bash
-npm test -- tests/promotion-discount.test.ts
+npm test -- tests/unit/promotion-discount.test.ts
 ```
 
 ### รัน Promotion Tests โดยเฉพาะ
@@ -31,14 +31,86 @@ npm test -- tests/promotion-discount.test.ts
 npm run test:promotion
 ```
 
-## 📁 Test Structure
+### รัน E2E Tests
+```bash
+npm run test:e2e
+```
+
+## 📁 Test Directory Structure
 
 ```
 tests/
-├── promotion-discount.test.ts    # Unit tests สำหรับ promotion discount system
-├── promotion-api.test.ts         # API integration tests
-└── scripts/                      # Test scripts (executable tests)
+├── unit/              # Unit tests (Jest)
+│   ├── promotion-discount.test.ts
+│   ├── promotion-api.test.ts
+│   └── test-*.js
+├── integration/       # Integration tests
+│   ├── admin-management.test.js
+│   ├── database-utilities.test.js
+│   ├── development-setup.test.js
+│   ├── storage-configuration.test.js
+│   └── test-google-analytics.js
+├── affiliate/         # Affiliate system tests
+│   ├── test-affiliate-signup.js
+│   ├── test-affiliate-booking*.js
+│   ├── test-affiliate-commission*.js
+│   ├── test-affiliate-payment*.js
+│   └── test-affiliate-stats-api.js
+├── e2e/              # End-to-end tests (Playwright)
+│   ├── auth-flow.spec.ts
+│   ├── affiliate-dashboard.spec.ts
+│   ├── affiliate-signup-sessionstorage.spec.ts
+│   ├── admin-gym-management.spec.ts
+│   ├── login-existing-users.spec.ts
+│   └── helpers.ts
+├── analysis/         # Code analysis tests
+├── screenshots/      # Test screenshots
+└── run-all-tests.js  # Test runner script
 ```
+
+## 📚 Test Categories
+
+### 1. Unit Tests (`unit/`)
+Individual function and component tests using Jest.
+
+**Coverage:**
+- Promotion discount calculations
+- Promotion API logic
+- Utility functions
+
+### 2. Integration Tests (`integration/`)
+Tests that verify multiple components working together.
+
+**Coverage:**
+- Admin management
+- Database utilities
+- Development setup
+- Storage configuration
+- Google Analytics integration
+
+### 3. Affiliate Tests (`affiliate/`)
+Comprehensive tests for the affiliate/referral system.
+
+**Coverage:**
+- Signup and registration flows
+- Booking tracking with referrals
+- Commission calculations
+- Payment processing
+- Analytics and statistics
+
+See [affiliate/README.md](./affiliate/README.md) for detailed documentation.
+
+### 4. E2E Tests (`e2e/`)
+End-to-end browser tests using Playwright.
+
+**Coverage:**
+- Authentication flows
+- Affiliate dashboard
+- Admin gym management
+- User login scenarios
+
+### 5. Analysis Tests (`analysis/`)
+Code quality and security analysis tests.
 
 ## ✅ Test Results
 

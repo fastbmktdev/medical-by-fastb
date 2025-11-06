@@ -16,6 +16,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/database/supabase/server';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { Resend } from 'resend';
 
 /**
  * Verify cron secret for authentication
@@ -218,6 +219,120 @@ function escapeCSV(value: string): string {
 }
 
 /**
+ * Send scheduled report email with attachment
+ */
+async function sendReportEmail(
+  recipients: string[],
+  ccRecipients: string[] | null | undefined,
+  bccRecipients: string[] | null | undefined,
+  reportName: string,
+  fileName: string,
+  fileContent: Buffer | string,
+  mimeType: string,
+  rowCount: number
+): Promise<{ success: boolean; id?: string; error?: string }> {
+  try {
+    // Check if Resend is configured
+    const resendApiKey = process.env.RESEND_API_KEY;
+    if (!resendApiKey) {
+      return {
+        success: false,
+        error: 'Resend API key not configured. Cannot send report emails.',
+      };
+    }
+
+    const resend = new Resend(resendApiKey);
+    const fromEmail = process.env.CONTACT_EMAIL_FROM || 'onboarding@resend.dev';
+
+    // Generate email HTML content
+    const emailHtml = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background-color: #dc3545; color: white; padding: 20px; text-align: center; border-radius: 5px 5px 0 0; }
+            .content { background-color: #f9f9f9; padding: 20px; border: 1px solid #ddd; }
+            .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
+            .info { background-color: #e7f3ff; padding: 15px; border-radius: 5px; margin: 15px 0; }
+            .info-item { margin: 5px 0; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>📊 รายงานที่กำหนดเวลา</h1>
+            </div>
+            <div class="content">
+              <p>สวัสดีครับ/ค่ะ,</p>
+              <p>รายงาน <strong>${reportName}</strong> ถูกสร้างเสร็จเรียบร้อยแล้ว</p>
+              
+              <div class="info">
+                <div class="info-item"><strong>ชื่อรายงาน:</strong> ${reportName}</div>
+                <div class="info-item"><strong>จำนวนรายการ:</strong> ${rowCount.toLocaleString()} รายการ</div>
+                <div class="info-item"><strong>วันที่สร้าง:</strong> ${new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' })}</div>
+                <div class="info-item"><strong>รูปแบบไฟล์:</strong> ${mimeType === 'application/pdf' ? 'PDF' : 'CSV'}</div>
+              </div>
+              
+              <p>รายงานถูกแนบมาในอีเมลนี้ กรุณาตรวจสอบไฟล์แนบ</p>
+              
+              <p>ขอแสดงความนับถือ<br>ระบบจัดการรายงานอัตโนมัติ</p>
+            </div>
+            <div class="footer">
+              <p>อีเมลนี้ถูกส่งอัตโนมัติจากระบบ MUAYTHAI Platform</p>
+            </div>
+          </div>
+        </body>
+      </html>
+    `;
+
+    // Convert file content to base64 for attachment
+    const fileBuffer = Buffer.isBuffer(fileContent) 
+      ? fileContent 
+      : Buffer.from(fileContent, 'utf-8');
+    const base64Content = fileBuffer.toString('base64');
+
+    // Send email with attachment
+    const result = await resend.emails.send({
+      from: fromEmail,
+      to: recipients,
+      cc: ccRecipients && ccRecipients.length > 0 ? ccRecipients : undefined,
+      bcc: bccRecipients && bccRecipients.length > 0 ? bccRecipients : undefined,
+      subject: `รายงานที่กำหนดเวลา: ${reportName}`,
+      html: emailHtml,
+      attachments: [
+        {
+          filename: fileName,
+          content: base64Content,
+        },
+      ],
+    });
+
+    if (result.error) {
+      console.error('Failed to send report email:', result.error);
+      return {
+        success: false,
+        error: result.error.message || 'Failed to send email',
+      };
+    }
+
+    console.log('✅ Report email sent successfully:', result.data?.id);
+    return {
+      success: true,
+      id: result.data?.id,
+    };
+  } catch (error) {
+    console.error('Error sending report email:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    };
+  }
+}
+
+/**
  * GET /api/cron/generate-scheduled-reports
  * POST /api/cron/generate-scheduled-reports
  */
@@ -395,8 +510,32 @@ async function handleGenerateScheduledReports(request: NextRequest) {
         // For now, we'll just store the file reference in the execution record
 
         // Send email with report attachment
-        // TODO: Integrate with email service to send report
-        // For now, we'll just mark as completed
+        let emailSent = false;
+        let emailSentAt: string | null = null;
+        let emailError: string | null = null;
+
+        if (scheduledReport.recipients && scheduledReport.recipients.length > 0) {
+          const emailResult = await sendReportEmail(
+            scheduledReport.recipients,
+            scheduledReport.cc_recipients,
+            scheduledReport.bcc_recipients,
+            scheduledReport.name,
+            fileName,
+            fileContent,
+            mimeType,
+            reportData.length
+          );
+
+          emailSent = emailResult.success;
+          emailSentAt = emailResult.success ? new Date().toISOString() : null;
+          emailError = emailResult.error || null;
+
+          if (!emailResult.success) {
+            console.error(`Failed to send report email for ${scheduledReport.name}:`, emailResult.error);
+          }
+        } else {
+          console.warn(`No recipients specified for scheduled report ${scheduledReport.id}`);
+        }
 
         // Update execution record
         await supabase
@@ -407,9 +546,10 @@ async function handleGenerateScheduledReports(request: NextRequest) {
             rows_processed: reportData.length,
             file_url: fileUrl,
             file_size_bytes: fileSizeBytes,
-            email_sent: true, // TODO: Set based on actual email send result
-            email_sent_at: new Date().toISOString(),
+            email_sent: emailSent,
+            email_sent_at: emailSentAt,
             email_recipients: scheduledReport.recipients,
+            error_message: emailError || null,
           })
           .eq('id', executionId);
 

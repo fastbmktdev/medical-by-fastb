@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createClient } from "@/lib/database/supabase/client";
 import {
   MapPinIcon,
@@ -12,6 +12,7 @@ import { Button } from "@heroui/react";
 import { PageHeader } from "@/components/shared";
 import { GymCard } from "@/components/shared";
 import type { Gym } from "@/types/app.types";
+import { trackSearch } from "@/lib/utils/analytics";
 
 export default function GymsPage() {
   const supabase = createClient();
@@ -47,6 +48,8 @@ export default function GymsPage() {
     loadGyms();
   }, [supabase]);
 
+  const prevSearchQuery = useRef<string>("");
+
   // Filter gyms based on search and type
   const filteredGyms = gyms.filter((gym) => {
     const matchesSearch =
@@ -58,6 +61,18 @@ export default function GymsPage() {
 
     return matchesSearch && matchesType;
   });
+
+  // Track search event when search query changes
+  useEffect(() => {
+    if (searchQuery.trim() && searchQuery.trim() !== prevSearchQuery.current) {
+      try {
+        trackSearch(searchQuery.trim(), selectedType !== "all" ? selectedType : "gyms", filteredGyms.length);
+        prevSearchQuery.current = searchQuery.trim();
+      } catch (error) {
+        console.warn('Analytics tracking error:', error);
+      }
+    }
+  }, [searchQuery, selectedType, filteredGyms.length]);
 
   const gymTypes = [
     "all",

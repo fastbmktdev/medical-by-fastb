@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { MagnifyingGlassIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import { trackSearch } from "@/lib/utils/analytics";
 
 export default function QuickSearchBar() {
   const router = useRouter();
@@ -20,6 +21,9 @@ export default function QuickSearchBar() {
     const params = new URLSearchParams();
     if (searchQuery) {
       params.set("q", searchQuery);
+      
+      // Track search event
+      trackSearch(searchQuery.trim(), activeCategory);
     }
     const queryString = params.toString();
 

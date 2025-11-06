@@ -165,6 +165,27 @@ async function handlePaymentSuccess(
           })
           .eq('id', order.id);
 
+        // Update affiliate conversions for product purchases
+        try {
+          const { error: conversionUpdateError } = await supabase
+            .from('affiliate_conversions')
+            .update({
+              status: 'confirmed',
+              confirmed_at: new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+            })
+            .eq('reference_id', order.id)
+            .eq('reference_type', 'order')
+            .eq('conversion_type', 'product_purchase')
+            .eq('status', 'pending');
+
+          if (conversionUpdateError) {
+            console.warn('Failed to update affiliate conversion status for product purchase:', conversionUpdateError);
+          }
+        } catch (conversionError) {
+          console.warn('Affiliate conversion update error for product purchase:', conversionError);
+        }
+
         // Order updated successfully
       }
     }
@@ -194,6 +215,27 @@ async function handlePaymentSuccess(
       if (bookingUpdateError) {
         console.error('❌ Error updating booking:', bookingUpdateError);
       } else if (booking) {
+        // Update affiliate conversions for this booking
+        try {
+          const { error: conversionUpdateError } = await supabase
+            .from('affiliate_conversions')
+            .update({
+              status: 'confirmed',
+              confirmed_at: new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+            })
+            .eq('reference_id', bookingId)
+            .eq('reference_type', 'booking')
+            .eq('status', 'pending');
+
+          if (conversionUpdateError) {
+            console.warn('Failed to update affiliate conversion status:', conversionUpdateError);
+          }
+        } catch (conversionError) {
+          // Don't fail payment processing if affiliate conversion update fails
+          console.warn('Affiliate conversion update error (payment still successful):', conversionError);
+        }
+
         // Send payment receipt email
         try {
           const gymName = booking.gyms?.gym_name || booking.gyms?.gym_name_english || 'ค่ายมวย';
@@ -235,7 +277,30 @@ async function handlePaymentSuccess(
       }
       // Booking payment status updated successfully
     }
-    // No bookingId in metadata, skipping direct booking update
+
+    // Handle event ticket purchases (check metadata for ticket_booking_id)
+    const ticketBookingId = paymentIntent.metadata?.ticketBookingId || paymentIntent.metadata?.ticket_booking_id;
+    if (ticketBookingId) {
+      try {
+        const { error: conversionUpdateError } = await supabase
+          .from('affiliate_conversions')
+          .update({
+            status: 'confirmed',
+            confirmed_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          })
+          .eq('reference_id', ticketBookingId)
+          .eq('reference_type', 'ticket_booking')
+          .eq('conversion_type', 'event_ticket_purchase')
+          .eq('status', 'pending');
+
+        if (conversionUpdateError) {
+          console.warn('Failed to update affiliate conversion status for event ticket:', conversionUpdateError);
+        }
+      } catch (conversionError) {
+        console.warn('Affiliate conversion update error for event ticket:', conversionError);
+      }
+    }
 
     // Payment success handler completed
   } catch (error) {

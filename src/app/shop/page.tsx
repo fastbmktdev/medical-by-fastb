@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent, useRef } from "react";
 import { ProductCard } from "@/components/shared";
 import { PageHeader } from "@/components/shared";
 import { MagnifyingGlassIcon, FunnelIcon } from "@heroicons/react/24/outline";
+import { trackSearch } from "@/lib/utils/analytics";
 
 interface Product {
   id: string;
@@ -77,6 +78,8 @@ export default function ShopPage() {
     fetchCategories();
   }, []);
 
+  const prevSearchQuery = useRef<string>("");
+
   // Fetch products
   useEffect(() => {
     async function fetchProducts() {
@@ -101,6 +104,16 @@ export default function ShopPage() {
 
         if (productsData.success) {
           setProducts(productsData.data || []);
+          
+          // Track search event when search query changes
+          if (debouncedSearchQuery.trim() && debouncedSearchQuery.trim() !== prevSearchQuery.current) {
+            try {
+              trackSearch(debouncedSearchQuery.trim(), selectedCategory !== "all" ? selectedCategory : "shop", productsData.data?.length || 0);
+              prevSearchQuery.current = debouncedSearchQuery.trim();
+            } catch (error) {
+              console.warn('Analytics tracking error:', error);
+            }
+          }
         } else {
           setError(productsData.error || "Failed to load products");
         }

@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { usePageView } from "@/lib/hooks/usePageView";
 import Header from "./Header";
 import Footer from "./Footer";
 
@@ -19,6 +20,9 @@ export default function LayoutWrapper({
   const isAuthPage = authPages.includes(pathname);
 
   const hideHeaderFooter = isAdminPage || isDashboardPage || isPartnerDashboard || isAuthPage;
+
+  // Track page views automatically
+  usePageView();
 
   return (
     <div className="min-h-[calc(100vh_-_1px)] flex flex-col">
