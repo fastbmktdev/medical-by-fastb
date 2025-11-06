@@ -46,7 +46,7 @@ export default function ArticleDetailPage({
     async function fetchArticle() {
       try {
         setIsLoading(true);
-        const response = await fetch(`/api/articles/${slug}`);
+        const response = await fetch(`/api/articles/by-slug/${slug}`);
         const result = await response.json();
 
         if (result.success && result.data) {

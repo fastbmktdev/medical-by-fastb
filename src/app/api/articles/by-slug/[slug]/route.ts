@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/database/supabase/server';
 
 /**
- * GET /api/articles/[slug]
- * ดูบทความเดียวตาม slug
+ * GET /api/articles/by-slug/[slug]
+ * ดูบทความเดียวตาม slug (public route)
  * - Public: ดูได้เฉพาะบทความที่ published
  * - Admin: ดูได้ทุกบทความ
  */
