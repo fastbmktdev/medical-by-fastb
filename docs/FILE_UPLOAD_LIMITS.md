@@ -133,7 +133,7 @@ const compressedFile = await imageCompression(file, options);
 
 ### 2. เพิ่ม Image Preview
 ```tsx
-<img
+<Image
   src={URL.createObjectURL(file)}
   alt="preview"
   className="w-20 h-20 object-cover rounded"

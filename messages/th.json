@@ -1,0 +1,109 @@
+{
+  "common": {
+    "buttons": {
+      "save": "บันทึก",
+      "cancel": "ยกเลิก",
+      "delete": "ลบ",
+      "edit": "แก้ไข",
+      "confirm": "ยืนยัน",
+      "submit": "ส่ง",
+      "close": "ปิด",
+      "back": "ย้อนกลับ",
+      "next": "ถัดไป",
+      "previous": "ก่อนหน้า",
+      "search": "ค้นหา",
+      "filter": "กรอง",
+      "export": "ส่งออก",
+      "import": "นำเข้า",
+      "upload": "อัปโหลด",
+      "download": "ดาวน์โหลด",
+      "view": "ดู",
+      "details": "รายละเอียด"
+    },
+    "labels": {
+      "email": "อีเมล",
+      "password": "รหัสผ่าน",
+      "name": "ชื่อ",
+      "phone": "เบอร์โทรศัพท์",
+      "address": "ที่อยู่",
+      "status": "สถานะ",
+      "actions": "การกระทำ",
+      "date": "วันที่",
+      "time": "เวลา",
+      "description": "คำอธิบาย"
+    },
+    "status": {
+      "active": "ใช้งาน",
+      "inactive": "ไม่ใช้งาน",
+      "pending": "รอดำเนินการ",
+      "approved": "อนุมัติแล้ว",
+      "rejected": "ปฏิเสธ",
+      "completed": "เสร็จสิ้น",
+      "cancelled": "ยกเลิก"
+    },
+    "messages": {
+      "loading": "กำลังโหลด...",
+      "saving": "กำลังบันทึก...",
+      "success": "สำเร็จ",
+      "error": "เกิดข้อผิดพลาด",
+      "noData": "ไม่มีข้อมูล",
+      "confirmDelete": "คุณแน่ใจหรือไม่ที่จะลบรายการนี้?"
+    }
+  },
+  "navigation": {
+    "home": "หน้าแรก",
+    "gyms": "ค่ายมวย",
+    "events": "อีเวนต์",
+    "programs": "โปรแกรม",
+    "shop": "ร้านค้า",
+    "articles": "บทความ",
+    "about": "เกี่ยวกับเรา",
+    "faq": "คำถามที่พบบ่อย",
+    "contact": "ติดต่อเรา",
+    "dashboard": "แดชบอร์ด",
+    "profile": "โปรไฟล์",
+    "settings": "ตั้งค่า",
+    "logout": "ออกจากระบบ"
+  },
+  "auth": {
+    "login": {
+      "title": "เข้าสู่ระบบ",
+      "subtitle": "ยินดีต้อนรับกลับมา",
+      "email": "อีเมล",
+      "password": "รหัสผ่าน",
+      "button": "เข้าสู่ระบบ",
+      "forgotPassword": "ลืมรหัสผ่าน?",
+      "noAccount": "ยังไม่มีบัญชี?",
+      "signupLink": "สมัครสมาชิก"
+    },
+    "signup": {
+      "title": "สมัครสมาชิก",
+      "subtitle": "สร้างบัญชีของคุณ",
+      "fullName": "ชื่อ-นามสกุล",
+      "email": "อีเมล",
+      "password": "รหัสผ่าน",
+      "confirmPassword": "ยืนยันรหัสผ่าน",
+      "button": "สมัครสมาชิก",
+      "hasAccount": "มีบัญชีอยู่แล้ว?",
+      "loginLink": "เข้าสู่ระบบ"
+    },
+    "forgotPassword": {
+      "title": "ลืมรหัสผ่าน",
+      "subtitle": "กรอกอีเมลเพื่อรีเซ็ตรหัสผ่าน",
+      "button": "ส่งลิงก์รีเซ็ต"
+    }
+  },
+  "dashboard": {
+    "welcome": "ยินดีต้อนรับ",
+    "overview": "ภาพรวม",
+    "recentActivity": "กิจกรรมล่าสุด",
+    "quickActions": "การกระทำด่วน"
+  },
+  "validation": {
+    "required": "กรุณากรอก{field}",
+    "invalidEmail": "รูปแบบอีเมลไม่ถูกต้อง",
+    "passwordTooShort": "รหัสผ่านต้องมีอย่างน้อย {min} ตัวอักษร",
+    "passwordMismatch": "รหัสผ่านไม่ตรงกัน",
+    "invalidPhone": "เบอร์โทรศัพท์ไม่ถูกต้อง"
+  }
+}

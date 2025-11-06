@@ -162,7 +162,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Calculate commission
-    const commissionRate = getCommissionRate(conversion_type);
+    const commissionRate = await getCommissionRate(conversion_type);
     const commissionAmount = calculateCommissionAmount(value, commissionRate);
 
     // Create conversion record

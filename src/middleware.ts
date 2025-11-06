@@ -1,10 +1,26 @@
-import { type NextRequest, NextResponse } from 'next/server'
+import { type NextRequest } from 'next/server'
 import { updateSession } from '@/lib/database/supabase/middleware'
-import { rateLimit, getRateLimitConfig } from '@/lib/middleware/rate-limit'
+import { rateLimit } from '@/lib/middleware/rate-limit'
 import { csrfProtection } from '@/lib/middleware/csrf-protection'
+import createIntlMiddleware from 'next-intl/middleware'
+import { locales } from './i18n'
+
+// Create i18n middleware
+const intlMiddleware = createIntlMiddleware({
+  locales: locales,
+  defaultLocale: 'th',
+  localePrefix: 'always',
+})
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
+
+  // Skip i18n middleware for API routes, static files, and internal Next.js routes
+  const shouldSkipI18n =
+    path.startsWith('/api/') ||
+    path.startsWith('/_next/') ||
+    path.startsWith('/_vercel/') ||
+    path.match(/\.(ico|png|jpg|jpeg|svg|gif|webp|css|js)$/)
 
   // Apply CSRF protection and rate limiting to API routes
   if (path.startsWith('/api/')) {
@@ -27,6 +43,16 @@ export async function middleware(request: NextRequest) {
     const rateLimitResponse = await rateLimit(request)
     if (rateLimitResponse) {
       return rateLimitResponse
+    }
+  }
+
+  // Apply i18n middleware for non-API routes
+  if (!shouldSkipI18n) {
+    const intlResponse = intlMiddleware(request)
+
+    // If i18n middleware wants to redirect, do it
+    if (intlResponse) {
+      return intlResponse
     }
   }
 

@@ -6,6 +6,7 @@ import MediaLibraryModal from '@/components/features/admin/article-management/Me
 import { toast } from 'react-hot-toast';
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
+import Image from 'next/image';
 
 // Dynamically import ReactQuill to avoid SSR issues
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
@@ -264,7 +265,10 @@ export default function ArticleCreateModal({ isOpen, onClose, onSuccess }: Artic
               />
               {formData.image && (
                 <div className="mt-2 relative w-full h-32 rounded-lg overflow-hidden">
-                  <img
+                  <Image
+                    width={300}
+                    height={300}
+                    fill
                     src={formData.image}
                     alt="Preview"
                     className="w-full h-full object-cover"

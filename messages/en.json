@@ -1,0 +1,109 @@
+{
+  "common": {
+    "buttons": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "edit": "Edit",
+      "confirm": "Confirm",
+      "submit": "Submit",
+      "close": "Close",
+      "back": "Back",
+      "next": "Next",
+      "previous": "Previous",
+      "search": "Search",
+      "filter": "Filter",
+      "export": "Export",
+      "import": "Import",
+      "upload": "Upload",
+      "download": "Download",
+      "view": "View",
+      "details": "Details"
+    },
+    "labels": {
+      "email": "Email",
+      "password": "Password",
+      "name": "Name",
+      "phone": "Phone",
+      "address": "Address",
+      "status": "Status",
+      "actions": "Actions",
+      "date": "Date",
+      "time": "Time",
+      "description": "Description"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "messages": {
+      "loading": "Loading...",
+      "saving": "Saving...",
+      "success": "Success",
+      "error": "Error occurred",
+      "noData": "No data",
+      "confirmDelete": "Are you sure you want to delete this item?"
+    }
+  },
+  "navigation": {
+    "home": "Home",
+    "gyms": "Gyms",
+    "events": "Events",
+    "programs": "Programs",
+    "shop": "Shop",
+    "articles": "Articles",
+    "about": "About Us",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign In",
+      "subtitle": "Welcome back",
+      "email": "Email",
+      "password": "Password",
+      "button": "Sign In",
+      "forgotPassword": "Forgot password?",
+      "noAccount": "Don't have an account?",
+      "signupLink": "Sign up"
+    },
+    "signup": {
+      "title": "Sign Up",
+      "subtitle": "Create your account",
+      "fullName": "Full Name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "button": "Sign Up",
+      "hasAccount": "Already have an account?",
+      "loginLink": "Sign in"
+    },
+    "forgotPassword": {
+      "title": "Forgot Password",
+      "subtitle": "Enter your email to reset password",
+      "button": "Send Reset Link"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome",
+    "overview": "Overview",
+    "recentActivity": "Recent Activity",
+    "quickActions": "Quick Actions"
+  },
+  "validation": {
+    "required": "Please enter {field}",
+    "invalidEmail": "Invalid email format",
+    "passwordTooShort": "Password must be at least {min} characters",
+    "passwordMismatch": "Passwords do not match",
+    "invalidPhone": "Invalid phone number"
+  }
+}

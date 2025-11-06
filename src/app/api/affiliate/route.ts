@@ -11,7 +11,25 @@ const DEFAULT_STATS = {
   referralHistory: []
 };
 
-const calculateStats = (conversions: any[], profiles: Record<string, any>) => {
+interface Conversion {
+  id: string;
+  referred_user_id?: string;
+  status: string;
+  commission_amount: number;
+  created_at: string;
+  conversion_type: string;
+  conversion_value: number;
+  referral_source?: string;
+  metadata?: Record<string, string | number | boolean | null>;
+}
+
+interface Profile {
+  email?: string;
+  username?: string;
+  full_name?: string;
+}
+
+const calculateStats = (conversions: Conversion[], profiles: Record<string, Profile>) => {
   const now = new Date();
   const totalReferrals = conversions.length;
   // Calculate total earnings from commission_amount (convert to points equivalent or use commission directly)
@@ -36,7 +54,7 @@ const calculateStats = (conversions: any[], profiles: Record<string, any>) => {
     conversionRate,
     referralHistory: conversions.map(conv => {
       const profile = conv.referred_user_id ? profiles[conv.referred_user_id] : null;
-      const email = profile?.email || (conv.metadata as any)?.email || 'Unknown';
+      const email = profile?.email || (conv.metadata as Record<string, unknown>)?.email as string || 'Unknown';
       
       return {
         id: conv.id,
@@ -81,7 +99,7 @@ export async function GET() {
       ?.filter(conv => conv.referred_user_id)
       .map(conv => conv.referred_user_id) || [];
     
-    const profiles: Record<string, any> = {};
+    const profiles: Record<string, Profile> = {};
     
     if (referredUserIds.length > 0) {
       // Get profiles for referred users
@@ -162,7 +180,7 @@ export async function POST(request: NextRequest) {
     // Calculate commission for signup
     const conversionType = 'signup';
     const conversionValue = 0; // Signups typically have no monetary value
-    const commissionRate = getCommissionRate(conversionType);
+    const commissionRate = await getCommissionRate(conversionType);
     const commissionAmount = calculateCommissionAmount(conversionValue, commissionRate);
 
     // Create affiliate conversion record

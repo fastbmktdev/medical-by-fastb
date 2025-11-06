@@ -135,7 +135,7 @@ export async function POST(request: NextRequest) {
       if (affiliateUserId && booking) {
         // Create conversion directly in database (server-side)
         const { getCommissionRate, calculateCommissionAmount } = await import('@/lib/constants/affiliate');
-        const commissionRate = getCommissionRate('booking');
+        const commissionRate = await getCommissionRate('booking');
         const commissionAmount = calculateCommissionAmount(totalPrice, commissionRate);
 
         // Check if conversion already exists (prevent duplicates)
