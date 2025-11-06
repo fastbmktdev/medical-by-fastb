@@ -1,4 +1,4 @@
-import { Link } from '@/navigation';
+import { Link } from "@/navigation";
 import Image from "next/image";
 import { BuildingStorefrontIcon, ClockIcon } from "@heroicons/react/24/outline";
 import { ApplicationStatus, GymData } from "../types";
@@ -84,9 +84,9 @@ export const ApplicationStatusView = ({
           </h1>
 
           <div className="relative">
-                <p className="text-white text-xl max-w-3xl mx-auto leading-relaxed">
-                  ติดตามความคืบหน้าของคำขอสมัครเข้าร่วมเป็น Partner Gym
-                </p>
+            <p className="text-white text-xl max-w-3xl mx-auto leading-relaxed">
+              ติดตามความคืบหน้าของคำขอสมัครเข้าร่วมเป็น Partner Gym
+            </p>
             <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-red-500 to-red-700 rounded-full"></div>
           </div>
         </div>
@@ -157,9 +157,7 @@ export const ApplicationStatusView = ({
               <div className="p-3 bg-gradient-to-br from-red-500/20 to-red-600/20 rounded-2xl border border-red-500/30">
                 <BuildingStorefrontIcon className="w-8 h-8 text-red-400" />
               </div>
-              <h2 className="font-bold text-white text-2xl">
-                ข้อมูลยิม
-              </h2>
+              <h2 className="font-bold text-white text-2xl">ข้อมูลยิม</h2>
             </div>
 
             <div className="space-y-6">
@@ -214,9 +212,7 @@ export const ApplicationStatusView = ({
                   <div className="absolute inset-0 bg-green-400 rounded-full opacity-30 animate-ping"></div>
                 </div>
                 <div className="flex-1">
-                  <p className="font-bold text-white text-lg">
-                    ส่งคำขอสมัคร
-                  </p>
+                  <p className="font-bold text-white text-lg">ส่งคำขอสมัคร</p>
                   <p className="text-white text-sm bg-zinc-800/50 px-3 py-1 rounded-lg inline-block mt-1">
                     {existingGym.created_at
                       ? new Date(existingGym.created_at).toLocaleDateString(
@@ -241,9 +237,7 @@ export const ApplicationStatusView = ({
                     <div className="absolute inset-0 bg-yellow-400 rounded-full opacity-30 animate-ping"></div>
                   </div>
                   <div className="flex-1">
-                    <p className="font-bold text-white text-lg">
-                      กำลังตรวจสอบ
-                    </p>
+                    <p className="font-bold text-white text-lg">กำลังตรวจสอบ</p>
                     <p className="text-white text-sm">
                       ทีมงานกำลังตรวจสอบข้อมูล
                     </p>
@@ -258,9 +252,7 @@ export const ApplicationStatusView = ({
                     <div className="absolute inset-0 bg-green-400 rounded-full opacity-30 animate-ping"></div>
                   </div>
                   <div className="flex-1">
-                    <p className="font-bold text-white text-lg">
-                      อนุมัติแล้ว
-                    </p>
+                    <p className="font-bold text-white text-lg">อนุมัติแล้ว</p>
                     <p className="text-white text-sm bg-zinc-800/50 px-3 py-1 rounded-lg inline-block mt-1">
                       {existingGym.updated_at
                         ? new Date(existingGym.updated_at).toLocaleDateString(
@@ -388,20 +380,20 @@ export const ApplicationStatusView = ({
                   ต้องการสมัครใหม่หรือมีคำถาม?
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <a
+                  <Link
                     href="mailto:support@thaikick-muaythai.com"
                     className="group inline-flex items-center gap-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-6 py-3 rounded-xl font-bold text-white transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-blue-500/25"
                   >
                     <span className="text-lg">📧</span>
                     <span>ติดต่อทีมงาน</span>
-                  </a>
-                  <button
-                    onClick={() => window.location.reload()}
+                  </Link>
+                  <Link
+                    href="/partner/apply?reset=true"
                     className="group inline-flex items-center gap-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 px-6 py-3 rounded-xl font-bold text-white transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-yellow-500/25"
                   >
                     <span className="text-lg">🔄</span>
                     <span>ลองใหม่</span>
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
