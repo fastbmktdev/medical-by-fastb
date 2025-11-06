@@ -24,6 +24,12 @@
 
 **สิ่งที่ยังเหลือ**:
 - ⚠️ Affiliate Commission System (85% - ระบบหลักเสร็จสมบูรณ์แล้ว เหลือเพียง optimization เช่น session storage, config table)
+- ⚠️ E2E Test Failure - Auth Flow (มี Internal Server Error ที่ต้องแก้ไข)
+- ⚠️ Gamification - Leaderboard "View All" (มีปุ่มแต่ยังไม่ทำงาน)
+- ⚠️ Gamification - Award Points เมื่อแนะนำเพื่อน (ยังไม่เชื่อมต่อกับ Affiliate System)
+- ⚠️ Admin - Bulk Operations (ยังไม่เริ่ม)
+- ⚠️ Admin - Content Moderation Tools (ยังไม่เริ่ม)
+- ⚠️ Coupon Code System (วางแผนไว้ใน Phase 2)
 
 ---
 
@@ -142,6 +148,30 @@
    - ⚠️ Optional: Session storage สำหรับ referral code (optimization)
    - ⚠️ Optional: Commission rate config table (แทน constants)
 
+2. **E2E Test Failure - Auth Flow**
+   - ⚠️ มี Internal Server Error ใน test `tests/e2e/auth-flow.spec.ts`
+   - ⚠️ ต้องตรวจสอบและแก้ไข error
+
+3. **Gamification - Leaderboard "View All"**
+   - ⚠️ มีปุ่ม "View All" แต่ยังไม่ทำงาน
+   - ⚠️ ต้องสร้างหน้า Leaderboard แบบเต็มพร้อม pagination
+
+4. **Gamification - Award Points เมื่อแนะนำเพื่อน**
+   - ⚠️ ยังไม่เชื่อมต่อกับ Affiliate System
+   - ⚠️ ต้องเพิ่ม logic สำหรับ award points เมื่อ signup ผ่าน referral code
+
+5. **Admin - Bulk Operations**
+   - ⚠️ ยังไม่เริ่ม
+   - ⚠️ ต้องสร้าง UI และ API สำหรับ bulk approve/reject
+
+6. **Admin - Content Moderation Tools**
+   - ⚠️ ยังไม่เริ่ม
+   - ⚠️ ต้องสร้าง moderation dashboard และ API
+
+7. **Coupon Code System**
+   - ⚠️ วางแผนไว้ใน Phase 2
+   - ⚠️ ต้องสร้าง migration, API, และ Admin UI
+
 **หมายเหตุ**: 
 - ระบบแจ้งเตือนมี API + Database + UI Components + การส่งอัตโนมัติครบถ้วน (100%) รวม Newsletter & Promotional emails
 - Shop Frontend เชื่อมต่อกับ Products API แล้ว และมี Admin UI สำหรับจัดการสินค้า
@@ -191,6 +221,7 @@
 ## 📅 อัปเดตล่าสุด
 
 ### 2025-11-06 (วันนี้)
+✅ **รวม [PLAN.md](./PLAN.md)** - แผนงานโครงการรวมถึงงานที่ต้องทำวันนี้พร้อมรายละเอียดงานที่ยังไม่เสร็จ
 ✅ **Affiliate Commission System** - อัปเดตเป็น 85% (ระบบหลักเสร็จสมบูรณ์)
   - ✅ Signup conversion tracking (POST `/api/affiliate`)
   - ✅ Booking conversion tracking (integration ใน booking flow)
@@ -199,6 +230,13 @@
   - ✅ `/api/affiliate/conversions` endpoint (สำหรับ booking/payment flows)
 ✅ **Google Analytics Integration** - เสร็จสมบูรณ์ 100% (component, utility functions, integration)  
 ✅ **Email Service Migration** - เสร็จสมบูรณ์ 100% (ทุก routes ใช้ Resend)
+
+⚠️ **งานที่ต้องทำต่อไป**:
+- ⚠️ แก้ไข E2E Test Failure - Auth Flow (Internal Server Error)
+- ⚠️ Affiliate Commission System - Optimization (85% → 95%)
+- ⚠️ Gamification - Leaderboard "View All" และ Award Points เมื่อแนะนำเพื่อน
+- ⚠️ Admin - Bulk Operations และ Content Moderation Tools
+- ⚠️ Coupon Code System (Phase 2)
 
 ### 2025-11-05
 ✅ **Maps Integration** - เสร็จสมบูรณ์ 100% (Leaflet Maps - ฟรี, customizable dark red theme)  

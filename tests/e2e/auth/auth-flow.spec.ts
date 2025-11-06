@@ -10,7 +10,7 @@ import {
   approveFirstApplication,
   takeDebugScreenshot,
   UserCredentials,
-} from './helpers';
+} from '../helpers';
 
 /**
  * E2E Test: Complete Authentication Flow for 3 Roles
@@ -168,8 +168,6 @@ test.describe('Complete Authentication Flow - 3 Roles', () => {
         console.log('partnerUser not defined, generating test user...');
         partnerUser = generateTestUser('partner');
         console.log('Generated partner user:', partnerUser.email);
-        
-        // If user was just generated, we need to signup first
         console.log('Signing up partner user first...');
         await signupUser(page, partnerUser);
         await page.waitForTimeout(2000);

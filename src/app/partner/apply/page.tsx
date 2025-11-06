@@ -169,7 +169,7 @@ export default function PartnerApplyPage() {
       />
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-red-900/20 to-zinc-950">
+      <div className="bg-gradient-to-br from-red-900/20 to-zinc-950 mt-16">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-16 max-w-7xl">
           <div className="text-center">
             <h1 className="mb-4 font-bold text-white text-4xl md:text-5xl">

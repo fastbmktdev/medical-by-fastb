@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, Select, SelectItem, Chip, useDisclosure } from '@heroui/react';
+import MediaLibraryModal from '@/components/features/admin/article-management/MediaLibraryModal';
 import { toast } from 'react-hot-toast';
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
@@ -50,6 +51,7 @@ export default function ArticleCreateModal({ isOpen, onClose, onSuccess }: Artic
     scheduled_publish_at: '',
   });
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const mediaLibraryModal = useDisclosure();
 
   // Generate slug from title
   const generateSlug = (text: string) => {
@@ -243,12 +245,33 @@ export default function ArticleCreateModal({ isOpen, onClose, onSuccess }: Artic
               minRows={2}
               isRequired
             />
-            <Input
-              label="รูปภาพหลัก (URL)"
-              placeholder="https://example.com/image.jpg"
-              value={formData.image}
-              onChange={(e) => setFormData((prev) => ({ ...prev, image: e.target.value }))}
-            />
+            <div>
+              <Input
+                label="รูปภาพหลัก (URL)"
+                placeholder="https://example.com/image.jpg"
+                value={formData.image}
+                onChange={(e) => setFormData((prev) => ({ ...prev, image: e.target.value }))}
+                endContent={
+                  <Button
+                    size="sm"
+                    variant="light"
+                    onPress={mediaLibraryModal.onOpen}
+                    className="min-w-fit"
+                  >
+                    เลือกจาก Media Library
+                  </Button>
+                }
+              />
+              {formData.image && (
+                <div className="mt-2 relative w-full h-32 rounded-lg overflow-hidden">
+                  <img
+                    src={formData.image}
+                    alt="Preview"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+            </div>
             <Input
               label="แท็ก (คั่นด้วย comma)"
               placeholder="มวยไทย, เทคนิค, การฝึก"
@@ -351,6 +374,16 @@ export default function ArticleCreateModal({ isOpen, onClose, onSuccess }: Artic
           </Button>
         </ModalFooter>
       </ModalContent>
+      
+      {/* Media Library Modal */}
+      <MediaLibraryModal
+        isOpen={mediaLibraryModal.isOpen}
+        onClose={mediaLibraryModal.onClose}
+        onSelect={(url) => {
+          setFormData((prev) => ({ ...prev, image: url }));
+          mediaLibraryModal.onClose();
+        }}
+      />
     </Modal>
   );
 }

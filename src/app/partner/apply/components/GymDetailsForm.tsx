@@ -82,11 +82,19 @@ export const GymDetailsForm = ({
         {/* Image Upload */}
         <div>
           <label className="block mb-2 font-medium text-zinc-300 text-sm">
-            อัปโหลดรูปภาพยิม / โลโก้
+            อัปโหลดรูปภาพยิม / โลโก้ <span className="text-zinc-500 font-normal">(ไม่บังคับ)</span>
           </label>
-          <p className="mb-3 text-zinc-500 text-xs">
-            รองรับไฟล์: JPG, PNG (ขนาดไม่เกิน 5MB ต่อไฟล์)
-          </p>
+          <div className="mb-3 p-3 border border-blue-500/30 bg-blue-500/10 rounded-lg">
+            <p className="text-blue-300 text-xs font-medium mb-1">
+              📸 ข้อกำหนดไฟล์:
+            </p>
+            <ul className="text-blue-200/80 text-xs space-y-0.5 ml-4 list-disc">
+              <li>ประเภทไฟล์: JPG, PNG, WebP</li>
+              <li>ขนาดไฟล์: <strong className="text-blue-200">ไม่เกิน 5MB ต่อไฟล์</strong></li>
+              <li>ความละเอียดแนะนำ: 800x600 px ขึ้นไป</li>
+              <li>จำนวน: ไม่จำกัด (แนะนำ 3-5 รูป)</li>
+            </ul>
+          </div>
           
           <label className="flex flex-col items-center gap-3 bg-zinc-700 hover:bg-zinc-600 p-6 border border-zinc-600 border-dashed rounded-lg transition-colors cursor-pointer">
             <PhotoIcon className="w-12 h-12 text-zinc-400" />
@@ -117,29 +125,54 @@ export const GymDetailsForm = ({
           {/* Selected Files */}
           {selectedFiles.length > 0 && (
             <div className="space-y-2 mt-4">
-              {selectedFiles.map((file, index) => (
-                <div
-                  key={index}
-                  className="flex justify-between items-center bg-zinc-700 p-3 rounded-lg"
-                >
-                  <div className="flex items-center gap-3">
-                    <PhotoIcon className="w-5 h-5 text-blue-400" />
-                    <span className="max-w-[200px] font-mono text-white text-sm truncate">
-                      {file.name}
-                    </span>
-                    <span className="text-zinc-500 text-xs">
-                      ({(file.size / 1024).toFixed(1)} KB)
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => onRemoveFile(index)}
-                    className="text-red-400 hover:text-red-300 text-sm transition-colors"
+              {selectedFiles.map((file, index) => {
+                const fileSizeMB = file.size / 1024 / 1024;
+                const isLargeFile = fileSizeMB > 4; // ไฟล์ใหญ่กว่า 4MB (ใกล้ขีดจำกัด 5MB)
+                const isTooLarge = fileSizeMB > 5; // เกินขีดจำกัด
+
+                return (
+                  <div
+                    key={index}
+                    className={`flex justify-between items-center p-3 rounded-lg ${
+                      isTooLarge
+                        ? 'bg-red-900/30 border border-red-500'
+                        : isLargeFile
+                        ? 'bg-yellow-900/20 border border-yellow-500/50'
+                        : 'bg-zinc-700'
+                    }`}
                   >
-                    ลบ
-                  </button>
-                </div>
-              ))}
+                    <div className="flex items-center gap-3">
+                      <PhotoIcon className={`w-5 h-5 ${
+                        isTooLarge ? 'text-red-400' : 'text-blue-400'
+                      }`} />
+                      <span className={`max-w-[200px] font-mono text-sm truncate ${
+                        isTooLarge ? 'text-red-300' : 'text-white'
+                      }`}>
+                        {file.name}
+                      </span>
+                      <span className={`text-xs ${
+                        isTooLarge
+                          ? 'text-red-400 font-semibold'
+                          : isLargeFile
+                          ? 'text-yellow-400 font-medium'
+                          : 'text-zinc-500'
+                      }`}>
+                        ({file.size >= 1024 * 1024
+                          ? `${fileSizeMB.toFixed(2)} MB`
+                          : `${(file.size / 1024).toFixed(1)} KB`})
+                        {isTooLarge && ' - เกินขนาด!'}
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => onRemoveFile(index)}
+                      className="text-red-400 hover:text-red-300 text-sm transition-colors"
+                    >
+                      ลบ
+                    </button>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>

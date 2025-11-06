@@ -1,8 +1,306 @@
-# 📅 แผนงานวันนี้ (Today's Plan)
+# 📅 แผนงานโครงการ (Project Plan)
 
 **วันที่**: 2025-11-06  
 **สถานะโครงการ**: 99.8% เสร็จสมบูรณ์  
 **อัปเดตล่าสุด**: 2025-11-06
+
+**หมายเหตุ**: 
+- ✅ ระบบหลักทั้งหมดใช้งานได้ (Authentication, Booking, Payment, Gamification)
+- ⚠️ เหลือเพียง optimization และ bug fixes
+- 📝 งานที่เหลือส่วนใหญ่เป็น Nice-to-have features
+
+---
+
+## 🎯 งานที่ควรทำวันนี้ (Today's Tasks)
+
+### 🔴 High Priority - งานสำคัญเร่งด่วน
+
+#### 1. **แก้ไข E2E Test Failure - Auth Flow** (1-2 ชั่วโมง)
+**สถานะ**: ⚠️ มี Internal Server Error ใน test (Step 6 - Partner Application)
+
+**ปัญหา**:
+- ⚠️ Step 6: Partner Application - Submit gym application ❌ **ล้มเหลว**
+- Error: `Internal Server Error` (พบใน error-context.md)
+- Test ที่ผ่าน: 11/11 tests (แต่ Step 6 มี Internal Server Error)
+- Impact: Step 7-11 ถูก skip เนื่องจาก Step 6 ล้มเหลว
+
+**สิ่งที่ต้องทำ**:
+
+1. **วิเคราะห์ปัญหา**:
+   - [ ] ตรวจสอบ error ใน `tests/e2e/auth-flow.spec.ts`
+   - [ ] อ่าน error context จาก `test-results/auth-flow-Complete-Authent-1362c-on---Submit-gym-application-chromium/error-context.md`
+   - [ ] ตรวจสอบ error screenshots: `test-results/auth-flow-Complete-Authent-1362c-on---Submit-gym-application-chromium/test-failed-1.png`
+   - [ ] ตรวจสอบ server logs (Next.js dev server)
+   - [ ] ตรวจสอบ API responses (`/api/partner/apply` หรือ `/api/gyms/apply`)
+
+2. **ตรวจสอบ Partner Application Flow**:
+   - [ ] ตรวจสอบ route `/partner/apply` ว่าทำงานได้ปกติหรือไม่
+   - [ ] ตรวจสอบ form fields ใน `applyForPartner` helper function
+   - [ ] ตรวจสอบ API endpoint ที่รับ partner application
+   - [ ] ตรวจสอบ authentication middleware (redirect ไป login หรือไม่)
+   - [ ] ตรวจสอบ form validation และ error handling
+
+3. **แก้ไขปัญหา**:
+   - [ ] แก้ไข Internal Server Error ที่เกิดขึ้น
+   - [ ] ตรวจสอบว่า API endpoint ทำงานได้ถูกต้อง
+   - [ ] ตรวจสอบว่า form fields ถูกต้องและ accessible
+   - [ ] เพิ่ม error handling ที่ดีขึ้น (ถ้าจำเป็น)
+   - [ ] เพิ่ม timeout หรือ retry logic (ถ้าจำเป็น)
+
+4. **ทดสอบและ verify**:
+   - [ ] รัน E2E test อีกครั้ง: `npm run test:e2e tests/e2e/auth-flow.spec.ts`
+   - [ ] ตรวจสอบว่า Step 6 ผ่าน
+   - [ ] ตรวจสอบว่า Step 7-11 สามารถรันได้ (ไม่ถูก skip)
+   - [ ] ตรวจสอบว่า signup/login flow ทำงานได้ปกติ
+   - [ ] ตรวจสอบว่า partner application flow ทำงานได้ปกติ
+
+**ผลลัพธ์ที่คาดหวัง**: 
+- ✅ E2E test ผ่านทั้งหมด (11/11 tests)
+- ✅ Step 6: Partner Application ผ่าน
+- ✅ Step 7-11 สามารถรันได้และผ่าน
+- ✅ Authentication flow ทำงานได้ปกติ
+
+**E2E Testing Plan**:
+
+1. **ตรวจสอบ Test Environment**:
+   - [ ] ตรวจสอบว่า Playwright browsers ติดตั้งแล้ว (`npx playwright install`)
+   - [ ] ตรวจสอบว่า Next.js dev server สามารถรันได้ (`npm run dev`)
+   - [ ] ตรวจสอบว่า database connection ทำงานได้
+   - [ ] ตรวจสอบ environment variables ที่จำเป็น
+
+2. **Debug Test Failure**:
+   - [ ] รัน test ใน debug mode: `npx playwright test tests/e2e/auth-flow.spec.ts --debug`
+   - [ ] ตรวจสอบ screenshots ที่ถูก capture: `test-results/auth-flow-Complete-Authent-1362c-on---Submit-gym-application-chromium/test-failed-1.png`
+   - [ ] ตรวจสอบ network tab ใน Playwright trace (ถ้ามี)
+   - [ ] ตรวจสอบ console logs จาก test run
+
+3. **ตรวจสอบ Partner Application Flow**:
+   - [ ] ตรวจสอบว่า Partner application submit ผ่าน Supabase client (ไม่ผ่าน API endpoint)
+   - [ ] ตรวจสอบ `useFormSubmission` hook (`src/app/partner/apply/hooks/useFormSubmission.ts`)
+   - [ ] ตรวจสอบ RLS policies ใน `gyms` table (อาจ block insert)
+   - [ ] ตรวจสอบ database constraints (foreign keys, unique constraints)
+   - [ ] ตรวจสอบ image upload flow (Supabase Storage)
+   - [ ] ตรวจสอบ validation logic ใน `validateForm` function
+   - [ ] ตรวจสอบ error handling ใน `submitForm` function
+
+4. **ตรวจสอบ Frontend**:
+   - [ ] ตรวจสอบ route `/partner/apply` ว่ามีอยู่และทำงานได้
+   - [ ] ตรวจสอบ form component (`PartnerApplyForm` หรือ similar)
+   - [ ] ตรวจสอบ form fields ว่าถูกต้อง:
+     - `gymName`, `gymNameEnglish`, `contactName`, `phone`, `email`
+     - `website`, `address`, `description`, `services`, `termsAccepted`
+   - [ ] ตรวจสอบ form submission logic
+   - [ ] ตรวจสอบ success/error handling
+
+5. **Test Manual Flow**:
+   - [ ] เปิด browser และ navigate ไป `/partner/apply` ด้วยมือ
+   - [ ] ตรวจสอบว่า form แสดงขึ้นมา
+   - [ ] Fill form และ submit
+   - [ ] ตรวจสอบ response และ error messages (ถ้ามี)
+   - [ ] ตรวจสอบ network requests ใน DevTools
+
+6. **Fix และ Retest**:
+   - [ ] แก้ไขปัญหา Internal Server Error
+   - [ ] รัน test อีกครั้ง
+   - [ ] ตรวจสอบว่า test ผ่านทั้งหมด
+   - [ ] ตรวจสอบว่า Step 7-11 สามารถรันได้
+
+**คำสั่งสำหรับทดสอบ**:
+```bash
+# รัน E2E test
+npm run test:e2e tests/e2e/auth-flow.spec.ts
+
+# รัน test ใน debug mode (step-by-step)
+npx playwright test tests/e2e/auth-flow.spec.ts --debug
+
+# รัน test เฉพาะ Step 6 (ถ้าเป็นไปได้)
+npx playwright test tests/e2e/auth-flow.spec.ts -g "Step 6"
+
+# ดู screenshots และ trace
+# เปิดไฟล์: test-results/auth-flow-Complete-Authent-1362c-on---Submit-gym-application-chromium/
+
+# หรือรัน server แยกก่อน (ถ้าต้องการ)
+# Terminal 1:
+npm run dev
+
+# Terminal 2 (รอให้ server พร้อมก่อน):
+npm run test:e2e tests/e2e/auth-flow.spec.ts
+```
+
+**ไฟล์ที่เกี่ยวข้อง**:
+- `tests/e2e/auth-flow.spec.ts` - Test file (Step 6)
+- `tests/e2e/helpers.ts` - Helper functions (รวม `applyForPartner`)
+- `test-results/auth-flow-Complete-Authent-1362c-on---Submit-gym-application-chromium/error-context.md` - Error context
+- `test-results/auth-flow-Complete-Authent-1362c-on---Submit-gym-application-chromium/test-failed-1.png` - Error screenshot
+- `src/app/partner/apply/page.tsx` - Partner application page
+- `src/app/partner/apply/hooks/useFormSubmission.ts` - Form submission logic (insert ไปที่ `gyms` table)
+- `src/app/partner/apply/hooks/usePartnerApplication.ts` - Authentication และ status check
+- `src/services/gym.service.ts` - Gym service functions
+- `supabase/migrations/*.sql` - Database schema และ RLS policies
+
+**สาเหตุที่เป็นไปได้**:
+1. **RLS Policy** - RLS policy ใน `gyms` table อาจ block insert
+2. **Database Constraint** - Foreign key หรือ unique constraint error
+3. **Image Upload** - Supabase Storage upload error
+4. **Authentication** - Session ไม่ถูกต้องหรือหมดอายุ
+5. **Form Validation** - Validation error ที่ไม่แสดงผล
+6. **Client-Side Error** - JavaScript error ใน form submission
+
+---
+
+#### 2. **Affiliate Commission System - Optimization** (2-3 ชั่วโมง)
+**สถานะ**: 85% → เป้าหมาย 95%
+
+**สิ่งที่ต้องทำ**:
+- [ ] สร้าง Commission Rate Config Table (แทน constants):
+  - สร้าง migration: `affiliate_commission_rates` table
+  - ฟิลด์: `conversion_type`, `rate_percentage`, `min_amount`, `max_amount`, `is_active`, `created_at`, `updated_at`
+  - Admin UI สำหรับจัดการ commission rates
+- [ ] อัปเดต Commission Calculation Logic:
+  - เปลี่ยนจาก constants เป็น query จาก config table
+  - รองรับ dynamic rates ตามเงื่อนไข
+- [ ] Session Storage Optimization (ถ้ายังไม่สมบูรณ์):
+  - ตรวจสอบว่า referral code persist ผ่าน navigation ได้หรือไม่
+  - ปรับปรุง UX สำหรับ referral flow
+
+**ผลลัพธ์ที่คาดหวัง**: Affiliate Commission System ใช้งานได้ยืดหยุ่นมากขึ้น และสามารถปรับ commission rates ได้ผ่าน Admin UI
+
+---
+
+### 🟠 Medium Priority - งานเสริม
+
+#### 3. **Gamification - Leaderboard "View All"** (1-2 ชั่วโมง)
+**สถานะ**: ⚠️ มีปุ่มแต่ยังไม่พร้อมใช้งาน (ดู PROGRESS_REPORT.md บรรทัด 50)
+
+**สิ่งที่ต้องทำ**:
+- [ ] ตรวจสอบ Leaderboard component ที่มีปุ่ม "View All"
+- [ ] สร้างหน้า Leaderboard แบบเต็ม (full page) - `/leaderboard` หรือ `/leaderboard/all`
+- [ ] เพิ่ม pagination และ filtering
+- [ ] เชื่อมต่อกับ API ที่มีอยู่ (`/api/gamification/leaderboard`)
+- [ ] ทดสอบการแสดงผลและ performance
+
+**ผลลัพธ์ที่คาดหวัง**: ผู้ใช้สามารถดู Leaderboard แบบเต็มหน้าได้
+
+---
+
+#### 4. **Gamification - Award Points เมื่อแนะนำเพื่อน** (1-2 ชั่วโมง)
+**สถานะ**: ⚠️ ยังไม่เชื่อมต่อกับ Affiliate System (ดู PROGRESS_REPORT.md บรรทัด 766)
+
+**สิ่งที่ต้องทำ**:
+- [ ] ตรวจสอบ `awardPoints` function ใน `src/services/gamification.service.ts`
+- [ ] เพิ่ม logic สำหรับ award points เมื่อมีการ signup ผ่าน referral code
+- [ ] เชื่อมต่อกับ Affiliate Conversion API (`/api/affiliate/conversions`)
+- [ ] ส่ง notification เมื่อได้ points จาก referral
+- [ ] ทดสอบ flow ทั้งหมด (signup → conversion → points award)
+
+**ผลลัพธ์ที่คาดหวัง**: ผู้ใช้ได้ points เมื่อแนะนำเพื่อนสำเร็จ
+
+---
+
+### 🟡 Low Priority - งานสำรอง (ถ้ามีเวลาเหลือ)
+
+#### 5. **Admin - Bulk Operations** (2-3 ชั่วโมง)
+**สถานะ**: ยังไม่เริ่ม (ดู PROGRESS_REPORT.md บรรทัด 732)
+
+**สิ่งที่ต้องทำ**:
+- [ ] สร้าง UI สำหรับ bulk operations (checkboxes, select all)
+- [ ] เพิ่ม API endpoints สำหรับ bulk approve/reject:
+  - POST `/api/admin/gyms/bulk-approve`
+  - POST `/api/admin/gyms/bulk-reject`
+  - POST `/api/admin/bookings/bulk-update`
+- [ ] เพิ่ม confirmation dialog
+- [ ] ทดสอบ bulk operations
+
+**ผลลัพธ์ที่คาดหวัง**: Admin สามารถอนุมัติ/ปฏิเสธหลายรายการพร้อมกันได้
+
+---
+
+#### 6. **Admin - Content Moderation Tools** (2-3 ชั่วโมง)
+**สถานะ**: ยังไม่เริ่ม (ดู PROGRESS_REPORT.md บรรทัด 734)
+
+**สิ่งที่ต้องทำ**:
+- [ ] สร้าง UI สำหรับ moderation dashboard (`/admin/dashboard/moderation`)
+- [ ] เพิ่ม API endpoints สำหรับ flag/report content:
+  - POST `/api/reports` - รายงาน content
+  - GET `/api/admin/reports` - ดูรายงานทั้งหมด
+  - PATCH `/api/admin/reports/[id]` - อัปเดตสถานะรายงาน
+- [ ] เพิ่ม moderation actions (approve, reject, delete)
+- [ ] เพิ่ม notification เมื่อมี content ที่ต้อง moderation
+
+**ผลลัพธ์ที่คาดหวัง**: Admin สามารถจัดการ content ที่ถูก report ได้
+
+---
+
+#### 7. **Coupon Code System** (3-4 ชั่วโมง)
+**สถานะ**: วางแผนไว้ในเฟส 2 (ดู PROGRESS_REPORT.md บรรทัด 216, 748)
+
+**สิ่งที่ต้องทำ**:
+- [ ] สร้าง migration: `coupon_codes` table:
+  - `code` (VARCHAR, unique), `discount_type`, `discount_value`, `min_purchase`, `max_uses`, `expires_at`, etc.
+- [ ] สร้าง API endpoints (GET, POST, PATCH, DELETE `/api/admin/coupons`)
+- [ ] สร้าง Admin UI สำหรับจัดการ coupon codes
+- [ ] เชื่อมต่อกับ booking/payment flow
+- [ ] เพิ่ม validation และ expiration logic
+
+**หมายเหตุ**: งานนี้ค่อนข้างใหญ่ ควรทำแยกวันหรือทำเป็นเฟส
+
+**ผลลัพธ์ที่คาดหวัง**: มีระบบ coupon code ที่ใช้งานได้จริง
+
+---
+
+## 📊 สรุปแผนงานวันนี้
+
+| งาน | Priority | เวลาโดยประมาณ | สถานะเป้าหมาย |
+|-----|----------|---------------|---------------|
+| แก้ไข E2E Test Failure | 🔴 High | 1-2 ชั่วโมง | ต้องเสร็จ |
+| Affiliate Commission Optimization | 🔴 High | 2-3 ชั่วโมง | 85% → 95% |
+| Leaderboard "View All" | 🟠 Medium | 1-2 ชั่วโมง | Nice to have |
+| Gamification - Award Points for Referrals | 🟠 Medium | 1-2 ชั่วโมง | Nice to have |
+| Admin - Bulk Operations | 🟡 Low | 2-3 ชั่วโมง | Future work |
+| Admin - Content Moderation | 🟡 Low | 2-3 ชั่วโมง | Future work |
+| Coupon Code System | 🟡 Low | 3-4 ชั่วโมง | Phase 2 |
+
+**รวมเวลา**: 12-18 ชั่วโมง (แนะนำให้ทำเฉพาะ High Priority ก่อน)
+
+---
+
+## 🎯 เป้าหมายวันนี้ (Today's Goals)
+
+### ✅ ควรเสร็จ (Must Have)
+- [ ] แก้ไข E2E Test Failure - Auth Flow
+- [ ] Affiliate Commission System - Optimization (85% → 95%)
+
+### 🎁 ดีถ้าเสร็จ (Nice to Have)
+- [ ] Gamification - Leaderboard "View All"
+- [ ] Gamification - Award Points เมื่อแนะนำเพื่อน
+
+### 📝 วางแผนไว้ (Future)
+- [ ] Admin - Bulk Operations
+- [ ] Admin - Content Moderation Tools
+- [ ] Coupon Code System
+
+---
+
+## ✅ Checklist สำหรับวันนี้
+
+### E2E Test Fix
+- [ ] ตรวจสอบ error logs
+- [ ] แก้ไข Internal Server Error
+- [ ] ทดสอบให้ test ผ่าน
+- [ ] ตรวจสอบ authentication flow
+
+### Affiliate Commission Optimization
+- [ ] สร้าง migration สำหรับ commission rates table
+- [ ] อัปเดต calculation logic
+- [ ] สร้าง Admin UI
+- [ ] ทดสอบ dynamic rates
+- [ ] ตรวจสอบ session storage
+
+### Gamification (ถ้ามีเวลา)
+- [ ] สร้างหน้า Leaderboard แบบเต็ม
+- [ ] เชื่อมต่อ API
+- [ ] เพิ่ม award points logic สำหรับ referrals
+- [ ] ทดสอบ flow
 
 ---
 
@@ -196,28 +494,26 @@
 
 ---
 
-## 🎯 เป้าหมายวันนี้ (Today's Goals)
-
-### 🔴 **ต้องทำวันนี้** (Critical)
-- [ ] _เพิ่มเป้าหมายใหม่ที่นี่_
-
-### 🟠 **ควรทำวันนี้** (Important)
-- [ ] _เพิ่มเป้าหมายใหม่ที่นี่_
-
-### 🟡 **ทำถ้ามีเวลา** (Nice to Have)
-- [ ] _เพิ่มเป้าหมายใหม่ที่นี่_
-
----
-
-## ✅ Checklist สำหรับวันนี้
-
-- [ ] _เพิ่ม task ใหม่ที่นี่_
-
----
-
 ## 📝 หมายเหตุ
 
-_เพิ่มหมายเหตุหรือข้อมูลเพิ่มเติมที่นี่_
+### สถานะโครงการ
+- ✅ **99.8% เสร็จสมบูรณ์** - ระบบหลักทั้งหมดใช้งานได้
+- ⚠️ **เหลือเพียง optimization** - ส่วนใหญ่เป็น Nice-to-have features
+- 🐛 **Bug Fixes** - มี E2E test failure ที่ต้องแก้
+
+### งานที่เสร็จแล้ว (จากวันก่อน)
+- ✅ Partner Promotions - Discount System (100%)
+- ✅ Maps Integration - Contact Page (Leaflet) (100%)
+- ✅ Google Analytics Integration (100%)
+- ✅ Email Service Migration - Resend (100%)
+
+### งานที่ยังไม่เสร็จ
+- ⚠️ Affiliate Commission System (85% - เหลือ optimization)
+- ⚠️ Gamification - Leaderboard "View All" (มีปุ่มแต่ยังไม่ทำงาน)
+- ⚠️ Gamification - Award Points เมื่อแนะนำเพื่อน (ยังไม่เชื่อมต่อ)
+- ⚠️ Admin - Bulk Operations (ยังไม่เริ่ม)
+- ⚠️ Admin - Content Moderation (ยังไม่เริ่ม)
+- ⚠️ Coupon Code System (Phase 2)
 
 ---
 
@@ -246,7 +542,7 @@ _เพิ่มหมายเหตุหรือข้อมูลเพิ�
 | Articles CMS | 100% | ✅ |
 | Email System | 100% | ✅ |
 | Gamification | 95% | ✅ |
-| Affiliate System | 85% | ✅ (ระบบหลักเสร็จแล้ว) |
+| Affiliate System | 85% | ⚠️ (ระบบหลักเสร็จแล้ว) |
 | Dashboards (User/Partner/Admin) | 100% | ✅ |
 | Search & Filtering | 100% | ✅ |
 | Promotions System | 100% | ✅ |
@@ -256,3 +552,22 @@ _เพิ่มหมายเหตุหรือข้อมูลเพิ�
 | Admin Analytics & Reports | 100% | ✅ |
 | Google Analytics | 100% | ✅ |
 | **รวมทั้งหมด** | **99.8%** | ✅ |
+
+---
+
+## 💡 คำแนะนำ
+
+1. **เริ่มจาก E2E Test Fix** - เป็นงานสำคัญที่ต้องแก้ไขก่อน เพราะมี test failure
+2. **Affiliate Optimization** - ทำให้ระบบยืดหยุ่นมากขึ้น แต่ไม่ใช่ critical
+3. **ทำทีละอย่าง** - อย่าพยายามทำหลายอย่างพร้อมกัน
+4. **ทดสอบให้ละเอียด** - โดยเฉพาะการคำนวณ commission และ referral flow
+5. **Commit บ่อยๆ** - เพื่อให้ง่ายต่อการ rollback ถ้ามีปัญหา
+
+---
+
+## 🔗 อ้างอิง
+
+- [PROGRESS_SUMMARY.md](./PROGRESS_SUMMARY.md) - สรุปความคืบหน้า
+- [PROGRESS_REPORT.md](./PROGRESS_REPORT.md) - รายงานความคืบหน้า
+- [TESTING_CHECKLIST.md](./TESTING_CHECKLIST.md) - Checklist การทดสอบ
+- [GOOGLE_ANALYTICS_SETUP.md](./GOOGLE_ANALYTICS_SETUP.md) - คู่มือตั้งค่า Google Analytics

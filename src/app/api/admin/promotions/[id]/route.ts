@@ -58,6 +58,12 @@ const updatePromotionHandler = withAdminAuth(async (
       endDate,
       linkUrl,
       linkText,
+      couponCode,
+      discountType,
+      discountValue,
+      minPurchaseAmount,
+      maxDiscountAmount,
+      maxUses,
     } = body;
     
     // Build update object
@@ -154,6 +160,33 @@ const updatePromotionHandler = withAdminAuth(async (
     
     if (linkText !== undefined) {
       updateData.link_text = linkText?.trim() || null;
+    }
+    
+    // Add coupon code
+    if (couponCode !== undefined) {
+      updateData.coupon_code = couponCode?.trim() ? couponCode.trim().toUpperCase() : null;
+    }
+    
+    // Add discount fields
+    if (discountType !== undefined) {
+      updateData.discount_type = discountType || null;
+      if (discountValue !== undefined) {
+        updateData.discount_value = discountValue ? Number(discountValue) : null;
+      } else {
+        updateData.discount_value = null;
+      }
+    }
+    
+    if (minPurchaseAmount !== undefined) {
+      updateData.min_purchase_amount = minPurchaseAmount ? Number(minPurchaseAmount) : null;
+    }
+    
+    if (maxDiscountAmount !== undefined) {
+      updateData.max_discount_amount = maxDiscountAmount ? Number(maxDiscountAmount) : null;
+    }
+    
+    if (maxUses !== undefined) {
+      updateData.max_uses = maxUses ? parseInt(maxUses) : null;
     }
     
     // Get current promotion to check if is_active is being changed to true

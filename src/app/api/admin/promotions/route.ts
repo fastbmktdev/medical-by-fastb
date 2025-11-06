@@ -98,6 +98,12 @@ const createPromotionHandler = withAdminAuth(async (
       titleEnglish,
       description,
       isActive = true,
+      couponCode,
+      discountType,
+      discountValue,
+      minPurchaseAmount,
+      maxDiscountAmount,
+      maxUses,
       priority = 0,
       showInMarquee = true,
       startDate,
@@ -176,6 +182,34 @@ const createPromotionHandler = withAdminAuth(async (
     
     if (linkText !== undefined) {
       insertData.link_text = linkText?.trim() || null;
+    }
+    
+    // Add coupon code
+    if (couponCode !== undefined && couponCode) {
+      insertData.coupon_code = couponCode.trim().toUpperCase();
+    }
+    
+    // Add discount fields
+    if (discountType !== undefined) {
+      insertData.discount_type = discountType || null;
+      if (discountValue !== undefined) {
+        insertData.discount_value = discountValue ? Number(discountValue) : null;
+      }
+    } else {
+      insertData.discount_type = null;
+      insertData.discount_value = null;
+    }
+    
+    if (minPurchaseAmount !== undefined && minPurchaseAmount) {
+      insertData.min_purchase_amount = Number(minPurchaseAmount);
+    }
+    
+    if (maxDiscountAmount !== undefined && maxDiscountAmount) {
+      insertData.max_discount_amount = Number(maxDiscountAmount);
+    }
+    
+    if (maxUses !== undefined && maxUses) {
+      insertData.max_uses = parseInt(maxUses);
     }
     
     // Insert promotion

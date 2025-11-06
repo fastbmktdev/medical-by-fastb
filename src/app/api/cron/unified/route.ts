@@ -7,6 +7,7 @@
  * - Email Queue Processing (every 5 minutes)
  * - Booking Reminders (daily at 9 AM)
  * - Scheduled Reports (hourly)
+ * - Scheduled Article Publishing (runs every time, checks for due articles)
  * 
  * This solves Vercel Hobby Plan limit (2 cron jobs max, daily frequency)
  * by using a single endpoint that routes to appropriate tasks.
@@ -302,6 +303,75 @@ async function sendBookingReminders(): Promise<{ success: boolean; sent: number;
 }
 
 /**
+ * Publish Scheduled Articles
+ * Should run every time cron executes (checks for articles due to be published)
+ */
+async function publishScheduledArticles(): Promise<{ success: boolean; published: number; error?: string }> {
+  try {
+    const { createClient } = await import('@/lib/database/supabase/server');
+    const supabase = await createClient();
+
+    const now = new Date();
+    
+    // Find articles scheduled to be published that haven't been published yet
+    const { data: scheduledArticles, error: articlesError } = await supabase
+      .from('articles')
+      .select('id, title, slug, scheduled_publish_at, is_published')
+      .eq('is_published', false)
+      .not('scheduled_publish_at', 'is', null)
+      .lte('scheduled_publish_at', now.toISOString());
+
+    if (articlesError) {
+      throw articlesError;
+    }
+
+    if (!scheduledArticles || scheduledArticles.length === 0) {
+      return { success: true, published: 0 };
+    }
+
+    let published = 0;
+    let failed = 0;
+
+    for (const article of scheduledArticles) {
+      try {
+        // Update article to published status
+        const { error: updateError } = await supabase
+          .from('articles')
+          .update({
+            is_published: true,
+            published_at: now.toISOString(),
+            scheduled_publish_at: null, // Clear scheduled time
+          })
+          .eq('id', article.id);
+
+        if (updateError) {
+          throw updateError;
+        }
+
+        console.log(`Published scheduled article: ${article.title} (${article.slug})`);
+        published++;
+      } catch (error) {
+        console.error(`Failed to publish article ${article.id}:`, error);
+        failed++;
+      }
+    }
+
+    return { 
+      success: true, 
+      published, 
+      error: failed > 0 ? `${failed} articles failed to publish` : undefined 
+    };
+  } catch (error) {
+    console.error('Scheduled article publishing error:', error);
+    return { 
+      success: false, 
+      published: 0, 
+      error: error instanceof Error ? error.message : 'Unknown error' 
+    };
+  }
+}
+
+/**
  * Generate Scheduled Reports
  * Should run hourly
  * Uses the same logic as generate-scheduled-reports endpoint (simplified)
@@ -412,6 +482,13 @@ async function handleUnifiedCron(request: NextRequest) {
     if (currentHour === 9 && currentMinute === 0) {
       const remindersResult = await sendBookingReminders();
       tasks.bookingReminders = remindersResult;
+    }
+
+    // Publish scheduled articles - check for any articles due to be published
+    // This runs every time the cron executes to catch scheduled articles
+    const articlesResult = await publishScheduledArticles();
+    if (articlesResult.published > 0) {
+      tasks.scheduledArticles = articlesResult;
     }
 
     // Generate scheduled reports - check for any due reports regardless of time

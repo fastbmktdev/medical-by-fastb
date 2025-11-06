@@ -7,7 +7,7 @@ import { RoleGuard } from '@/components/features/auth';
 import { DashboardLayout } from '@/components/shared';
 import { adminMenuItems } from '@/components/features/admin/adminMenuItems';
 import { showSuccessToast, showErrorToast } from '@/lib/utils';
-import { Card, CardBody, Button, Chip, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Spinner, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input } from '@heroui/react';
+import { Card, CardBody, Button, Chip, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Spinner, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Checkbox } from '@heroui/react';
 import {
   CheckCircleIcon,
   XCircleIcon,
@@ -26,19 +26,74 @@ const ApplicationTable = ({
   searchQuery,
   setSearchQuery,
   isLoading,
+  selectedIds,
+  onSelectionChange,
+  onBulkApprove,
+  onBulkReject,
 }: {
   applications: Gym[];
   onViewDetail: (app: Gym) => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   isLoading: boolean;
-}) => (
+  selectedIds: Set<string>;
+  onSelectionChange: (ids: Set<string>) => void;
+  onBulkApprove: () => void;
+  onBulkReject: () => void;
+}) => {
+  const isAllSelected = applications.length > 0 && selectedIds.size === applications.length;
+  const isIndeterminate = selectedIds.size > 0 && selectedIds.size < applications.length;
+
+  const toggleSelectAll = () => {
+    if (isAllSelected) {
+      onSelectionChange(new Set());
+    } else {
+      onSelectionChange(new Set(applications.map(app => app.id)));
+    }
+  };
+
+  const toggleSelect = (id: string) => {
+    const newSelection = new Set(selectedIds);
+    if (newSelection.has(id)) {
+      newSelection.delete(id);
+    } else {
+      newSelection.add(id);
+    }
+    onSelectionChange(newSelection);
+  };
+
+  return (
   <Card className="bg-default-100/50 backdrop-blur-sm border-none">
     <CardBody>
       <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 mb-6">
-        <h2 className="font-bold text-xl">
-          รายการรออนุมัติ ({applications.length})
-        </h2>
+        <div className="flex items-center gap-4">
+          <h2 className="font-bold text-xl">
+            รายการรออนุมัติ ({applications.length})
+          </h2>
+          {selectedIds.size > 0 && (
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-default-400">เลือกแล้ว {selectedIds.size} รายการ</span>
+              <Button
+                size="sm"
+                color="success"
+                variant="flat"
+                onPress={onBulkApprove}
+                startContent={<CheckCircleIcon className="w-4 h-4" />}
+              >
+                อนุมัติทั้งหมด
+              </Button>
+              <Button
+                size="sm"
+                color="danger"
+                variant="flat"
+                onPress={onBulkReject}
+                startContent={<XCircleIcon className="w-4 h-4" />}
+              >
+                ปฏิเสธทั้งหมด
+              </Button>
+            </div>
+          )}
+        </div>
         <Input
           placeholder="ค้นหาใบสมัคร..."
           value={searchQuery}
@@ -58,6 +113,14 @@ const ApplicationTable = ({
         removeWrapper={false}
       >
         <TableHeader>
+          <TableColumn width={50}>
+            <Checkbox
+              isSelected={isAllSelected}
+              isIndeterminate={isIndeterminate}
+              onValueChange={toggleSelectAll}
+              aria-label="Select all"
+            />
+          </TableColumn>
           <TableColumn>ชื่อยิม</TableColumn>
           <TableColumn>ผู้ติดต่อ</TableColumn>
           <TableColumn>อีเมล</TableColumn>
@@ -67,6 +130,13 @@ const ApplicationTable = ({
         <TableBody emptyContent={isLoading ? null : "ไม่พบใบสมัครที่รอการอนุมัติ"}>
           {applications.map((app) => (
             <TableRow key={app.id}>
+              <TableCell>
+                <Checkbox
+                  isSelected={selectedIds.has(app.id)}
+                  onValueChange={() => toggleSelect(app.id)}
+                  aria-label={`Select ${app.gym_name}`}
+                />
+              </TableCell>
               <TableCell className="font-semibold text-white">{app.gym_name}</TableCell>
               <TableCell>{app.contact_name}</TableCell>
               <TableCell>{app.email}</TableCell>
@@ -90,7 +160,8 @@ const ApplicationTable = ({
       </Table>
     </CardBody>
   </Card>
-);
+  );
+};
 
 const ApplicationDetailModal = ({
   isOpen,
@@ -224,11 +295,14 @@ function AdminApprovalsContent() {
   const [user, setUser] = useState<User | null>(null);
   const [applications, setApplications] = useState<Gym[]>([]);
   const [selectedApplication, setSelectedApplication] = useState<Gym | null>(null);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const detailModal = useDisclosure();
+  const bulkConfirmModal = useDisclosure();
+  const [bulkOperation, setBulkOperation] = useState<'approve' | 'reject' | null>(null);
 
   const loadApplications = useCallback(async () => {
     setIsLoading(true);
@@ -265,6 +339,52 @@ function AdminApprovalsContent() {
       app.email?.toLowerCase().includes(query)
     );
   }, [applications, searchQuery]);
+
+  const handleBulkOperation = async (operation: 'approve' | 'reject') => {
+    if (selectedIds.size === 0) {
+      showErrorToast('กรุณาเลือกรายการที่ต้องการดำเนินการ');
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      const response = await fetch('/api/admin/bulk-operations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          operation,
+          table: 'gyms',
+          ids: Array.from(selectedIds),
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        showSuccessToast(`${operation === 'approve' ? 'อนุมัติ' : 'ปฏิเสธ'} ${result.data.affectedCount} รายการสำเร็จ`);
+        setSelectedIds(new Set());
+        await loadApplications();
+        bulkConfirmModal.onClose();
+      } else {
+        showErrorToast(result.error || 'เกิดข้อผิดพลาด');
+      }
+    } catch (error) {
+      console.error('Error performing bulk operation:', error);
+      showErrorToast('เกิดข้อผิดพลาด');
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleBulkApprove = () => {
+    setBulkOperation('approve');
+    bulkConfirmModal.onOpen();
+  };
+
+  const handleBulkReject = () => {
+    setBulkOperation('reject');
+    bulkConfirmModal.onOpen();
+  };
 
   const handleUpdateStatus = async (appId: string, status: 'approved' | 'rejected') => {
     setIsProcessing(true);
@@ -329,6 +449,10 @@ function AdminApprovalsContent() {
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
               isLoading={isLoading}
+              selectedIds={selectedIds}
+              onSelectionChange={setSelectedIds}
+              onBulkApprove={handleBulkApprove}
+              onBulkReject={handleBulkReject}
             />
           </section>
           <ApplicationDetailModal
@@ -339,6 +463,40 @@ function AdminApprovalsContent() {
             onApprove={(id: string) => handleUpdateStatus(id, 'approved')}
             onReject={(id: string) => handleUpdateStatus(id, 'rejected')}
           />
+          
+          {/* Bulk Operation Confirmation Modal */}
+          <Modal
+            isOpen={bulkConfirmModal.isOpen}
+            onClose={bulkConfirmModal.onClose}
+            backdrop="blur"
+          >
+            <ModalContent>
+              <ModalHeader>
+                ยืนยันการดำเนินการ
+              </ModalHeader>
+              <ModalBody>
+                <p>
+                  คุณต้องการ{bulkOperation === 'approve' ? 'อนุมัติ' : 'ปฏิเสธ'} {selectedIds.size} รายการหรือไม่?
+                </p>
+              </ModalBody>
+              <ModalFooter>
+                <Button
+                  variant="light"
+                  onPress={bulkConfirmModal.onClose}
+                  isDisabled={isProcessing}
+                >
+                  ยกเลิก
+                </Button>
+                <Button
+                  color={bulkOperation === 'approve' ? 'success' : 'danger'}
+                  onPress={() => bulkOperation && handleBulkOperation(bulkOperation)}
+                  isLoading={isProcessing}
+                >
+                  ยืนยัน
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
         </>
       )}
     </DashboardLayout>

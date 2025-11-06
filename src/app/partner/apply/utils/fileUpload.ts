@@ -51,8 +51,10 @@ export const uploadImages = async (
         .getPublicUrl(fileName);
 
       uploadedUrls.push(urlData.publicUrl);
-    } catch {
-      throw new Error("การอัปโหลดรูปภาพล้มเหลว");
+    } catch (error) {
+      console.error('Image upload error:', error);
+      const errorMessage = error instanceof Error ? error.message : "การอัปโหลดรูปภาพล้มเหลว";
+      throw new Error(errorMessage);
     }
   }
 

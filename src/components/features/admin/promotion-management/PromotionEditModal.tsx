@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, Switch } from '@heroui/react';
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, Switch, Select, SelectItem } from '@heroui/react';
 import { toast } from 'react-hot-toast';
+import { SparklesIcon } from '@heroicons/react/24/outline';
 
 interface Promotion {
   id: string;
@@ -16,6 +17,13 @@ interface Promotion {
   end_date?: string | null;
   link_url?: string | null;
   link_text?: string | null;
+  coupon_code?: string | null;
+  discount_type?: 'percentage' | 'fixed_amount' | null;
+  discount_value?: number | null;
+  min_purchase_amount?: number | null;
+  max_discount_amount?: number | null;
+  max_uses?: number | null;
+  current_uses?: number | null;
 }
 
 interface PromotionEditModalProps {
@@ -27,6 +35,7 @@ interface PromotionEditModalProps {
 
 export default function PromotionEditModal({ isOpen, onClose, onSuccess, promotion }: PromotionEditModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showDiscountOptions, setShowDiscountOptions] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     titleEnglish: '',
@@ -38,7 +47,21 @@ export default function PromotionEditModal({ isOpen, onClose, onSuccess, promoti
     endDate: '',
     linkUrl: '',
     linkText: '',
+    couponCode: '',
+    discountType: '',
+    discountValue: '',
+    minPurchaseAmount: '',
+    maxDiscountAmount: '',
+    maxUses: '',
   });
+
+  // Generate random coupon code
+  const generateCouponCode = () => {
+    const prefix = formData.title.substring(0, 3).toUpperCase().replace(/[^A-Z]/g, '') || 'PROM';
+    const random = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const code = `${prefix}${random}`;
+    setFormData((prev) => ({ ...prev, couponCode: code }));
+  };
 
   useEffect(() => {
     if (promotion) {
@@ -57,7 +80,14 @@ export default function PromotionEditModal({ isOpen, onClose, onSuccess, promoti
           : '',
         linkUrl: promotion.link_url || '',
         linkText: promotion.link_text || '',
+        couponCode: promotion.coupon_code || '',
+        discountType: promotion.discount_type || '',
+        discountValue: promotion.discount_value?.toString() || '',
+        minPurchaseAmount: promotion.min_purchase_amount?.toString() || '',
+        maxDiscountAmount: promotion.max_discount_amount?.toString() || '',
+        maxUses: promotion.max_uses?.toString() || '',
       });
+      setShowDiscountOptions(!!promotion.discount_type);
     }
   }, [promotion]);
 
@@ -69,7 +99,7 @@ export default function PromotionEditModal({ isOpen, onClose, onSuccess, promoti
 
     setIsSubmitting(true);
     try {
-      const payload: any = {
+      const payload: Record<string, unknown> = {
         title: formData.title.trim(),
         isActive: formData.isActive,
         priority: parseInt(formData.priority.toString()) || 0,
@@ -90,6 +120,30 @@ export default function PromotionEditModal({ isOpen, onClose, onSuccess, promoti
       }
       if (formData.linkUrl !== undefined) payload.linkUrl = formData.linkUrl.trim() || null;
       if (formData.linkText !== undefined) payload.linkText = formData.linkText.trim() || null;
+      
+      // Add coupon code
+      if (formData.couponCode !== undefined) {
+        payload.couponCode = formData.couponCode.trim() || null;
+      }
+      
+      // Add discount fields
+      if (formData.discountType !== undefined) {
+        payload.discountType = formData.discountType || null;
+        if (formData.discountValue) {
+          payload.discountValue = Number(formData.discountValue);
+        } else {
+          payload.discountValue = null;
+        }
+      }
+      if (formData.minPurchaseAmount !== undefined && formData.minPurchaseAmount) {
+        payload.minPurchaseAmount = Number(formData.minPurchaseAmount);
+      }
+      if (formData.maxDiscountAmount !== undefined && formData.maxDiscountAmount) {
+        payload.maxDiscountAmount = Number(formData.maxDiscountAmount);
+      }
+      if (formData.maxUses !== undefined && formData.maxUses) {
+        payload.maxUses = parseInt(formData.maxUses);
+      }
 
       const response = await fetch(`/api/admin/promotions/${promotion.id}`, {
         method: 'PUT',
@@ -201,6 +255,98 @@ export default function PromotionEditModal({ isOpen, onClose, onSuccess, promoti
               onChange={(e) => setFormData((prev) => ({ ...prev, linkText: e.target.value }))}
               placeholder="เช่น: ดูรายละเอียด"
             />
+            
+            {/* Coupon Code Section */}
+            <div className="border-t border-zinc-700 pt-4">
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-sm font-medium">Coupon Code (Optional)</label>
+                <Button
+                  size="sm"
+                  variant="light"
+                  onPress={generateCouponCode}
+                  startContent={<SparklesIcon className="w-4 h-4" />}
+                >
+                  สร้างอัตโนมัติ
+                </Button>
+              </div>
+              <Input
+                placeholder="เช่น: PROMO2025 หรือปล่อยว่างสำหรับโปรโมชั่นอัตโนมัติ"
+                value={formData.couponCode}
+                onChange={(e) => setFormData((prev) => ({ ...prev, couponCode: e.target.value.toUpperCase() }))}
+                description="ถ้ามี Coupon Code ผู้ใช้ต้องกรอกโค้ดเพื่อใช้ส่วนลด"
+              />
+            </div>
+            
+            {/* Discount Options Toggle */}
+            <div className="border-t border-zinc-700 pt-4">
+              <Switch
+                isSelected={showDiscountOptions}
+                onValueChange={setShowDiscountOptions}
+              >
+                <span className="font-medium">เพิ่มส่วนลด</span>
+              </Switch>
+            </div>
+            
+            {/* Discount Fields */}
+            {showDiscountOptions && (
+              <div className="space-y-4 border border-zinc-700 rounded-lg p-4 bg-zinc-900/50">
+                <Select
+                  label="ประเภทส่วนลด"
+                  placeholder="เลือกประเภทส่วนลด"
+                  selectedKeys={formData.discountType ? [formData.discountType] : []}
+                  onSelectionChange={(keys) => {
+                    const value = Array.from(keys)[0] as string;
+                    setFormData((prev) => ({ ...prev, discountType: value }));
+                  }}
+                >
+                  <SelectItem key="percentage">เปอร์เซ็นต์ (%)</SelectItem>
+                  <SelectItem key="fixed_amount">จำนวนเงินคงที่ (บาท)</SelectItem>
+                </Select>
+                
+                {formData.discountType && (
+                  <>
+                    <Input
+                      type="number"
+                      label={formData.discountType === 'percentage' ? 'ส่วนลด (%)' : 'ส่วนลด (บาท)'}
+                      value={formData.discountValue}
+                      onChange={(e) => setFormData((prev) => ({ ...prev, discountValue: e.target.value }))}
+                      description={formData.discountType === 'percentage' ? '0-100' : 'จำนวนเงินที่ลด'}
+                      min={0}
+                      max={formData.discountType === 'percentage' ? 100 : undefined}
+                    />
+                    
+                    {formData.discountType === 'percentage' && (
+                      <Input
+                        type="number"
+                        label="ส่วนลดสูงสุด (บาท)"
+                        value={formData.maxDiscountAmount}
+                        onChange={(e) => setFormData((prev) => ({ ...prev, maxDiscountAmount: e.target.value }))}
+                        description="จำกัดจำนวนเงินส่วนลดสูงสุด (Optional)"
+                        min={0}
+                      />
+                    )}
+                    
+                    <Input
+                      type="number"
+                      label="ยอดซื้อขั้นต่ำ (บาท)"
+                      value={formData.minPurchaseAmount}
+                      onChange={(e) => setFormData((prev) => ({ ...prev, minPurchaseAmount: e.target.value }))}
+                      description="ยอดซื้อขั้นต่ำที่ต้องใช้โปรโมชั่น (Optional)"
+                      min={0}
+                    />
+                    
+                    <Input
+                      type="number"
+                      label="จำนวนครั้งที่ใช้ได้สูงสุด"
+                      value={formData.maxUses}
+                      onChange={(e) => setFormData((prev) => ({ ...prev, maxUses: e.target.value }))}
+                      description="จำนวนครั้งที่ใช้ได้ (ปล่อยว่าง = ใช้ได้ไม่จำกัด)"
+                      min={1}
+                    />
+                  </>
+                )}
+              </div>
+            )}
           </div>
         </ModalBody>
         <ModalFooter>

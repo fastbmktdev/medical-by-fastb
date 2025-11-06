@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, useMemo, useEffect } from 'react';
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, Select, SelectItem } from '@heroui/react';
+import Image from 'next/image';
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, Select, SelectItem, useDisclosure } from '@heroui/react';
 import { toast } from 'react-hot-toast';
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
 import { Article } from '@/types';
+import MediaLibraryModal from '@/components/features/admin/article-management/MediaLibraryModal';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -49,6 +51,7 @@ export default function ArticleEditModal({ isOpen, onClose, onSuccess, article }
     scheduled_publish_at: '',
   });
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const mediaLibraryModal = useDisclosure();
 
   useEffect(() => {
     if (article) {
@@ -219,11 +222,38 @@ export default function ArticleEditModal({ isOpen, onClose, onSuccess, article }
               minRows={2}
               isRequired
             />
-            <Input
-              label="รูปภาพหลัก (URL)"
-              value={formData.image}
-              onChange={(e) => setFormData((prev) => ({ ...prev, image: e.target.value }))}
-            />
+            <div>
+              <Input
+                label="รูปภาพหลัก (URL)"
+                value={formData.image}
+                onChange={(e) => setFormData((prev) => ({ ...prev, image: e.target.value }))}
+                endContent={
+                  <Button
+                    size="sm"
+                    variant="light"
+                    onPress={mediaLibraryModal.onOpen}
+                    className="min-w-fit"
+                  >
+                    เลือกจาก Media Library
+                  </Button>
+                }
+              />
+              {formData.image && (
+                <div className="mt-2 relative w-full h-32 rounded-lg overflow-hidden">
+                  <Image
+                    width={300}
+                    height={300}
+                    src={formData.image}
+                    alt="Preview"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = '/assets/images/fallback-img.jpg';
+                    }}
+                  />
+                </div>
+              )}
+            </div>
             <Input
               label="แท็ก (คั่นด้วย comma)"
               value={formData.tags}
@@ -315,6 +345,16 @@ export default function ArticleEditModal({ isOpen, onClose, onSuccess, article }
           </Button>
         </ModalFooter>
       </ModalContent>
+      
+      {/* Media Library Modal */}
+      <MediaLibraryModal
+        isOpen={mediaLibraryModal.isOpen}
+        onClose={mediaLibraryModal.onClose}
+        onSelect={(url) => {
+          setFormData((prev) => ({ ...prev, image: url }));
+          mediaLibraryModal.onClose();
+        }}
+      />
     </Modal>
   );
 }

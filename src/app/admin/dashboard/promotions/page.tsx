@@ -32,6 +32,13 @@ interface Promotion {
   end_date?: string | null;
   link_url?: string | null;
   link_text?: string | null;
+  coupon_code?: string | null;
+  discount_type?: 'percentage' | 'fixed_amount' | null;
+  discount_value?: number | null;
+  min_purchase_amount?: number | null;
+  max_discount_amount?: number | null;
+  max_uses?: number | null;
+  current_uses?: number | null;
   created_at?: string;
   updated_at?: string;
 }
