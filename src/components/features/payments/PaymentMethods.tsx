@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useLocale } from 'next-intl';
 import CheckoutForm from './CheckoutForm';
 import { 
   CreditCardIcon, 
@@ -29,6 +30,7 @@ export default function PaymentMethods({
   onError,
 }: PaymentMethodsProps) {
   const router = useRouter();
+  const locale = useLocale();
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -99,7 +101,7 @@ export default function PaymentMethods({
       sessionStorage.setItem('bankTransferInfo', JSON.stringify(bankInfo));
       
       // Redirect to bank transfer confirmation page
-      router.push('/payment/bank-transfer');
+      router.push(`/${locale}/payment/bank-transfer`);
     } catch (error) {
       onError('เกิดข้อผิดพลาดในการสร้างข้อมูลโอนเงิน');
     } finally {
@@ -121,7 +123,7 @@ export default function PaymentMethods({
       sessionStorage.setItem('promptPayInfo', JSON.stringify(promptPayInfo));
       
       // Redirect to PromptPay page
-      router.push('/payment/promptpay');
+      router.push(`/${locale}/payment/promptpay`);
     } catch (error) {
       onError('เกิดข้อผิดพลาดในการสร้าง QR Code');
     } finally {

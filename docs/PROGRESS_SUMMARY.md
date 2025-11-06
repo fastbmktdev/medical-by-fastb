@@ -23,8 +23,8 @@
 - ✅ **Code Cleanup**: ลบไฟล์ที่ไม่จำเป็น (ลดขนาดได้ 32 KB)
 
 **สิ่งที่ยังเหลือ**:
-- ⚠️ Affiliate Commission System (95% - Commission rate config table และ Payout System เสร็จแล้ว เหลือเพียง session storage optimization)
-- ⚠️ E2E Test Failure - Auth Flow (มี Internal Server Error ที่ต้องแก้ไข)
+- ⚠️ Affiliate Commission System (95% - Commission rate config table และ Payout System เสร็จแล้ว เหลือเพียง session storage optimization - Optional)
+- ⚠️ E2E Test Failure - Auth Flow (บางส่วนแก้ไขแล้ว - Import path + Error handling แก้แล้ว, ยังต้องสร้าง Supabase Storage bucket `gym-images`)
 - ⚠️ Gamification - Award Points เมื่อแนะนำเพื่อน (ยังไม่เชื่อมต่อกับ Affiliate System)
 - ⚠️ Admin - Bulk Operations (ยังไม่เริ่ม)
 - ⚠️ Admin - Content Moderation Tools (ยังไม่เริ่ม)
@@ -151,11 +151,13 @@
    - ✅ Affiliate Payout System - ระบบจ่ายเงิน commission (100%)
    - ⚠️ Optional: Session storage สำหรับ referral code (optimization)
 
-2. **E2E Test Failure - Auth Flow**
-   - ⚠️ มี Internal Server Error ใน test `tests/e2e/auth-flow.spec.ts`
-   - ⚠️ ต้องตรวจสอบและแก้ไข error
+2. **E2E Test Failure - Auth Flow** (บางส่วนแก้ไขแล้ว)
+   - ✅ Import path แก้ไขแล้ว (`tests/e2e/auth/auth-flow.spec.ts`)
+   - ✅ Error handling ปรับปรุงแล้ว (`src/app/partner/apply/utils/fileUpload.ts`)
+   - ⚠️ ยังต้องสร้าง Supabase Storage bucket `gym-images` (ต้องทำด้วยมือ)
+   - 📝 ดูรายละเอียดใน [E2E_TEST_ERROR_FIX.md](./E2E_TEST_ERROR_FIX.md)
 
-3. ~~**Gamification - Leaderboard "View All"**~~ - ✅ **เสร็จสมบูรณ์แล้ว**
+3. ~~**Gamification - Leaderboard "View All"**~~ - ✅ **เสร็จสมบูรณ์แล้ว (100%)** - หน้าเต็ม `/dashboard/leaderboard/[id]`
 
 4. **Gamification - Award Points เมื่อแนะนำเพื่อน**
    - ⚠️ ยังไม่เชื่อมต่อกับ Affiliate System
@@ -241,7 +243,7 @@
 ✅ **Email Service Migration** - เสร็จสมบูรณ์ 100% (ทุก routes ใช้ Resend)
 
 ⚠️ **งานที่ต้องทำต่อไป**:
-- ⚠️ แก้ไข E2E Test Failure - Auth Flow (Internal Server Error)
+- ⚠️ แก้ไข E2E Test Failure - Auth Flow (บางส่วนแก้ไขแล้ว - ยังต้องสร้าง Supabase Storage bucket `gym-images` ตาม [E2E_TEST_ERROR_FIX.md](./E2E_TEST_ERROR_FIX.md))
 - ⚠️ Gamification - Award Points เมื่อแนะนำเพื่อน
 - ⚠️ Admin - Bulk Operations และ Content Moderation Tools
 - ⚠️ Coupon Code System (Phase 2)
@@ -290,7 +292,8 @@
 - ✅ **Critical Features**: ครบแล้ว 100%
 
 ### ⚠️ ระบบที่ยังไม่เสร็จ
-- ⚠️ **Affiliate Commission System** (95%) - Commission rate config table และ Payout System เสร็จแล้ว เหลือเพียง session storage optimization
+- ⚠️ **Affiliate Commission System** (95%) - Commission rate config table และ Payout System เสร็จแล้ว เหลือเพียง session storage optimization (Optional)
+- ⚠️ **E2E Test Failure - Auth Flow** (บางส่วนแก้ไขแล้ว) - ยังต้องสร้าง Supabase Storage bucket `gym-images`
 
 ### 📋 นโยบายระบบ
 - ✅ **การยกเลิกการจองและการคืนเงิน**: ต้องติดต่อโดยตรง ไม่มีระบบอัตโนมัติ (ตามนโยบายธุรกิจ)

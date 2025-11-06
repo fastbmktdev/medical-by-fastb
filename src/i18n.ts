@@ -21,12 +21,14 @@ export const localeFlags: Record<Locale, string> = {
 
 export default getRequestConfig(async ({ locale }) => {
   // Validate that the incoming `locale` parameter is valid
-  if (!locale || !locales.includes(locale as Locale)) {
-    notFound();
-  }
+  // If locale is not provided or invalid, use default locale instead of calling notFound()
+  // This allows the middleware to handle redirects properly
+  const validLocale = locale && locales.includes(locale as Locale) 
+    ? (locale as Locale) 
+    : 'th'; // Default to 'th' if invalid
 
   return {
-    locale: locale as string,
-    messages: (await import(`../messages/${locale}.json`)).default,
+    locale: validLocale,
+    messages: (await import(`../messages/${validLocale}.json`)).default,
   };
 });

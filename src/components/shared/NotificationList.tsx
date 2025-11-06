@@ -7,7 +7,7 @@ import {
   CheckIcon,
   CheckCircleIcon,
 } from '@heroicons/react/24/outline';
-import Link from 'next/link';
+import { Link } from '@/navigation';
 import { toast } from 'react-hot-toast';
 import { useRealtimeNotifications } from '@/lib/hooks/useRealtimeNotifications';
 

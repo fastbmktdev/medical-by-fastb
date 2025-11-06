@@ -8,13 +8,13 @@ const isDevelopment = process.env.NODE_ENV === "development";
 
 function getContentSecurityPolicy(isDev: boolean): string {
   const connectSrc =
-    "connect-src 'self' *.supabase.co *.stripe.com https://vercel.live *.sentry.io *.ingest.sentry.io" +
+    "connect-src 'self' *.supabase.co *.stripe.com https://vercel.live *.sentry.io *.ingest.sentry.io https://www.google-analytics.com https://www.googletagmanager.com" +
     (isDev ? " http://127.0.0.1:8000 http://127.0.0.1:54321 http://localhost:*" : "") +
     ";";
 
   return [
     "default-src 'self';",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://cdn.jsdelivr.net https://unpkg.com https://vercel.live;",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://cdn.jsdelivr.net https://unpkg.com https://vercel.live https://www.googletagmanager.com;",
     "style-src 'self' 'unsafe-inline';",
     "img-src 'self' data: blob: https:;",
     "font-src 'self';",
@@ -86,6 +86,22 @@ const nextConfig: NextConfig = {
         headers: securityHeaders,
       },
     ];
+  },
+  webpack: (config) => {
+    // Suppress warnings from Prisma/OpenTelemetry instrumentation
+    // These are harmless warnings from third-party dependencies using dynamic requires
+    config.ignoreWarnings = [
+      {
+        module: /node_modules\/@prisma\/instrumentation/,
+      },
+      {
+        module: /node_modules\/@opentelemetry\/instrumentation/,
+      },
+      {
+        message: /Critical dependency: the request of a dependency is an expression/,
+      },
+    ];
+    return config;
   },
   // Note: Webpack cache serialization warnings about "big strings" are harmless
   // and common in Next.js builds. They're performance suggestions from webpack's

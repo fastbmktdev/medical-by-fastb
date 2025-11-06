@@ -3,6 +3,7 @@
 import React from 'react';
 import { LeaderboardData } from '@/types/gamification.types';
 import Image from 'next/image';
+import { Link } from '@/navigation';
 
 interface LeaderboardWidgetProps {
   leaderboard: LeaderboardData;
@@ -131,12 +132,12 @@ export default function LeaderboardWidget({ leaderboard, className = '' }: Leade
       {/* Show More Button */}
       {leaderboard.entries.length > 10 && (
         <div className="mt-4 text-center">
-          <a
+          <Link
             href={`/dashboard/leaderboard/${leaderboard.leaderboard.id}`}
             className="inline-block text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors"
           >
             ดูทั้งหมด ({leaderboard.entries.length} คน) →
-          </a>
+          </Link>
         </div>
       )}
 

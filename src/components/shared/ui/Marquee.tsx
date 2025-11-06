@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/database/supabase/client";
+import Link from "next/link";
 
 interface Promotion {
   id: string;
@@ -15,19 +16,33 @@ export default function Marquee() {
 
   useEffect(() => {
     async function fetchPromotions() {
-      const supabase = createClient();
-      const now = new Date().toISOString();
-      const { data } = await supabase
-        .from("promotions")
-        .select("id, title, title_english, link_url")
-        .eq("is_active", true)
-        .eq("show_in_marquee", true)
-        .or(`start_date.is.null,start_date.lte.${now}`)
-        .or(`end_date.is.null,end_date.gte.${now}`)
-        .order("priority", { ascending: false })
-        .limit(5);
+      try {
+        const supabase = createClient();
+        const now = new Date().toISOString();
+        const { data, error } = await supabase
+          .from("promotions")
+          .select("id, title, title_english, link_url")
+          .eq("is_active", true)
+          .eq("show_in_marquee", true)
+          .or(`start_date.is.null,start_date.lte.${now}`)
+          .or(`end_date.is.null,end_date.gte.${now}`)
+          .order("priority", { ascending: false })
+          .limit(5);
 
-      setPromotions(data || []);
+        if (error) {
+          console.error('Error fetching promotions:', error);
+          // Set empty array on error to show placeholder
+          setPromotions([]);
+          return;
+        }
+
+        setPromotions(data || []);
+      } catch (error) {
+        // Handle connection errors (ERR_CONNECTION_REFUSED, etc.)
+        console.error('Failed to fetch promotions:', error);
+        // Set empty array to show placeholder
+        setPromotions([]);
+      }
     }
 
     fetchPromotions();
@@ -45,14 +60,14 @@ export default function Marquee() {
         {displayPromotions.map((promo, i) => (
           <span key={`${promo.id}-${i}`} className="font-bold text-lg tracking-wider">
             {promo.link_url ? (
-              <a
+              <Link
                 href={promo.link_url}
                 className="hover:underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 {promo.title}
-              </a>
+              </Link>
             ) : (
               promo.title
             )}

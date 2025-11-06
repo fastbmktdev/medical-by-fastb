@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { MapPinIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
+import { Link } from '@/navigation';
 import Image from "next/image";
 import { Gym } from "@/types";
 import { BaseCard } from "./BaseCard";

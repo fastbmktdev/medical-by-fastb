@@ -47,7 +47,7 @@
 - ✅ ตารางคะแนน
 - ✅ หน้าสรุปข้อมูล Gamification
 - ✅ แจ้งเตือนในแอปเกี่ยวกับ Gamification
-- ⚠️ มีปุ่มเข้า Leaderboard View All, แต่ยังไม่พร้อมใช้งาน
+- ✅ Leaderboard "View All" - หน้าเต็ม `/dashboard/leaderboard/[id]` (เสร็จสมบูรณ์ 100%)
 
 ### 6. 🎯 ระบบแนะนำเพื่อน (Affiliate) (95%)
 - ✅ สร้าง Referral Code ได้
@@ -138,13 +138,13 @@
 ### ⚠️ ระบบที่ยังเหลืออยู่
 1. ~~**Affiliate Commission System**~~ - ✅ **เสร็จสมบูรณ์แล้ว (95%)** - Commission rate config table, Admin API, Payout System เสร็จแล้ว
 2. ~~**Google Analytics Integration**~~ - ✅ **เสร็จสมบูรณ์แล้ว (100%)**
-3. **E2E Test Failure - Auth Flow** - มี Internal Server Error ใน test ที่ต้องแก้ไข
+3. **E2E Test Failure - Auth Flow** - ⚠️ **บางส่วนแก้ไขแล้ว** (Import path + Error handling แก้แล้ว) - ยังต้องสร้าง Supabase Storage bucket (`gym-images`)
 4. ~~**Gamification - Leaderboard "View All"**~~ - ✅ **เสร็จสมบูรณ์แล้ว (100%)** - สร้างหน้า `/dashboard/leaderboard/[id]` แล้ว
 5. **Gamification - Award Points เมื่อแนะนำเพื่อน** - ยังไม่เชื่อมต่อกับ Affiliate System
-6. **Multi-language Support (I18N)** - ✅ **เสร็จสมบูรณ์แล้ว (100%)** - รองรับ 3 ภาษา (ไทย, อังกฤษ, ญี่ปุ่น)
-6. **Admin - Bulk Operations** - ยังไม่เริ่ม
-7. **Admin - Content Moderation Tools** - ยังไม่เริ่ม
-8. **Coupon Code System** - วางแผนไว้ใน Phase 2
+6. ~~**Multi-language Support (I18N)**~~ - ✅ **เสร็จสมบูรณ์แล้ว (100%)** - รองรับ 3 ภาษา (ไทย, อังกฤษ, ญี่ปุ่น)
+7. **Admin - Bulk Operations** - ยังไม่เริ่ม
+8. **Admin - Content Moderation Tools** - ยังไม่เริ่ม
+9. **Coupon Code System** - วางแผนไว้ใน Phase 2
 
 ---
 
@@ -240,10 +240,10 @@
 ### ⚠️ งานที่เหลืออยู่ (ดูรายละเอียดใน [PLAN.md](./PLAN.md))
 1. ~~**Affiliate Commission System**~~ - ✅ **เสร็จสมบูรณ์แล้ว (95%)** - Commission rate config table, Admin API, Payout System เสร็จแล้ว
    - Commission rate config table (แทน constants)
-   - Session storage optimization
+   - Session storage optimization (Optional)
 2. ~~**Google Analytics Integration**~~ - ✅ **เสร็จสมบูรณ์แล้ว (100%)**
-3. ~~**E2E Test Failure - Auth Flow**~~ - ✅ **แก้ไขแล้ว** (Import path + Error handling)
-4. **Gamification - Leaderboard "View All"** - สร้างหน้า Leaderboard แบบเต็ม
+3. **E2E Test Failure - Auth Flow** - ⚠️ **บางส่วนแก้ไขแล้ว** (Import path + Error handling แก้แล้ว) - ยังต้องสร้าง Supabase Storage bucket (`gym-images`) ตาม [E2E_TEST_ERROR_FIX.md](./E2E_TEST_ERROR_FIX.md)
+4. ~~**Gamification - Leaderboard "View All"**~~ - ✅ **เสร็จสมบูรณ์แล้ว (100%)** - สร้างหน้า `/dashboard/leaderboard/[id]` แล้ว
 5. **Gamification - Award Points เมื่อแนะนำเพื่อน** - เชื่อมต่อกับ Affiliate System
 6. **Admin - Bulk Operations** - สร้าง UI และ API
 7. **Admin - Content Moderation Tools** - สร้าง moderation dashboard
@@ -414,7 +414,7 @@
 | **Cron Jobs** | 100% | ✅ Booking Reminders Cron Job เสร็จแล้ว |
 | **Audit Logging** | 100% | ✅ มี API + Admin UI ครบถ้วน |
 | **Security** | 95% | ✅ Rate Limiting, CSRF, File Upload Validation, XSS Sanitization, Security Headers, Audit Logging (`audit_logs`) เสร็จแล้ว - ขาดการใช้งาน Audit Log ใน API บางส่วน |
-| **Gamification** | 100% | ✅ มี UI, API ครบ, ลอจิกส่วนใหญ่เสร็จ - ✅ Notification เมื่อได้ Badge/Level Up เสร็จแล้ว - ✅ Leaderboard "View All" เสร็จแล้ว |
+| **Gamification** | 100% | ✅ มี UI, API ครบ, ลอจิกส่วนใหญ่เสร็จ - ✅ Notification เมื่อได้ Badge/Level Up เสร็จแล้ว - ✅ Leaderboard "View All" เสร็จสมบูรณ์แล้ว (หน้าเต็ม `/dashboard/leaderboard/[id]`) |
 | **Affiliate** | 95% | ✅ ระบบหลักเสร็จสมบูรณ์ (database, commission calculation, booking/payment integration) - ✅ Comprehensive testing (14 test cases passed) - ✅ Commission rate config table - ✅ Payout System (100%) - ⚠️ Optional: session storage |
 | **Build System** | 100% | ✅ Production build ผ่านเรียบร้อย (2025-11-06) |
 | **Authentication** | 100% | ✅ เสร็จสมบูรณ์ - Signup, Login, OAuth, Password Reset |

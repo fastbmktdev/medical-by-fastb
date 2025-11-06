@@ -1,6 +1,7 @@
 "use client";
 
-import Link from "next/link";
+import { useLocale } from "next-intl";
+import { Link } from "@/navigation";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -35,6 +36,7 @@ type NavLink =
 export default function Header() {
   // Router for navigation
   const router = useRouter();
+  const locale = useLocale();
 
   // Authentication context
   const { user, signOut } = useAuth();
@@ -84,7 +86,7 @@ export default function Header() {
     await signOut();
     setIsMobileMenuOpen(false);
     setIsLoggingOut(false);
-    router.push("/");
+    router.push(`/${locale}`);
     router.refresh();
   };
 

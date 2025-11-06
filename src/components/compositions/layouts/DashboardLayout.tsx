@@ -8,6 +8,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { useAuth } from '@/contexts';
 import { useRouter } from 'next/navigation';
+import { useLocale } from 'next-intl';
 import SidebarContent from './ui/SidebarContent';
 
 export interface MenuItem {
@@ -49,10 +50,11 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const { signOut } = useAuth();
   const router = useRouter();
+  const locale = useLocale();
 
   const handleLogout = async () => {
     await signOut();
-    router.push('/');
+    router.push(`/${locale}`);
     router.refresh();
   };
 

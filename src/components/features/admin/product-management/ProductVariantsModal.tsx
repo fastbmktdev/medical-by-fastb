@@ -339,8 +339,8 @@ export default function ProductVariantsModal({
                       )}
                     </div>
                     <div className="flex items-center gap-4 text-sm text-zinc-400">
-                      <span>ราคา: ฿{variant.priceAdjustment >= 0 ? '+' : ''}{variant.priceAdjustment.toLocaleString()}</span>
-                      <span>สต็อก: {variant.stock} ชิ้น</span>
+                      <span>ราคา: ฿{(variant.priceAdjustment || 0) >= 0 ? '+' : ''}{(variant.priceAdjustment || 0).toLocaleString()}</span>
+                      <span>สต็อก: {variant.stock || 0} ชิ้น</span>
                       {variant.sku && <span>SKU: {variant.sku}</span>}
                     </div>
                   </div>

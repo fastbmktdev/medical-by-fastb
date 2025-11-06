@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
+import { Link } from '@/navigation';
 import { ProductCard } from "@/components/shared";
 
 interface Product {
@@ -28,13 +28,27 @@ export default function LatestProducts() {
     async function fetchFeaturedProducts() {
       try {
         const response = await fetch('/api/products?featured=true&active=true&limit=4');
+        
+        if (!response.ok) {
+          // Handle HTTP errors (500, 404, etc.)
+          console.error(`Error fetching products: ${response.status} ${response.statusText}`);
+          setProducts([]);
+          return;
+        }
+        
         const data = await response.json();
         
-        if (data.success && data.data) {
+        if (data.success && data.data && Array.isArray(data.data)) {
           setProducts(data.data);
+        } else {
+          // Handle invalid response format
+          console.warn('Invalid response format from products API:', data);
+          setProducts([]);
         }
       } catch (err) {
+        // Handle network errors (connection refused, timeout, etc.)
         console.error("Error fetching featured products:", err);
+        setProducts([]);
       } finally {
         setIsLoading(false);
       }

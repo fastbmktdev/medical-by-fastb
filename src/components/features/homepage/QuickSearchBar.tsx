@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
 import { MagnifyingGlassIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import { trackSearch } from "@/lib/utils/analytics";
 
 export default function QuickSearchBar() {
   const router = useRouter();
+  const locale = useLocale();
   const [activeCategory, setActiveCategory] = useState("gyms");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -36,7 +38,7 @@ export default function QuickSearchBar() {
       path = "/shop";
     }
 
-    router.push(`${path}${queryString ? `?${queryString}` : ""}`);
+    router.push(`/${locale}${path}${queryString ? `?${queryString}` : ""}`);
   };
 
   

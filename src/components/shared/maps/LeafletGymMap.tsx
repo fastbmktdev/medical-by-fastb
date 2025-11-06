@@ -2,6 +2,7 @@
 
 import { memo } from "react";
 import { LeafletMap } from "./LeafletMap";
+import { Link } from '@/navigation';
 
 interface LeafletGymMapProps {
   latitude?: number | null;
@@ -62,14 +63,14 @@ export const LeafletGymMap = memo(function LeafletGymMap({
         </div>
       ) : (
         mapUrl && (
-          <a
+          <Link
             href={mapUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-zinc-700 hover:bg-zinc-600 px-4 py-2 rounded-lg transition-colors"
           >
             เปิดใน Google Maps
-          </a>
+          </Link>
         )
       )}
     </div>

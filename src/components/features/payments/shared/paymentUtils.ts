@@ -111,7 +111,7 @@ const PHONE_REGEX = /^(0[689]\d{8}|0[2-7]\d{7,8})$/;
 export const isValidPhoneNumber = (phone: string): boolean =>
   !!phone && phone.length >= 9 && PHONE_REGEX.test(phone.replace(/\s/g, ''));
 
-export const formatAmount = (amount: number): string => `฿${amount.toLocaleString()}`;
+export const formatAmount = (amount: number | null | undefined): string => `฿${(amount || 0).toLocaleString()}`;
 
 export const generatePaymentReference = (): string => {
   const timestamp = Date.now().toString().slice(-6);

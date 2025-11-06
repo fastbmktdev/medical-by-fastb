@@ -125,7 +125,7 @@ export default function EventTicketsModal({
                       </div>
                     </TableCell>
                     <TableCell>
-                      <p className="font-bold text-red-500">฿{ticket.price.toLocaleString()}</p>
+                      <p className="font-bold text-red-500">฿{(ticket.price || 0).toLocaleString()}</p>
                     </TableCell>
                     <TableCell>{ticket.quantity_available}</TableCell>
                     <TableCell>{ticket.quantity_sold}</TableCell>

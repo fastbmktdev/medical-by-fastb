@@ -27,12 +27,12 @@ export function createOptimizedExports<T extends Record<string, unknown>>(
   Object.entries(components).forEach(([key, Component]) => {
     if (typeof Component === 'function') {
       // Type assertion for React component
-      const ReactComponent = Component as React.ComponentType<any>;
+      const ReactComponent = Component as React.ComponentType<Record<string, unknown>>;
       
       // Check if component is already memoized using type assertion
-      const componentWithTypeof = ReactComponent as React.ComponentType<any> & { $$typeof?: symbol };
+      const componentWithTypeof = ReactComponent as React.ComponentType<Record<string, unknown>> & { $$typeof?: symbol };
       
-      let OptimizedComponent: React.ComponentType<any> = ReactComponent;
+      let OptimizedComponent: React.ComponentType<Record<string, unknown>> = ReactComponent;
       if (memo && componentWithTypeof.$$typeof !== Symbol.for('react.memo')) {
         OptimizedComponent = React.memo(ReactComponent);
         OptimizedComponent.displayName = `Memo(${ReactComponent.displayName || Component.name || key})`;
@@ -43,9 +43,9 @@ export function createOptimizedExports<T extends Record<string, unknown>>(
         // This is more complex and would require build-time optimization
       }
 
-      (optimizedComponents as any)[key] = OptimizedComponent;
+      (optimizedComponents as Record<string, unknown>)[key] = OptimizedComponent;
     } else {
-      (optimizedComponents as any)[key] = Component;
+      (optimizedComponents as Record<string, unknown>)[key] = Component;
     }
   });
 

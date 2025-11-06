@@ -1,4 +1,5 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
+import { Link } from "@/navigation";
 
 export interface AdminInfoSectionProps {
   title: string;
@@ -13,7 +14,7 @@ export interface AdminInfoSectionProps {
 export default function AdminInfoSection({
   title,
   children,
-  className = '',
+  className = "",
 }: AdminInfoSectionProps) {
   return (
     <div className={className}>
@@ -41,18 +42,19 @@ export function AdminInfoItem({
   isLink = false,
   href,
 }: AdminInfoItemProps) {
-  const content = isLink && href ? (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-primary hover:underline"
-    >
-      {value}
-    </a>
-  ) : (
-    <span className="text-white">{value}</span>
-  );
+  const content =
+    isLink && href ? (
+      <Link
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-primary hover:underline"
+      >
+        {value}
+      </Link>
+    ) : (
+      <span className="text-white">{value}</span>
+    );
 
   return (
     <div className="flex items-center gap-3">
@@ -81,7 +83,7 @@ export function AdminInfoItemStart({
   icon,
   label,
   value,
-  className = '',
+  className = "",
 }: AdminInfoItemStartProps) {
   return (
     <div className={`flex items-start gap-3 ${className}`}>

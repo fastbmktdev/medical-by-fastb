@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from '@/navigation';
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import { BaseCard } from "./BaseCard";
 
@@ -23,7 +23,7 @@ interface ProductCardProps {
 
 export function ProductCard({ product, showAddToCart = true }: ProductCardProps) {
   const productName = product.nameEnglish || product.nameThai;
-  const isOutOfStock = product.stock <= 0;
+  const isOutOfStock = (product.stock || 0) <= 0;
   const imageUrl = product.image || product.images?.[0] || "/assets/images/fallback-img.jpg";
 
   return (
@@ -66,10 +66,10 @@ export function ProductCard({ product, showAddToCart = true }: ProductCardProps)
         <div className="flex justify-between items-center pt-3 border-zinc-700 border-t">
           <div>
             <p className="font-bold text-red-500 text-xl">
-              ฿{product.price.toLocaleString()}
+              ฿{(product.price || 0).toLocaleString()}
             </p>
             <p className="text-zinc-400 text-xs">
-              {isOutOfStock ? "สินค้าหมด" : `มีสินค้า ${product.stock} ชิ้น`}
+              {isOutOfStock ? "สินค้าหมด" : `มีสินค้า ${product.stock || 0} ชิ้น`}
             </p>
           </div>
           {showAddToCart && (

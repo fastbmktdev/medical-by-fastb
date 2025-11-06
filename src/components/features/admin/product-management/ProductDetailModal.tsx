@@ -139,15 +139,15 @@ export default function ProductDetailModal({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <p className="text-zinc-400 text-sm mb-1">ราคา</p>
-              <p className="font-bold text-red-500 text-xl">฿{product.price.toLocaleString()}</p>
+              <p className="font-bold text-red-500 text-xl">฿{(product.price || 0).toLocaleString()}</p>
             </div>
             <div>
               <p className="text-zinc-400 text-sm mb-1">สต็อก</p>
               <Chip
-                color={product.stock === 0 ? 'danger' : product.stock < 10 ? 'warning' : 'success'}
+                color={(product.stock || 0) === 0 ? 'danger' : (product.stock || 0) < 10 ? 'warning' : 'success'}
                 variant="flat"
               >
-                {product.stock} ชิ้น
+                {product.stock || 0} ชิ้น
               </Chip>
             </div>
             <div>

@@ -128,7 +128,7 @@ export default function EventDetailModal({
                             เหลือ {ticket.quantity_available - ticket.quantity_sold} ที่นั่ง
                           </p>
                         </div>
-                        <p className="font-bold text-red-500">฿{ticket.price.toLocaleString()}</p>
+                        <p className="font-bold text-red-500">฿{(ticket.price || 0).toLocaleString()}</p>
                       </div>
                     </div>
                   ))}

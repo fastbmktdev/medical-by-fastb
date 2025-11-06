@@ -291,7 +291,7 @@ export default function PromotionCreateModal({ isOpen, onClose, onSuccess }: Pro
                     >
                       {packages.map((pkg) => (
                         <SelectItem key={pkg.id}>
-                          {pkg.name} ({pkg.package_type === 'one_time' ? 'รายครั้ง' : 'แพ็คเกจ'}) - ฿{pkg.price.toLocaleString()}
+                          {pkg.name} ({pkg.package_type === 'one_time' ? 'รายครั้ง' : 'แพ็คเกจ'}) - ฿{(pkg.price || 0).toLocaleString()}
                         </SelectItem>
                       ))}
                     </Select>

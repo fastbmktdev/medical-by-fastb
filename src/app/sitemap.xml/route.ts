@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/database/supabase/server';
 
+// Force dynamic rendering for sitemap (uses database queries)
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // Revalidate every hour
+
 /**
  * GET /sitemap.xml
  * Generate sitemap.xml for SEO
@@ -12,33 +16,36 @@ import { createClient } from '@/lib/database/supabase/server';
  */
 export async function GET(request: NextRequest) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thai-kick.com';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.thaikickmuaythai.com';
     const supabase = await createClient();
 
     const urls: string[] = [];
 
-    // Static pages
+    // Static pages with locale support
+    const locales = ['th', 'en', 'jp'];
     const staticPages = [
-      { url: '/', changefreq: 'daily', priority: '1.0' },
-      { url: '/articles', changefreq: 'daily', priority: '0.9' },
-      { url: '/gyms', changefreq: 'weekly', priority: '0.9' },
-      { url: '/shop', changefreq: 'weekly', priority: '0.8' },
-      { url: '/events', changefreq: 'weekly', priority: '0.8' },
-      { url: '/about', changefreq: 'monthly', priority: '0.7' },
-      { url: '/contact', changefreq: 'monthly', priority: '0.7' },
-      { url: '/faq', changefreq: 'monthly', priority: '0.6' },
-      { url: '/privacy', changefreq: 'yearly', priority: '0.5' },
-      { url: '/terms', changefreq: 'yearly', priority: '0.5' },
+      { path: '/', changefreq: 'daily', priority: '1.0' },
+      { path: '/articles', changefreq: 'daily', priority: '0.9' },
+      { path: '/gyms', changefreq: 'weekly', priority: '0.9' },
+      { path: '/shop', changefreq: 'weekly', priority: '0.8' },
+      { path: '/events', changefreq: 'weekly', priority: '0.8' },
+      { path: '/about', changefreq: 'monthly', priority: '0.7' },
+      { path: '/contact', changefreq: 'monthly', priority: '0.7' },
+      { path: '/faq', changefreq: 'monthly', priority: '0.6' },
+      { path: '/privacy', changefreq: 'yearly', priority: '0.5' },
+      { path: '/terms', changefreq: 'yearly', priority: '0.5' },
     ];
 
-    // Add static pages
+    // Add static pages with locale variants
     for (const page of staticPages) {
-      urls.push(`
+      for (const locale of locales) {
+        urls.push(`
     <url>
-      <loc>${baseUrl}${page.url}</loc>
+      <loc>${baseUrl}/${locale}${page.path}</loc>
       <changefreq>${page.changefreq}</changefreq>
       <priority>${page.priority}</priority>
     </url>`);
+      }
     }
 
     // Fetch published articles
@@ -51,13 +58,15 @@ export async function GET(request: NextRequest) {
     if (!articlesError && articles) {
       for (const article of articles) {
         const lastmod = article.updated_at || article.published_at || article.date || new Date().toISOString();
-        urls.push(`
+        for (const locale of locales) {
+          urls.push(`
     <url>
-      <loc>${baseUrl}/articles/${article.slug}</loc>
+      <loc>${baseUrl}/${locale}/articles/${article.slug}</loc>
       <lastmod>${new Date(lastmod).toISOString()}</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
     </url>`);
+        }
       }
     }
 
@@ -71,13 +80,15 @@ export async function GET(request: NextRequest) {
     if (!eventsError && events) {
       for (const event of events) {
         const lastmod = event.updated_at || event.event_date || new Date().toISOString();
-        urls.push(`
+        for (const locale of locales) {
+          urls.push(`
     <url>
-      <loc>${baseUrl}/events/${event.slug}</loc>
+      <loc>${baseUrl}/${locale}/events/${event.slug}</loc>
       <lastmod>${new Date(lastmod).toISOString()}</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.7</priority>
     </url>`);
+        }
       }
     }
 
@@ -91,13 +102,15 @@ export async function GET(request: NextRequest) {
     if (!productsError && products) {
       for (const product of products) {
         const lastmod = product.updated_at || new Date().toISOString();
-        urls.push(`
+        for (const locale of locales) {
+          urls.push(`
     <url>
-      <loc>${baseUrl}/shop/${product.slug}</loc>
+      <loc>${baseUrl}/${locale}/shop/${product.slug}</loc>
       <lastmod>${new Date(lastmod).toISOString()}</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.7</priority>
     </url>`);
+        }
       }
     }
 
@@ -111,13 +124,15 @@ export async function GET(request: NextRequest) {
     if (!gymsError && gyms) {
       for (const gym of gyms) {
         const lastmod = gym.updated_at || new Date().toISOString();
-        urls.push(`
+        for (const locale of locales) {
+          urls.push(`
     <url>
-      <loc>${baseUrl}/gyms/${gym.slug}</loc>
+      <loc>${baseUrl}/${locale}/gyms/${gym.slug}</loc>
       <lastmod>${new Date(lastmod).toISOString()}</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.8</priority>
     </url>`);
+        }
       }
     }
 

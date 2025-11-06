@@ -16,49 +16,37 @@
 ### 🔴 High Priority - งานสำคัญเร่งด่วน
 
 #### 1. **แก้ไข E2E Test Failure - Auth Flow** (1-2 ชั่วโมง)
-**สถานะ**: ⚠️ มี Internal Server Error ใน test (Step 6 - Partner Application)
+**สถานะ**: ⚠️ **บางส่วนแก้ไขแล้ว** - Import path + Error handling แก้แล้ว, ยังต้องสร้าง Supabase Storage bucket
 
 **ปัญหา**:
 - ⚠️ Step 6: Partner Application - Submit gym application ❌ **ล้มเหลว**
 - Error: `Internal Server Error` (พบใน error-context.md)
-- Test ที่ผ่าน: 11/11 tests (แต่ Step 6 มี Internal Server Error)
-- Impact: Step 7-11 ถูก skip เนื่องจาก Step 6 ล้มเหลว
+- ✅ **แก้ไขแล้วบางส่วน**: Import path + Error handling แก้แล้ว
+- ⚠️ **ยังต้องทำ**: สร้าง Supabase Storage bucket `gym-images` (ต้องทำด้วยมือ)
+- 📝 ดูรายละเอียดใน [E2E_TEST_ERROR_FIX.md](../docs/E2E_TEST_ERROR_FIX.md)
 
 **สิ่งที่ต้องทำ**:
 
-1. **วิเคราะห์ปัญหา**:
-   - [ ] ตรวจสอบ error ใน `tests/e2e/auth-flow.spec.ts`
-   - [ ] อ่าน error context จาก `test-results/auth-flow-Complete-Authent-1362c-on---Submit-gym-application-chromium/error-context.md`
-   - [ ] ตรวจสอบ error screenshots: `test-results/auth-flow-Complete-Authent-1362c-on---Submit-gym-application-chromium/test-failed-1.png`
-   - [ ] ตรวจสอบ server logs (Next.js dev server)
-   - [ ] ตรวจสอบ API responses (`/api/partner/apply` หรือ `/api/gyms/apply`)
+1. **สร้าง Supabase Storage Bucket** ⚠️ **ต้องทำ**:
+   - [ ] สร้าง storage bucket `gym-images` ใน Supabase Dashboard
+   - [ ] กำหนด RLS policies ที่ถูกต้อง
+   - [ ] ตั้งค่า public access (ถ้าจำเป็น)
+   - [ ] ดูรายละเอียดใน [SUPABASE_STORAGE_SETUP.md](../docs/SUPABASE_STORAGE_SETUP.md)
 
-2. **ตรวจสอบ Partner Application Flow**:
-   - [ ] ตรวจสอบ route `/partner/apply` ว่าทำงานได้ปกติหรือไม่
-   - [ ] ตรวจสอบ form fields ใน `applyForPartner` helper function
-   - [ ] ตรวจสอบ API endpoint ที่รับ partner application
-   - [ ] ตรวจสอบ authentication middleware (redirect ไป login หรือไม่)
-   - [ ] ตรวจสอบ form validation และ error handling
-
-3. **แก้ไขปัญหา**:
-   - [ ] แก้ไข Internal Server Error ที่เกิดขึ้น
-   - [ ] ตรวจสอบว่า API endpoint ทำงานได้ถูกต้อง
-   - [ ] ตรวจสอบว่า form fields ถูกต้องและ accessible
-   - [ ] เพิ่ม error handling ที่ดีขึ้น (ถ้าจำเป็น)
-   - [ ] เพิ่ม timeout หรือ retry logic (ถ้าจำเป็น)
-
-4. **ทดสอบและ verify**:
-   - [ ] รัน E2E test อีกครั้ง: `npm run test:e2e tests/e2e/auth-flow.spec.ts`
+2. **ทดสอบและ verify**:
+   - [ ] รัน E2E test อีกครั้ง: `npm run test:e2e tests/e2e/auth/auth-flow.spec.ts`
    - [ ] ตรวจสอบว่า Step 6 ผ่าน
    - [ ] ตรวจสอบว่า Step 7-11 สามารถรันได้ (ไม่ถูก skip)
    - [ ] ตรวจสอบว่า signup/login flow ทำงานได้ปกติ
    - [ ] ตรวจสอบว่า partner application flow ทำงานได้ปกติ
+   - [ ] ทดสอบการอัปโหลดรูปภาพด้วยมือ
 
 **ผลลัพธ์ที่คาดหวัง**: 
 - ✅ E2E test ผ่านทั้งหมด (11/11 tests)
-- ✅ Step 6: Partner Application ผ่าน
+- ✅ Step 6: Partner Application ผ่าน (หลังจากสร้าง storage bucket)
 - ✅ Step 7-11 สามารถรันได้และผ่าน
 - ✅ Authentication flow ทำงานได้ปกติ
+- ✅ Partner application สามารถอัปโหลดรูปภาพได้
 
 **E2E Testing Plan**:
 
@@ -128,23 +116,23 @@ npm run test:e2e tests/e2e/auth-flow.spec.ts
 ```
 
 **ไฟล์ที่เกี่ยวข้อง**:
-- `tests/e2e/auth-flow.spec.ts` - Test file (Step 6)
+- `tests/e2e/auth/auth-flow.spec.ts` - Test file (Step 6) - ✅ Import path แก้แล้ว
 - `tests/e2e/helpers.ts` - Helper functions (รวม `applyForPartner`)
-- `test-results/auth-flow-Complete-Authent-1362c-on---Submit-gym-application-chromium/error-context.md` - Error context
-- `test-results/auth-flow-Complete-Authent-1362c-on---Submit-gym-application-chromium/test-failed-1.png` - Error screenshot
 - `src/app/partner/apply/page.tsx` - Partner application page
 - `src/app/partner/apply/hooks/useFormSubmission.ts` - Form submission logic (insert ไปที่ `gyms` table)
 - `src/app/partner/apply/hooks/usePartnerApplication.ts` - Authentication และ status check
+- `src/app/partner/apply/utils/fileUpload.ts` - ✅ Error handling แก้แล้ว
 - `src/services/gym.service.ts` - Gym service functions
 - `supabase/migrations/*.sql` - Database schema และ RLS policies
+- `docs/E2E_TEST_ERROR_FIX.md` - รายละเอียดการแก้ไข
+- `docs/SUPABASE_STORAGE_SETUP.md` - คู่มือตั้งค่า Storage
 
-**สาเหตุที่เป็นไปได้**:
-1. **RLS Policy** - RLS policy ใน `gyms` table อาจ block insert
-2. **Database Constraint** - Foreign key หรือ unique constraint error
-3. **Image Upload** - Supabase Storage upload error
-4. **Authentication** - Session ไม่ถูกต้องหรือหมดอายุ
-5. **Form Validation** - Validation error ที่ไม่แสดงผล
-6. **Client-Side Error** - JavaScript error ใน form submission
+**สาเหตุที่แก้ไขแล้ว**:
+1. ✅ **Import Path** - แก้ไขแล้ว (`./helpers` → `../helpers`)
+2. ✅ **Error Handling** - ปรับปรุงแล้ว (เพิ่ม error parameter ใน catch block)
+
+**สาเหตุที่ยังต้องแก้**:
+1. ⚠️ **Storage Bucket Missing** - ต้องสร้าง `gym-images` bucket ใน Supabase (ต้องทำด้วยมือ)
 
 ---
 
@@ -271,7 +259,7 @@ npm run test:e2e tests/e2e/auth-flow.spec.ts
 ## 🎯 เป้าหมายวันนี้ (Today's Goals)
 
 ### ✅ ควรเสร็จ (Must Have)
-- [ ] แก้ไข E2E Test Failure - Auth Flow
+- [ ] แก้ไข E2E Test Failure - Auth Flow (บางส่วนแก้แล้ว - ยังต้องสร้าง Storage bucket)
 - [x] Affiliate Commission System - Optimization (85% → 95%) ✅
 
 ### 🎁 ดีถ้าเสร็จ (Nice to Have)
@@ -288,8 +276,9 @@ npm run test:e2e tests/e2e/auth-flow.spec.ts
 ## ✅ Checklist สำหรับวันนี้
 
 ### E2E Test Fix
-- [ ] ตรวจสอบ error logs
-- [ ] แก้ไข Internal Server Error
+- [x] แก้ไข Import path ✅
+- [x] ปรับปรุง Error handling ✅
+- [ ] สร้าง Supabase Storage bucket `gym-images`
 - [ ] ทดสอบให้ test ผ่าน
 - [ ] ตรวจสอบ authentication flow
 
@@ -517,14 +506,16 @@ npm run test:e2e tests/e2e/auth-flow.spec.ts
 - ✅ Affiliate Commission System - Commission Rate Config Table (95%)
 - ✅ Affiliate Payout System (100%)
 - ✅ I18N (Multi-language Support) - รองรับ 3 ภาษา (100%)
-- ✅ Gamification - Leaderboard "View All" (100%)
+- ✅ Gamification - Leaderboard "View All" (100%) - หน้าเต็ม `/dashboard/leaderboard/[id]`
 - ✅ Partner Promotions - Discount System (100%)
 - ✅ Maps Integration - Contact Page (Leaflet) (100%)
 - ✅ Google Analytics Integration (100%)
 - ✅ Email Service Migration - Resend (100%)
+- ✅ E2E Test - Import path + Error handling (บางส่วน)
 
 ### งานที่ยังไม่เสร็จ
-- ⚠️ Affiliate Commission System (95% - เหลือ session storage optimization)
+- ⚠️ Affiliate Commission System (95% - เหลือ session storage optimization - Optional)
+- ⚠️ E2E Test Failure - Auth Flow (บางส่วนแก้แล้ว - ยังต้องสร้าง Supabase Storage bucket `gym-images`)
 - ⚠️ Gamification - Award Points เมื่อแนะนำเพื่อน (ยังไม่เชื่อมต่อ)
 - ⚠️ Admin - Bulk Operations (ยังไม่เริ่ม)
 - ⚠️ Admin - Content Moderation (ยังไม่เริ่ม)

@@ -79,7 +79,7 @@ export default function GamificationWidget({ className = '' }: GamificationWidge
       <div className="mb-3">
         <div className="flex justify-between text-sm text-zinc-300 mb-1">
           <span>คะแนนรวม</span>
-          <span>{stats.total_points.toLocaleString()}</span>
+          <span>{(stats.total_points || 0).toLocaleString()}</span>
         </div>
         
         <div className="w-full bg-zinc-800 rounded-full h-2">

@@ -208,7 +208,7 @@ export async function createBooking(data: CreateBookingInput) {
   // Calculate final price (use provided price_paid or calculate from package price)
   const finalPrice = data.price_paid !== undefined 
     ? data.price_paid 
-    : gymPackage.price - (data.discount_amount || 0);
+    : (gymPackage.price || 0) - (data.discount_amount || 0);
 
   // If promotion_id is provided, verify it exists and increment current_uses
   if (data.promotion_id) {

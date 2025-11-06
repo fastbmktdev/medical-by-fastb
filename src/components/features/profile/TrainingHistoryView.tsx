@@ -70,7 +70,7 @@ export function TrainingHistoryView() {
             <CardBody>
               <p className="text-zinc-400 text-sm">ยอดรวมที่ใช้</p>
               <p className="text-2xl font-bold text-white">
-                ฿{stats.total_spent.toLocaleString()}
+                ฿{(stats.total_spent || 0).toLocaleString()}
               </p>
             </CardBody>
           </Card>
@@ -93,7 +93,7 @@ export function TrainingHistoryView() {
                   </div>
                   <div className="text-right">
                     <p className="text-white font-semibold">
-                      ฿{booking.packages?.price?.toLocaleString()}
+                      ฿{(booking.packages?.price || 0).toLocaleString()}
                     </p>
                     <p className="text-zinc-400 text-xs">
                       {booking.packages?.package_name}

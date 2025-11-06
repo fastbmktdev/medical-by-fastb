@@ -254,7 +254,7 @@ export default function RetryPaymentButton({
                 ลองชำระเงินใหม่
               </h3>
               <p className="text-zinc-400 text-sm">
-                จำนวนเงิน: <span className="text-white font-medium">฿{payment.amount.toLocaleString()}</span>
+                จำนวนเงิน: <span className="text-white font-medium">฿{(payment.amount || 0).toLocaleString()}</span>
               </p>
               {payment.failure_reason && (
                 <p className="text-zinc-400 text-sm mt-1">

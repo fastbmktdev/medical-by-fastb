@@ -3,7 +3,18 @@
  */
 
 import { TestProjectStructure } from './test-utilities';
-import { FileType } from '../../src/analysis/types';
+
+/**
+ * File type enum for test fixtures
+ */
+export enum FileType {
+  TYPESCRIPT = 'typescript',
+  JAVASCRIPT = 'javascript',
+  JSON = 'json',
+  ASSET = 'asset',
+  TEST = 'test',
+  CONFIG = 'config',
+}
 
 /**
  * Collection of predefined test fixtures

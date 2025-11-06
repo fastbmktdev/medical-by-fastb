@@ -1,12 +1,5 @@
-import type { Metadata } from "next";
 import { Bai_Jamjuree } from "next/font/google";
 import "./globals.css";
-import { LayoutWrapper, ErrorBoundary } from "@/components/shared";
-import { GoogleAnalytics } from "@/components/shared/analytics/GoogleAnalytics";
-import { Providers } from "./providers";
-import { FixedBackground } from "@/components/shared/ui";
-import AssetLoader from "@/components/shared/ui/AssetLoader";
-import GamificationNotification from "@/components/features/gamification/GamificationNotification";
 
 const baiJamjuree = Bai_Jamjuree({
   variable: "--font-bai-jamjuree",
@@ -14,30 +7,23 @@ const baiJamjuree = Bai_Jamjuree({
   weight: ["400", "700"],
 });
 
-export const metadata: Metadata = {
-  title: "THAIKICK",
-  description:
-    "แพลตฟอร์มสำหรับค้นหาและจองค่ายมวยชั้นนำ และซื้อตั๋วเวทีมวยทั่วประเทศไทย",
-};
-
+/**
+ * Root Layout
+ * This layout is required by Next.js and must include <html> and <body> tags.
+ * With next-intl, the locale-specific content is handled in [locale]/layout.tsx
+ * 
+ * Note: next-intl middleware handles redirecting root path to /th automatically
+ */
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
+  // Root layout with html/body - locale-specific attributes are handled via script
   return (
-    <html lang="th" className={`${baiJamjuree.variable} antialiased`}>
-      <body className="bg-zinc-950 text-white">
-        <AssetLoader>
-          <FixedBackground />
-          <Providers>
-            <LayoutWrapper>
-              <ErrorBoundary>{children}</ErrorBoundary>
-              <GamificationNotification />
-            </LayoutWrapper>
-          </Providers>
-        </AssetLoader>
-        <GoogleAnalytics />
+    <html lang="th" className={`${baiJamjuree.variable} antialiased`} suppressHydrationWarning>
+      <body className="bg-zinc-950 text-white" suppressHydrationWarning>
+        {children}
       </body>
     </html>
   );

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Input, Button, Chip } from '@heroui/react';
 import { PencilIcon, CheckIcon, XMarkIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
+import { Link } from '@/navigation';
 
 const SOCIAL_PLATFORMS = [
   { value: 'facebook', label: 'Facebook', icon: '📘', color: 'primary' },
@@ -56,15 +57,15 @@ export function SocialLinksEditor() {
       const data = await response.json();
 
       if (!response.ok || !data.success) {
-        throw new Error(data.error || 'Failed to save');
+        throw new Error((data.error as string) || 'Failed to save');
       }
 
       toast.success('บันทึก Social Links สำเร็จ!');
       setIsEditing(false);
       setLinks(data.data || []);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Save error:', error);
-      toast.error(error.message || 'เกิดข้อผิดพลาดในการบันทึก');
+      toast.error((error as Error).message || 'เกิดข้อผิดพลาดในการบันทึก');
     } finally {
       setIsSaving(false);
     }
@@ -223,7 +224,7 @@ export function SocialLinksEditor() {
             links.map((link) => {
               const platform = SOCIAL_PLATFORMS.find(p => p.value === link.platform);
               return (
-                <a
+                <Link
                   key={link.platform}
                   href={link.url}
                   target="_blank"
@@ -233,7 +234,7 @@ export function SocialLinksEditor() {
                   <span className="text-xl">{platform?.icon}</span>
                   <span className="text-white flex-1">{platform?.label}</span>
                   <span className="text-zinc-400 text-sm truncate max-w-[200px]">{link.url}</span>
-                </a>
+                </Link>
               );
             })
           ) : (

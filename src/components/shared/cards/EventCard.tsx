@@ -6,8 +6,9 @@ import {
   ClockIcon,
   TicketIcon,
 } from "@heroicons/react/24/outline";
-import Link from "next/link";
+import { Link } from '@/navigation';
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { Event } from "@/types";
 import { BaseCard } from "./BaseCard";
 
@@ -21,17 +22,26 @@ interface EventCardProps {
 export function EventCard({ event, viewMode }: EventCardProps) {
   // Support both old (date) and new (event_date) field names
   const dateStr = event.event_date || event.date || '';
-  const eventDate = new Date(dateStr);
-  const formattedDate = eventDate.toLocaleDateString("th-TH", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-  const formattedTime = eventDate.toLocaleTimeString("th-TH", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  
+  // Use state to prevent hydration mismatch - format dates only on client
+  const [formattedDate, setFormattedDate] = useState<string>("");
+  const [formattedTime, setFormattedTime] = useState<string>("");
+
+  useEffect(() => {
+    if (dateStr) {
+      const date = new Date(dateStr);
+      setFormattedDate(date.toLocaleDateString("th-TH", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }));
+      setFormattedTime(date.toLocaleTimeString("th-TH", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }));
+    }
+  }, [dateStr]);
 
   // Support both old (price) and new (price_start) field names
   const price = event.price_start ?? event.price;
@@ -52,11 +62,11 @@ export function EventCard({ event, viewMode }: EventCardProps) {
               </div>
               <div className="flex items-center gap-2 text-zinc-300 text-sm">
                 <CalendarIcon className="flex-shrink-0 w-4 h-4 text-blue-500" />
-                <span>{formattedDate}</span>
+                <span>{formattedDate || dateStr}</span>
               </div>
               <div className="flex items-center gap-2 text-zinc-300 text-sm">
                 <ClockIcon className="flex-shrink-0 w-4 h-4 text-green-500" />
-                <span>{formattedTime}</span>
+                <span>{formattedTime || ""}</span>
               </div>
             </div>
           </div>
@@ -111,11 +121,11 @@ export function EventCard({ event, viewMode }: EventCardProps) {
           </div>
           <div className="flex items-center gap-2 text-zinc-300 text-sm">
             <CalendarIcon className="flex-shrink-0 w-4 h-4 text-blue-500" />
-            <span className="line-clamp-1">{formattedDate}</span>
+            <span className="line-clamp-1">{formattedDate || dateStr}</span>
           </div>
           <div className="flex items-center gap-2 text-zinc-300 text-sm">
             <ClockIcon className="flex-shrink-0 w-4 h-4 text-green-500" />
-            <span>{formattedTime}</span>
+            <span>{formattedTime || ""}</span>
           </div>
         </div>
 

@@ -61,7 +61,9 @@ export function InfoModal({
       size="sm"
       testId={testId}
     >
-      <div className="p-6">
+      <div
+        className={`p-6 rounded-lg border bg-gradient-to-br ${getVariantStyles()}`}
+      >
         {/* Icon and Message */}
         <div className="text-center mb-6">
           <div className="flex justify-center mb-4">

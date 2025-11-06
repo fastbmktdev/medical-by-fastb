@@ -20,7 +20,8 @@ export async function middleware(request: NextRequest) {
     path.startsWith('/api/') ||
     path.startsWith('/_next/') ||
     path.startsWith('/_vercel/') ||
-    path.match(/\.(ico|png|jpg|jpeg|svg|gif|webp|css|js)$/)
+    path.startsWith('/assets/') || // Skip all assets directory
+    path.match(/\.(ico|png|jpg|jpeg|svg|gif|webp|css|js|mp4|webm|ogg|mp3|wav|woff|woff2|ttf|eot)$/)
 
   // Apply CSRF protection and rate limiting to API routes
   if (path.startsWith('/api/')) {
@@ -67,9 +68,10 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
-     * Feel free to modify this pattern to include more paths.
+     * - assets/ (static assets directory)
+     * - Common static file extensions (images, videos, audio, fonts, etc.)
      */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|assets/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|mp4|webm|ogg|mp3|wav|woff|woff2|ttf|eot|css|js|ico)$).*)',
   ],
 }
 
