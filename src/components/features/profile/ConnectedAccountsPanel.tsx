@@ -1,15 +1,13 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { createClient } from '@/lib/database/supabase/client';
 import { Card, CardBody, CardHeader, Button, Chip } from '@heroui/react';
 import {
   CheckCircleIcon,
-  XCircleIcon,
   LinkIcon,
   TrashIcon,
 } from '@heroicons/react/24/outline';
-import { signInWithGoogle, linkGoogleAccount, unlinkGoogleAccount, getConnectedAccounts } from '@/services/auth.service';
+import { linkGoogleAccount, unlinkGoogleAccount, getConnectedAccounts } from '@/services/auth.service';
 import { toast } from 'react-hot-toast';
 
 interface ConnectedIdentity {
@@ -24,7 +22,6 @@ interface ConnectedIdentity {
 }
 
 export function ConnectedAccountsPanel() {
-  const supabase = createClient();
   const [identities, setIdentities] = useState<ConnectedIdentity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isLinking, setIsLinking] = useState(false);
@@ -39,7 +36,7 @@ export function ConnectedAccountsPanel() {
       setIsLoading(true);
       const accounts = await getConnectedAccounts();
       setIdentities(accounts as ConnectedIdentity[]);
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error loading connected accounts:', error);
       toast.error('ไม่สามารถโหลดบัญชีที่เชื่อมต่อได้', {
         duration: 3000,
@@ -54,9 +51,10 @@ export function ConnectedAccountsPanel() {
       setIsLinking(true);
       await linkGoogleAccount();
       // The redirect will happen automatically
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error linking Google account:', error);
-      toast.error(error.message || 'ไม่สามารถเชื่อมต่อบัญชี Google ได้', {
+      const message = error instanceof Error ? error.message : 'ไม่สามารถเชื่อมต่อบัญชี Google ได้';
+      toast.error(message, {
         duration: 3000,
       });
       setIsLinking(false);
@@ -75,9 +73,10 @@ export function ConnectedAccountsPanel() {
       toast.success('ยกเลิกการเชื่อมต่อบัญชี Google สำเร็จ', {
         duration: 3000,
       });
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error unlinking Google account:', error);
-      toast.error(error.message || 'ไม่สามารถยกเลิกการเชื่อมต่อได้', {
+      const message = error instanceof Error ? error.message : 'ไม่สามารถยกเลิกการเชื่อมต่อได้';
+      toast.error(message, {
         duration: 3000,
       });
     } finally {

@@ -145,14 +145,12 @@ export const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
       className
     );
 
-    // Type assertion to avoid complex union type inference
-    // Cast props to any to bypass TypeScript's complex union type calculation
     const componentProps = {
       ref,
       className: containerClasses,
       'data-testid': testId,
       ...props,
-    } as any;
+    } satisfies Record<string, unknown>;
 
     return React.createElement(Component, componentProps, children);
   }

@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useLocale } from 'next-intl';
-import { useAuth } from '@/contexts/AuthContext';
+// import { useAuth } from '@/contexts/AuthContext';
 import { 
   CheckCircleIcon, 
   ArrowRightIcon,
@@ -24,7 +24,7 @@ function PaymentSuccessContent() {
   const router = useRouter();
   const locale = useLocale();
   const searchParams = useSearchParams();
-  const { user } = useAuth();
+  // const { user } = useAuth();
   const [paymentData, setPaymentData] = useState<PaymentSuccessData | null>(null);
   const [loading, setLoading] = useState(true);
 

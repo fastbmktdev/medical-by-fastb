@@ -4,7 +4,7 @@
  * Utilities for optimizing component performance and re-rendering.
  */
 
-import React, { memo, useMemo, useCallback, useState, useEffect, useRef, DependencyList } from 'react';
+import React, { memo, useState, useEffect, useRef, DependencyList } from 'react';
 
 /**
  * Enhanced memo with better display name handling
@@ -32,7 +32,20 @@ export function useStableCallback<T extends (...args: unknown[]) => unknown>(
   callback: T,
   deps: DependencyList
 ): T {
-  return useCallback(callback, deps);
+  const callbackRef = useRef(callback);
+  const depsRef = useRef<DependencyList | undefined>(undefined);
+  const stableRef = useRef<T | undefined>(undefined);
+
+  if (!areDependenciesEqual(depsRef.current, deps)) {
+    callbackRef.current = callback;
+    depsRef.current = [...deps];
+  }
+
+  if (!stableRef.current) {
+    stableRef.current = ((...args: Parameters<T>) => callbackRef.current(...args)) as T;
+  }
+
+  return stableRef.current;
 }
 
 /**
@@ -42,7 +55,20 @@ export function useStableValue<T>(
   factory: () => T,
   deps: DependencyList
 ): T {
-  return useMemo(factory, deps);
+  const valueRef = useRef<T | undefined>(undefined);
+  const depsRef = useRef<DependencyList | undefined>(undefined);
+
+  if (!areDependenciesEqual(depsRef.current, deps)) {
+    valueRef.current = factory();
+    depsRef.current = [...deps];
+  }
+
+  if (valueRef.current === undefined) {
+    valueRef.current = factory();
+    depsRef.current = [...deps];
+  }
+
+  return valueRef.current;
 }
 
 /**
@@ -72,16 +98,29 @@ export function useThrottledCallback<T extends (...args: unknown[]) => unknown>(
   delay: number
 ): T {
   const lastRan = useRef(Date.now());
+  const callbackRef = useRef(callback);
 
-  return useCallback(
-    ((...args) => {
+  if (callbackRef.current !== callback) {
+    callbackRef.current = callback;
+  }
+
+  const throttledRef = useRef<T | undefined>(undefined);
+
+  if (!throttledRef.current) {
+    throttledRef.current = ((...args: Parameters<T>) => {
       if (Date.now() - lastRan.current >= delay) {
-        callback(...args);
+        callbackRef.current(...args);
         lastRan.current = Date.now();
       }
-    }) as T,
-    [callback, delay]
-  );
+    }) as T;
+  }
+
+  useEffect(() => {
+    throttledRef.current = undefined;
+    lastRan.current = Date.now();
+  }, [delay]);
+
+  return throttledRef.current;
 }
 
 /**
@@ -170,4 +209,22 @@ export const performance = {
     return MonitoredComponent as T;
   }
 };
+
+function areDependenciesEqual(prev: DependencyList | undefined, next: DependencyList): boolean {
+  if (!prev) {
+    return false;
+  }
+
+  if (prev.length !== next.length) {
+    return false;
+  }
+
+  for (let i = 0; i < prev.length; i += 1) {
+    if (!Object.is(prev[i], next[i])) {
+      return false;
+    }
+  }
+
+  return true;
+}
 

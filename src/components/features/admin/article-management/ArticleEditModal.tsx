@@ -9,6 +9,26 @@ import 'react-quill/dist/quill.snow.css';
 import { Article } from '@/types';
 import MediaLibraryModal from '@/components/features/admin/article-management/MediaLibraryModal';
 
+interface ArticleUpdatePayload {
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  category: string;
+  tags: string[];
+  image: string | null;
+  is_new: boolean;
+  date: string;
+  meta_title?: string;
+  meta_description?: string;
+  meta_keywords?: string[];
+  og_image?: string;
+  og_title?: string;
+  og_description?: string;
+  canonical_url?: string;
+  scheduled_publish_at?: string;
+}
+
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 interface ArticleEditModalProps {
@@ -94,7 +114,7 @@ export default function ArticleEditModal({ isOpen, onClose, onSuccess, article }
         ? formData.meta_keywords.split(',').map((k) => k.trim()).filter(Boolean)
         : [];
 
-      const payload: any = {
+      const payload: ArticleUpdatePayload = {
         title: formData.title,
         slug: formData.slug,
         excerpt: formData.excerpt,

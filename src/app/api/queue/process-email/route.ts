@@ -13,7 +13,6 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/database/supabase/server';
 import { 
   getPendingEmails, 
   updateEmailQueueStatus,
@@ -28,6 +27,74 @@ const MAX_EMAILS_PER_RUN = 50;
 
 // Rate limiting: prevent multiple concurrent processing
 let isProcessing = false;
+
+type EmailSendResult = { success: boolean; id?: string; error?: string };
+
+const toMetadataRecord = (value: unknown): Record<string, unknown> => {
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    return value as Record<string, unknown>;
+  }
+  return {};
+};
+
+const getStringMeta = (
+  metadata: Record<string, unknown>,
+  key: string,
+  fallback?: string
+): string | undefined => {
+  const raw = metadata[key];
+  if (typeof raw === 'string') {
+    return raw;
+  }
+  return fallback;
+};
+
+const getNumberMeta = (
+  metadata: Record<string, unknown>,
+  key: string,
+  fallback?: number
+): number | undefined => {
+  const raw = metadata[key];
+  if (typeof raw === 'number') {
+    return raw;
+  }
+  if (typeof raw === 'string') {
+    const parsed = Number.parseFloat(raw);
+    if (Number.isFinite(parsed)) {
+      return parsed;
+    }
+  }
+  return fallback;
+};
+
+const normalizeResult = (result: unknown): EmailSendResult => {
+  if (!result || typeof result !== 'object') {
+    return { success: false, error: 'No result' };
+  }
+
+  const record = result as Record<string, unknown>;
+  const success = typeof record.success === 'boolean' ? record.success : false;
+  const id = typeof record.id === 'string' ? record.id : undefined;
+  const errorValue = record.error;
+
+  let error: string | undefined;
+  if (typeof errorValue === 'string') {
+    error = errorValue;
+  } else if (
+    errorValue &&
+    typeof errorValue === 'object' &&
+    'message' in errorValue &&
+    typeof (errorValue as Record<string, unknown>).message === 'string'
+  ) {
+    error = (errorValue as Record<string, unknown>).message as string;
+  }
+
+  if (!success && !error) {
+    error = 'Unknown error';
+  }
+
+  return { success, id, error };
+};
 
 export async function POST(request: NextRequest) {
   try {
@@ -44,7 +111,7 @@ export async function POST(request: NextRequest) {
 
     try {
       // Get pending emails from queue
-      const pendingEmails = await getPendingEmails(MAX_EMAILS_PER_RUN);
+      const pendingEmails: EmailQueueItem[] = await getPendingEmails(MAX_EMAILS_PER_RUN);
 
       if (pendingEmails.length === 0) {
         return NextResponse.json({
@@ -72,54 +139,66 @@ export async function POST(request: NextRequest) {
           // If provider is explicitly set to 'smtp', use SMTP (if configured)
           // Otherwise, default to Resend (if configured), fallback to SMTP
           const useSmtp = emailItem.provider === 'smtp' && isSmtpConfigured();
-          const useResend = !useSmtp && (emailItem.provider === 'resend' || !emailItem.provider || isEmailServiceConfigured());
+          const useResend =
+            !useSmtp && (emailItem.provider === 'resend' || !emailItem.provider || isEmailServiceConfigured());
 
-          let sendResult: { success: boolean; id?: string; error?: string } = { success: false };
+          let sendResult: EmailSendResult = { success: false };
           
-          // Helper function to normalize send result
-          const normalizeResult = (result: any): { success: boolean; id?: string; error?: string } => {
-            if (!result) return { success: false, error: 'No result' };
-            return {
-              success: result.success || false,
-              id: result.id || undefined,
-              error: result.error ? (typeof result.error === 'string' ? result.error : result.error.message || 'Unknown error') : undefined,
-            };
-          };
-
           // Send email based on type (same switch statement as cron job)
           switch (emailItem.email_type) {
             case 'booking_confirmation': {
               try {
-                const bookingData = emailItem.metadata as any;
+                const bookingData = toMetadataRecord(emailItem.metadata);
+                const customerName =
+                  getStringMeta(bookingData, 'customerName') || emailItem.to_email.split('@')[0];
+                const bookingNumber = getStringMeta(bookingData, 'bookingNumber') || 'N/A';
+                const gymName = getStringMeta(bookingData, 'gymName') || 'N/A';
+                const packageName = getStringMeta(bookingData, 'packageName') || 'N/A';
+                const packageTypeValue = getStringMeta(bookingData, 'packageType');
+                const packageType: 'one_time' | 'package' =
+                  packageTypeValue === 'package' ? 'package' : 'one_time';
+                const startDate = getStringMeta(bookingData, 'startDate') || new Date().toISOString();
+                const endDateValue = bookingData['endDate'];
+                const endDate =
+                  typeof endDateValue === 'string'
+                    ? endDateValue
+                    : endDateValue === null
+                      ? null
+                      : undefined;
+                const pricePaid = getNumberMeta(bookingData, 'pricePaid', 0) ?? 0;
+                const customerPhone = getStringMeta(bookingData, 'customerPhone');
+                const specialRequests = getStringMeta(bookingData, 'specialRequests');
+                const bookingUrl = getStringMeta(bookingData, 'bookingUrl');
+ 
                 if (useSmtp && isSmtpConfigured()) {
                   sendResult = normalizeResult(await sendBookingConfirmationEmail({
                     to: emailItem.to_email,
-                    customerName: bookingData.customerName || emailItem.to_email.split('@')[0],
-                    bookingNumber: bookingData.bookingNumber || 'N/A',
-                    gymName: bookingData.gymName || 'N/A',
-                    packageName: bookingData.packageName || 'N/A',
-                    packageType: bookingData.packageType || 'one_time',
-                    startDate: bookingData.startDate || new Date().toISOString(),
-                    endDate: bookingData.endDate,
-                    pricePaid: bookingData.pricePaid || 0,
-                    customerPhone: bookingData.customerPhone,
-                    specialRequests: bookingData.specialRequests,
-                    bookingUrl: bookingData.bookingUrl,
+                    customerName,
+                    bookingNumber,
+                    gymName,
+                    packageName,
+                    packageType,
+                    startDate,
+                    endDate,
+                    pricePaid,
+                    customerPhone,
+                    specialRequests,
+                    bookingUrl,
                   }));
                 } else if (useResend) {
                   sendResult = normalizeResult(await sendBookingConfirmationEmailResend({
                     to: emailItem.to_email,
-                    customerName: bookingData.customerName || emailItem.to_email.split('@')[0],
-                    bookingNumber: bookingData.bookingNumber || 'N/A',
-                    gymName: bookingData.gymName || 'N/A',
-                    packageName: bookingData.packageName || 'N/A',
-                    packageType: bookingData.packageType || 'one_time',
-                    startDate: bookingData.startDate || new Date().toISOString(),
-                    endDate: bookingData.endDate,
-                    pricePaid: bookingData.pricePaid || 0,
-                    customerPhone: bookingData.customerPhone,
-                    specialRequests: bookingData.specialRequests,
-                    bookingUrl: bookingData.bookingUrl,
+                    customerName,
+                    bookingNumber,
+                    gymName,
+                    packageName,
+                    packageType,
+                    startDate,
+                    endDate,
+                    pricePaid,
+                    customerPhone,
+                    specialRequests,
+                    bookingUrl,
                   }));
                 }
               } catch (error) {
@@ -129,33 +208,43 @@ export async function POST(request: NextRequest) {
             }
 
             case 'booking_reminder': {
-              try {
-                const reminderData = emailItem.metadata as any;
+               try {
+                const reminderData = toMetadataRecord(emailItem.metadata);
+                const customerName =
+                  getStringMeta(reminderData, 'customerName') || emailItem.to_email.split('@')[0];
+                const bookingNumber = getStringMeta(reminderData, 'bookingNumber') || 'N/A';
+                const gymName = getStringMeta(reminderData, 'gymName') || 'N/A';
+                const packageName = getStringMeta(reminderData, 'packageName') || 'N/A';
+                const startDate = getStringMeta(reminderData, 'startDate') || new Date().toISOString();
+                const startTime = getStringMeta(reminderData, 'startTime');
+                const gymAddress = getStringMeta(reminderData, 'gymAddress');
+                const gymPhone = getStringMeta(reminderData, 'gymPhone');
+                const bookingUrl = getStringMeta(reminderData, 'bookingUrl');
                 if (useSmtp && isSmtpConfigured()) {
                   sendResult = normalizeResult(await sendBookingReminderEmail({
                     to: emailItem.to_email,
-                    customerName: reminderData.customerName || emailItem.to_email.split('@')[0],
-                    bookingNumber: reminderData.bookingNumber || 'N/A',
-                    gymName: reminderData.gymName || 'N/A',
-                    packageName: reminderData.packageName || 'N/A',
-                    startDate: reminderData.startDate || new Date().toISOString(),
-                    startTime: reminderData.startTime,
-                    gymAddress: reminderData.gymAddress,
-                    gymPhone: reminderData.gymPhone,
-                    bookingUrl: reminderData.bookingUrl,
+                    customerName,
+                    bookingNumber,
+                    gymName,
+                    packageName,
+                    startDate,
+                    startTime,
+                    gymAddress,
+                    gymPhone,
+                    bookingUrl,
                   }));
                 } else if (useResend) {
                   sendResult = normalizeResult(await sendBookingReminderEmailResend({
                     to: emailItem.to_email,
-                    customerName: reminderData.customerName || emailItem.to_email.split('@')[0],
-                    bookingNumber: reminderData.bookingNumber || 'N/A',
-                    gymName: reminderData.gymName || 'N/A',
-                    packageName: reminderData.packageName || 'N/A',
-                    startDate: reminderData.startDate || new Date().toISOString(),
-                    startTime: reminderData.startTime,
-                    gymAddress: reminderData.gymAddress,
-                    gymPhone: reminderData.gymPhone,
-                    bookingUrl: reminderData.bookingUrl,
+                    customerName,
+                    bookingNumber,
+                    gymName,
+                    packageName,
+                    startDate,
+                    startTime,
+                    gymAddress,
+                    gymPhone,
+                    bookingUrl,
                   }));
                 }
               } catch (error) {
@@ -165,29 +254,51 @@ export async function POST(request: NextRequest) {
             }
 
             case 'payment_receipt': {
-              try {
-                const paymentData = emailItem.metadata as any;
+               try {
+                const paymentData = toMetadataRecord(emailItem.metadata);
+                const customerName =
+                  getStringMeta(paymentData, 'customerName') || emailItem.to_email.split('@')[0];
+                const transactionNumber =
+                  getStringMeta(paymentData, 'transactionNumber') ||
+                  getStringMeta(paymentData, 'receiptNumber') ||
+                  'N/A';
+                const amount = getNumberMeta(paymentData, 'amount', 0) ?? 0;
+                const paymentMethod = getStringMeta(paymentData, 'paymentMethod') || 'Credit Card';
+                const paymentDate = getStringMeta(paymentData, 'paymentDate') || new Date().toISOString();
+                const itemsValue = paymentData['items'];
+                const items = Array.isArray(itemsValue)
+                  ? itemsValue.map((item) => {
+                      const itemRecord = toMetadataRecord(item);
+                      const description = getStringMeta(itemRecord, 'description') || 'รายการ';
+                      const quantity = getNumberMeta(itemRecord, 'quantity');
+                      const lineAmount = getNumberMeta(itemRecord, 'amount', 0) ?? 0;
+                      return quantity !== undefined
+                        ? { description, quantity, amount: lineAmount }
+                        : { description, amount: lineAmount };
+                    })
+                  : [];
+                const receiptUrl = getStringMeta(paymentData, 'receiptUrl');
                 if (useSmtp && isSmtpConfigured()) {
                   sendResult = normalizeResult(await sendPaymentReceiptEmail({
                     to: emailItem.to_email,
-                    customerName: paymentData.customerName || emailItem.to_email.split('@')[0],
-                    transactionNumber: paymentData.transactionNumber || paymentData.receiptNumber || 'N/A',
-                    amount: paymentData.amount || 0,
-                    paymentMethod: paymentData.paymentMethod || 'Credit Card',
-                    paymentDate: paymentData.paymentDate || new Date().toISOString(),
-                    items: paymentData.items || [],
-                    receiptUrl: paymentData.receiptUrl,
+                    customerName,
+                    transactionNumber,
+                    amount,
+                    paymentMethod,
+                    paymentDate,
+                    items,
+                    receiptUrl,
                   }));
                 } else if (useResend) {
                   sendResult = normalizeResult(await sendPaymentReceiptEmailResend({
                     to: emailItem.to_email,
-                    customerName: paymentData.customerName || emailItem.to_email.split('@')[0],
-                    transactionNumber: paymentData.transactionNumber || paymentData.receiptNumber || 'N/A',
-                    amount: paymentData.amount || 0,
-                    paymentMethod: paymentData.paymentMethod || 'Credit Card',
-                    paymentDate: paymentData.paymentDate || new Date().toISOString(),
-                    items: paymentData.items || [],
-                    receiptUrl: paymentData.receiptUrl,
+                    customerName,
+                    transactionNumber,
+                    amount,
+                    paymentMethod,
+                    paymentDate,
+                    items,
+                    receiptUrl,
                   }));
                 }
               } catch (error) {
@@ -198,26 +309,37 @@ export async function POST(request: NextRequest) {
 
             case 'payment_failed': {
               try {
-                const paymentData = emailItem.metadata as any;
+                const paymentData = toMetadataRecord(emailItem.metadata);
+                const customerName =
+                  getStringMeta(paymentData, 'customerName') || emailItem.to_email.split('@')[0];
+                const transactionNumber =
+                  getStringMeta(paymentData, 'transactionId') ||
+                  getStringMeta(paymentData, 'transactionNumber') ||
+                  'N/A';
+                const amount = getNumberMeta(paymentData, 'amount', 0) ?? 0;
+                const paymentMethod = getStringMeta(paymentData, 'paymentMethod') || 'Credit Card';
+                const failureReason =
+                  getStringMeta(paymentData, 'reason') || getStringMeta(paymentData, 'failureReason');
+                const retryUrl = getStringMeta(paymentData, 'retryUrl');
                 if (useSmtp && isSmtpConfigured()) {
                   sendResult = normalizeResult(await sendPaymentFailedEmail({
                     to: emailItem.to_email,
-                    customerName: paymentData.customerName || emailItem.to_email.split('@')[0],
-                    transactionNumber: paymentData.transactionId || 'N/A',
-                    amount: paymentData.amount || 0,
-                    paymentMethod: paymentData.paymentMethod || 'Credit Card',
-                    failureReason: paymentData.reason,
-                    retryUrl: paymentData.retryUrl,
+                    customerName,
+                    transactionNumber,
+                    amount,
+                    paymentMethod,
+                    failureReason,
+                    retryUrl,
                   }));
                 } else if (useResend) {
                   sendResult = normalizeResult(await sendPaymentFailedEmailResend({
                     to: emailItem.to_email,
-                    customerName: paymentData.customerName || emailItem.to_email.split('@')[0],
-                    transactionNumber: paymentData.transactionId || 'N/A',
-                    amount: paymentData.amount || 0,
-                    paymentMethod: paymentData.paymentMethod || 'Credit Card',
-                    failureReason: paymentData.reason,
-                    retryUrl: paymentData.retryUrl,
+                    customerName,
+                    transactionNumber,
+                    amount,
+                    paymentMethod,
+                    failureReason,
+                    retryUrl,
                   }));
                 }
               } catch (error) {
@@ -227,23 +349,30 @@ export async function POST(request: NextRequest) {
             }
 
             case 'partner_approval': {
-              try {
-                const partnerData = emailItem.metadata as any;
+               try {
+                const partnerData = toMetadataRecord(emailItem.metadata);
+                const partnerName =
+                  getStringMeta(partnerData, 'partnerName') ||
+                  getStringMeta(partnerData, 'contactName') ||
+                  'Partner';
+                const gymName = getStringMeta(partnerData, 'gymName') || 'N/A';
+                const approvalDate = getStringMeta(partnerData, 'approvalDate') || new Date().toISOString();
+                const dashboardUrl = getStringMeta(partnerData, 'dashboardUrl') || undefined;
                 if (useSmtp && isSmtpConfigured()) {
                   sendResult = normalizeResult(await sendPartnerApprovalEmail({
                     to: emailItem.to_email,
-                    partnerName: partnerData.partnerName || partnerData.contactName || 'Partner',
-                    gymName: partnerData.gymName || 'N/A',
-                    approvalDate: partnerData.approvalDate || new Date().toISOString(),
-                    dashboardUrl: partnerData.dashboardUrl || undefined,
+                    partnerName,
+                    gymName,
+                    approvalDate,
+                    dashboardUrl,
                   }));
                 } else if (useResend) {
                   sendResult = normalizeResult(await sendPartnerApprovalEmailResend({
                     to: emailItem.to_email,
-                    partnerName: partnerData.partnerName || partnerData.contactName || 'Partner',
-                    gymName: partnerData.gymName || 'N/A',
-                    approvalDate: partnerData.approvalDate || new Date().toISOString(),
-                    dashboardUrl: partnerData.dashboardUrl || undefined,
+                    partnerName,
+                    gymName,
+                    approvalDate,
+                    dashboardUrl,
                   }));
                 }
               } catch (error) {
@@ -254,22 +383,30 @@ export async function POST(request: NextRequest) {
 
             case 'partner_rejection': {
               try {
-                const partnerData = emailItem.metadata as any;
+                const partnerData = toMetadataRecord(emailItem.metadata);
+                const partnerName =
+                  getStringMeta(partnerData, 'partnerName') ||
+                  getStringMeta(partnerData, 'contactName') ||
+                  'Partner';
+                const gymName = getStringMeta(partnerData, 'gymName') || 'N/A';
+                const rejectionReason =
+                  getStringMeta(partnerData, 'reason') || getStringMeta(partnerData, 'rejectionReason') || undefined;
+                const reapplyUrl = getStringMeta(partnerData, 'reapplyUrl') || undefined;
                 if (useSmtp && isSmtpConfigured()) {
                   sendResult = normalizeResult(await sendPartnerRejectionEmail({
                     to: emailItem.to_email,
-                    partnerName: partnerData.partnerName || partnerData.contactName || 'Partner',
-                    gymName: partnerData.gymName || 'N/A',
-                    rejectionReason: partnerData.reason || partnerData.rejectionReason || undefined,
-                    reapplyUrl: partnerData.reapplyUrl || undefined,
+                    partnerName,
+                    gymName,
+                    rejectionReason,
+                    reapplyUrl,
                   }));
                 } else if (useResend) {
                   sendResult = normalizeResult(await sendPartnerRejectionEmailResend({
                     to: emailItem.to_email,
-                    partnerName: partnerData.partnerName || partnerData.contactName || 'Partner',
-                    gymName: partnerData.gymName || 'N/A',
-                    rejectionReason: partnerData.reason || partnerData.rejectionReason || undefined,
-                    reapplyUrl: partnerData.reapplyUrl || undefined,
+                    partnerName,
+                    gymName,
+                    rejectionReason,
+                    reapplyUrl,
                   }));
                 }
               } catch (error) {
@@ -279,23 +416,29 @@ export async function POST(request: NextRequest) {
             }
 
             case 'admin_alert': {
-              try {
-                const alertData = emailItem.metadata as any;
+               try {
+                const alertData = toMetadataRecord(emailItem.metadata);
+                const alertType = getStringMeta(alertData, 'alertType') || 'general';
+                const title = emailItem.subject || getStringMeta(alertData, 'title') || 'Admin Alert';
+                const message = getStringMeta(alertData, 'message') || emailItem.html_content;
+                const severity = getStringMeta(alertData, 'severity');
+                const priority: 'critical' | 'high' | 'medium' =
+                  severity === 'error' ? 'critical' : severity === 'warning' ? 'high' : 'medium';
                 if (useSmtp && isSmtpConfigured()) {
                   sendResult = normalizeResult(await sendAdminAlertEmail({
                     to: emailItem.to_email,
-                    alertType: alertData.alertType || 'general',
-                    title: emailItem.subject || alertData.title || 'Admin Alert',
-                    message: alertData.message || emailItem.html_content,
-                    priority: alertData.severity === 'error' ? 'critical' : alertData.severity === 'warning' ? 'high' : 'medium',
+                    alertType,
+                    title,
+                    message,
+                    priority,
                   }));
                 } else if (useResend) {
                   sendResult = normalizeResult(await sendAdminAlertEmailResend({
                     to: emailItem.to_email,
-                    alertType: alertData.alertType || 'general',
-                    title: emailItem.subject || alertData.title || 'Admin Alert',
-                    message: alertData.message || emailItem.html_content,
-                    priority: alertData.severity === 'error' ? 'critical' : alertData.severity === 'warning' ? 'high' : 'medium',
+                    alertType,
+                    title,
+                    message,
+                    priority,
                   }));
                 }
               } catch (error) {
@@ -305,19 +448,22 @@ export async function POST(request: NextRequest) {
             }
 
             case 'verification': {
-              try {
-                const verificationData = emailItem.metadata as any;
+               try {
+                const verificationData = toMetadataRecord(emailItem.metadata);
+                const otp = getStringMeta(verificationData, 'otp') || 'N/A';
+                const fullName =
+                  getStringMeta(verificationData, 'fullName') || emailItem.to_email.split('@')[0];
                 if (useSmtp && isSmtpConfigured()) {
                   sendResult = normalizeResult(await sendVerificationEmail({
                     to: emailItem.to_email,
-                    otp: verificationData.otp || 'N/A',
-                    fullName: verificationData.fullName || emailItem.to_email.split('@')[0],
+                    otp,
+                    fullName,
                   }));
                 } else if (useResend) {
                   sendResult = normalizeResult(await sendVerificationEmailResend({
                     to: emailItem.to_email,
-                    otp: verificationData.otp || 'N/A',
-                    fullName: verificationData.fullName || emailItem.to_email.split('@')[0],
+                    otp,
+                    fullName,
                   }));
                 }
               } catch (error) {
@@ -327,53 +473,51 @@ export async function POST(request: NextRequest) {
             }
 
             default: {
-              // Generic email sending (for other types)
-              try {
-                const supabase = await createClient();
-                
-                // Try SMTP first
-                if (useSmtp && isSmtpConfigured()) {
-                  const nodemailer = await import('nodemailer');
-                  const transporter = nodemailer.default.createTransport({
-                    host: process.env.SMTP_HOST || 'smtp.gmail.com',
-                    port: parseInt(process.env.SMTP_PORT || '587'),
-                    secure: process.env.SMTP_SECURE === 'true' || false,
-                    auth: {
-                      user: process.env.SMTP_USER || '',
-                      pass: process.env.SMTP_PASS || '',
-                    },
-                  });
+               // Generic email sending (for other types)
+               try {
+                 // Try SMTP first
+                 if (useSmtp && isSmtpConfigured()) {
+                   const nodemailer = await import('nodemailer');
+                   const transporter = nodemailer.default.createTransport({
+                     host: process.env.SMTP_HOST || 'smtp.gmail.com',
+                     port: parseInt(process.env.SMTP_PORT || '587'),
+                     secure: process.env.SMTP_SECURE === 'true' || false,
+                     auth: {
+                       user: process.env.SMTP_USER || '',
+                       pass: process.env.SMTP_PASS || '',
+                     },
+                   });
 
-                  const info = await transporter.sendMail({
-                    from: process.env.SMTP_FROM || process.env.SMTP_USER || 'noreply@yourdomain.com',
-                    to: emailItem.to_email,
-                    subject: emailItem.subject,
-                    html: emailItem.html_content,
-                    text: emailItem.text_content || undefined,
-                  });
+                   const info = await transporter.sendMail({
+                     from: process.env.SMTP_FROM || process.env.SMTP_USER || 'noreply@yourdomain.com',
+                     to: emailItem.to_email,
+                     subject: emailItem.subject,
+                     html: emailItem.html_content,
+                     text: emailItem.text_content || undefined,
+                   });
 
-                  sendResult = { success: true, id: info.messageId };
-                } else if (useResend && isEmailServiceConfigured()) {
-                  const { Resend } = await import('resend');
-                  const resend = new Resend(process.env.RESEND_API_KEY);
-                  
-                  const result = await resend.emails.send({
-                    from: process.env.CONTACT_EMAIL_FROM || 'onboarding@resend.dev',
-                    to: emailItem.to_email,
-                    subject: emailItem.subject,
-                    html: emailItem.html_content,
-                  });
+                   sendResult = { success: true, id: info.messageId };
+                 } else if (useResend && isEmailServiceConfigured()) {
+                   const { Resend } = await import('resend');
+                   const resend = new Resend(process.env.RESEND_API_KEY);
+                   
+                   const result = await resend.emails.send({
+                     from: process.env.CONTACT_EMAIL_FROM || 'onboarding@resend.dev',
+                     to: emailItem.to_email,
+                     subject: emailItem.subject,
+                     html: emailItem.html_content,
+                   });
 
-                  sendResult = {
-                    success: !result.error,
-                    id: result.data?.id,
-                    error: result.error?.message,
-                  };
-                }
-              } catch (error) {
-                sendResult = { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
-              }
-              break;
+                   sendResult = {
+                     success: !result.error,
+                     id: result.data?.id,
+                     error: result.error?.message,
+                   };
+                 }
+               } catch (error) {
+                 sendResult = { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+               }
+               break;
             }
           }
 

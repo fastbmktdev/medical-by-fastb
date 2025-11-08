@@ -3,10 +3,9 @@
 import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useLocale } from 'next-intl';
-import { useAuth } from '@/contexts/AuthContext';
+// import { useAuth } from '@/contexts/AuthContext';
 import { 
-  XCircleIcon, 
-  ArrowRightIcon,
+  XCircleIcon,
   HomeIcon,
   ArrowPathIcon,
   ExclamationTriangleIcon,
@@ -24,7 +23,7 @@ function PaymentFailureContent() {
   const router = useRouter();
   const locale = useLocale();
   const searchParams = useSearchParams();
-  const { user } = useAuth();
+  // const { user } = useAuth();
   const [paymentData, setPaymentData] = useState<PaymentFailureData | null>(null);
   const [loading, setLoading] = useState(true);
 

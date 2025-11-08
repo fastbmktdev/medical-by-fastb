@@ -13,8 +13,6 @@ import {
   CreditCardIcon, 
   BanknotesIcon, 
   ClockIcon,
-  CheckCircleIcon,
-  XCircleIcon,
   ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
 
@@ -94,7 +92,18 @@ export default function PaymentPage() {
 
   const handlePaymentSuccess = (paymentIntentId: string) => {
     setActiveTab('status');
-    // You can add additional success handling here
+    // Trigger fetching payment status after successful payment
+    fetch(`/api/payments/status?payment_intent_id=${paymentIntentId}`)
+      .then(res => res.json())
+      .then(statusData => {
+        // You can set the fetched status data to state here if desired
+        console.log("Fetched payment status:", statusData);
+        // Example: setPaymentStatus(statusData); (requires additional state)
+      })
+      .catch(err => {
+        console.error("Failed to fetch payment status", err);
+      });
+    console.log("Payment successful! PaymentIntent ID:", paymentIntentId);
   };
 
   const handlePaymentError = (error: string) => {

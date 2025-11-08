@@ -12,6 +12,8 @@ import {
 } from "@heroicons/react/24/outline";
 import { AuthLayout } from "@/components/compositions/layouts";
 import { Button } from "@/components/shared";
+import { signInWithGoogle } from '@/services/auth.service';
+import { toast } from 'react-hot-toast';
 
 /**
  * Interface for login form data
@@ -57,6 +59,7 @@ function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   // Show error message from URL parameter
   useEffect(() => {
@@ -284,6 +287,21 @@ function LoginForm() {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    try {
+      setIsGoogleLoading(true);
+      setErrors((prev) => ({ ...prev, general: undefined }));
+      await signInWithGoogle();
+      // Redirect handled by Supabase OAuth flow
+    } catch (error: unknown) {
+      console.error('Google sign-in failed:', error);
+      const message =
+        error instanceof Error ? error.message : 'ไม่สามารถเข้าสู่ระบบด้วย Google ได้';
+      toast.error(message, { duration: 3000 });
+      setIsGoogleLoading(false);
+    }
+  };
+
   /**
    * Toggle password visibility
    */
@@ -311,6 +329,32 @@ function LoginForm() {
       subtitle="ยินดีต้อนรับกลับสู่ Muay Thai Community"
     >
       <form onSubmit={handleSubmit} className="space-y-6 pr-6">
+        <div className="flex flex-col gap-3">
+          <Button
+            type="button"
+            variant="outline"
+            fullWidth
+            loading={isGoogleLoading}
+            loadingText="กำลังเชื่อมต่อ Google..."
+            leftIcon={
+              <span className="flex items-center justify-center w-4 h-4">
+                <svg viewBox="0 0 24 24" className="w-4 h-4" aria-hidden="true">
+                  <path fill="#EA4335" d="M12 10.8v3.84h5.44c-.24 1.44-1.6 4.24-5.44 4.24-3.28 0-5.96-2.72-5.96-6.08s2.68-6.08 5.96-6.08c1.88 0 3.16.8 3.88 1.48l2.64-2.56C16.72 3.68 14.56 2.8 12 2.8 6.88 2.8 2.8 6.88 2.8 12s4.08 9.2 9.2 9.2c5.32 0 8.84-3.72 8.84-8.96 0-.6-.04-1.04-.12-1.44H12z" />
+                </svg>
+              </span>
+            }
+            onClick={handleGoogleSignIn}
+            disabled={isGoogleLoading}
+          >
+            เข้าสู่ระบบด้วย Google
+          </Button>
+          <div className="flex items-center gap-4">
+            <div className="flex-1 h-px bg-zinc-700" />
+            <span className="text-xs uppercase tracking-wide text-zinc-500">หรือเข้าสู่ระบบด้วยอีเมล</span>
+            <div className="flex-1 h-px bg-zinc-700" />
+          </div>
+        </div>
+
         {/* General Error Message */}
         {errors.general && (
           <div className="bg-red-500/20 p-4 border border-red-500 rounded-lg">
