@@ -224,7 +224,6 @@ const getUsersReportHandler = withAdminAuth(async (
         user_id: user.user_id,
         username: user.profiles?.username,
         full_name: user.profiles?.full_name,
-        email: user.profiles?.email,
         totalSpending: user.stats.totalSpending,
         bookingCount: user.stats.bookingCount,
       }));
