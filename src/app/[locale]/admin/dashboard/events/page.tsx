@@ -387,6 +387,7 @@ function AdminEventsContent() {
                               src={imageUrl}
                               alt={event.name || 'Event'}
                               fill
+                              sizes='100%'
                               className="object-cover"
                             />
                           </div>

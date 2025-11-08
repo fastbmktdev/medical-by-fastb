@@ -175,6 +175,7 @@ export default function ProductImagesModal({
                       src={image.imageUrl}
                       alt={image.altText || `Image ${index + 1}`}
                       fill
+                      sizes='100%'
                       className="object-cover"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;

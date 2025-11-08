@@ -341,6 +341,7 @@ function AdminProductsContent() {
                               src={product.image}
                               alt={product.nameThai || product.nameEnglish || 'Product'}
                               fill
+                              sizes='100%'
                               className="object-cover"
                             />
                           ) : (

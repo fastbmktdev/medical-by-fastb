@@ -208,6 +208,7 @@ const ApplicationDetailModal = ({
                             src={image}
                             alt={`${application.gym_name} ${index + 1}`}
                             fill
+                            sizes='100%'
                             className="object-cover"
                           />
                         </div>

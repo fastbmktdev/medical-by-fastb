@@ -255,6 +255,7 @@ function ArticlesContent() {
                   src={getArticleImage(article.category, article.image)}
                   alt={article.title}
                   fill
+                  sizes='100%'
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />

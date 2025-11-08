@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, useDisclosure } from '@heroui/react';
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input } from '@heroui/react';
 import { toast } from 'react-hot-toast';
 import { PhotoIcon, ArrowUpTrayIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
@@ -26,7 +26,6 @@ export default function MediaLibraryModal({ isOpen, onClose, onSelect }: MediaLi
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
     if (isOpen) {
@@ -61,7 +60,6 @@ export default function MediaLibraryModal({ isOpen, onClose, onSelect }: MediaLi
 
     try {
       setIsUploading(true);
-      setUploadProgress(0);
 
       const formData = new FormData();
       formData.append('file', selectedFile);
@@ -76,7 +74,6 @@ export default function MediaLibraryModal({ isOpen, onClose, onSelect }: MediaLi
       if (result.success && result.data) {
         toast.success('อัปโหลดสำเร็จ');
         setSelectedFile(null);
-        setUploadProgress(0);
         loadMediaFiles(); // Reload media files
       } else {
         toast.error(result.error || 'อัปโหลดไม่สำเร็จ');

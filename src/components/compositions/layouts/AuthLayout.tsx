@@ -34,6 +34,7 @@ export function AuthLayout({
           src={imageSrc}
           alt={imageAlt}
           fill
+          sizes='100%'
           className="object-cover"
           priority
         />

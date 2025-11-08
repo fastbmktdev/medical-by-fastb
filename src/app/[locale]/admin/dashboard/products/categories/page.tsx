@@ -239,6 +239,7 @@ function AdminCategoriesContent() {
                               src={category.image}
                               alt={category.nameThai}
                               fill
+                              sizes='100%'
                               className="object-cover"
                             />
                           </div>

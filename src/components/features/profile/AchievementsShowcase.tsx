@@ -20,9 +20,14 @@ interface EarnedBadge {
   badges: Badge;
 }
 
+interface BadgeWithProgress extends Badge {
+  earned?: boolean;
+  progress?: number;
+}
+
 export function AchievementsShowcase() {
   const [earnedBadges, setEarnedBadges] = useState<EarnedBadge[]>([]);
-  const [allBadges, setAllBadges] = useState<any[]>([]);
+  const [allBadges, setAllBadges] = useState<BadgeWithProgress[]>([]);
   const [currentPoints, setCurrentPoints] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,7 +43,11 @@ export function AchievementsShowcase() {
 
       if (data.success) {
         setEarnedBadges(data.data.earned_badges || []);
-        setAllBadges(data.data.all_badges || []);
+        setAllBadges(
+          Array.isArray(data.data.all_badges)
+            ? (data.data.all_badges as BadgeWithProgress[])
+            : []
+        );
         setCurrentPoints(data.data.current_points || 0);
         setCurrentLevel(data.data.current_level || 1);
       }
@@ -82,8 +91,7 @@ export function AchievementsShowcase() {
                     <Image
                       src={earned.badges.icon_url}
                       alt={earned.badges.name}
-                      width={96}
-                      height={96}
+                      sizes='100%'
                       fill
                     />
                   ) : (
@@ -106,7 +114,7 @@ export function AchievementsShowcase() {
       <div>
         <h4 className="mb-3 font-medium text-white">Badges ทั้งหมด</h4>
         <div className="space-y-3">
-          {allBadges.slice(0, 5).map((badge: any) => (
+          {allBadges.slice(0, 5).map((badge) => (
             <Card
               key={badge.id}
               className={`bg-zinc-950/50 border ${badge.earned ? "border-yellow-500/50" : "border-zinc-700"}`}
@@ -118,8 +126,7 @@ export function AchievementsShowcase() {
                       <Image
                         src={badge.icon_url}
                         alt={badge.name}
-                        width={112}
-                        height={112}
+                        sizes='100%'
                         fill
                       />
                     ) : (

@@ -97,6 +97,7 @@ export function EventCard({ event, viewMode }: EventCardProps) {
           src={imageUrl}
           alt={event.name || "Event image"}
           fill
+          sizes='100%'
           className="object-cover"
         />
         {price && (

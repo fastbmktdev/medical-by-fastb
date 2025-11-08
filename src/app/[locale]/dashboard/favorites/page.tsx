@@ -248,6 +248,7 @@ function FavoritesContent() {
                         src={gymImage}
                         alt={gym.gym_name}
                         fill
+                        sizes='100%'
                         className="object-cover"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;

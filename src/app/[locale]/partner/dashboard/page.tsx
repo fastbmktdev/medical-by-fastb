@@ -520,6 +520,7 @@ function PartnerDashboardContent() {
                           src={image}
                           alt={`Gym image ${index + 1}`}
                           fill
+                          sizes='100%'
                           className="rounded-lg object-cover"
                         />
                       </div>
@@ -718,6 +719,7 @@ function PartnerDashboardContent() {
                             src={image}
                             alt={`Gym image ${idx + 1}`}
                             fill
+                            sizes='100%'
                             className="object-cover"
                           />
                         </div>

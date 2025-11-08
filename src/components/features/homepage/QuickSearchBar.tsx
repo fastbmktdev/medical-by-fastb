@@ -74,6 +74,7 @@ export default function QuickSearchBar() {
             <div className="relative flex-grow">
               <MagnifyingGlassIcon className="top-1/2 left-4 absolute w-6 h-6 text-zinc-400 -translate-y-1/2" />
               <input
+                suppressHydrationWarning
                 type="text"
                 placeholder="Search for your next fight or gym..."
                 value={searchQuery}

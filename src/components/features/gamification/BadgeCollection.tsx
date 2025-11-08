@@ -134,6 +134,7 @@ export default function BadgeCollection({ badges, showAll = true, className = ''
                       width={100}
                       height={100}
                       fill
+                      sizes='100%'
                       className="w-12 h-12 mx-auto object-contain"
                     />
                   ) : (

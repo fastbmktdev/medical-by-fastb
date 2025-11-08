@@ -83,25 +83,26 @@ export default function ProductDetailPage({
         const detailData = await detailResponse.json();
         
         if (detailData.success) {
-          setProduct(detailData.data);
+          const detailProduct = detailData.data as Product;
+          setProduct(detailProduct);
           
           // Track product view
           try {
-            const productName = detailData.data.nameThai || detailData.data.nameEnglish || 'Unknown';
-            const category = detailData.data.category?.nameThai || detailData.data.category?.nameEnglish || undefined;
+            const productName = detailProduct.nameThai || detailProduct.nameEnglish || 'Unknown';
+            const category = detailProduct.category?.nameThai || detailProduct.category?.nameEnglish || undefined;
             trackProductView(
-              detailData.data.id,
+              detailProduct.id,
               productName,
               category,
-              detailData.data.price
+              detailProduct.price
             );
           } catch (error) {
             console.warn('Analytics tracking error:', error);
           }
           
           // Set default variant if available
-          if (detailData.data.variants && detailData.data.variants.length > 0) {
-            const defaultVariant = detailData.data.variants.find((v: any) => v.isDefault);
+          if (detailProduct.variants && detailProduct.variants.length > 0) {
+            const defaultVariant = detailProduct.variants.find((variant) => variant.isDefault);
             if (defaultVariant) {
               setSelectedVariant(defaultVariant.id);
             }
@@ -189,6 +190,7 @@ export default function ProductDetailPage({
                 src={primaryImage}
                 alt={productName}
                 fill
+                sizes='100%'
                 className="object-cover"
                 priority
               />
@@ -205,6 +207,7 @@ export default function ProductDetailPage({
                       src={img}
                       alt={`${productName} ${idx + 1}`}
                       fill
+                      sizes='100%'
                       className="object-cover"
                     />
                   </div>
@@ -424,6 +427,7 @@ export default function ProductDetailPage({
                       src={relatedProduct.image || relatedProduct.images?.[0] || "/assets/images/fallback-img.jpg"}
                       alt={relatedProduct.nameThai || relatedProduct.nameEnglish || "Product"}
                       fill
+                      sizes='100%'
                       className="object-cover"
                     />
                   </div>

@@ -31,6 +31,7 @@ export function GymCard({ gym }: GymCardProps) {
           src={imageUrl}
           alt={gym.gym_name || "Gym image"}
           fill
+          sizes='100%'
           className="object-cover"
         />
       </div>

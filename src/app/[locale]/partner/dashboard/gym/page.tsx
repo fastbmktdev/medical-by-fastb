@@ -560,6 +560,7 @@ function GymPageContent() {
                                       src={imagePreviewUrls[idx]}
                                       alt={file.name}
                                       fill
+                                      sizes='100%'
                                       className="object-cover"
                                     />
                                   )}
@@ -615,6 +616,7 @@ function GymPageContent() {
                           src={image}
                           alt={`Gym image ${idx + 1}`}
                           fill
+                          sizes='100%'
                           className="object-cover"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;

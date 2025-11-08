@@ -34,6 +34,7 @@ export function ProductCard({ product, showAddToCart = true }: ProductCardProps)
             src={imageUrl}
             alt={productName || "Product image"}
             fill
+            sizes='100%'
             className="object-cover"
           />
           {isOutOfStock && (

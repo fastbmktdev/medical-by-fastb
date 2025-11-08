@@ -131,6 +131,7 @@ export default function EventDetailPage({
                 src={imageUrl}
                 alt={event.name || "Event image"}
                 fill
+                sizes='100%'
                 className="object-cover"
               />
             </div>

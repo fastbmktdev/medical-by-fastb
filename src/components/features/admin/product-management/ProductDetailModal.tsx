@@ -1,5 +1,5 @@
 import { Button, Chip } from '@heroui/react';
-import { PencilIcon, TrashIcon, CubeIcon } from '@heroicons/react/24/outline';
+import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import AdminDetailModal from '../shared/AdminDetailModal';
 import AdminInfoSection from '../shared/AdminInfoSection';
@@ -97,6 +97,7 @@ export default function ProductDetailModal({
               src={product.image}
               alt={product.nameThai || product.nameEnglish || 'Product'}
               fill
+              sizes='100%'
               className="object-cover"
             />
           </div>

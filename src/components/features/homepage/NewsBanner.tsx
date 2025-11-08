@@ -78,6 +78,7 @@ function NewsSlide({ item, isActive }: { item: typeof NEWS_ITEMS[0]; isActive: b
           src={item.image}
           alt={item.title}
           fill
+          sizes='100%'
           className="object-cover transition-transform duration-500 group-hover:scale-105"
           priority={isActive}
         />

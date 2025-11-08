@@ -321,9 +321,8 @@ export default function ArticleCreateModal({
               {formData.image && (
                 <div className="mt-2 relative w-full h-32 rounded-lg overflow-hidden">
                   <Image
-                    width={300}
-                    height={300}
                     fill
+                    sizes='100%'
                     src={formData.image}
                     alt="Preview"
                     className="w-full h-full object-cover"
