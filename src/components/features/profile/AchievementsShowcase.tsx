@@ -65,7 +65,7 @@ export function AchievementsShowcase() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-lg">Achievements & Badges</h3>
+        <h3 className="font-semibold text-lg text-white">Achievements & Badges</h3>
         <div className="flex items-center gap-2">
           <TrophyIcon className="w-5 h-5 text-yellow-500" />
           <span className="text-white font-semibold">

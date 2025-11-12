@@ -71,14 +71,15 @@ export function PrivacySettingsPanel() {
           <ShieldCheckIcon className="w-5 h-5 text-blue-400" />
         </div>
         <div>
-          <h3 className="font-bold text-xl">การตั้งค่าความเป็นส่วนตัว</h3>
+          <h3 className="font-bold text-xl text-white">การตั้งค่าความเป็นส่วนตัว</h3>
           <p className="text-zinc-400 text-sm">ควบคุมข้อมูลที่ผู้ใช้คนอื่นสามารถเห็นได้</p>
         </div>
       </CardHeader>
       <CardBody className="space-y-6">
-        <div>
-          <label className="block mb-2 font-medium text-sm">ความโปร่งใสของโปรไฟล์</label>
+        <div className="text-white space-y-2">
           <Select
+            label="ความโปร่งใสของโปรไฟล์"
+            labelPlacement="outside"
             selectedKeys={[settings.profile_visibility]}
             onSelectionChange={(keys) => {
               const value = Array.from(keys)[0] as string;
@@ -87,7 +88,9 @@ export function PrivacySettingsPanel() {
             variant="bordered"
             classNames={{
               trigger: "bg-zinc-950/50 border-zinc-700",
+              label: "text-white/90 font-medium text-sm",
             }}
+            aria-label="ความโปร่งใสของโปรไฟล์"
           >
             <SelectItem key="public">สาธารณะ - ทุกคนสามารถดูได้</SelectItem>
             <SelectItem key="private">ส่วนตัว - เฉพาะคุณเท่านั้น</SelectItem>
@@ -99,6 +102,7 @@ export function PrivacySettingsPanel() {
           <Switch
             isSelected={settings.show_email}
             onValueChange={(value) => setSettings({ ...settings, show_email: value })}
+            className="privacy-switch"
           >
             <div className="flex flex-col">
               <span className="text-white">แสดงอีเมล</span>
@@ -109,6 +113,7 @@ export function PrivacySettingsPanel() {
           <Switch
             isSelected={settings.show_phone}
             onValueChange={(value) => setSettings({ ...settings, show_phone: value })}
+            className="privacy-switch"
           >
             <div className="flex flex-col">
               <span className="text-white">แสดงเบอร์โทรศัพท์</span>
@@ -119,6 +124,7 @@ export function PrivacySettingsPanel() {
           <Switch
             isSelected={settings.show_training_history}
             onValueChange={(value) => setSettings({ ...settings, show_training_history: value })}
+            className="privacy-switch"
           >
             <div className="flex flex-col">
               <span className="text-white">แสดงประวัติการฝึกซ้อม</span>
@@ -129,6 +135,7 @@ export function PrivacySettingsPanel() {
           <Switch
             isSelected={settings.show_achievements}
             onValueChange={(value) => setSettings({ ...settings, show_achievements: value })}
+            className="privacy-switch"
           >
             <div className="flex flex-col">
               <span className="text-white">แสดง Achievements</span>
@@ -139,6 +146,7 @@ export function PrivacySettingsPanel() {
           <Switch
             isSelected={settings.show_social_links}
             onValueChange={(value) => setSettings({ ...settings, show_social_links: value })}
+            className="privacy-switch"
           >
             <div className="flex flex-col">
               <span className="text-white">แสดง Social Media Links</span>

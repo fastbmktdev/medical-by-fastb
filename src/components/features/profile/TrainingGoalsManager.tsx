@@ -148,12 +148,13 @@ export function TrainingGoalsManager() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-lg">เป้าหมายการฝึกซ้อม</h3>
+        <h3 className="font-semibold text-lg text-white">เป้าหมายการฝึกซ้อม</h3>
         <Button
           size="sm"
           color="primary"
           onPress={() => setShowForm(!showForm)}
           startContent={<PlusIcon className="w-4 h-4" />}
+          className="text-white bg-blue-600 hover:bg-blue-700 px-3 py-1 text-xs font-medium"
         >
           เพิ่มเป้าหมาย
         </Button>
@@ -162,7 +163,7 @@ export function TrainingGoalsManager() {
       {showForm && (
         <Card className="bg-zinc-950/50 border border-zinc-700">
           <CardHeader className="border-b border-zinc-700">
-            <h4 className="font-semibold">เป้าหมายใหม่</h4>
+            <h4 className="font-semibold text-white">เป้าหมายใหม่</h4>
           </CardHeader>
           <CardBody>
             <form onSubmit={handleSubmit} className="space-y-4">

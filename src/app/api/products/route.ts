@@ -23,6 +23,93 @@ interface ProductImage {
   display_order: number;
 }
 
+interface ProductPayload {
+  nameThai: string;
+  nameEnglish: string;
+  price: number | string;
+  stock: number | string;
+  description?: string | null;
+  categoryId?: string | null;
+  slug?: string | null;
+  sku?: string | null;
+  weightKg?: number | string | null;
+  dimensions?: string | null;
+  isActive?: boolean;
+  isFeatured?: boolean;
+  images?: string[];
+}
+
+interface ProductWithCategory {
+  id: string;
+  slug: string | null;
+  name_thai: string | null;
+  name_english: string | null;
+  description: string | null;
+  price: string | number | null;
+  stock: number | null;
+  product_categories:
+    | {
+        id: string;
+        name_thai: string | null;
+        name_english: string | null;
+        slug: string | null;
+      }
+    | null;
+  sku: string | null;
+  weight_kg: string | number | null;
+  dimensions: string | null;
+  is_active: boolean | null;
+  is_featured: boolean | null;
+  views_count: number | null;
+  sales_count: number | null;
+  created_at: string | null;
+  updated_at: string | null;
+}
+
+const parseNumericField = (
+  value: string | number | null | undefined,
+  fallback: number = 0
+): number => {
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : fallback;
+  }
+  if (typeof value === "string") {
+    const parsed = Number.parseFloat(value);
+    return Number.isNaN(parsed) ? fallback : parsed;
+  }
+  return fallback;
+};
+
+const parseOptionalNumericField = (
+  value: string | number | null | undefined
+): number | null => {
+  if (value === null || value === undefined) {
+    return null;
+  }
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : null;
+  }
+  if (typeof value === "string") {
+    const parsed = Number.parseFloat(value);
+    return Number.isNaN(parsed) ? null : parsed;
+  }
+  return null;
+};
+
+const parseIntegerField = (
+  value: string | number | null | undefined,
+  fallback: number = 0
+): number => {
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : fallback;
+  }
+  if (typeof value === "string") {
+    const parsed = Number.parseInt(value, 10);
+    return Number.isNaN(parsed) ? fallback : parsed;
+  }
+  return fallback;
+};
+
 /**
  * Helper function to check if user is admin
  */
@@ -154,13 +241,14 @@ export const GET = withErrorHandler(async (request: NextRequest) => {
   }
 
   // Format response - return empty array if no data (not an error)
-  const formattedData = (data || []).map((product: any) => ({
+  const products = (data ?? []) as ProductWithCategory[];
+  const formattedData = products.map((product) => ({
     id: product.id || "",
     slug: product.slug || "",
     nameThai: product.name_thai || "",
     nameEnglish: product.name_english || "",
     description: product.description || "",
-    price: product.price ? parseFloat(product.price) || 0 : 0,
+    price: parseNumericField(product.price),
     stock: product.stock ?? 0,
     category: product.product_categories
       ? {
@@ -171,7 +259,7 @@ export const GET = withErrorHandler(async (request: NextRequest) => {
         }
       : null,
     sku: product.sku || "",
-    weightKg: product.weight_kg ? parseFloat(product.weight_kg) || null : null,
+    weightKg: parseOptionalNumericField(product.weight_kg),
     dimensions: product.dimensions || "",
     isActive: product.is_active ?? true,
     isFeatured: product.is_featured ?? false,
@@ -197,10 +285,10 @@ export const GET = withErrorHandler(async (request: NextRequest) => {
 export const POST = withAdminAuth(
   withErrorHandler(async (request: NextRequest) => {
     const supabase = await createClient();
-    let body: any;
+    let body: ProductPayload;
 
     try {
-      body = await request.json();
+      body = (await request.json()) as ProductPayload;
     } catch {
       throw new ValidationError("รูปแบบข้อมูลไม่ถูกต้อง");
     }
@@ -245,11 +333,11 @@ export const POST = withAdminAuth(
         name_thai: nameThai,
         name_english: nameEnglish,
         description: body.description || null,
-        price: parseFloat(price),
-        stock: parseInt(stock),
+        price: parseNumericField(price),
+        stock: parseIntegerField(stock),
         category_id: body.categoryId || null,
         sku: body.sku || null,
-        weight_kg: body.weightKg ? parseFloat(body.weightKg) : null,
+        weight_kg: parseOptionalNumericField(body.weightKg),
         dimensions: body.dimensions || null,
         is_active: body.isActive !== undefined ? body.isActive : true,
         is_featured: body.isFeatured || false,

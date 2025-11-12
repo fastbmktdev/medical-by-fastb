@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Textarea, Button } from '@heroui/react';
 import { PencilIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
-import { sanitizeHTML, sanitizeText } from '@/lib/utils/sanitize';
+import { sanitizeText } from '@/lib/utils/sanitize';
 
 const MAX_BIO_LENGTH = 500;
 
@@ -36,10 +36,11 @@ export function BioEditor() {
   const handleSave = async () => {
     setIsSaving(true);
     try {
+      const sanitizedBio = sanitizeText(bio);
       const response = await fetch('/api/users/profile/bio', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ bio }),
+        body: JSON.stringify({ bio: sanitizedBio }),
       });
 
       const data = await response.json();
@@ -50,9 +51,9 @@ export function BioEditor() {
 
       toast.success('บันทึก Bio สำเร็จ!');
       setIsEditing(false);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Save error:', error);
-      toast.error(error.message || 'เกิดข้อผิดพลาดในการบันทึก');
+      toast.error((error as Error).message || 'เกิดข้อผิดพลาดในการบันทึก');
     } finally {
       setIsSaving(false);
     }
@@ -70,7 +71,7 @@ export function BioEditor() {
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <label className="block font-medium text-sm">เกี่ยวกับฉัน</label>
+        <label className="block font-medium text-sm text-red-500">เกี่ยวกับฉัน</label>
         {!isEditing && (
           <Button
             size="sm"
@@ -128,8 +129,9 @@ export function BioEditor() {
           {bio ? (
             <div 
               className="text-white whitespace-pre-wrap prose prose-invert max-w-none"
-              dangerouslySetInnerHTML={{ __html: sanitizeHTML(bio) }}
-            />
+            >
+              {sanitizeText(bio)}
+            </div>
           ) : (
             <p className="text-white">ยังไม่ได้เพิ่มข้อมูลเกี่ยวกับตัวคุณ</p>
           )}
@@ -138,4 +140,3 @@ export function BioEditor() {
     </div>
   );
 }
-

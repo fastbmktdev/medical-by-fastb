@@ -13,9 +13,10 @@ interface TrainingHistoryStats {
 
 interface Booking {
   id: string;
-  booking_date: string;
+  start_date: string;
+  price_paid: string | number;
+  package_name: string;
   gyms: { gym_name: string; location: string };
-  packages: { package_name: string; price: number };
 }
 
 export function TrainingHistoryView() {
@@ -49,7 +50,7 @@ export function TrainingHistoryView() {
 
   return (
     <div className="space-y-4">
-      <h3 className="font-semibold text-lg">ประวัติการฝึกซ้อม</h3>
+      <h3 className="font-semibold text-lg text-white">ประวัติการฝึกซ้อม</h3>
 
       {/* Statistics */}
       {stats && (
@@ -93,17 +94,18 @@ export function TrainingHistoryView() {
                   </div>
                   <div className="text-right">
                     <p className="text-white font-semibold">
-                      ฿{(booking.packages?.price || 0).toLocaleString()}
+                      ฿
+                      {Number(booking.price_paid || 0).toLocaleString()}
                     </p>
                     <p className="text-zinc-400 text-xs">
-                      {booking.packages?.package_name}
+                      {booking.package_name}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 text-zinc-500 text-xs">
                   <CalendarIcon className="w-4 h-4" />
                   <span>
-                    {new Date(booking.booking_date).toLocaleDateString('th-TH', {
+                    {new Date(booking.start_date).toLocaleDateString('th-TH', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric'

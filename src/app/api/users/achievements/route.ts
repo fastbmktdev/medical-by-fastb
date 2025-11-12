@@ -57,8 +57,10 @@ export async function GET(request: NextRequest) {
 
     // Calculate progress for each badge
     const currentPoints = pointsData?.total_points || 0;
+    type BadgeRecord = NonNullable<typeof badges>[number];
+
     const badgesWithProgress = allBadges?.map((badge) => {
-      const userBadge = badges?.find((ub: any) => ub.badge_id === badge.id);
+      const userBadge = badges?.find((ub: BadgeRecord) => ub.badge_id === badge.id);
       const progress = Math.min((currentPoints / badge.points_required) * 100, 100);
 
       return {

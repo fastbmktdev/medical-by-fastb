@@ -1,23 +1,41 @@
 "use client";
 
-import { createElement } from 'react';
-import { GoogleAnalytics as NextGoogleAnalytics } from '@next/third-parties/google';
+import Script from "next/script";
 
 /**
  * Google Analytics Component
- * 
- * This component loads Google Analytics script using Next.js third-parties.
- * Make sure to set NEXT_PUBLIC_GA_MEASUREMENT_ID in your environment variables.
+ *
+ * Loads Google Analytics only after the page becomes interactive, avoiding a
+ * preload hint that could trigger browser warnings when the script isn't
+ * requested immediately.
+ *
+ * Ensure NEXT_PUBLIC_GA_MEASUREMENT_ID is defined in your environment.
  */
 export function GoogleAnalytics() {
   const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
   if (!gaId) {
-    // Don't render anything if GA ID is not configured
-    console.warn('Google Analytics: NEXT_PUBLIC_GA_MEASUREMENT_ID is not set');
+    console.warn("Google Analytics: NEXT_PUBLIC_GA_MEASUREMENT_ID is not set");
     return null;
   }
 
-  return createElement(NextGoogleAnalytics, { gaId });
+  const gaSrc = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+
+  return (
+    <>
+      <Script id="ga-script" src={gaSrc} strategy="afterInteractive" />
+      <Script id="ga-inline-init" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${gaId}', {
+            page_path: window.location.pathname,
+          });
+        `}
+      </Script>
+    </>
+  );
 }
+
 

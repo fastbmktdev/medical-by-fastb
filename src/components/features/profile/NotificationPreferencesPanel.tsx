@@ -79,7 +79,7 @@ export function NotificationPreferencesPanel() {
           <BellIcon className="w-5 h-5 text-blue-400" />
         </div>
         <div>
-          <h3 className="font-bold text-xl">การตั้งค่าการแจ้งเตือน</h3>
+          <h3 className="font-bold text-xl text-white">การตั้งค่าการแจ้งเตือน</h3>
           <p className="text-zinc-400 text-sm">ควบคุมการแจ้งเตือนที่คุณต้องการรับ</p>
         </div>
       </CardHeader>
@@ -92,6 +92,7 @@ export function NotificationPreferencesPanel() {
             isSelected={preferences.email_enabled}
             onValueChange={(value) => setPreferences({ ...preferences, email_enabled: value })}
             classNames={switchClassNames}
+            className="privacy-switch"
           >
             <div className="flex flex-col">
               <span className="text-white">เปิดใช้งานอีเมล</span>
@@ -103,6 +104,7 @@ export function NotificationPreferencesPanel() {
             isSelected={preferences.in_app_enabled}
             onValueChange={(value) => setPreferences({ ...preferences, in_app_enabled: value })}
             classNames={switchClassNames}
+            className="privacy-switch"
           >
             <div className="flex flex-col">
               <span className="text-white">เปิดใช้งานในแอป</span>
@@ -119,6 +121,7 @@ export function NotificationPreferencesPanel() {
             isSelected={preferences.booking_confirmation}
             onValueChange={(value) => setPreferences({ ...preferences, booking_confirmation: value })}
             classNames={switchClassNames}
+            className="privacy-switch"
           >
             <div className="flex flex-col">
               <span className="text-white">ยืนยันการจอง</span>
@@ -130,6 +133,7 @@ export function NotificationPreferencesPanel() {
             isSelected={preferences.booking_reminder}
             onValueChange={(value) => setPreferences({ ...preferences, booking_reminder: value })}
             classNames={switchClassNames}
+            className="privacy-switch"
           >
             <div className="flex flex-col">
               <span className="text-white">เตือนก่อนเข้าชั้นเรียน</span>
@@ -141,6 +145,7 @@ export function NotificationPreferencesPanel() {
             isSelected={preferences.gamification_updates}
             onValueChange={(value) => setPreferences({ ...preferences, gamification_updates: value })}
             classNames={switchClassNames}
+            className="privacy-switch"
           >
             <div className="flex flex-col">
               <span className="text-white">อัปเดต Gamification</span>
@@ -152,6 +157,7 @@ export function NotificationPreferencesPanel() {
             isSelected={preferences.promotions_news}
             onValueChange={(value) => setPreferences({ ...preferences, promotions_news: value })}
             classNames={switchClassNames}
+            className="privacy-switch"
           >
             <div className="flex flex-col">
               <span className="text-white">โปรโมชั่นและข่าวสาร</span>
@@ -163,6 +169,7 @@ export function NotificationPreferencesPanel() {
             isSelected={preferences.partner_messages}
             onValueChange={(value) => setPreferences({ ...preferences, partner_messages: value })}
             classNames={switchClassNames}
+            className="privacy-switch"
           >
             <div className="flex flex-col">
               <span className="text-white">ข้อความจาก Partner</span>

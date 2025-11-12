@@ -142,7 +142,7 @@ function ProfileContent() {
     >
       <Toaster />
 
-      <div className="gap-6 grid grid-cols-1 lg:grid-cols-3">
+      <div className="gap-6 grid grid-cols-1 lg:grid-cols-3 text-white">
         {/* Profile Summary */}
         <div className="lg:col-span-1 space-y-6">
           <Card className="bg-linear-to-br from-zinc-800 to-zinc-950 backdrop-blur-sm border border-zinc-700">
@@ -153,7 +153,7 @@ function ProfileContent() {
               />
               
               <div>
-                <h3 className="mb-1 font-bold text-2xl">
+                <h3 className="mb-1 font-medium text-2xl text-white">
                   {formData.displayName || user?.email?.split('@')[0] || 'ผู้ใช้'}
                 </h3>
                 <p className="mb-3 text-zinc-400 text-sm">{user?.email}</p>
@@ -162,6 +162,7 @@ function ProfileContent() {
                   variant="flat"
                   size="sm"
                   startContent={<CheckCircleIcon className="w-3 h-3" />}
+                  className="text-black bg-green-600 hover:bg-green-700 px-3 py-1 text-xs font-medium"
                 >
                   ใช้งานอยู่
                 </Chip>
@@ -173,7 +174,7 @@ function ProfileContent() {
                     <ClockIcon className="w-4 h-4 text-zinc-400" />
                     <span className="text-zinc-400 text-sm">สมาชิกตั้งแต่</span>
                   </div>
-                  <span className="font-semibold text-sm">
+                  <span className="font-semibold text-sm text-white">
                     {user?.created_at ? new Date(user.created_at).toLocaleDateString('th-TH', {
                       year: 'numeric',
                       month: 'short',
@@ -186,7 +187,7 @@ function ProfileContent() {
                     <UserIcon className="w-4 h-4 text-zinc-400" />
                     <span className="text-zinc-400 text-sm">ประเภทสมาชิก</span>
                   </div>
-                  <Chip color="primary" variant="flat" size="sm">
+                  <Chip color="primary" variant="flat" size="sm" className="text-white bg-blue-600 hover:bg-blue-700 px-3 py-1 text-xs">
                     ผู้ใช้ทั่วไป
                   </Chip>
                 </div>
@@ -210,12 +211,12 @@ function ProfileContent() {
         </div>
 
         {/* Profile Information */}
-        <div className="space-y-6 lg:col-span-2">
+        <div className="space-y-6 lg:col-span-2 text-white">
           {/* Personal Information */}
           <Card className="bg-zinc-950/50 backdrop-blur-sm border border-zinc-700">
             <CardHeader className="flex justify-between items-center border-zinc-700 border-b">
               <div>
-                <h3 className="font-bold text-xl">ข้อมูลส่วนตัว</h3>
+                <h3 className="font-bold text-xl text-white">ข้อมูลส่วนตัว</h3>
                 <p className="text-zinc-400 text-sm">จัดการข้อมูลบัญชีของคุณ</p>
               </div>
               {!isEditing ? (

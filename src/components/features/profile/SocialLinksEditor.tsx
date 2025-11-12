@@ -117,7 +117,7 @@ export function SocialLinksEditor() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <label className="block font-medium text-sm">Social Media Links</label>
+        <label className="block font-medium text-sm text-red-500">Social Media Links</label>
         {!isEditing && (
           <Button
             size="sm"

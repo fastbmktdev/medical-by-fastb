@@ -68,20 +68,27 @@ export async function GET(request: NextRequest) {
     // Get event details for each ticket
     if (tickets && tickets.length > 0) {
       const eventIds = [...new Set(tickets.map(t => t.event_id))];
-      const { data: events } = await supabase
-        .from('events')
-        .select('id, name, name_english, slug, location, image, event_date')
-        .in('id', eventIds);
+    const { data: events } = await supabase
+      .from('events')
+      .select('id, name, name_english, slug, location, image, event_date')
+      .in('id', eventIds);
 
-      const eventsMap = events?.reduce((acc: Record<string, any>, event) => {
+    type EventSummary = NonNullable<typeof events>[number];
+
+    const eventsMap =
+      events?.reduce<Record<string, EventSummary>>((acc, event) => {
         acc[event.id] = event;
         return acc;
       }, {}) || {};
 
-      // Add event details to tickets
-      tickets.forEach((ticket: any) => {
-        ticket.event = eventsMap[ticket.event_id] || null;
-      });
+    // Add event details to tickets
+    type Ticket = NonNullable<typeof tickets>[number] & {
+      event?: EventSummary | null;
+    };
+
+    (tickets as Ticket[]).forEach((ticket) => {
+      ticket.event = eventsMap[ticket.event_id] || null;
+    });
     }
 
     return NextResponse.json({

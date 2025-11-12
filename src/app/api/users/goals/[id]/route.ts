@@ -23,7 +23,16 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const updateData: any = {};
+    const updateData: Partial<{
+      title: string;
+      description: string | null;
+      target_value: number | null;
+      current_value: number | null;
+      unit: string | null;
+      target_date: string | null;
+      is_completed: boolean;
+      completed_at: string | null;
+    }> = {};
 
     if (body.title !== undefined) updateData.title = body.title;
     if (body.description !== undefined) updateData.description = body.description;
