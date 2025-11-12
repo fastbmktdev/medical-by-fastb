@@ -128,7 +128,7 @@ export default function CouponCodeInput({
         ) : (
           <button
             onClick={handleRemoveCoupon}
-            className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+            className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-600 transition-colors"
           >
             ลบ
           </button>

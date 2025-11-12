@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/database/supabase/server';
+import { logAuditEvent } from '@/lib/utils';
 
 /**
  * Request Account Deletion API
@@ -27,6 +28,12 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { password, deletion_reason } = body;
 
+    const { data: existingDeletion } = await supabase
+      .from('deleted_accounts')
+      .select('*')
+      .eq('user_id', user.id)
+      .maybeSingle();
+
     // Verify password if provided
     if (password) {
       const { error: verifyError } = await supabase.auth.signInWithPassword({
@@ -35,6 +42,23 @@ export async function POST(request: NextRequest) {
       });
 
       if (verifyError) {
+        await logAuditEvent({
+          supabase,
+          request,
+          user,
+          action: 'delete',
+          resourceType: 'user',
+          resourceId: user.id,
+          resourceName: user.email ?? user.id,
+          description: 'Account deletion request failed - invalid password',
+          metadata: {
+            providedReason: deletion_reason || null,
+          },
+          severity: 'high',
+          success: false,
+          errorMessage: 'Invalid password provided for deletion request',
+        });
+
         return NextResponse.json(
           { success: false, error: 'Invalid password' },
           { status: 401 }
@@ -47,13 +71,17 @@ export async function POST(request: NextRequest) {
     gracePeriodEnds.setDate(gracePeriodEnds.getDate() + 30);
 
     // Record deletion request
-    const { error: deleteError } = await supabase
+    const deletePayload = {
+      user_id: user.id,
+      deletion_reason: deletion_reason || null,
+      grace_period_ends_at: gracePeriodEnds.toISOString()
+    };
+
+    const { data: deletionRecord, error: deleteError } = await supabase
       .from('deleted_accounts')
-      .upsert({
-        user_id: user.id,
-        deletion_reason: deletion_reason || null,
-        grace_period_ends_at: gracePeriodEnds.toISOString()
-      });
+      .upsert(deletePayload)
+      .select()
+      .single();
 
     if (deleteError) {
       console.error('Record deletion error:', deleteError);
@@ -71,6 +99,24 @@ export async function POST(request: NextRequest) {
         deleted: true,
         deleted_at: new Date().toISOString()
       }
+    });
+
+    await logAuditEvent({
+      supabase,
+      request,
+      user,
+      action: 'delete',
+      resourceType: 'user',
+      resourceId: user.id,
+      resourceName: user.email ?? user.id,
+      description: 'Account deletion requested',
+      oldValues: existingDeletion ? { deleted_account: existingDeletion } : null,
+      newValues: deletionRecord ? { deleted_account: deletionRecord } : { deleted_account: deletePayload },
+      metadata: {
+        gracePeriodEndsAt: gracePeriodEnds.toISOString(),
+        providedReason: deletion_reason || null,
+      },
+      severity: 'high',
     });
 
     return NextResponse.json({
@@ -115,6 +161,20 @@ export async function PUT(request: NextRequest) {
       .single();
 
     if (!deletedAccount) {
+      await logAuditEvent({
+        supabase,
+        request,
+        user,
+        action: 'activate',
+        resourceType: 'user',
+        resourceId: user.id,
+        resourceName: user.email ?? user.id,
+        description: 'Account restore failed - not marked for deletion',
+        severity: 'medium',
+        success: false,
+        errorMessage: 'No deletion record found',
+      });
+
       return NextResponse.json(
         { success: false, error: 'Account is not marked for deletion' },
         { status: 400 }
@@ -122,6 +182,20 @@ export async function PUT(request: NextRequest) {
     }
 
     if (deletedAccount.restored_at) {
+      await logAuditEvent({
+        supabase,
+        request,
+        user,
+        action: 'activate',
+        resourceType: 'user',
+        resourceId: user.id,
+        resourceName: user.email ?? user.id,
+        description: 'Account restore failed - already restored',
+        severity: 'low',
+        success: false,
+        errorMessage: 'Account already restored',
+      });
+
       return NextResponse.json(
         { success: false, error: 'Account is already restored' },
         { status: 400 }
@@ -132,6 +206,23 @@ export async function PUT(request: NextRequest) {
     const gracePeriodEnds = new Date(deletedAccount.grace_period_ends_at);
 
     if (now > gracePeriodEnds) {
+      await logAuditEvent({
+        supabase,
+        request,
+        user,
+        action: 'activate',
+        resourceType: 'user',
+        resourceId: user.id,
+        resourceName: user.email ?? user.id,
+        description: 'Account restore failed - grace period expired',
+        severity: 'high',
+        success: false,
+        errorMessage: 'Grace period expired',
+        metadata: {
+          gracePeriodEndsAt: deletedAccount.grace_period_ends_at,
+        },
+      });
+
       return NextResponse.json(
         { success: false, error: 'Grace period has expired. Account cannot be restored.' },
         { status: 400 }
@@ -139,10 +230,12 @@ export async function PUT(request: NextRequest) {
     }
 
     // Restore account
-    const { error: restoreError } = await supabase
+    const { data: restoredRecord, error: restoreError } = await supabase
       .from('deleted_accounts')
       .update({ restored_at: now.toISOString() })
-      .eq('user_id', user.id);
+      .eq('user_id', user.id)
+      .select()
+      .single();
 
     if (restoreError) {
       console.error('Restore account error:', restoreError);
@@ -158,6 +251,24 @@ export async function PUT(request: NextRequest) {
         deleted: false,
         deleted_at: null
       }
+    });
+
+    await logAuditEvent({
+      supabase,
+      request,
+      user,
+      action: 'activate',
+      resourceType: 'user',
+      resourceId: user.id,
+      resourceName: user.email ?? user.id,
+      description: 'Account restored during grace period',
+      oldValues: { deleted_account: deletedAccount },
+      newValues: restoredRecord ? { deleted_account: restoredRecord } : null,
+      metadata: {
+        gracePeriodEndsAt: deletedAccount.grace_period_ends_at,
+        restoredAt: now.toISOString(),
+      },
+      severity: 'medium',
     });
 
     return NextResponse.json({

@@ -17,6 +17,7 @@ import toast from "react-hot-toast";
 import { validatePasswordStrong } from "@/lib/utils/validation";
 import { useReferralCode } from "@/contexts";
 import { isValidReferralCodeFormat } from "@/lib/utils/affiliate";
+import { Loading } from "@/components/design-system/primitives/Loading";
 
 /**
  * Interface for signup form data
@@ -645,8 +646,8 @@ function SignupContent() {
   if (isCheckingAuth) {
     return (
       <div className="flex justify-center items-center bg-zinc-950 min-h-screen">
-        <div className="text-center">
-          <div className="inline-block mb-4 border-4 border-red-600 border-t-transparent rounded-full w-16 h-16 animate-spin"></div>
+        <div className="text-center space-y-4">
+          <Loading centered size="xl" />
           <p className="text-zinc-300 text-lg">กำลังตรวจสอบ...</p>
         </div>
       </div>
@@ -1064,8 +1065,8 @@ function SignupContent() {
 function SignupSuspenseFallback() {
   return (
     <div className="flex justify-center items-center bg-zinc-950 min-h-screen">
-      <div className="text-center">
-        <div className="inline-block mb-4 border-4 border-red-600 border-t-transparent rounded-full w-16 h-16 animate-spin"></div>
+      <div className="text-center space-y-4">
+        <Loading centered size="xl" />
         <p className="text-zinc-300 text-lg">กำลังโหลดแบบฟอร์มสมัครสมาชิก...</p>
       </div>
     </div>

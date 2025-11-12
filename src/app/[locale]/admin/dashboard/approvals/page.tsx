@@ -7,7 +7,8 @@ import { RoleGuard } from '@/components/features/auth';
 import { DashboardLayout } from '@/components/shared';
 import { adminMenuItems } from '@/components/features/admin/adminMenuItems';
 import { showSuccessToast, showErrorToast } from '@/lib/utils';
-import { Card, CardBody, Button, Chip, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Spinner, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Checkbox } from '@heroui/react';
+import { Card, CardBody, Button, Chip, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Checkbox } from '@heroui/react';
+import { LoadingSpinner } from '@/components/design-system/primitives/Loading';
 import {
   CheckCircleIcon,
   XCircleIcon,
@@ -436,7 +437,7 @@ function AdminApprovalsContent() {
     >
       {isLoading ? (
         <div className="flex justify-center items-center py-20">
-          <Spinner size="lg" />
+          <LoadingSpinner size="xl" />
         </div>
       ) : (
         <>

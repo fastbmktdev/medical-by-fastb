@@ -16,6 +16,7 @@ import {
   ArrowTrendingUpIcon,
 } from '@heroicons/react/24/outline';
 import { User } from '@supabase/supabase-js';
+import { Loading } from '@/components/design-system/primitives/Loading';
 
 interface Transaction {
   id: string;
@@ -206,7 +207,7 @@ function TransactionsContent() {
         showPartnerButton={true}
       >
         <div className="flex justify-center items-center py-20">
-          <div className="border-4 border-primary border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+          <Loading centered size="xl" />
         </div>
       </DashboardLayout>
     );

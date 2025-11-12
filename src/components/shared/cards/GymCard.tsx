@@ -70,7 +70,7 @@ export function GymCard({ gym }: GymCardProps) {
           </div>
           <Link
             href={`/gyms/${gym.slug}`}
-            className="bg-brand-primary hover:bg-red-700 px-4 py-2 rounded-lg font-semibold text-sm transition-colors"
+            className="bg-brand-primary hover:bg-red-600 px-4 py-2 rounded-lg font-semibold text-sm transition-colors"
           >
             ดูรายละเอียด
           </Link>

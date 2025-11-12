@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useRef } from 'react';
-import { Avatar, Button, Spinner } from '@heroui/react';
+import { Avatar, Button } from '@heroui/react';
+import { LoadingSpinner } from '@/components/design-system/primitives/Loading';
 import { CameraIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
 import { validateFileClient } from '@/lib/utils/file-validation';
@@ -119,7 +120,7 @@ export function ProfilePictureUpload({ currentAvatarUrl, onUploadSuccess }: Prof
         />
         {isUploading && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm rounded-full">
-            <Spinner size="lg" color="primary" />
+            <LoadingSpinner size="lg" />
           </div>
         )}
         {!isUploading && (

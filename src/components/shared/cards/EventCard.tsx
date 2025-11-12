@@ -79,7 +79,7 @@ export function EventCard({ event, viewMode }: EventCardProps) {
             </Link>
             <Link
               href={`/events/${event.slug}`}
-              className="sm:flex-initial flex-1 bg-brand-primary hover:bg-red-700 px-4 py-2 rounded-lg font-semibold text-sm text-center transition-colors"
+              className="sm:flex-initial flex-1 bg-brand-primary hover:bg-red-600 px-4 py-2 rounded-lg font-semibold text-sm text-center transition-colors"
             >
               จองตั๋ว
             </Link>
@@ -139,7 +139,7 @@ export function EventCard({ event, viewMode }: EventCardProps) {
           </Link>
           <Link
             href={`/events/${event.slug}`}
-            className="flex-1 bg-brand-primary hover:bg-red-700 py-2 rounded-lg font-semibold text-sm text-center transition-colors"
+            className="flex-1 bg-brand-primary hover:bg-red-600 py-2 rounded-lg font-semibold text-sm text-center transition-colors"
           >
             จองตั๋ว
           </Link>

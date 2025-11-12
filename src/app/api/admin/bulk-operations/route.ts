@@ -35,7 +35,15 @@ export const POST = withAdminAuth<Record<string, never>>(async (
       );
     }
 
-    const validTables = ['gyms', 'partner_applications', 'articles', 'events', 'products', 'promotions'];
+    const validTables = [
+      'gyms',
+      'partner_applications',
+      'articles',
+      'events',
+      'products',
+      'promotions',
+      'bookings',
+    ] as const;
     if (!validTables.includes(table)) {
       return NextResponse.json(
         { success: false, error: 'Invalid table' },
@@ -45,44 +53,63 @@ export const POST = withAdminAuth<Record<string, never>>(async (
 
     let updateData: Record<string, unknown> = {};
     let deleteOperation = false;
+    const timestamp = new Date().toISOString();
 
     // Map operation to database update
     switch (operation) {
       case 'approve':
         if (table === 'gyms' || table === 'partner_applications') {
-          updateData = { status: 'approved', is_approved: true };
+          updateData = { status: 'approved', is_approved: true, updated_at: timestamp };
         } else if (table === 'articles') {
-          updateData = { is_published: true };
+          updateData = { is_published: true, updated_at: timestamp };
         } else if (table === 'events') {
-          updateData = { is_published: true };
+          updateData = { is_published: true, updated_at: timestamp };
         } else if (table === 'products') {
-          updateData = { is_published: true };
+          updateData = { is_published: true, updated_at: timestamp };
+        } else if (table === 'promotions') {
+          updateData = { is_active: true, updated_at: timestamp };
+        } else if (table === 'bookings') {
+          updateData = { status: 'confirmed', updated_at: timestamp };
         }
         break;
       case 'reject':
         if (table === 'gyms' || table === 'partner_applications') {
-          updateData = { status: 'rejected', is_approved: false };
+          updateData = { status: 'rejected', is_approved: false, updated_at: timestamp };
         } else if (table === 'articles') {
-          updateData = { is_published: false };
+          updateData = { is_published: false, updated_at: timestamp };
         } else if (table === 'events') {
-          updateData = { is_published: false };
+          updateData = { is_published: false, updated_at: timestamp };
         } else if (table === 'products') {
-          updateData = { is_published: false };
+          updateData = { is_published: false, updated_at: timestamp };
+        } else if (table === 'promotions') {
+          updateData = { is_active: false, updated_at: timestamp };
+        } else if (table === 'bookings') {
+          updateData = { status: 'cancelled', updated_at: timestamp };
         }
         break;
       case 'activate':
         if (table === 'promotions') {
-          updateData = { is_active: true };
+          updateData = { is_active: true, updated_at: timestamp };
         }
         break;
       case 'deactivate':
         if (table === 'promotions') {
-          updateData = { is_active: false };
+          updateData = { is_active: false, updated_at: timestamp };
         }
         break;
       case 'delete':
         deleteOperation = true;
         break;
+    }
+
+    if (!deleteOperation && Object.keys(updateData).length === 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Operation "${operation}" is not supported for table "${table}"`,
+        },
+        { status: 400 },
+      );
     }
 
     let affectedCount = 0;

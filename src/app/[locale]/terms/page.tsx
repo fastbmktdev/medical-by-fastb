@@ -268,7 +268,7 @@ export default function TermsPage() {
           <div className="flex sm:flex-row flex-col justify-center gap-4">
             <Link
               href="/contact"
-              className="bg-brand-primary hover:bg-red-700 px-6 py-3 rounded-lg font-semibold transition-colors"
+              className="bg-brand-primary hover:bg-red-600 px-6 py-3 rounded-lg font-semibold transition-colors"
             >
               ติดต่อทีมงาน
             </Link>

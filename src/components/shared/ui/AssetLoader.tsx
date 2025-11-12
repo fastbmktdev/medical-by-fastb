@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Loading } from "@/components/design-system/primitives/Loading";
 
 export default function AssetLoader({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -53,7 +54,7 @@ export default function AssetLoader({ children }: { children: React.ReactNode })
         }`}
       >
         <div className="flex justify-center items-center h-full">
-          <div className="w-16 h-16 border-4 border-red-500 border-t-transparent rounded-full animate-spin" />
+          <Loading centered size="xl" />
         </div>
       </div>
       <div className={isFading ? "opacity-100 transition-opacity duration-500" : "opacity-0"}>

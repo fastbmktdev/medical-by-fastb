@@ -69,7 +69,7 @@ export default function GamificationWidget({ className = '' }: GamificationWidge
         
         <Link 
           href="/dashboard/gamification"
-          className="text-blue-400 hover:text-blue-300 text-xs font-medium"
+          className="text-blue-400 hover:text-blue-300 text-sm font-medium"
         >
           ดูทั้งหมด
         </Link>
@@ -96,34 +96,34 @@ export default function GamificationWidget({ className = '' }: GamificationWidge
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-3 gap-2 text-center">
+      <div className="grid grid-cols-3 gap-2 text-center text-sm">
         <div className="bg-zinc-950/50 border border-zinc-800/50 rounded-lg p-2">
           <div className="text-lg font-bold text-green-400">{stats.badges_earned}</div>
-          <div className="text-xs text-zinc-400">เหรียญ</div>
+          <div className="text-zinc-400">เหรียญ</div>
         </div>
         
         <div className="bg-zinc-950/50 border border-zinc-800/50 rounded-lg p-2">
           <div className="text-lg font-bold text-purple-400">{stats.active_challenges.length}</div>
-          <div className="text-xs text-zinc-400">ความท้าทาย</div>
+          <div className="text-zinc-400">ความท้าทาย</div>
         </div>
         
         <div className="bg-zinc-950/50 border border-zinc-800/50 rounded-lg p-2">
           <div className="text-lg font-bold text-orange-400">{stats.current_streaks.length}</div>
-          <div className="text-xs text-zinc-400">สตรีค</div>
+          <div className="text-zinc-400">สตรีค</div>
         </div>
       </div>
 
       {/* Quick Actions */}
-      <div className="mt-3 flex space-x-2">
+      <div className="mt-3 flex space-x-2 text-sm">
         <Link
           href="/dashboard/gamification"
-          className="flex-1 bg-blue-600 text-white text-xs py-2 px-3 rounded-lg text-center hover:bg-blue-700 transition-colors"
+          className="flex-1 bg-blue-600 text-white py-2 px-3 rounded-lg text-center hover:bg-blue-700 transition-colors min-h-9"
         >
           ดูความคืบหน้า
         </Link>
         <Link
           href="/dashboard/gamification?tab=leaderboards"
-          className="flex-1 bg-purple-600 text-white text-xs py-2 px-3 rounded-lg text-center hover:bg-purple-700 transition-colors"
+          className="flex-1 bg-purple-600 text-white py-2 px-3 rounded-lg text-center hover:bg-purple-700 transition-colors min-h-9"
         >
           ตารางคะแนน
         </Link>

@@ -25,6 +25,7 @@ import {
   AccountDeletionDialog,
   ConnectedAccountsPanel,
 } from '@/components/features/profile';
+import { Loading } from '@/components/design-system/primitives/Loading';
 
 function ProfileContent() {
   const supabase = createClient();
@@ -123,7 +124,7 @@ function ProfileContent() {
         showPartnerButton={true}
       >
         <div className="flex justify-center items-center py-20">
-          <div className="border-4 border-primary border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+          <Loading centered size="xl" />
         </div>
       </DashboardLayout>
     );

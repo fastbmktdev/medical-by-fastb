@@ -11,24 +11,40 @@ export default function LayoutWrapper({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const isAdminPage = pathname.startsWith("/admin");
-  const isDashboardPage = pathname.startsWith("/dashboard");
-  const isPartnerDashboard = pathname.startsWith("/partner/dashboard");
-  
+  const segments = pathname.split("/").filter(Boolean);
+  const [firstSegment, secondSegment, thirdSegment] = segments;
+
+  const matchSegment = (value: string) =>
+    firstSegment === value || secondSegment === value;
+
+  const isAdminPage = matchSegment("admin");
+  const isDashboardPage = matchSegment("dashboard");
+  const isPartnerDashboard =
+    (firstSegment === "partner" && secondSegment === "dashboard") ||
+    (secondSegment === "partner" && thirdSegment === "dashboard");
+
   // ไม่แสดง header และ footer ในหน้า authentication
-  const authPages = ['/login', '/signup', '/forget-password', '/reset-password', '/update-password'];
-  const isAuthPage = authPages.includes(pathname);
+  const authPages = new Set([
+    "login",
+    "signup",
+    "forget-password",
+    "reset-password",
+    "update-password",
+  ]);
+  const lastSegment = segments[segments.length - 1];
+  const isAuthPage = !!lastSegment && authPages.has(lastSegment);
 
   const isComingSoonPage =
-    pathname === '/coming-soon' || pathname.endsWith('/coming-soon');
+    lastSegment === "coming-soon" || pathname === "/coming-soon";
 
-  const hideHeaderFooter = isAdminPage || isDashboardPage || isPartnerDashboard || isAuthPage || isComingSoonPage;
+  const hideHeaderFooter =
+    isAdminPage || isDashboardPage || isPartnerDashboard || isAuthPage || isComingSoonPage;
 
   // Track page views automatically
   usePageView();
 
   return (
-    <div className="min-h-[calc(100vh_-_1px)] flex flex-col">
+    <div className="min-h-[calc(100vh-1px)] flex flex-col">
       {!hideHeaderFooter && <Header />}
       <main className="flex-1">{children}</main>
       {!hideHeaderFooter && <Footer />}

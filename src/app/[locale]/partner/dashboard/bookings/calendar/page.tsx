@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { createClient } from '@/lib/database/supabase/client';
 import { RoleGuard } from '@/components/features/auth';
 import { DashboardLayout, type MenuItem } from '@/components/shared';
+import { Loading } from '@/components/design-system/primitives/Loading';
 import {
   Card,
   CardBody,
@@ -186,7 +187,7 @@ function BookingCalendarView() {
           userEmail={user?.email}
         >
           <div className="flex justify-center items-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            <Loading centered size="xl" />
           </div>
         </DashboardLayout>
       </RoleGuard>

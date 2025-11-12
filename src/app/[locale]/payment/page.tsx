@@ -15,6 +15,7 @@ import {
   ClockIcon,
   ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
+import { Loading } from '@/components/design-system/primitives/Loading';
 
 interface PaymentData {
   amount: number;
@@ -113,8 +114,8 @@ export default function PaymentPage() {
   if (authLoading) {
     return (
       <div className="min-h-screen bg-zinc-900 flex items-center justify-center">
-        <div className=" text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500 mx-auto mb-4"></div>
+        <div className="text-center space-y-4">
+          <Loading centered size="xl" />
           <p>กำลังโหลด...</p>
         </div>
       </div>
@@ -186,7 +187,7 @@ export default function PaymentPage() {
                   </p>
                   <button
                     onClick={() => router.push(`/${locale}`)}
-                    className="bg-brand-primary hover:bg-red-700 px-6 py-3 rounded-lg font-medium transition-colors"
+                    className="bg-brand-primary hover:bg-red-600 px-6 py-3 rounded-lg font-medium transition-colors"
                   >
                     กลับหน้าหลัก
                   </button>
@@ -228,7 +229,7 @@ export default function PaymentPage() {
                       <button
                         onClick={createPaymentIntent}
                         disabled={isLoading}
-                        className="bg-brand-primary hover:bg-red-700 disabled:bg-zinc-600 disabled:opacity-50 px-8 py-4 rounded-lg font-semibold text-lg transition-colors disabled:cursor-not-allowed"
+                        className="bg-brand-primary hover:bg-red-600 disabled:bg-zinc-600 disabled:opacity-50 px-8 py-4 rounded-lg font-semibold text-lg transition-colors disabled:cursor-not-allowed"
                        aria-label="Button">
                         {isLoading ? 'กำลังสร้างการชำระเงิน...' : 'เริ่มต้นการชำระเงิน'}
                       </button>

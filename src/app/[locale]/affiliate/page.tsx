@@ -128,8 +128,8 @@ export default function AffiliatePage() {
       case 'facebook':
         url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(affiliateLink)}`;
         break;
-      case 'twitter':
-        url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}`;
+      case 'x':
+        url = `https://x.com/intent/post?text=${encodeURIComponent(message)}`;
         break;
       case 'line':
         url = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(affiliateLink)}`;
@@ -333,7 +333,7 @@ export default function AffiliatePage() {
                   <div className="grid grid-cols-3 gap-2">
                     {[
                       { name: 'facebook', label: 'Facebook', color: 'bg-blue-600 hover:bg-blue-700' },
-                      { name: 'twitter', label: 'Twitter', color: 'bg-sky-500 hover:bg-sky-600' },
+                      { name: 'x', label: 'X', color: 'bg-[#000000] hover:bg-[#111111]' },
                       { name: 'line', label: 'LINE', color: 'bg-green-500 hover:bg-green-600' }
                     ].map(platform => (
                       <Button

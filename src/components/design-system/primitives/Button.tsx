@@ -5,6 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils/cn";
 import { useTheme } from "@/components/design-system";
 import type { InteractiveProps } from "@/components/design-system/types";
+import { LoadingSpinner } from "@/components/design-system/primitives/Loading";
 
 /**
  * Button variant styles using class-variance-authority with design tokens
@@ -28,7 +29,7 @@ const buttonVariants = cva(
         ghost: "text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800/50 focus:ring-zinc-500/50",
         
         // Danger button - destructive actions
-        danger: "bg-brand-primary hover:bg-red-700 text-white shadow-lg hover:shadow-xl hover:shadow-red-500/25 focus:ring-red-500/50",
+        danger: "bg-brand-primary hover:bg-red-600 text-white shadow-lg hover:shadow-xl hover:shadow-red-500/25 focus:ring-red-500/50",
         
         // Success button - positive actions
         success: "bg-green-600 hover:bg-green-700 text-white shadow-lg hover:shadow-xl hover:shadow-green-500/25 focus:ring-green-500/50",
@@ -89,31 +90,6 @@ export interface ButtonProps
    */
   animation?: "none" | "scale" | "lift" | "glow";
 }
-
-/**
- * Loading Spinner Component
- * 
- * Consistent loading spinner using design tokens
- */
-const LoadingSpinner: React.FC<{ size?: "xs" | "sm" | "md" | "lg" }> = ({ size = "md" }) => {
-  const sizeClasses = {
-    xs: "w-3 h-3",
-    sm: "w-4 h-4", 
-    md: "w-4 h-4",
-    lg: "w-5 h-5",
-  };
-
-  return (
-    <div 
-      className={cn(
-        "border-2 border-current border-t-transparent rounded-full animate-spin",
-        sizeClasses[size]
-      )}
-      role="status"
-      aria-label="Loading"
-    />
-  );
-};
 
 /**
  * Enhanced Button Component

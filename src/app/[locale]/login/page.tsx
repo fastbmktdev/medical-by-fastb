@@ -14,6 +14,7 @@ import { AuthLayout } from "@/components/compositions/layouts";
 import { Button } from "@/components/shared";
 import { signInWithGoogle, signInWithFacebook } from '@/services/auth.service';
 import { toast } from 'react-hot-toast';
+import { Loading } from '@/components/design-system/primitives/Loading';
 
 /**
  * Interface for login form data
@@ -330,8 +331,8 @@ function LoginForm() {
   if (isCheckingAuth) {
     return (
       <div className="flex justify-center items-center bg-zinc-950 min-h-screen">
-        <div className="text-center">
-          <div className="inline-block mb-4 border-4 border-red-600 border-t-transparent rounded-full w-16 h-16 animate-spin"></div>
+        <div className="text-center space-y-4">
+          <Loading centered size="xl" />
           <p className="text-zinc-300 text-lg">กำลังตรวจสอบ...</p>
         </div>
       </div>
@@ -534,8 +535,8 @@ export default function LoginPage() {
     <Suspense
       fallback={
         <div className="flex justify-center items-center bg-zinc-950 min-h-screen">
-          <div className="text-center">
-            <div className="inline-block mb-4 border-4 border-red-600 border-t-transparent rounded-full w-16 h-16 animate-spin"></div>
+          <div className="text-center space-y-4">
+            <Loading centered size="xl" />
             <p className="text-zinc-300 text-lg">กำลังโหลด...</p>
           </div>
         </div>

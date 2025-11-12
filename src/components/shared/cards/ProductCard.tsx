@@ -79,7 +79,7 @@ export function ProductCard({ product, showAddToCart = true }: ProductCardProps)
               className={`p-2 rounded-lg transition-colors ${
                 isOutOfStock
                   ? "bg-zinc-700 text-zinc-500 cursor-not-allowed"
-                  : "bg-brand-primary hover:bg-red-700 text-white"
+                  : "bg-brand-primary hover:bg-red-600 text-white"
               }`}
              aria-label="Button">
               <ShoppingCartIcon className="w-5 h-5" />

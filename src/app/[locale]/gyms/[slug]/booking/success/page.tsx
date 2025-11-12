@@ -14,6 +14,7 @@ import {
   ArrowRightIcon,
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
+import { Loading } from "@/components/design-system/primitives/Loading";
 
 interface BookingWithGym extends Booking {
   gyms?: {
@@ -108,8 +109,8 @@ function BookingSuccessContent() {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center bg-zinc-950 min-h-screen">
-        <div className="text-center">
-          <div className="inline-block mb-4 border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+        <div className="text-center space-y-4">
+          <Loading centered size="xl" />
           <p className="text-zinc-300">กำลังโหลดข้อมูล...</p>
         </div>
       </div>
@@ -131,7 +132,7 @@ function BookingSuccessContent() {
           </p>
           <Link
             href="/gyms"
-            className="inline-block bg-brand-primary hover:bg-red-700 px-6 py-3 rounded-lg font-semibold transition-colors"
+            className="inline-block bg-brand-primary hover:bg-red-600 px-6 py-3 rounded-lg font-semibold transition-colors"
           >
             กลับไปหน้าค่ายมวย
           </Link>
@@ -290,7 +291,7 @@ function BookingSuccessContent() {
         <div className="gap-4 grid sm:grid-cols-2">
           <Link
             href="/dashboard/bookings"
-            className="flex justify-center items-center gap-2 bg-brand-primary hover:bg-red-700 px-6 py-4 rounded-lg font-semibold transition-colors"
+            className="flex justify-center items-center gap-2 bg-brand-primary hover:bg-red-600 px-6 py-4 rounded-lg font-semibold transition-colors"
           >
             ดูรายการจองของฉัน
             <ArrowRightIcon className="w-5 h-5" />
@@ -323,7 +324,7 @@ export default function BookingSuccessPage() {
     <Suspense
       fallback={
         <div className="flex justify-center items-center bg-zinc-950 min-h-screen">
-          <div className="inline-block border-4 border-red-600 border-t-transparent rounded-full w-16 h-16 animate-spin"></div>
+          <Loading centered size="xl" />
         </div>
       }
     >

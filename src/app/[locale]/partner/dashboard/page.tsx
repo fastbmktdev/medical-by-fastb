@@ -31,6 +31,7 @@ import { Toaster, toast } from 'react-hot-toast';
 import type { Gym, GymPackage, Booking } from '@/types/database.types';
 import { CustomInput, CustomTextarea, CustomSelect } from '@/components/shared';
 import { validatePackageType, validateDurationMonths, validatePrice } from '@/lib/utils/validation';
+import { Loading } from '@/components/design-system/primitives/Loading';
 
 interface PackageFormData {
   package_type: 'one_time' | 'package' | '';
@@ -408,7 +409,7 @@ function PartnerDashboardContent() {
         userEmail={user?.email}
       >
         <div className="flex justify-center items-center py-20">
-          <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+          <Loading centered size="xl" />
         </div>
       </DashboardLayout>
     );

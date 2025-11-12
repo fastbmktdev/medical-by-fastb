@@ -9,7 +9,7 @@ import { Link } from '@/navigation';
 const SOCIAL_PLATFORMS = [
   { value: 'facebook', label: 'Facebook', icon: '📘', color: 'primary' },
   { value: 'instagram', label: 'Instagram', icon: '📷', color: 'secondary' },
-  { value: 'twitter', label: 'Twitter/X', icon: '🐦', color: 'default' },
+  { value: 'x', label: 'X', icon: '🐦', color: 'default' },
   { value: 'youtube', label: 'YouTube', icon: '📺', color: 'danger' },
   { value: 'tiktok', label: 'TikTok', icon: '🎵', color: 'default' },
 ];
@@ -36,7 +36,11 @@ export function SocialLinksEditor() {
       const data = await response.json();
       
       if (data.success) {
-        setLinks(data.data || []);
+        const normalizedLinks = (data.data || []).map((link: SocialLink) => ({
+          ...link,
+          platform: link.platform === 'twitter' ? 'x' : link.platform
+        }));
+        setLinks(normalizedLinks);
       }
     } catch (error) {
       console.error('Failed to load links:', error);

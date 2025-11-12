@@ -25,6 +25,7 @@ import {
   XCircleIcon,
 } from "@heroicons/react/24/outline";
 import { User } from "@supabase/supabase-js";
+import { Loading } from "@/components/design-system/primitives/Loading";
 import type { Booking as BookingType } from "@/types/database.types";
 
 interface BookingWithGym extends BookingType {
@@ -168,7 +169,7 @@ function BookingsContent() {
         showPartnerButton={true}
       >
         <div className="flex justify-center items-center py-20">
-          <div className="border-4 border-primary border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+          <Loading centered size="xl" />
         </div>
       </DashboardLayout>
     );

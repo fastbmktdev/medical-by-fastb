@@ -5,7 +5,8 @@ import { Toaster, toast } from 'react-hot-toast';
 import { createClient } from '@/lib/database/supabase/client';
 import { RoleGuard } from '@/components/features/auth';
 import { DashboardLayout, type MenuItem } from '@/components/shared';
-import { Card, CardBody, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Button, Input, Tabs, Tab, useDisclosure, Switch, Spinner } from '@heroui/react';
+import { Card, CardBody, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Button, Input, Tabs, Tab, useDisclosure, Switch } from '@heroui/react';
+import { LoadingSpinner } from '@/components/design-system/primitives/Loading';
 import {
   MagnifyingGlassIcon,
   PencilIcon,
@@ -194,7 +195,7 @@ function PartnerPromotionsContent() {
         userEmail={user?.email}
       >
         <div className="flex justify-center items-center py-20">
-          <Spinner size="lg" />
+          <LoadingSpinner size="xl" />
         </div>
       </DashboardLayout>
     );

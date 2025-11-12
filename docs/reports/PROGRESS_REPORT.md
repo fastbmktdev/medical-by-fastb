@@ -450,20 +450,20 @@
 - ✅ พัฒนา API endpoints ที่จำเป็น (เสร็จแล้ว)
 - ✅ สร้าง Email templates ครบ (เสร็จแล้ว)
 
-### เดือนที่ 2-3: Core Features
+### Core Features
 - พัฒนาระบบรายการโปรดให้ใช้งานได้
 - ระบบแจ้งเตือนแบบ Real-time
 - ค้นหาขั้นสูงและกรอง
 - Admin Analytics ที่แสดงข้อมูลจริง
 
-### เดือนที่ 3-4: Business Features
+### Business Features
 - Partner Payout System
 - Promotion Management
 - Report Generation
 - Content Management System
 - Analytics & Tracking
 
-### เฟส 2 (เดือนที่ 4+): Enhancement
+### Enhancement
 - Gamification Logic
 - Affiliate Commission
 - Multi-language
@@ -476,10 +476,10 @@
 
 | Timeline | Target Completion |
 |----------|-------------------|
-| **ปัจจุบัน (2025-11-06)** | 99.8% |
-| **2 เดือน** | 100% (Fully Functional) |
-| **3 เดือน** | 100% (Production Ready) |
-| **4 เดือน** | 100% (With Enhancements) |
+| **ปัจจุบัน (2025-11-12)** | 99.95% (ระบบหลักเสร็จทั้งหมด เหลือ Admin Moderation & Referral session storage tuning) |
+| **ภายใน 1 เดือน** | 100% (Fully Functional: ปิดงาน Moderation UI/API + Referral storage) |
+| **ภายใน 2 เดือน** | 100% (Production Ready: Performance review + Incident playbooks) |
+| **ภายใน 3 เดือน** | 100% (With Enhancements: Gamification Phase 2, Advanced marketing tooling) |
 
 ---
 
@@ -844,7 +844,7 @@
 - [x] เพิ่ม SEO Management ✅
   - [x] SEO Fields in Database ✅ (meta_title, meta_description, meta_keywords, og_*, canonical_url)
   - [x] Admin UI for SEO Fields ✅ (in ArticleCreateModal and ArticleEditModal)
-  - [x] SEO Meta Tags Rendering ✅ (article detail page layout.tsx generates metadata with Open Graph and Twitter cards)
+- [x] SEO Meta Tags Rendering ✅ (article detail page layout.tsx generates metadata with Open Graph and X (Twitter) cards)
   - [x] Sitemap Generation ✅ (sitemap.xml route generates sitemap for articles, events, products, gyms, and static pages)
 - [x] สร้าง Blog System ✅ (Articles page: `/articles`, Article detail: `/articles/[slug]`)
 - [x] เพิ่ม Content Versioning ✅
@@ -1001,17 +1001,17 @@
 - [x] Translation files (TH/EN/JP) ✅
 - [x] สร้าง Language Switcher component ✅
 - [x] Middleware integration สำหรับ locale detection ✅
-- [ ] แปลทุกหน้า (TH/EN/JP) - กำลังดำเนินการ
-- [ ] แปลอีเมล Templates
-- [ ] แปล Error Messages
+- [x] แปลทุกหน้า (TH/EN/JP) - ครบทุก route หลัก + Static content
+- [x] แปลอีเมล Templates - ทั้ง transactional + marketing
+- [x] แปล Error Messages - ครอบคลุม API & UI
 
-#### Advanced Features
-- [ ] A/B Testing Framework
-- [ ] Custom Admin Dashboards
-- [ ] Real-time Analytics
-- [ ] User Impersonation (สำหรับ Support)
-- [ ] System Health Monitoring
+#### Advanced Features (Backlog / Pending Prioritization)
+- [~] A/B Testing Framework _(เลือก GrowthBook → เริ่ม spin up environment + เฝ้าระวัง consent flow)_
+- [~] Custom Admin Dashboards _(พัฒนา data contracts + ผสาน GA4 เริ่มต้น)_
+- [~] Real-time Analytics _(เริ่มต้น POC ด้วย Supabase replication + websocket channel)_
+- [ ] User Impersonation (สำหรับ Support) _(ต้อง design audit trail และ consent policy)_
+- [ ] System Health Monitoring _(รอ finalize incident playbooks + alert routing)_
 - [ ] Advanced Marketing Tools
-  - [ ] Email Campaigns
-  - [ ] SMS Notifications
-  - [ ] Push Notifications
+  - [ ] Email Campaigns _(รอ campaign builder UI + segmentation schema)_
+  - [ ] SMS Notifications _(ต้องเลือก provider + verify sender IDs)_
+  - [ ] Push Notifications _(ต้องตัดสินใจใช้ Firebase Cloud Messaging หรือ OneSignal)_

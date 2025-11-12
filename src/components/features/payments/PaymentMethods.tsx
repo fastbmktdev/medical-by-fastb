@@ -282,7 +282,7 @@ export default function PaymentMethods({
                 <button
                   onClick={handleBankTransfer}
                   disabled={isProcessing}
-                  className="w-full bg-brand-primary hover:bg-red-700 disabled:bg-zinc-600 disabled:opacity-50 py-3 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed"
+                  className="w-full bg-brand-primary hover:bg-red-600 disabled:bg-zinc-600 disabled:opacity-50 py-3 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed"
                  aria-label="Button">
                   {isProcessing ? 'กำลังสร้างข้อมูลโอนเงิน...' : 'ยืนยันการโอนเงิน'}
                 </button>
@@ -313,7 +313,7 @@ export default function PaymentMethods({
                 <button
                   onClick={handlePromptPay}
                   disabled={isProcessing}
-                  className="w-full bg-brand-primary hover:bg-red-700 disabled:bg-zinc-600 disabled:opacity-50 py-3 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed"
+                  className="w-full bg-brand-primary hover:bg-red-600 disabled:bg-zinc-600 disabled:opacity-50 py-3 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed"
                  aria-label="Button">
                   {isProcessing ? 'กำลังสร้าง QR Code...' : 'สร้าง QR Code'}
                 </button>
@@ -349,7 +349,7 @@ export default function PaymentMethods({
                 <button
                   onClick={handleOnsitePayment}
                   disabled={isProcessing}
-                  className="w-full bg-brand-primary hover:bg-red-700 disabled:bg-zinc-600 disabled:opacity-50 py-3 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed"
+                  className="w-full bg-brand-primary hover:bg-red-600 disabled:bg-zinc-600 disabled:opacity-50 py-3 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed"
                  aria-label="Button">
                   {isProcessing ? 'กำลังสร้างการชำระเงิน...' : 'ยืนยันการชำระเงินที่ค่ายมวย'}
                 </button>

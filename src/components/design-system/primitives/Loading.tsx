@@ -54,20 +54,23 @@ const getSizeClasses = (size: ComponentSize, variant: string) =>
 const getColorClasses = (color: string) =>
   COLOR_MAP[color] || COLOR_MAP.primary;
 
-const Spinner = ({
-  size,
-  color,
-  className,
-}: {
-  size: ComponentSize;
-  color: string;
+export interface LoadingSpinnerProps {
+  size?: ComponentSize;
+  color?: "primary" | "secondary" | "neutral";
   className?: string;
-}) => (
+}
+
+export const LoadingSpinner = ({
+  size = "md",
+  color = "primary",
+  className,
+}: LoadingSpinnerProps) => (
   <div
     className={cn(
-      "animate-spin rounded-full border-2 border-transparent border-t-current",
+      "animate-spin rounded-full border-2",
       getSizeClasses(size, "spinner"),
       getColorClasses(color),
+      "border-transparent border-t-current",
       className
     )}
     role="status"
@@ -94,7 +97,7 @@ export const Loading = forwardRef<HTMLDivElement, LoadingProps>(
       <div
         className={cn("flex items-center gap-3", centered && "justify-center")}
       >
-        <Spinner size={size} color={color} />
+        <LoadingSpinner size={size} color={color} />
         {text && (
           <span className={cn("text-sm font-medium", getColorClasses(color))}>
             {text}

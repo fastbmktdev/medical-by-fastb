@@ -11,6 +11,7 @@ import {
 // import { Button } from "@heroui/react";
 import { PageHeader } from "@/components/shared";
 import { GymCard } from "@/components/shared";
+import { Loading } from "@/components/design-system/primitives/Loading";
 import type { Gym } from "@/types/app.types";
 import { trackSearch } from "@/lib/utils/analytics";
 
@@ -130,7 +131,7 @@ export default function GymsPage() {
         {/* Loading State */}
         {isLoading ? (
           <div className="flex justify-center items-center py-20">
-            <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+            <Loading centered size="xl" />
           </div>
         ) : (
           <>
@@ -153,7 +154,7 @@ export default function GymsPage() {
                       setSearchQuery("");
                       setSelectedType("all");
                     }}
-                    className="bg-brand-primary hover:bg-red-700 mt-4 px-6 py-2 rounded-lg transition-colors"
+                    className="bg-brand-primary hover:bg-red-600 mt-4 px-6 py-2 rounded-lg transition-colors"
                   >
                     ล้างการค้นหา
                   </button>

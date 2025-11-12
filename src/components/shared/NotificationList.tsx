@@ -10,6 +10,7 @@ import {
 import { Link } from '@/navigation';
 import { toast } from 'react-hot-toast';
 import { useRealtimeNotifications } from '@/lib/hooks/useRealtimeNotifications';
+import { Loading } from '@/components/design-system/primitives/Loading';
 
 interface NotificationListProps {
   onClose?: () => void;
@@ -135,7 +136,7 @@ export function NotificationList({
     return (
       <div className="p-4">
         <div className="flex items-center justify-center py-8">
-          <div className="border-4 border-primary border-t-transparent rounded-full w-8 h-8 animate-spin"></div>
+          <Loading size="lg" />
         </div>
       </div>
     );

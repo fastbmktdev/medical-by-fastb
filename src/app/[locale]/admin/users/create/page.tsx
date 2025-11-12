@@ -313,7 +313,7 @@ export default function CreateUserPage() {
                 onClick={togglePasswordVisibility}
                 variant="ghost"
                 size="icon"
-                className="absolute top-1/2 -translate-y-1/2 right-4 text-zinc-400 hover:text-zinc-300 p-1"
+                className="absolute top-1/2 -translate-y-1/2 right-1 text-zinc-400 hover:text-zinc-300 p-1 rounded-full"
               >
                 {showPassword ? (
                   <EyeSlashIcon className="w-5 h-5" />

@@ -29,7 +29,7 @@ export const SuccessView = () => {
           <div className="flex sm:flex-row flex-col justify-center gap-4">
             <Link
               href="/"
-              className="inline-block bg-brand-primary hover:bg-red-700 px-6 py-3 rounded-lg font-semibold text-white transition-colors"
+              className="inline-block bg-brand-primary hover:bg-red-600 px-6 py-3 rounded-lg font-semibold text-white transition-colors"
             >
               กลับหน้าหลัก
             </Link>

@@ -18,6 +18,7 @@ import { notFound, useRouter } from "next/navigation";
 import { PaymentWrapper } from "@/components/features/payments";
 import { validateName, validateEmail, validatePhone, validateDate } from "@/lib/utils/validation";
 import { calculateDiscountPrice, filterApplicablePromotions, formatDiscountText, type Promotion } from "@/lib/utils/promotion";
+import { Loading } from "@/components/design-system/primitives/Loading";
 
 // Booking Steps
 const STEPS = [
@@ -193,7 +194,7 @@ export default function BookingPage({
   if (isCheckingAuth || isLoading) {
     return (
       <div className="flex justify-center items-center bg-zinc-950 min-h-screen">
-        <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+        <Loading centered size="xl" />
       </div>
     );
   }
@@ -898,9 +899,9 @@ export default function BookingPage({
               {/* Stripe Payment Form */}
               {isCreatingPayment ? (
                 <div className="flex justify-center items-center py-12">
-                  <div className="text-center">
-                    <div className="mx-auto border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
-                    <p className="mt-4 text-zinc-400">กำลังโหลดระบบชำระเงิน...</p>
+                  <div className="text-center space-y-4">
+                    <Loading centered size="xl" />
+                    <p className="text-zinc-400">กำลังโหลดระบบชำระเงิน...</p>
                   </div>
                 </div>
               ) : clientSecret ? (
@@ -942,7 +943,7 @@ export default function BookingPage({
               <button
                 onClick={handleNext}
                 disabled={isCreatingPayment}
-                className="bg-brand-primary hover:bg-red-700 disabled:opacity-50 px-8 py-3 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed"
+                className="bg-brand-primary hover:bg-red-600 disabled:opacity-50 px-8 py-3 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed"
                aria-label="Button">
                 {isCreatingPayment ? "กำลังโหลด..." : "ถัดไป"}
               </button>

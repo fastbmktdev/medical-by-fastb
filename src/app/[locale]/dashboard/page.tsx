@@ -6,6 +6,7 @@ import { useLocale } from "next-intl";
 import Link from "next/link";
 import { createClient } from "@/lib/database/supabase/client";
 import { RoleGuard } from "@/components/features/auth";
+import { Loading } from "@/components/design-system/primitives/Loading";
 import { getUserRole, ROLE_NAMES } from "@/lib/auth/client";
 import { DashboardLayout, dashboardMenuItems } from "@/components/shared";
 import GamificationWidget from "@/components/features/gamification/GamificationWidget";
@@ -183,7 +184,7 @@ function RecentBookingsSection({
           href={`/${locale}/dashboard/bookings`}
           size="md"
           endContent={<ArrowRightIcon className="w-4 h-4" />}
-          className="bg-red-700 text-white hover:bg-red-800 rounded-lg"
+          className="bg-red-600 text-white hover:bg-red-800 rounded-lg font-normal min-h-9"
         >
           ดูทั้งหมด
         </Button>
@@ -372,7 +373,7 @@ function DashboardContent() {
         showPartnerButton={true}
       >
         <div className="flex justify-center items-center py-20">
-          <div className="border-4 border-primary border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+          <Loading centered size="xl" />
         </div>
       </DashboardLayout>
     );

@@ -14,6 +14,7 @@ import {
   getConnectedAccounts,
 } from '@/services/auth.service';
 import { toast } from 'react-hot-toast';
+import { Loading, LoadingSpinner } from '@/components/design-system/primitives/Loading';
 
 interface ConnectedIdentity {
   id: string;
@@ -102,7 +103,7 @@ export function ConnectedAccountsPanel() {
       <Card className="bg-zinc-950/50 backdrop-blur-sm border border-zinc-700">
         <CardBody>
           <div className="flex justify-center items-center py-8">
-            <div className="border-4 border-red-600 border-t-transparent rounded-full w-8 h-8 animate-spin"></div>
+            <Loading size="lg" />
           </div>
         </CardBody>
       </Card>
@@ -155,7 +156,7 @@ export function ConnectedAccountsPanel() {
               variant="flat"
               startContent={
                 isUnlinking === 'google' ? (
-                  <div className="border-2 border-red-500 border-t-transparent rounded-full w-4 h-4 animate-spin"></div>
+                  <LoadingSpinner size="xs" />
                 ) : (
                   <TrashIcon className="w-4 h-4" />
                 )
@@ -172,7 +173,7 @@ export function ConnectedAccountsPanel() {
               variant="solid"
               startContent={
                 linkingProvider === 'google' ? (
-                  <div className="border-2 border-white border-t-transparent rounded-full w-4 h-4 animate-spin"></div>
+                  <LoadingSpinner size="xs" />
                 ) : (
                   <LinkIcon className="w-4 h-4" />
                 )
@@ -221,7 +222,7 @@ export function ConnectedAccountsPanel() {
               variant="flat"
               startContent={
                 isUnlinking === 'facebook' ? (
-                  <div className="border-2 border-red-500 border-t-transparent rounded-full w-4 h-4 animate-spin"></div>
+                  <LoadingSpinner size="xs" />
                 ) : (
                   <TrashIcon className="w-4 h-4" />
                 )
@@ -238,7 +239,7 @@ export function ConnectedAccountsPanel() {
               variant="solid"
               startContent={
                 linkingProvider === 'facebook' ? (
-                  <div className="border-2 border-white border-t-transparent rounded-full w-4 h-4 animate-spin"></div>
+                  <LoadingSpinner size="xs" />
                 ) : (
                   <LinkIcon className="w-4 h-4" />
                 )

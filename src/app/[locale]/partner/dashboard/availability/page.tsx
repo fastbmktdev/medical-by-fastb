@@ -41,6 +41,7 @@ import {
   MegaphoneIcon,
 } from '@heroicons/react/24/outline';
 import { Toaster, toast } from 'react-hot-toast';
+import { Loading } from '@/components/design-system/primitives/Loading';
 
 interface RegularAvailability {
   id: string;
@@ -242,7 +243,7 @@ function AvailabilityManagementContent() {
           userEmail={user?.email}
         >
           <div className="flex justify-center items-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            <Loading centered size="xl" />
           </div>
         </DashboardLayout>
       </RoleGuard>
@@ -485,4 +486,3 @@ function AvailabilityManagementContent() {
 }
 
 export default AvailabilityManagementContent;
-

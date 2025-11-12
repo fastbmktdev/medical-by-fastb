@@ -242,7 +242,7 @@ export default function Header() {
             ) : (
               <Link
                 href="/login"
-                className="hidden md:inline-flex items-center gap-2 bg-brand-primary hover:bg-red-700 px-4 rounded h-10 font-medium text-sm transition-colors"
+                className="hidden md:inline-flex items-center gap-2 bg-brand-primary hover:bg-red-600 px-4 rounded h-10 font-medium text-sm transition-colors"
               >
                 <UserCircleIcon className="w-5 h-5" />
                 เข้าสู่ระบบ
@@ -386,7 +386,7 @@ export default function Header() {
                   <button
                     onClick={handleLogout}
                     disabled={isLoggingOut}
-                    className="flex justify-center items-center gap-2 bg-brand-primary hover:bg-red-700 disabled:bg-red-400 px-4 py-2 rounded w-full font-medium text-sm transition-colors"
+                    className="flex justify-center items-center gap-2 bg-brand-primary hover:bg-red-600 disabled:bg-red-400 px-4 py-2 rounded w-full font-medium text-sm transition-colors"
                     aria-label="Button"
                   >
                     <ArrowRightStartOnRectangleIcon className="w-5 h-5" />

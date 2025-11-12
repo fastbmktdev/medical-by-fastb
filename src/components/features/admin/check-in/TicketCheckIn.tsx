@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button, Input, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@heroui/react";
 import { QrCodeIcon, CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-hot-toast";
+import { Loading } from "@/components/design-system/primitives/Loading";
 
 interface TicketCheckInProps {
   ticketId: string;
@@ -110,7 +111,7 @@ export function TicketCheckIn({ ticketId, onCheckInSuccess }: TicketCheckInProps
           <ModalBody>
             {isCheckingTicket ? (
               <div className="flex justify-center items-center py-8">
-                <div className="border-4 border-red-600 border-t-transparent rounded-full w-8 h-8 animate-spin"></div>
+                <Loading centered size="lg" />
               </div>
             ) : ticketData ? (
               <div className="space-y-4">

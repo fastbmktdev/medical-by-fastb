@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { Card, CardBody, Button } from '@heroui/react';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
+import { Loading } from '@/components/design-system/primitives/Loading';
 
 function UnsubscribeContent() {
   const searchParams = useSearchParams();
@@ -54,7 +55,7 @@ function UnsubscribeContent() {
         <CardBody className="p-8 text-center space-y-6">
           {status === 'loading' && (
             <>
-              <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-red-600 mx-auto"></div>
+              <Loading centered size="xl" />
               <p className="text-white">{message}</p>
             </>
           )}
@@ -99,9 +100,9 @@ export default function NewsletterUnsubscribePage() {
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-zinc-900 via-zinc-800 to-zinc-900 p-4">
         <Card className="max-w-md w-full bg-zinc-950/50 backdrop-blur-sm border border-zinc-700">
-          <CardBody className="p-8 text-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-red-600 mx-auto"></div>
-            <p className="text-white mt-4">กำลังโหลด...</p>
+          <CardBody className="p-8 text-center space-y-4">
+            <Loading centered size="xl" />
+            <p className="text-white">กำลังโหลด...</p>
           </CardBody>
         </Card>
       </div>

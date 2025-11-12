@@ -1,5 +1,6 @@
 "use client";
 
+import { createElement } from 'react';
 import { GoogleAnalytics as NextGoogleAnalytics } from '@next/third-parties/google';
 
 /**
@@ -17,6 +18,6 @@ export function GoogleAnalytics() {
     return null;
   }
 
-  return <NextGoogleAnalytics gaId={gaId} />;
+  return createElement(NextGoogleAnalytics, { gaId });
 }
 

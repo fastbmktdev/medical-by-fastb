@@ -27,6 +27,7 @@ import {
 import { HeartIcon as HeartSolidIcon } from "@heroicons/react/24/solid";
 import { User } from "@supabase/supabase-js";
 import { toast } from "react-hot-toast";
+import { Loading } from "@/components/design-system/primitives/Loading";
 
 type Gym = {
   id: string;
@@ -187,7 +188,7 @@ const NoGymFavorites = () => (
       <Button
         as={Link}
         href="/gyms"
-        className="bg-red-700 text-white hover:bg-red-800 rounded-lg w-fit mx-auto"
+        className="bg-red-600 text-white hover:bg-red-800 rounded-lg w-fit mx-auto"
         startContent={<MapPinIcon className="w-5 h-5" />}
       >
         ค้นหายิม
@@ -210,7 +211,7 @@ const GymFavoritesSection = ({
   if (isLoadingFavorites)
     return (
       <div className="flex justify-center items-center py-20">
-        <div className="border-4 border-primary border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+        <Loading centered size="lg" />
       </div>
     );
   if (!gymFavorites.length) return <NoGymFavorites />;
@@ -319,7 +320,7 @@ const FavoritesContent = () => {
         showPartnerButton
       >
         <div className="flex justify-center items-center py-20">
-          <div className="border-4 border-primary border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+          <Loading centered size="xl" />
         </div>
       </DashboardLayout>
     );

@@ -79,7 +79,7 @@ export default function FeaturedSection({
         <div className="text-center">
           <Link
             href={activeTab === "gyms" ? "/gyms" : "/events"}
-            className="inline-block bg-brand-primary hover:bg-red-700 px-8 py-3 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 font-semibold transition-colors"
+            className="inline-block bg-brand-primary hover:bg-red-600 px-8 py-3 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 font-semibold transition-colors"
             aria-label={activeTab === "gyms" ? "View all Muay Thai camps" : "View all upcoming events"}
           >
             {activeTab === "gyms" ? "View All Camps" : "View All Events"}

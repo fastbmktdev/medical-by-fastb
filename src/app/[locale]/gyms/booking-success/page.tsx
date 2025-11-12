@@ -201,7 +201,7 @@ function BookingSuccessContent() {
           <div className="flex gap-3">
             <Link
               href="/gyms"
-              className="flex-1 bg-brand-primary hover:bg-red-700 px-6 py-3 rounded-lg font-semibold text-center transition-colors"
+              className="flex-1 bg-brand-primary hover:bg-red-600 px-6 py-3 rounded-lg font-semibold text-center transition-colors"
             >
               กลับไปหน้าค่ายมวย
             </Link>
@@ -340,7 +340,7 @@ function BookingSuccessContent() {
         <div className="flex sm:flex-row flex-col gap-3">
           <Link
             href="/dashboard/bookings"
-            className="flex-1 bg-brand-primary hover:bg-red-700 px-6 py-3 rounded-lg font-semibold text-center transition-colors"
+            className="flex-1 bg-brand-primary hover:bg-red-600 px-6 py-3 rounded-lg font-semibold text-center transition-colors"
           >
             ดูการจองของฉัน
           </Link>

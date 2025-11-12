@@ -5,6 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils/cn";
 import { useTheme } from "@/components/design-system";
 import type { FormComponentProps } from "@/components/design-system/types";
+import { LoadingSpinner } from "@/components/design-system/primitives/Loading";
 
 /**
  * Input variant styles using class-variance-authority with design tokens
@@ -115,28 +116,6 @@ export interface BaseInputProps
    */
   validateOnChange?: boolean;
 }
-
-/**
- * Loading Spinner for Input
- */
-const InputSpinner: React.FC<{ size?: "sm" | "md" | "lg" }> = ({ size = "md" }) => {
-  const sizeClasses = {
-    sm: "w-3 h-3",
-    md: "w-4 h-4",
-    lg: "w-5 h-5",
-  };
-
-  return (
-    <div 
-      className={cn(
-        "border-2 border-current border-t-transparent rounded-full animate-spin text-zinc-500",
-        sizeClasses[size]
-      )}
-      role="status"
-      aria-label="Loading"
-    />
-  );
-};
 
 /**
  * Base Input Component
@@ -308,7 +287,7 @@ export const BaseInput = React.forwardRef<HTMLInputElement, BaseInputProps>(
           {/* Right Icon or Loading Spinner */}
           <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-zinc-500">
             {loading ? (
-              <InputSpinner size={size} />
+              <LoadingSpinner size={size} />
             ) : rightIcon ? (
               <div className="pointer-events-none">
                 {rightIcon}

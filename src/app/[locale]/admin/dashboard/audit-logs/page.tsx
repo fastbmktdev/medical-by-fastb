@@ -20,8 +20,8 @@ import {
   SelectItem,
   Button,
   Pagination,
-  Spinner,
 } from '@heroui/react';
+import { LoadingSpinner } from '@/components/design-system/primitives/Loading';
 import {
   MagnifyingGlassIcon,
   FunnelIcon,
@@ -206,8 +206,8 @@ function AdminAuditLogsContent() {
         roleColor="danger"
         userEmail={user?.email}
       >
-        <div className="flex justify-center items-center py-20">
-          <Spinner size="lg" color="danger" />
+          <div className="flex justify-center items-center py-20">
+            <LoadingSpinner size="xl" />
         </div>
       </DashboardLayout>
     );
@@ -399,7 +399,7 @@ function AdminAuditLogsContent() {
             <TableBody
               items={auditLogs}
               isLoading={isLoading}
-              loadingContent={<Spinner color="danger" />}
+              loadingContent={<LoadingSpinner size="sm" />}
               emptyContent="ไม่พบข้อมูล audit logs"
             >
               {(log) => (

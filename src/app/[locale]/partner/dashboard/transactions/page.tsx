@@ -30,6 +30,7 @@ import {
   MegaphoneIcon,
 } from '@heroicons/react/24/outline';
 import type { Gym, Booking } from '@/types/database.types';
+import { Loading } from '@/components/design-system/primitives/Loading';
 
 interface TransactionEntry {
   id: string;
@@ -138,7 +139,7 @@ function PartnerTransactionsContent() {
         userEmail={user?.email}
       >
         <div className="flex justify-center items-center py-20">
-          <div className="border-4 border-t-transparent border-red-600 rounded-full w-12 h-12 animate-spin"></div>
+          <Loading centered size="xl" />
         </div>
       </DashboardLayout>
     );

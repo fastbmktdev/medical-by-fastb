@@ -3,6 +3,7 @@ import "./globals.css";
 
 import "@heroui/theme";
 import { Providers } from "./providers";
+import "@/lib/flags/flags";
 
 const baiJamjuree = Bai_Jamjuree({
   variable: "--font-bai-jamjuree",

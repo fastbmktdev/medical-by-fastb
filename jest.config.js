@@ -27,14 +27,13 @@ export default {
   
   // Transform configuration
   transform: {
-    '^.+\\.(ts|tsx)$': ['ts-jest', {
-      useESM: true,
-      tsconfig: {
-        jsx: 'react-jsx',
-        esModuleInterop: true,
-        allowSyntheticDefaultImports: true,
+    '^.+\\.(ts|tsx)$': [
+      'ts-jest',
+      {
+        useESM: true,
+        tsconfig: './tsconfig.jest.json',
       },
-    }],
+    ],
     '^.+\\.(js|jsx|mjs)$': ['babel-jest', {
       presets: [
         ['@babel/preset-env', { targets: { node: 'current' } }]

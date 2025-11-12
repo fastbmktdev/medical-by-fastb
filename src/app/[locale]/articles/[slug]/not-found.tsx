@@ -10,7 +10,7 @@ export default function ArticleNotFound() {
       </p>
       <Link
         href="/articles"
-        className="bg-brand-primary hover:bg-red-700 px-6 py-3 rounded-lg font-semibold transition-colors"
+        className="bg-brand-primary hover:bg-red-600 px-6 py-3 rounded-lg font-semibold transition-colors"
       >
         กลับไปหน้าบทความ
       </Link>

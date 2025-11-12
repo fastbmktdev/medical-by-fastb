@@ -24,6 +24,7 @@ import EventEditModal, { type EventUpdateData } from '@/components/features/admi
 import EventDeleteDialog from '@/components/features/admin/event-management/EventDeleteDialog';
 import EventCreateModal, { type EventCreateData } from '@/components/features/admin/event-management/EventCreateModal';
 import EventTicketsModal from '@/components/features/admin/event-management/EventTicketsModal';
+import { Loading } from '@/components/design-system/primitives/Loading';
 
 function AdminEventsContent() {
   const supabase = createClient();
@@ -228,7 +229,7 @@ function AdminEventsContent() {
         userEmail={user?.email}
       >
         <div className="flex justify-center items-center py-20">
-          <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+          <Loading centered size="xl" />
         </div>
       </DashboardLayout>
     );

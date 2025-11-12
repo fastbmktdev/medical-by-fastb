@@ -9,6 +9,7 @@ import LeaderboardWidget from "./LeaderboardWidget";
 import StreakDisplay from "./StreakDisplay";
 import PointsHistory from "./PointsHistory";
 import Link from "next/link";
+import { Loading } from "@/components/design-system/primitives/Loading";
 
 interface GamificationDashboardProps {
   className?: string;
@@ -62,8 +63,7 @@ export default function GamificationDashboard({
   if (loading) {
     return (
       <div className={`flex items-center justify-center p-8 ${className}`}>
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-        <span className="ml-2 text-zinc-300">กำลังโหลด...</span>
+        <Loading text="กำลังโหลด..." />
       </div>
     );
   }
@@ -109,10 +109,10 @@ export default function GamificationDashboard({
 
   return (
     <div className={`space-y-6 ${className}`}>
-      <div className="flex justify-end">
+      <div className="flex justify-start">
         <Link
           href="/dashboard"
-          className="inline-flex items-center px-4 py-2 mb-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition-colors font-medium"
+          className="inline-flex items-center px-4 py-2 mb-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-normal min-h-9"
         >
           <svg
             className="w-4 h-4 mr-2"

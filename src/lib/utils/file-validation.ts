@@ -75,16 +75,29 @@ const SUSPICIOUS_PATTERNS = [
  * Read magic bytes from file
  */
 async function readMagicBytes(file: File, length: number = 16): Promise<number[]> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const arrayBuffer = reader.result as ArrayBuffer;
-      const bytes = new Uint8Array(arrayBuffer);
-      resolve(Array.from(bytes.slice(0, length)));
-    };
-    reader.onerror = reject;
-    reader.readAsArrayBuffer(file.slice(0, length));
-  });
+  // Browser environment: use FileReader
+  if (typeof FileReader !== 'undefined') {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const arrayBuffer = reader.result as ArrayBuffer;
+        const bytes = new Uint8Array(arrayBuffer);
+        resolve(Array.from(bytes.slice(0, length)));
+      };
+      reader.onerror = reject;
+      reader.readAsArrayBuffer(file.slice(0, length));
+    });
+  }
+
+  // Server environment: use arrayBuffer() if available
+  if (typeof file.arrayBuffer === 'function') {
+    const buffer = await file.arrayBuffer();
+    const bytes = new Uint8Array(buffer);
+    return Array.from(bytes.slice(0, length));
+  }
+
+  // Fallback: unable to read magic bytes
+  return [];
 }
 
 /**
@@ -252,7 +265,7 @@ export async function validateFile(
     warnings.push(`ชื่อไฟล์ถูกปรับให้ปลอดภัย: ${sanitizedFilename}`);
   }
   
-  // 5. Validate file content using magic bytes (critical security check)
+ // 5. Validate file content using magic bytes (critical security check)
   let contentTypeValid = false;
   let detectedType: string | undefined;
   
@@ -274,7 +287,7 @@ export async function validateFile(
   
   if (!contentTypeValid) {
     errors.push('เนื้อหาไฟล์ไม่ตรงกับประเภทที่ระบุ (อาจไม่ปลอดภัย)');
-  }
+  } 
   
   // 6. Check for suspicious content
   try {

@@ -18,6 +18,7 @@ import { User } from '@supabase/supabase-js';
 import Image from 'next/image';
 import AdminFormModal from '@/components/features/admin/shared/AdminFormModal';
 import AdminConfirmDialog from '@/components/features/admin/shared/AdminConfirmDialog';
+import { Loading } from '@/components/design-system/primitives/Loading';
 
 interface Category {
   id: string;
@@ -136,7 +137,7 @@ function AdminCategoriesContent() {
         userEmail={user?.email}
       >
         <div className="flex justify-center items-center py-20">
-          <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+          <Loading centered size="xl" />
         </div>
       </DashboardLayout>
     );

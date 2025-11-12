@@ -23,6 +23,7 @@ import {
   ShieldCheckIcon,
   MegaphoneIcon,
 } from '@heroicons/react/24/outline';
+import { Loading } from '@/components/design-system/primitives/Loading';
 
 function PartnerSettingsContent() {
   const supabase = createClient();
@@ -61,7 +62,7 @@ function PartnerSettingsContent() {
         userEmail={user?.email}
       >
         <div className="flex justify-center items-center py-20">
-          <div className="border-4 border-t-transparent border-red-600 rounded-full w-12 h-12 animate-spin"></div>
+          <Loading centered size="xl" />
         </div>
       </DashboardLayout>
     );

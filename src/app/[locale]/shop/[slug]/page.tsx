@@ -13,6 +13,7 @@ import { Link } from '@/navigation';
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { trackProductView } from "@/lib/utils/analytics";
+import { Loading } from "@/components/design-system/primitives/Loading";
 
 interface Product {
   id: string;
@@ -139,7 +140,7 @@ export default function ProductDetailPage({
   if (isLoading) {
     return (
       <div className="bg-zinc-950 min-h-screen flex justify-center items-center">
-        <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+        <Loading centered size="xl" />
       </div>
     );
   }
@@ -381,7 +382,7 @@ export default function ProductDetailPage({
               className={`w-full flex items-center justify-center gap-2 px-6 py-4 rounded-lg font-semibold text-lg transition-colors ${
                 isOutOfStock
                   ? "bg-zinc-700 text-zinc-500 cursor-not-allowed"
-                  : "bg-brand-primary hover:bg-red-700 text-white"
+                  : "bg-brand-primary hover:bg-red-600 text-white"
               }`}
              aria-label="Button">
               <ShoppingCartIcon className="w-6 h-6" />

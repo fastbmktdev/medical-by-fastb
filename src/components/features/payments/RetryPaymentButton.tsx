@@ -5,6 +5,7 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { PaymentRecord } from './shared';
+import { Loading, LoadingSpinner } from '@/components/design-system/primitives/Loading';
 
 interface RetryPaymentButtonProps {
   payment: PaymentRecord & { retry_count?: number; failure_reason?: string };
@@ -174,11 +175,11 @@ function RetryPaymentForm({
         <button
           type="submit"
           disabled={!stripe || isProcessing}
-          className="flex-1 bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+          className="flex-1 bg-red-600 hover:bg-red-600 px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
         >
           {isProcessing ? (
             <>
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+          <LoadingSpinner size="xs" />
               <span>กำลังประมวลผล...</span>
             </>
           ) : (
@@ -239,7 +240,7 @@ export default function RetryPaymentButton({
     <>
       <button
         onClick={handleOpenModal}
-        className="flex items-center space-x-2 bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+        className="flex items-center space-x-2 bg-red-600 hover:bg-red-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
         aria-label="Retry payment"
       >
         <ArrowPathIcon className="w-4 h-4" />
@@ -282,8 +283,7 @@ export default function RetryPaymentButton({
               </Elements>
             ) : (
               <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-500 mx-auto mb-4"></div>
-                <p className="text-zinc-400">กำลังโหลด...</p>
+                <Loading centered size="lg" text="กำลังโหลด..." />
               </div>
             )}
           </div>

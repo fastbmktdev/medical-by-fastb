@@ -14,6 +14,7 @@ import {
   formatPaymentDate,
   formatAmount
 } from './shared';
+import { Loading, LoadingSpinner } from '@/components/design-system/primitives/Loading';
 
 export default function PaymentStatus() {
   const { payments, loading, error, refreshPayments } = usePaymentData();
@@ -29,8 +30,7 @@ export default function PaymentStatus() {
     return (
       <div className="bg-zinc-800 rounded-lg p-6">
         <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500 mx-auto mb-4"></div>
-          <p className="text-white">กำลังโหลดข้อมูล...</p>
+          <Loading centered size="xl" text="กำลังโหลดข้อมูล..." />
         </div>
       </div>
     );
@@ -45,7 +45,7 @@ export default function PaymentStatus() {
           <p className="text-zinc-400 mb-6">{error}</p>
           <button
             onClick={handleRefresh}
-            className="bg-brand-primary hover:bg-red-700 px-6 py-3 rounded-lg font-medium transition-colors"
+            className="bg-brand-primary hover:bg-red-600 px-6 py-3 rounded-lg font-medium transition-colors"
            aria-label="Button">
             ลองใหม่
           </button>
@@ -63,7 +63,7 @@ export default function PaymentStatus() {
           disabled={refreshing}
           className="flex items-center gap-2 bg-zinc-700 hover:bg-zinc-600 disabled:opacity-50 px-4 py-2 rounded-lg font-medium transition-colors disabled:cursor-not-allowed"
          aria-label="Button">
-          <ArrowPathIcon className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+          {refreshing ? <LoadingSpinner size="xs" /> : <ArrowPathIcon className="w-4 h-4" />}
           รีเฟรช
         </button>
       </div>

@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link } from '@/navigation';
 import { Button, Avatar, Chip } from '@heroui/react';
 import {
   ArrowRightStartOnRectangleIcon,
-  BriefcaseIcon,
-  XMarkIcon,
+  BriefcaseIcon
 } from '@heroicons/react/24/outline';
 import { createClient } from '@/lib/database/supabase/client';
 import type { MenuItem } from '../DashboardLayout';
@@ -59,28 +58,25 @@ export default function SidebarContent({
     }
     loadUserName();
   }, [supabase]);
-  return (
-    <>
-      <div className={`flex items-center p-6 border-white/5 border-b ${onClose ? 'justify-between' : 'justify-start'}`}>
-        <div className="flex flex-col">
-          <span className="font-semibold text-lg">
-            แดชบอร์ดของฉัน
-          </span>
-          <span className="text-default-400 text-sm">
-            จัดการบัญชีและการตั้งค่า
-          </span>
-        </div>
-        {onClose && (
-          <Button
-            isIconOnly
-            variant="light"
-            onPress={onClose}
-          >
-            <XMarkIcon className="w-6 h-6 text-white" />
-          </Button>
-        )}
-      </div>
 
+  // Handle when a navigation (menu/partner) link is clicked: call both callbacks if present
+  const handleNavClick = useCallback(
+    (extraFn?: () => void) => {
+      if (onLinkClick) onLinkClick();
+      if (onClose) onClose();
+      if (extraFn) extraFn();
+    },
+    [onLinkClick, onClose]
+  );
+
+  // Handle logout and also call onClose
+  const handleLogoutClick = useCallback(() => {
+    handleLogout();
+    if (onClose) onClose();
+  }, [handleLogout, onClose]);
+
+  return (
+    <div className="flex flex-col h-screen">
       <div className="p-6 border-white/5 border-b">
         <div className="flex items-center gap-3 mb-3">
           <Avatar
@@ -105,7 +101,7 @@ export default function SidebarContent({
         </Chip>
       </div>
 
-      <nav className="flex-1 space-y-1 p-4 overflow-y-auto">
+      <nav className="flex-1 flex flex-col gap-2 p-4 overflow-y-auto text-sm">
         {menuItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;
@@ -114,9 +110,9 @@ export default function SidebarContent({
             <Link
               key={item.href}
               href={item.href}
-              onClick={onLinkClick}
+              onClick={() => handleNavClick()}
               className={cn(
-                'flex items-center gap-3 px-4 py-3 rounded-lg transition-all',
+                'flex items-center gap-3 px-4 py-2 rounded-lg transition-all',
                 isActive
                   ? 'bg-red-600 text-white font-semibold shadow-lg shadow-red-900/40'
                   : 'text-default-400 hover:bg-red-600/10 hover:text-white'
@@ -137,8 +133,8 @@ export default function SidebarContent({
             variant="flat"
             color="secondary"
             startContent={<BriefcaseIcon className="w-5 h-5" />}
-            className="w-full font-semibold"
-            onPress={onLinkClick}
+            className="w-full font-medium"
+            onPress={() => handleNavClick()}
           >
             สมัครพาร์ทเนอร์
           </Button>
@@ -147,15 +143,15 @@ export default function SidebarContent({
 
       <div className="p-4 border-white/5 border-t">
         <Button
-          onPress={handleLogout}
+          onPress={handleLogoutClick}
           variant="flat"
           color="danger"
           startContent={<ArrowRightStartOnRectangleIcon className="w-5 h-5" />}
-          className="w-full font-semibold"
+          className="w-full font-medium rounded-lg bg-red-600 hover:bg-red-700"
         >
           ออกจากระบบ
         </Button>
       </div>
-    </>
+    </div>
   );
 }

@@ -50,3 +50,9 @@ export {
   generateQRCodeBuffer,
   generateQRCodeString
 } from './qrcode';
+
+// Audit logging utilities
+export {
+  logAuditEvent,
+  type AuditLogEventOptions
+} from './audit-log';

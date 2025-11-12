@@ -27,6 +27,7 @@ import ProductCreateModal from '@/components/features/admin/product-management/P
 import ProductInventoryModal from '@/components/features/admin/product-management/ProductInventoryModal';
 import ProductVariantsModal from '@/components/features/admin/product-management/ProductVariantsModal';
 import ProductImagesModal from '@/components/features/admin/product-management/ProductImagesModal';
+import { Loading } from '@/components/design-system/primitives/Loading';
 
 interface Product {
   id: string;
@@ -203,7 +204,7 @@ function AdminProductsContent() {
         userEmail={user?.email}
       >
         <div className="flex justify-center items-center py-20">
-          <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+          <Loading centered size="xl" />
         </div>
       </DashboardLayout>
     );

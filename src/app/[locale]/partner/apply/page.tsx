@@ -15,6 +15,7 @@ import { GymDetailsForm } from "./components/GymDetailsForm";
 import { TermsSection } from "./components/TermsSection";
 import { FormData } from "./types";
 import { injectStyles } from "./utils/styles";
+import { LoadingSpinner } from "@/components/design-system/primitives/Loading";
 
 export default function PartnerApplyPage() {
   // Inject custom styles
@@ -232,11 +233,11 @@ export default function PartnerApplyPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex justify-center items-center gap-3 bg-brand-primary hover:bg-red-700 disabled:bg-zinc-600 shadow-lg px-8 py-4 rounded-lg w-full font-bold text-white text-lg hover:scale-[1.02] transition-all disabled:cursor-not-allowed transform"
+              className="flex justify-center items-center gap-3 bg-brand-primary hover:bg-red-600 disabled:bg-zinc-600 shadow-lg px-8 py-4 rounded-lg w-full font-bold text-white text-lg hover:scale-[1.02] transition-all disabled:cursor-not-allowed transform"
              aria-label="Button">
               {isSubmitting ? (
                 <>
-                  <div className="border-white border-b-2 rounded-full w-6 h-6 animate-spin"></div>
+                  <LoadingSpinner size="sm" />
                   กำลังส่งข้อมูล...
                 </>
               ) : (

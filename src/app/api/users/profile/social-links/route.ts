@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/database/supabase/server';
+import { logAuditEvent } from '@/lib/utils';
 
 /**
  * Get Social Links API
@@ -34,9 +35,15 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    const normalizedData =
+      data?.map((link) => ({
+        ...link,
+        platform: link.platform === 'twitter' ? 'x' : link.platform,
+      })) ?? [];
+
     return NextResponse.json({
       success: true,
-      data: data || []
+      data: normalizedData
     });
 
   } catch (error) {
@@ -84,11 +91,30 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    // Fetch existing links for audit logging
+    const { data: existingLinks } = await supabase
+      .from('user_social_links')
+      .select('id, platform, url, created_at, updated_at')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: true });
+
+    const existingNormalized =
+      existingLinks?.map((link) => ({
+        ...link,
+        platform: link.platform === 'twitter' ? 'x' : link.platform,
+      })) ?? [];
+
     // Validate URLs
     const urlPattern = /^https?:\/\//;
-    const validPlatforms = ['facebook', 'instagram', 'twitter', 'youtube', 'tiktok'];
+    const legacyPlatformMap: Record<string, string> = { twitter: 'x' };
+    const validPlatforms = ['facebook', 'instagram', 'x', 'youtube', 'tiktok'];
 
-    for (const link of links) {
+    const normalizedLinks = links.map((link) => ({
+      ...link,
+      platform: legacyPlatformMap[link.platform] ?? link.platform,
+    }));
+
+    for (const link of normalizedLinks) {
       if (!validPlatforms.includes(link.platform)) {
         return NextResponse.json(
           { success: false, error: `Invalid platform: ${link.platform}` },
@@ -110,14 +136,14 @@ export async function PUT(request: NextRequest) {
       .eq('user_id', user.id);
 
     // Insert new links
-    if (links.length > 0) {
-      const linksToInsert = links.map(link => ({
+    if (normalizedLinks.length > 0) {
+      const linksToInsert = normalizedLinks.map(link => ({
         user_id: user.id,
         platform: link.platform,
         url: link.url
       }));
 
-      const { data, error } = await supabase
+      const { data: insertedLinks, error } = await supabase
         .from('user_social_links')
         .insert(linksToInsert)
         .select();
@@ -130,12 +156,48 @@ export async function PUT(request: NextRequest) {
         );
       }
 
+      await logAuditEvent({
+        supabase,
+        request,
+        user,
+        action: 'update',
+        resourceType: 'profile',
+        resourceId: user.id,
+        resourceName: user.email ?? user.id,
+        description: 'Updated social links',
+        oldValues: existingNormalized.length > 0 ? { links: existingNormalized } : null,
+        newValues: { links: insertedLinks ?? [] },
+        metadata: {
+          newCount: insertedLinks?.length ?? 0,
+          previousCount: existingNormalized.length,
+        },
+        severity: 'low',
+      });
+
       return NextResponse.json({
         success: true,
-        data: data,
+        data: insertedLinks,
         message: 'Social links updated successfully'
       });
     }
+
+    await logAuditEvent({
+      supabase,
+      request,
+      user,
+      action: 'delete',
+      resourceType: 'profile',
+      resourceId: user.id,
+      resourceName: user.email ?? user.id,
+      description: 'Cleared social links',
+      oldValues: existingNormalized.length > 0 ? { links: existingNormalized } : null,
+      newValues: { links: [] },
+      metadata: {
+        previousCount: existingNormalized.length,
+        newCount: 0,
+      },
+      severity: 'low',
+    });
 
     return NextResponse.json({
       success: true,

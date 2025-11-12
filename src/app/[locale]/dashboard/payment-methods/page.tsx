@@ -6,6 +6,7 @@ import SavedPaymentMethods from '@/components/features/payments/SavedPaymentMeth
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/database/supabase/client';
 import { User } from '@supabase/supabase-js';
+import { Loading } from '@/components/design-system/primitives/Loading';
 
 function PaymentMethodsContent() {
   const supabase = createClient();
@@ -33,7 +34,7 @@ function PaymentMethodsContent() {
         showPartnerButton={true}
       >
         <div className="flex justify-center items-center py-20">
-          <div className="border-4 border-primary border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+          <Loading centered size="xl" />
         </div>
       </DashboardLayout>
     );

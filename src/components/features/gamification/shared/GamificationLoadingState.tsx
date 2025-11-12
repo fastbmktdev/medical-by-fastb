@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { Loading } from '@/components/design-system/primitives/Loading';
 
 interface GamificationLoadingStateProps {
   message?: string;
@@ -36,8 +37,7 @@ export function GamificationLoadingState({
 
   return (
     <div className={`flex items-center justify-center p-8 ${className}`}>
-      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-      <span className="ml-2 text-zinc-300">{message}</span>
+      <Loading text={message} />
     </div>
   );
 }

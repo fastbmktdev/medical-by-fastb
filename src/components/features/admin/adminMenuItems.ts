@@ -29,6 +29,7 @@ export const adminMenuItems: MenuItem[] = [
   { label: 'เช็คอินตั๋ว', href: '/admin/dashboard/events/check-in', icon: QrCodeIcon },
   { label: 'จัดการบทความ', href: '/admin/dashboard/articles', icon: NewspaperIcon },
   { label: 'จัดการโปรโมชั่น', href: '/admin/dashboard/promotions', icon: MegaphoneIcon },
+  { label: 'จัดการการจอง', href: '/admin/dashboard/bookings', icon: CalendarIcon },
   { label: 'อนุมัติยิม', href: '/admin/dashboard/approvals', icon: ClockIcon },
   { label: 'รายงาน', href: '/admin/dashboard/reports', icon: DocumentTextIcon },
   { label: 'สถิติ', href: '/admin/dashboard/analytics', icon: ChartBarIcon },

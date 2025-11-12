@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { PaymentWrapper } from '@/components/features/payments';
 import { createClient } from '@/lib/database/supabase/client';
 import { showErrorToast } from '@/lib/utils';
+import { Loading } from '@/components/design-system/primitives/Loading';
 
 interface BookingStep {
   id: number;
@@ -328,8 +329,8 @@ export default function GymBookingPage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center bg-gray-50 min-h-screen">
-        <div className="text-center">
-          <div className="mx-auto border-blue-600 border-b-2 rounded-full w-12 h-12 animate-spin"></div>
+        <div className="text-center space-y-4">
+          <Loading centered size="xl" />
           <p className="mt-4 text-gray-600">กำลังโหลด...</p>
         </div>
       </div>

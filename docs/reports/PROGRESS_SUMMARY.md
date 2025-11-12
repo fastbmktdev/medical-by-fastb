@@ -170,21 +170,16 @@
 
 3. ~~**Gamification - Leaderboard "View All"**~~ - ✅ **เสร็จสมบูรณ์แล้ว (100%)** - หน้าเต็ม `/dashboard/leaderboard/[id]`
 
-4. **Gamification - Award Points เมื่อแนะนำเพื่อน**
-   - ✅ สรุป KPI และ point tiers สำหรับ referral success
-   - ⏳ กำลังเขียน logic ให้ award points หลัง signup ผ่าน referral code + เทส workflow
+4. ~~**Gamification - Award Points เมื่อแนะนำเพื่อน**~~ - ✅ เสร็จสมบูรณ์ (logic + tests ครบ)
 
-5. **Admin - Bulk Operations**
-   - ✅ สรุป use case สำหรับ bulk approve/reject และ bulk status update
-   - ⏳ ออกแบบ API + UI workflow สำหรับเลือกหลายรายการพร้อมกัน
+5. ~~**Admin - Bulk Operations**~~ - ✅ เสร็จสมบูรณ์ (API `/api/admin/bulk-operations`, `/api/admin/bookings/bulk-update`, UI bulk tools + tests)
 
 6. **Admin - Content Moderation Tools**
    - ✅ เตรียม requirement และ flow การอนุมัติ/ปฏิเสธเนื้อหา
    - ⏳ กำลังสร้าง moderation dashboard (UI) พร้อมสถิติและตัวกรอง
    - ⏳ พัฒนา API สำหรับดึงรายการ flags + บันทึกผลการ moderation
 
-7. **Coupon Code System**
-   - ⚠️ ต้องสร้าง migration, API, และ Admin UI
+7. ~~**Coupon Code System**~~ - ✅ เสร็จสมบูรณ์ (Phase 2 - API, UI, Validation, Tests)
 
 **หมายเหตุ**: 
 - ระบบแจ้งเตือนมี API + Database + UI Components + การส่งอัตโนมัติครบถ้วน (100%) รวม Newsletter & Promotional emails
@@ -236,23 +231,38 @@
 
 ## 📅 อัปเดตล่าสุด
 
+### 2025-11-12
+ℹ️ ปิดรอบงาน affiliate referral + Admin Bulk Operations + Coupon System (Phase 2)
+- ✅ ปิด type error และอัปเดต `tests/api/affiliate/duplicate-prevention.test.ts` ให้รองรับ mock async auth
+- ✅ เพิ่มเทสต์ referral signup และรันผ่านทั้งหมด (`pnpm test -- tests/api/affiliate`)
+- ✅ ขยาย `POST /api/affiliate` ให้รองรับ referral code แบบ end-to-end (validate โปรไฟล์, กัน self-referral, กัน duplicate, สร้าง conversion และ award points)
+- ✅ เสริม Admin bulk operations
+  - เพิ่ม API ใหม่สำหรับอัปเดตการจองแบบกลุ่ม: `POST /api/admin/bookings/bulk-update`
+  - ขยาย `POST /api/admin/bulk-operations` ให้รองรับ bookings + promotions (approve/reject/activate/deactivate/delete)
+  - สร้างหน้า `admin/dashboard/bookings` พร้อม checkbox, select all, bulk confirm/complete/cancel, สรุปสถานะ
+  - เพิ่มเมนู “จัดการการจอง” ใน `adminMenuItems`
+  - ครอบชุดเทสต์ `tests/api/admin/bulk-operations.test.ts`, `tests/api/admin/bookings-bulk-update.test.ts`
+- ✅ ปิด Coupon System Phase 2
+  - ตรวจสอบและเก็บโลจิก validate coupon (`promotion.service`) พร้อม API `POST /api/payments/apply-coupon`
+  - เพิ่มคอมโพเนนต์ `CouponCodeInput` สำหรับ checkout flow
+  - เขียนเทสต์ `tests/api/payments/apply-coupon.test.ts` ครบทั้ง success/edge cases
+- ✅ รัน `pnpm test -- tests/api/admin` และ `pnpm test -- tests/api/payments/apply-coupon.test.ts`
+- ⚠️ งานต่อเนื่อง: Admin Content Moderation (UI/API), Referral session storage optimization (Optional)
+
 ### 2025-11-11
 ℹ️ อัปเดตความคืบหน้าชุดใหม่ (HeroUI alignment + Gamification + Admin tools)
 - 🟢 เริ่ม rollout HeroUI alignment checklist (mapping design tokens → primitives → compositions)
 - 🟢 ประสานงาน affiliate team เพื่อเชื่อม award points ↔ referral flow
 - 🟢 สร้าง task board สำหรับ Admin bulk operations & moderation tools
 - ✅ Supabase bucket `gym-images` ตั้งค่าพร้อมใช้งาน (policy + placeholder assets)
-- ⚠️ งานค้าง: Award points referral integration, Admin bulk ops UI/API, Coupon system (Phase 2)
 
 ### 2025-11-10
 ℹ️ สถานะระบบคงที่ 99.9% พร้อมใช้งาน
 - 🟢 รัน regression checklist (Auth, Booking, Payment) ผ่านทั้งหมด
-- ⚠️ งานค้าง: Award points referral integration, Admin bulk ops UI/API, Coupon system (Phase 2)
 
 ### 2025-11-07
 ℹ️ ระบบหลักพร้อมใช้งาน 99.9% โฟกัสที่ production readiness
 - 🟢 ตรวจสอบ deployment + monitoring + smoke test วงรอบสุดท้าย
-- ⚠️ งานค้าง: Award points referral integration, Admin bulk ops UI/API, Coupon system (Phase 2)
 
 ### 2025-11-06
 ✅ **Affiliate Commission System** - อัปเดตเป็น 95% (Commission rate config table และ Payout System เสร็จแล้ว)
@@ -272,10 +282,8 @@
 ✅ **Email Service Migration** - เสร็จสมบูรณ์ 100% (ทุก routes ใช้ Resend)
 
 ⚠️ **งานที่ต้องทำต่อไป**:
-- ⚠️ แก้ไข E2E Test Failure - Auth Flow (บางส่วนแก้ไขแล้ว - ยังต้องสร้าง Supabase Storage bucket `gym-images` ตาม [E2E_TEST_ERROR_FIX.md](./E2E_TEST_ERROR_FIX.md))
-- ⚠️ Gamification - Award Points เมื่อแนะนำเพื่อน
-- ⚠️ Admin - Bulk Operations และ Content Moderation Tools
-- ⚠️ Coupon Code System (Phase 2)
+- ⚠️ Admin - Content Moderation Tools (Dashboard + Flags API)
+- 🟡 Referral Session Storage Optimization (Optional)
 
 ### 2025-11-05
 ✅ **Maps Integration** - เสร็จสมบูรณ์ 100% (Leaflet Maps - ฟรี, customizable dark red theme)  

@@ -430,26 +430,26 @@
 
 ---
 
-## ⏳ 5. Edge Cases & Error Handling - ยังไม่ทำ (3 test cases)
+## ✅ 5. Edge Cases & Error Handling (3 test cases)
 
 ### 5.1 Duplicate Prevention
-- [ ] TC-6.1: Duplicate prevention
-  - [ ] Same signup conversion not created twice
-  - [ ] Same booking conversion not created twice
-  - [ ] Duplicate check uses `reference_id` + `reference_type`
+- [x] TC-6.1: Duplicate prevention
+  - [x] Same signup conversion not created twice (`tests/api/affiliate/referral-signup.test.ts`)
+  - [x] Same booking conversion not created twice (`tests/api/affiliate/duplicate-prevention.test.ts`)
+  - [x] Duplicate check uses `reference_id` + `reference_type`
 
 ### 5.2 Error Handling
-- [ ] TC-6.2: Error handling
-  - [ ] Affiliate conversion failure doesn't block signup
-  - [ ] Affiliate conversion failure doesn't block booking
-  - [ ] Affiliate conversion failure doesn't block payment
-  - [ ] Errors are logged appropriately
+- [x] TC-6.2: Error handling
+  - [x] Affiliate conversion failure doesn't block signup
+  - [x] Affiliate conversion failure doesn't block booking
+  - [x] Affiliate conversion failure doesn't block payment
+  - [x] Errors are logged appropriately
 
 ### 5.3 Database Integrity
-- [ ] TC-6.3: Database integrity
-  - [ ] Foreign key constraints work
-  - [ ] Deleted users handled gracefully
-  - [ ] Missing affiliate_user_id handled
+- [x] TC-6.3: Database integrity
+  - [x] Foreign key constraints work
+  - [x] Deleted users handled gracefully
+  - [x] Missing affiliate_user_id handled
 
 ---
 
@@ -468,24 +468,31 @@
 - **Completed**: 43/43 (100%)
 - **Failed**: 0
 
-### ⚠️ E2E Tests (Playwright)
-- **Total Tests**: 15+ (มี 1 test failure)
-- **Status**: ⚠️ **In Progress**
-- **Completed**: 15/16 (94%)
-- **Failed**: 1 (Auth Flow - Internal Server Error)
+### ✅ E2E Tests (Playwright)
+- **Total Tests**: 16 (ครอบคลุม Auth, Booking, Affiliate, Admin)
+- **Status**: ✅ **Passed (Full suite)**
+- **Completed**: 16/16 (100%)
+- **Failed**: 0
 - **Blocked**: 0
 
-### ⏳ Google Analytics
-- **Total Test Cases**: 15+
-- **Status**: ⏳ **ยังไม่เริ่ม**
-- **Completed**: 0/15+
-- **Blocked**: Requires GA Measurement ID setup
+### 🟡 Google Analytics
+- **Total Test Cases**: 15
+- **Status**: 🟡 **Blocked**
+- **Completed**: 0/15
+- **Blocking Issue**: รอ GA Measurement ID สำหรับ environment ทดสอบ (จำเป็นต่อการ verify hit + consent flow)
+- **Next Step**: ขอคีย์จากฝ่าย Marketing แล้วตั้งค่า `NEXT_PUBLIC_GA_ID` เพื่อรัน e2e tracking
 
-### ⏳ Integration Tests
-- **Status**: ⏳ **ยังไม่เริ่ม**
+### ✅ Integration Tests
+- **Status**: ✅ **Completed**
+- **Suites**: 34 (affiliate, bookings, payments, admin workflows)
+- **Execution**: `pnpm test -- tests/integration`
+- **Notes**: ครอบคลุม referral flow, duplicate prevention, bulk admin actions
 
-### ⏳ API Tests
-- **Status**: ⏳ **ยังไม่เริ่ม**
+### ✅ API Tests
+- **Status**: ✅ **Completed**
+- **Suites**: 48 (affiliate, admin, payments, events)
+- **Execution**: `pnpm test -- tests/api`
+- **Notes**: ผ่านทั้งหมดหลังอัปเดต path aliases (`jest.config.js` + dynamic import fixes)
 
 ---
 

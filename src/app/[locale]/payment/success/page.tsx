@@ -11,6 +11,7 @@ import {
   DocumentTextIcon,
   ClockIcon
 } from '@heroicons/react/24/outline';
+import { Loading } from '@/components/design-system/primitives/Loading';
 
 interface PaymentSuccessData {
   paymentIntentId: string;
@@ -76,8 +77,8 @@ function PaymentSuccessContent() {
   if (loading) {
     return (
       <div className="min-h-screen bg-zinc-900 flex items-center justify-center">
-        <div className=" text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500 mx-auto mb-4"></div>
+        <div className="text-center space-y-4">
+          <Loading centered size="xl" />
           <p>กำลังโหลด...</p>
         </div>
       </div>
@@ -190,7 +191,7 @@ function PaymentSuccessContent() {
           <div className="flex flex-col sm:flex-row gap-4">
             <button
               onClick={handleGoHome}
-              className="flex items-center justify-center gap-2 bg-brand-primary hover:bg-red-700 px-6 py-3 rounded-lg font-semibold transition-colors"
+              className="flex items-center justify-center gap-2 bg-brand-primary hover:bg-red-600 px-6 py-3 rounded-lg font-semibold transition-colors"
              aria-label="Button">
               <HomeIcon className="w-5 h-5" />
               กลับหน้าหลัก
@@ -232,8 +233,8 @@ export default function PaymentSuccessPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-zinc-900 flex items-center justify-center">
-        <div className=" text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500 mx-auto mb-4"></div>
+        <div className="text-center space-y-4">
+          <Loading centered size="xl" />
           <p>กำลังโหลด...</p>
         </div>
       </div>

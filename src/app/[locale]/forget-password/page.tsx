@@ -10,6 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { AuthLayout } from "@/components/compositions/layouts";
 import { Button } from "@/components/shared";
+import { Loading } from "@/components/design-system/primitives/Loading";
 
 interface ForgetPasswordFormData {
   email: string;
@@ -295,8 +296,8 @@ export default function ForgetPasswordPage() {
     <Suspense fallback={
       <div className="min-h-[calc(100vh_-_132px)] flex items-center justify-center py-8">
         <div className="w-full max-w-md">
-          <div className="bg-zinc-950 shadow-2xl p-6 rounded-2xl text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-500/70 shadow-red-500/20 mx-auto mb-4"></div>
+          <div className="bg-zinc-950 shadow-2xl p-6 rounded-2xl text-center space-y-4">
+            <Loading centered size="lg" />
             <p className="text-zinc-300">กำลังโหลด...</p>
           </div>
         </div>

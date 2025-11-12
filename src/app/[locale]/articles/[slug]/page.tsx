@@ -14,6 +14,7 @@ import {
   ShareIcon,
   BookmarkIcon,
 } from "@heroicons/react/24/outline";
+import { Loading } from "@/components/design-system/primitives/Loading";
 
 // Helper function to get appropriate image based on category
 function getArticleImage(category: string, image?: string | null) {
@@ -91,8 +92,8 @@ export default function ArticleDetailPage({
   if (isLoading) {
     return (
       <div className="bg-transparent min-h-screen mt-16 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500 mx-auto mb-4"></div>
+        <div className="text-center space-y-4">
+          <Loading centered size="xl" />
           <p className="text-zinc-400">กำลังโหลด...</p>
         </div>
       </div>

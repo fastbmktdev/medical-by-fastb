@@ -16,6 +16,7 @@ import {
   PaymentRecord
 } from './shared';
 import RetryPaymentButton from './RetryPaymentButton';
+import { Loading } from '@/components/design-system/primitives/Loading';
 
 export default function PaymentHistory() {
   const { payments, loading, error, refreshPayments } = usePaymentData();
@@ -27,8 +28,7 @@ export default function PaymentHistory() {
     return (
       <div className="bg-zinc-800 rounded-lg p-6">
         <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500 mx-auto mb-4"></div>
-          <p className="text-zinc-400">กำลังโหลดประวัติการชำระเงิน...</p>
+          <Loading centered size="xl" text="กำลังโหลดประวัติการชำระเงิน..." />
         </div>
       </div>
     );
@@ -43,7 +43,7 @@ export default function PaymentHistory() {
           <p className="text-zinc-400 mb-6">{error}</p>
           <button
             onClick={refreshPayments}
-            className="bg-brand-primary hover:bg-red-700 px-6 py-3 rounded-lg font-medium transition-colors"
+            className="bg-brand-primary hover:bg-red-600 px-6 py-3 rounded-lg font-medium transition-colors"
            aria-label="Button">
             ลองใหม่
           </button>

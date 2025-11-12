@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Link } from '@/navigation';
 import { ProductCard } from "@/components/shared";
+import { Loading } from "@/components/design-system/primitives/Loading";
 
 interface Product {
   id: string;
@@ -70,7 +71,7 @@ export default function LatestProducts() {
         {/* Products Grid */}
         {isLoading ? (
           <div className="flex justify-center items-center py-12">
-            <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+            <Loading centered size="xl" />
           </div>
         ) : products.length > 0 ? (
           <div className="gap-6 grid grid-cols-2 md:grid-cols-4 mb-8">
@@ -98,7 +99,7 @@ export default function LatestProducts() {
         <div className="text-center">
           <Link
             href={"/shop"}
-            className="inline-block bg-brand-primary hover:bg-red-700 px-8 py-3 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 font-semibold transition-colors"
+            className="inline-block bg-brand-primary hover:bg-red-600 px-8 py-3 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 font-semibold transition-colors"
             aria-label="View all products"
           >
             View all Products

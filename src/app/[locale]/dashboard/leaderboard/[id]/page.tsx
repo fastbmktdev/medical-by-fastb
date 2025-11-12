@@ -6,6 +6,7 @@ import { createClient } from '@/lib/database/supabase/client';
 import { LeaderboardData, LeaderboardEntry } from '@/types/gamification.types';
 import Image from 'next/image';
 import { Link } from '@/navigation';
+import { Loading } from '@/components/design-system/primitives/Loading';
 
 export default function LeaderboardPage() {
   const params = useParams();
@@ -102,7 +103,7 @@ export default function LeaderboardPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
-        <div className="border-4 border-primary border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+        <Loading centered size="xl" />
       </div>
     );
   }
@@ -116,7 +117,7 @@ export default function LeaderboardPage() {
           <p className="text-zinc-400 mb-4">{error || 'ไม่พบข้อมูลตารางคะแนน'}</p>
           <Link
             href="/dashboard/gamification"
-            className="inline-block px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+            className="inline-block px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-600"
           >
             กลับไปหน้า Gamification
           </Link>

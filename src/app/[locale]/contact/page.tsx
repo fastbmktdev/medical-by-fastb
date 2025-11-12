@@ -13,6 +13,7 @@ import { ContactMap } from "@/components/shared/maps/ContactMap";
 import { showSuccessToast, showErrorToast } from "@/lib/utils";
 import { validateName, validateEmail, validatePhone, validateSubject, validateMessage } from "@/lib/utils/validation";
 import { Link } from "@/navigation";
+import { LoadingSpinner } from "@/components/design-system/primitives/Loading";
 
 interface FormErrors {
   name?: string;
@@ -403,11 +404,11 @@ export default function ContactPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex justify-center items-center gap-2 bg-brand-primary hover:bg-red-700 disabled:bg-zinc-600 px-6 py-3 rounded-lg w-full font-semibold transition-colors disabled:cursor-not-allowed"
+                  className="flex justify-center items-center gap-2 bg-brand-primary hover:bg-red-600 disabled:bg-zinc-600 px-6 py-3 rounded-lg w-full font-semibold transition-colors disabled:cursor-not-allowed"
                  aria-label="Button">
                   {isSubmitting ? (
                     <>
-                      <div className="border-white border-b-2 rounded-full w-5 h-5 animate-spin"></div>
+                      <LoadingSpinner size="xs" />
                       กำลังส่ง...
                     </>
                   ) : (

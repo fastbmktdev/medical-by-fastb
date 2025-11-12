@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient, createAdminClient } from '@/lib/database/supabase/server';
 import { validateFile, sanitizeFilename } from '@/lib/utils/file-validation';
+import { logAuditEvent } from '@/lib/utils';
 
 /**
  * Profile Picture Upload API
@@ -16,6 +17,21 @@ import { validateFile, sanitizeFilename } from '@/lib/utils/file-validation';
  * - MIME type and extension validation
  */
 
+const extractStoragePath = (url: string | null | undefined) => {
+  if (!url) {
+    return null;
+  }
+
+  const urlParts = url.split('/');
+  const bucketIndex = urlParts.findIndex((part: string) => part === 'avatars');
+
+  if (bucketIndex === -1 || bucketIndex >= urlParts.length - 1) {
+    return null;
+  }
+
+  return urlParts.slice(bucketIndex + 1).join('/');
+};
+
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient();
@@ -29,6 +45,14 @@ export async function POST(request: NextRequest) {
         { status: 401 }
       );
     }
+
+    const { data: existingProfile } = await supabase
+      .from('profiles')
+      .select('avatar_url, full_name')
+      .eq('user_id', user.id)
+      .maybeSingle();
+
+    const previousAvatarUrl = existingProfile?.avatar_url || null;
 
     const formData = await request.formData();
     const file = formData.get('file') as File | null;
@@ -122,6 +146,42 @@ export async function POST(request: NextRequest) {
         );
       }
 
+      // Attempt to remove previous avatar if it existed
+      if (previousAvatarUrl) {
+        const oldPath = extractStoragePath(previousAvatarUrl);
+        if (oldPath) {
+          try {
+            await supabase.storage
+              .from('avatars')
+              .remove([oldPath]);
+          } catch (removeError) {
+            console.warn('Failed to remove previous avatar (fallback client):', removeError);
+          }
+        }
+      }
+
+      await logAuditEvent({
+        supabase,
+        request,
+        user,
+        action: previousAvatarUrl ? 'update' : 'create',
+        resourceType: 'profile',
+        resourceId: user.id,
+        resourceName: user.email ?? user.id,
+        description: 'Uploaded new profile picture',
+        oldValues: previousAvatarUrl ? { avatar_url: previousAvatarUrl } : null,
+        newValues: { avatar_url: publicUrl },
+        metadata: {
+          fileName,
+          fileSize: file.size,
+          fileType: file.type,
+          storagePath: filePath,
+          validationWarnings: validation.warnings,
+          usedAdminClient: false,
+        },
+        severity: 'medium',
+      });
+
       return NextResponse.json({
         success: true,
         data: {
@@ -156,25 +216,6 @@ export async function POST(request: NextRequest) {
       .from('avatars')
       .getPublicUrl(filePath);
 
-    // Delete old avatar if exists
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('avatar_url')
-      .eq('user_id', user.id)
-      .single();
-
-    if (profile?.avatar_url) {
-      // Extract path from URL
-      const urlParts = profile.avatar_url.split('/');
-      const fileIndex = urlParts.findIndex((part: string) => part === 'avatars');
-      if (fileIndex !== -1 && fileIndex < urlParts.length - 1) {
-        const oldPath = urlParts.slice(fileIndex + 1).join('/');
-        await adminClient.storage
-          .from('avatars')
-          .remove([oldPath]);
-      }
-    }
-
     // Update profile with new avatar URL
     const { error: updateError } = await supabase
       .from('profiles')
@@ -188,6 +229,42 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       );
     }
+
+    // Attempt to remove previous avatar if it existed
+    if (previousAvatarUrl) {
+      const oldPath = extractStoragePath(previousAvatarUrl);
+      if (oldPath) {
+        try {
+          await adminClient.storage
+            .from('avatars')
+            .remove([oldPath]);
+        } catch (removeError) {
+          console.warn('Failed to remove previous avatar (admin client):', removeError);
+        }
+      }
+    }
+
+    await logAuditEvent({
+      supabase,
+      request,
+      user,
+      action: previousAvatarUrl ? 'update' : 'create',
+      resourceType: 'profile',
+      resourceId: user.id,
+      resourceName: user.email ?? user.id,
+      description: 'Uploaded new profile picture',
+      oldValues: previousAvatarUrl ? { avatar_url: previousAvatarUrl } : null,
+      newValues: { avatar_url: publicUrl },
+      metadata: {
+        fileName,
+        fileSize: file.size,
+        fileType: file.type,
+        storagePath: filePath,
+        validationWarnings: validation.warnings,
+        usedAdminClient: true,
+      },
+      severity: 'medium',
+    });
 
     return NextResponse.json({
       success: true,
@@ -267,6 +344,23 @@ export async function DELETE(request: NextRequest) {
         );
       }
 
+      await logAuditEvent({
+        supabase,
+        request,
+        user,
+        action: 'delete',
+        resourceType: 'profile',
+        resourceId: user.id,
+        resourceName: user.email ?? user.id,
+        description: 'Removed profile picture',
+        oldValues: profile?.avatar_url ? { avatar_url: profile.avatar_url } : null,
+        newValues: { avatar_url: null },
+        metadata: {
+          usedAdminClient: false,
+        },
+        severity: 'low',
+      });
+
       return NextResponse.json({
         success: true,
         message: 'Profile picture removed successfully'
@@ -300,6 +394,23 @@ export async function DELETE(request: NextRequest) {
         { status: 500 }
       );
     }
+
+    await logAuditEvent({
+      supabase,
+      request,
+      user,
+      action: 'delete',
+      resourceType: 'profile',
+      resourceId: user.id,
+      resourceName: user.email ?? user.id,
+      description: 'Removed profile picture',
+      oldValues: profile?.avatar_url ? { avatar_url: profile.avatar_url } : null,
+      newValues: { avatar_url: null },
+      metadata: {
+        usedAdminClient: true,
+      },
+      severity: 'low',
+    });
 
     return NextResponse.json({
       success: true,

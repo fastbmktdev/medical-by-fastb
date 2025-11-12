@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { generateQRCodeDataURL } from "@/lib/utils/qrcode";
+import { Loading } from "@/components/design-system/primitives/Loading";
 
 interface QRCodeDisplayProps {
   ticketId: string;
@@ -41,7 +42,7 @@ export function QRCodeDisplay({
   if (isLoading) {
     return (
       <div className={`flex justify-center items-center bg-zinc-900 rounded-lg p-8 ${className}`}>
-        <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+        <Loading centered size="xl" />
       </div>
     );
   }

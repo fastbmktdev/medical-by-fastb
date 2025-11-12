@@ -210,7 +210,7 @@ export default function ShopPage() {
             <p className="text-red-500 text-xl mb-4">{error}</p>
             <button
               onClick={() => window.location.reload()}
-              className="bg-brand-primary hover:bg-red-700 px-6 py-2 rounded-lg transition-colors"
+              className="bg-brand-primary hover:bg-red-600 px-6 py-2 rounded-lg transition-colors"
             >
               ลองใหม่อีกครั้ง
             </button>
@@ -227,7 +227,7 @@ export default function ShopPage() {
                 </p>
                 <button
                   onClick={handleReset}
-                  className="bg-brand-primary hover:bg-red-700 mt-4 px-6 py-2 rounded-lg transition-colors"
+                  className="bg-brand-primary hover:bg-red-600 mt-4 px-6 py-2 rounded-lg transition-colors"
                   aria-label="Button">
                   ล้างการค้นหา
                 </button>

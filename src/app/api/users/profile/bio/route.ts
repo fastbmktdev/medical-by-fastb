@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/database/supabase/server';
 import { sanitizeHTML } from '@/lib/utils/sanitize';
+import { logAuditEvent } from '@/lib/utils';
 
 /**
  * Update Bio API
@@ -44,6 +45,13 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    // Fetch existing bio for audit logging
+    const { data: existingProfile } = await supabase
+      .from('profiles')
+      .select('bio')
+      .eq('user_id', user.id)
+      .maybeSingle();
+
     // Update profile
     const { data, error } = await supabase
       .from('profiles')
@@ -59,6 +67,25 @@ export async function PUT(request: NextRequest) {
         { status: 500 }
       );
     }
+
+    await logAuditEvent({
+      supabase,
+      request,
+      user,
+      action: bio ? 'update' : 'delete',
+      resourceType: 'profile',
+      resourceId: user.id,
+      resourceName: user.email ?? user.id,
+      description: bio ? 'Updated profile bio' : 'Cleared profile bio',
+      oldValues: existingProfile ? { bio: existingProfile.bio } : null,
+      newValues: { bio: data.bio },
+      metadata: {
+        sanitized: Boolean(bio),
+        previousLength: existingProfile?.bio?.length ?? 0,
+        newLength: data.bio?.length ?? 0,
+      },
+      severity: 'low',
+    });
 
     return NextResponse.json({
       success: true,

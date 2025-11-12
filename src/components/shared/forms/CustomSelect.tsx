@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils/cn';
 import { useTheme } from "@/components/design-system";
 import type { FormComponentProps } from "@/components/design-system/types";
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import { LoadingSpinner } from "@/components/design-system/primitives/Loading";
 
 /**
  * Select variant styles using class-variance-authority with design tokens
@@ -105,28 +106,6 @@ export interface SelectProps
    */
   children: React.ReactNode;
 }
-
-/**
- * Loading Spinner for Select
- */
-const SelectSpinner: React.FC<{ size?: "sm" | "md" | "lg" }> = ({ size = "md" }) => {
-  const sizeClasses = {
-    sm: "w-3 h-3",
-    md: "w-4 h-4",
-    lg: "w-5 h-5",
-  };
-
-  return (
-    <div 
-      className={cn(
-        "border-2 border-current border-t-transparent rounded-full animate-spin text-zinc-500",
-        sizeClasses[size]
-      )}
-      role="status"
-      aria-label="Loading"
-    />
-  );
-};
 
 /**
  * Select Input Component
@@ -299,7 +278,7 @@ const CustomSelect = React.forwardRef<HTMLSelectElement, SelectProps>(
           {/* Dropdown Icon or Loading Spinner */}
           <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-zinc-500 pointer-events-none">
             {loading ? (
-              <SelectSpinner size={size} />
+              <LoadingSpinner size={size} />
             ) : (
               <ChevronDownIcon className="w-5 h-5" />
             )}

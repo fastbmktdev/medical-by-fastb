@@ -17,6 +17,7 @@ import {
 import { Link } from '@/navigation';
 import { notFound } from "next/navigation";
 import { GymMap } from "@/components/shared/maps/GymMap";
+import { Loading } from "@/components/design-system/primitives/Loading";
 
 const Breadcrumb = memo(function Breadcrumb({ gymName }: { gymName: string }) {
   return (
@@ -327,7 +328,7 @@ export default function GymDetailPage({
   if (isLoading) {
     return (
       <div className="flex justify-center items-center bg-zinc-950 min-h-screen">
-        <div className="border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
+        <Loading centered size="xl" />
       </div>
     );
   }

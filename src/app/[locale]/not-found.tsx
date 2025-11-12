@@ -19,7 +19,7 @@ export default function NotFound() {
         </p>
         <Link
           href="/"
-          className="inline-block bg-brand-primary hover:bg-red-700 px-6 py-3 rounded-lg font-semibold transition-colors"
+          className="inline-block bg-brand-primary hover:bg-red-600 px-6 py-3 rounded-lg font-semibold transition-colors"
         >
           กลับหน้าหลัก
         </Link>

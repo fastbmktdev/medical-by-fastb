@@ -80,7 +80,7 @@ export default function DashboardLayout({
   };
 
   return (
-    <div className="flex bg-linear-to-br from-zinc-950 to-zinc-950 min-h-screen mt-16">
+    <div className="flex bg-linear-to-br from-zinc-950 to-zinc-950 min-h-screen">
       {/* Sidebar - Desktop */}
       {!hideSidebar && (
         <aside className="hidden top-0 lg:sticky lg:flex flex-col bg-zinc-950/50 backdrop-blur-xl border-white/5 border-r w-64 h-screen max-h-screen">

@@ -11,8 +11,8 @@ import {
   Tabs,
   Tab,
   Chip,
-  Spinner,
 } from '@heroui/react';
+import { LoadingSpinner } from '@/components/design-system/primitives/Loading';
 import {
   BuildingStorefrontIcon,
   ChartBarIcon,
@@ -141,7 +141,7 @@ function PartnerPerformanceContent() {
           userEmail={user?.email}
         >
           <div className="flex justify-center items-center py-20">
-            <Spinner size="lg" />
+            <LoadingSpinner size="xl" />
           </div>
         </DashboardLayout>
       </RoleGuard>
@@ -195,7 +195,7 @@ function PartnerPerformanceContent() {
               <div className="flex items-center gap-3">
                 {isRefreshing && (
                   <div className="flex items-center gap-2 text-sm text-default-500">
-                    <Spinner size="sm" />
+                    <LoadingSpinner size="sm" />
                     <span>กำลังรีเฟรชข้อมูล...</span>
                   </div>
                 )}

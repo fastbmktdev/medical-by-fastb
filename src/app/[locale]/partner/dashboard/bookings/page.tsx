@@ -18,7 +18,6 @@ import {
   Tabs,
   Tab,
   Button,
-  Spinner,
   Modal,
   ModalContent,
   ModalHeader,
@@ -26,6 +25,7 @@ import {
   ModalFooter,
   useDisclosure,
 } from '@heroui/react';
+import { LoadingSpinner } from '@/components/design-system/primitives/Loading';
 import {
   BuildingStorefrontIcon,
   ChartBarIcon,
@@ -222,7 +222,7 @@ function PartnerBookingsContent() {
         userEmail={user?.email}
       >
         <div className="flex justify-center items-center py-20">
-          <Spinner size="lg" color="secondary" />
+          <LoadingSpinner size="xl" />
         </div>
       </DashboardLayout>
     );
