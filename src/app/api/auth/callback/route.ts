@@ -17,17 +17,41 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get('code');
-  const next = requestUrl.searchParams.get('next') ?? '/';
+  let next = requestUrl.searchParams.get('next');
   const type = requestUrl.searchParams.get('type');
   
-  // Try to detect locale from referer or default to 'th'
-  const referer = request.headers.get('referer');
+  // For Facebook OAuth, check cookies first (since we don't use query params)
+  // This avoids Facebook's strict redirect URL validation
+  const cookies = request.cookies;
+  const oauthLocale = cookies.get('oauth_locale')?.value;
+  const oauthNext = cookies.get('oauth_next')?.value;
+  
+  // If we have OAuth cookies (from Facebook), use them
+  if (oauthLocale && oauthNext && !next) {
+    next = oauthNext;
+  }
+  
+  // Default next to '/' if not provided
+  if (!next) {
+    next = '/';
+  }
+  
+  // Try to detect locale from cookies, referer, or default to 'th'
   let locale = 'th';
-  if (referer) {
-    const refererUrl = new URL(referer);
-    const localeMatch = refererUrl.pathname.match(/^\/(th|en|jp)(\/|$)/);
-    if (localeMatch) {
-      locale = localeMatch[1];
+  if (oauthLocale) {
+    locale = oauthLocale;
+  } else {
+    const referer = request.headers.get('referer');
+    if (referer) {
+      try {
+        const refererUrl = new URL(referer);
+        const localeMatch = refererUrl.pathname.match(/^\/(th|en|jp)(\/|$)/);
+        if (localeMatch) {
+          locale = localeMatch[1];
+        }
+      } catch (e) {
+        // Invalid referer URL, use default
+      }
     }
   }
   const localePrefix = `/${locale}`;
@@ -159,6 +183,12 @@ export async function GET(request: NextRequest) {
         
         // Create response with redirect
         const response = NextResponse.redirect(redirect);
+        
+        // Clear OAuth cookies after use (for Facebook OAuth)
+        if (oauthLocale || oauthNext) {
+          response.cookies.delete('oauth_locale');
+          response.cookies.delete('oauth_next');
+        }
         
         // Ensure session cookies are set properly
         // The supabase client should have already set cookies, but we make sure

@@ -114,14 +114,31 @@ async function signInWithOAuthProvider(provider: OAuthProvider) {
   const supabase = createClient();
   const locale = getCurrentLocale();
 
-  // Include locale in callback URL so redirect preserves locale
-  const callbackUrl = new URL(`${window.location.origin}/api/auth/callback`);
-  callbackUrl.searchParams.set('next', `/${locale}/dashboard`);
+  // For Facebook, use a simpler redirect URL without query parameters
+  // Facebook's security system is strict about redirect URLs
+  // We'll store the locale and next destination in cookies instead
+  let callbackUrl: string;
+  
+  if (provider === 'facebook') {
+    // Facebook requires a clean redirect URL without query parameters
+    // Store locale and next destination in cookies for server-side retrieval
+    if (typeof window !== 'undefined') {
+      // Set cookies that will be available in the callback route
+      document.cookie = `oauth_locale=${locale}; path=/; max-age=600; SameSite=Lax`;
+      document.cookie = `oauth_next=/${locale}/dashboard; path=/; max-age=600; SameSite=Lax`;
+    }
+    callbackUrl = `${window.location.origin}/api/auth/callback`;
+  } else {
+    // For other providers (Google, etc.), we can use query parameters
+    const callbackUrlObj = new URL(`${window.location.origin}/api/auth/callback`);
+    callbackUrlObj.searchParams.set('next', `/${locale}/dashboard`);
+    callbackUrl = callbackUrlObj.toString();
+  }
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
     options: {
-      redirectTo: callbackUrl.toString(),
+      redirectTo: callbackUrl,
     },
   });
 
@@ -155,14 +172,27 @@ async function linkOAuthAccount(provider: Exclude<OAuthProvider, 'apple'>) {
   const supabase = createClient();
   const locale = getCurrentLocale();
 
-  // Include locale in callback URL so redirect preserves locale
-  const callbackUrl = new URL(`${window.location.origin}/api/auth/callback`);
-  callbackUrl.searchParams.set('next', `/${locale}/dashboard/profile`);
+  // For Facebook, use cookies instead of query parameters
+  let callbackUrl: string;
+  
+  if (provider === 'facebook') {
+    // Facebook requires a clean redirect URL without query parameters
+    if (typeof window !== 'undefined') {
+      document.cookie = `oauth_locale=${locale}; path=/; max-age=600; SameSite=Lax`;
+      document.cookie = `oauth_next=/${locale}/dashboard/profile; path=/; max-age=600; SameSite=Lax`;
+    }
+    callbackUrl = `${window.location.origin}/api/auth/callback`;
+  } else {
+    // For other providers, use query parameters
+    const callbackUrlObj = new URL(`${window.location.origin}/api/auth/callback`);
+    callbackUrlObj.searchParams.set('next', `/${locale}/dashboard/profile`);
+    callbackUrl = callbackUrlObj.toString();
+  }
 
   const { data, error } = await supabase.auth.linkIdentity({
     provider,
     options: {
-      redirectTo: callbackUrl.toString(),
+      redirectTo: callbackUrl,
     },
   });
 
