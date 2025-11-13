@@ -1,0 +1,4 @@
+# pnpm configuration
+# Note: supabase CLI binary warnings can be safely ignored in production builds
+# The supabase CLI is only needed for local development
+shamefully-hoist=false

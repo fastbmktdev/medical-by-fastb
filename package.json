@@ -132,7 +132,8 @@
     "react-quill": "^2.0.0",
     "resend": "^6.2.0",
     "sharp": "^0.33.5",
-    "stripe": "^19.1.0"
+    "stripe": "^19.1.0",
+    "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.28.5",
