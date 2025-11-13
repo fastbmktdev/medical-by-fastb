@@ -98,7 +98,22 @@ const nextConfig: NextConfig = {
         module: /node_modules\/@opentelemetry\/instrumentation/,
       },
       {
+        module: /node_modules\/require-in-the-middle/,
+      },
+      {
+        module: /node_modules\/@supabase\/realtime-js/,
+      },
+      {
         message: /Critical dependency: the request of a dependency is an expression/,
+      },
+      {
+        message: /Critical dependency: require function is used in a way/,
+      },
+      {
+        message: /A Node\.js API is used \(process\.version/,
+      },
+      {
+        module: /node_modules\/@supabase\/supabase-js/,
       },
     ];
     return config;

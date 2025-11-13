@@ -75,7 +75,7 @@ export default function LeaderboardWidget({ leaderboard, className = '' }: Leade
 
       {/* Leaderboard Entries */}
       <div className="space-y-2">
-        {leaderboard.entries.slice(0, 10).map((entry, index) => (
+        {leaderboard.entries.slice(0, 10).map((entry) => (
           <div
             key={entry.id}
             className={`flex items-center justify-between p-3 rounded-lg ${

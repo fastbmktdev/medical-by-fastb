@@ -71,7 +71,7 @@ export default function PromotionCreateModal({ isOpen, onClose, onSuccess }: Pro
 
     setIsSubmitting(true);
     try {
-      const payload: any = {
+      const payload: Record<string, unknown> = {
         title: formData.title.trim(),
         isActive: formData.isActive,
         priority: parseInt(formData.priority.toString()) || 0,

@@ -7,7 +7,6 @@ import {
   SelectItem,
   Chip,
 } from '@heroui/react';
-import type { Gym } from '@/types';
 import AdminFormModal from '../../shared/AdminFormModal';
 import type {
   GymEditModalProps,

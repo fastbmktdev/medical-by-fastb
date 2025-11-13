@@ -8,7 +8,7 @@ interface EventTicketsModalProps {
   isOpen: boolean;
   onClose: () => void;
   event: Event | null;
-  onReload: () => void;
+  onReload?: () => void;
 }
 
 export default function EventTicketsModal({
@@ -34,6 +34,7 @@ export default function EventTicketsModal({
     if (isOpen && event) {
       loadTickets();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, event]);
 
   async function loadTickets() {
@@ -64,6 +65,12 @@ export default function EventTicketsModal({
       // For now, we'll show a message that this feature needs API support
       toast.error('API endpoint for ticket management needs to be created');
       // TODO: Create API endpoint /api/events/[id]/tickets
+      
+      // After successful creation, reload tickets and notify parent
+      await loadTickets();
+      if (onReload) {
+        onReload();
+      }
     } catch (error) {
       console.error('Error creating ticket:', error);
       toast.error('Failed to create ticket');

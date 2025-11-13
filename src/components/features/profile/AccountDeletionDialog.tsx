@@ -56,9 +56,10 @@ export function AccountDeletionDialog({ isOpen, onClose }: AccountDeletionDialog
       setTimeout(() => {
         window.location.href = '/';
       }, 2000);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Delete error:', error);
-      toast.error(error.message || 'เกิดข้อผิดพลาดในการลบบัญชี');
+      const errorMessage = error instanceof Error ? error.message : 'เกิดข้อผิดพลาดในการลบบัญชี';
+      toast.error(errorMessage);
     } finally {
       setIsDeleting(false);
     }

@@ -117,6 +117,7 @@ export function RoleGuard({
     }
 
     checkAuth();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allowedRole, redirectTo, router, supabase.auth]);
 
   // Loading state

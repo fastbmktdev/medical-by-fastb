@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { 
-  PaperAirplaneIcon, 
-  CheckCircleIcon,
-  ExclamationTriangleIcon 
+import {
+  PaperAirplaneIcon
 } from "@heroicons/react/24/outline";
 import { Button, BaseInput, ErrorDisplay } from "@/components/shared";
 

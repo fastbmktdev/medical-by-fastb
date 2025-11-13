@@ -35,7 +35,7 @@ export const VALIDATION_MESSAGES = {
 /**
  * Validate required field
  */
-export function validateRequired(value: string | null | undefined, fieldName: string): string | undefined {
+export function validateRequired(value: string | null | undefined, _fieldName: string): string | undefined {
   if (!value || value.trim().length === 0) {
     return VALIDATION_MESSAGES.REQUIRED;
   }

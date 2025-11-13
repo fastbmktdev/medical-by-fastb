@@ -120,7 +120,7 @@ export default function PromotionEditModal({ isOpen, onClose, onSuccess, promoti
 
     setIsSubmitting(true);
     try {
-      const payload: any = {};
+      const payload: Record<string, unknown> = {};
 
       if (formData.title) payload.title = formData.title.trim();
       if (formData.titleEnglish !== undefined) payload.titleEnglish = formData.titleEnglish.trim() || null;

@@ -1,14 +1,13 @@
 'use client';
 
 import { useMemo } from 'react';
-import { 
-  GamificationStats, 
-  UserBadge, 
-  Badge, 
-  UserStreak, 
-  Challenge, 
+import {
+  GamificationStats,
+  Badge,
+  UserStreak,
+  Challenge,
   ChallengeProgress,
-  LeaderboardEntry 
+  LeaderboardEntry
 } from '@/types/gamification.types';
 import {
   getRarityColor,
