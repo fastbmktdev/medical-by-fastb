@@ -1,90 +1,92 @@
-import { NextResponse, type NextRequest } from 'next/server'
-import { updateSession } from '@/lib/database/supabase/middleware'
-import { rateLimit } from '@/lib/middleware/rate-limit'
-import { csrfProtection } from '@/lib/middleware/csrf-protection'
-import createIntlMiddleware from 'next-intl/middleware'
-import { locales } from './i18n'
+import { NextResponse, type NextRequest } from 'next/server';
+import { updateSession } from '@/lib/database/supabase/middleware';
+import { rateLimit } from '@/lib/middleware/rate-limit';
+import { csrfProtection } from '@/lib/middleware/csrf-protection';
+import createIntlMiddleware from 'next-intl/middleware';
+import { locales } from './i18n';
 
-// Create i18n middleware
+// Constants
+const DEFAULT_LOCALE = 'th';
+const LOCALE_PREFIX = 'always';
+const COMING_SOON_HOSTS = ['thaikickmuaythai.com', 'www.thaikickmuaythai.com'];
+const AUTH_LOCALE_REGEX = /^\/(th|en|jp)\/auth\/callback(\/|$)/;
+const STATIC_EXTENSIONS_REGEX = /\.(ico|png|jpg|jpeg|svg|gif|webp|css|js|mp4|webm|ogg|mp3|wav|woff|woff2|ttf|eot)$/;
+
+// Setup i18n middleware
 const intlMiddleware = createIntlMiddleware({
-  locales: locales,
-  defaultLocale: 'th',
-  localePrefix: 'always',
-})
+  locales,
+  defaultLocale: DEFAULT_LOCALE,
+  localePrefix: LOCALE_PREFIX,
+});
 
-export async function middleware(request: NextRequest) {
-  const host = request.headers.get('host')
-  const path = request.nextUrl.pathname
+function isApiRoute(path: string) {
+  return path.startsWith('/api/');
+}
 
-  const isComingSoonPath =
-    path === '/coming-soon' ||
-    locales.some((locale) => path === `/${locale}/coming-soon`)
+function isApiExemptFromProtection(path: string) {
+  return path.startsWith('/api/webhooks/') || path.startsWith('/api/cron/');
+}
 
-  const comingSoonHosts = ['thaikickmuaythai.com', 'www.thaikickmuaythai.com'];
-
-  if (comingSoonHosts.includes(host ?? '') && !isComingSoonPath) {
-    // Specific real domain: redirect to Coming Soon page
-    const comingSoonUrl = new URL(`/${locales[0]}/coming-soon`, request.url)
-    return NextResponse.redirect(comingSoonUrl)
-  }
-
-  // Skip i18n middleware for API routes, static files, and internal Next.js routes
-  const shouldSkipI18n =
+function shouldSkipI18n(path: string) {
+  return (
     path.startsWith('/api/') ||
     path.startsWith('/_next/') ||
     path.startsWith('/_vercel/') ||
-    path.startsWith('/assets/') || // Skip all assets directory
-    path.match(/\.(ico|png|jpg|jpeg|svg|gif|webp|css|js|mp4|webm|ogg|mp3|wav|woff|woff2|ttf|eot)$/)
+    path.startsWith('/assets/') ||
+    STATIC_EXTENSIONS_REGEX.test(path)
+  );
+}
 
-  // Apply CSRF protection and rate limiting to API routes
-  if (path.startsWith('/api/')) {
-    // Skip protection for webhooks (they have their own authentication/signature verification)
-    if (path.startsWith('/api/webhooks/')) {
-      return await updateSession(request)
-    }
-    // Skip protection for cron jobs (they have their own secret authentication)
-    if (path.startsWith('/api/cron/')) {
-      return await updateSession(request)
-    }
+function isComingSoonPath(path: string) {
+  return (
+    path === '/coming-soon' ||
+    locales.some((locale) => path === `/${locale}/coming-soon`)
+  );
+}
 
-    // Apply CSRF protection first (before rate limiting)
-    const csrfResponse = await csrfProtection(request)
-    if (csrfResponse) {
-      return csrfResponse
-    }
+export async function middleware(request: NextRequest) {
+  const host = request.headers.get('host') ?? '';
+  const path = request.nextUrl.pathname;
 
-    // Apply rate limiting
-    const rateLimitResponse = await rateLimit(request)
-    if (rateLimitResponse) {
-      return rateLimitResponse
-    }
+  // Handle locale-aware auth callback redirection
+  if (AUTH_LOCALE_REGEX.test(path)) {
+    const apiCallbackUrl = new URL('/api/auth/callback', request.url);
+    request.nextUrl.searchParams.forEach((value, key) => {
+      apiCallbackUrl.searchParams.set(key, value);
+    });
+    return NextResponse.redirect(apiCallbackUrl);
   }
 
-  // Apply i18n middleware for non-API routes
-  if (!shouldSkipI18n) {
-    const intlResponse = intlMiddleware(request)
-
-    // If i18n middleware wants to redirect, do it
-    if (intlResponse) {
-      return intlResponse
-    }
+  // Redirect specific hosts to the coming soon page if necessary
+  if (COMING_SOON_HOSTS.includes(host) && !isComingSoonPath(path)) {
+    const comingSoonUrl = new URL(`/${locales[0]}/coming-soon`, request.url);
+    return NextResponse.redirect(comingSoonUrl);
   }
 
-  // Continue with Supabase session update
-  return await updateSession(request)
+  // API route: apply special protections
+  if (isApiRoute(path)) {
+    if (isApiExemptFromProtection(path)) {
+      return updateSession(request);
+    }
+    const csrfResponse = await csrfProtection(request);
+    if (csrfResponse) return csrfResponse;
+
+    const rateLimitResponse = await rateLimit(request);
+    if (rateLimitResponse) return rateLimitResponse;
+  }
+
+  // i18n middleware only for relevant routes
+  if (!shouldSkipI18n(path)) {
+    const intlResponse = intlMiddleware(request);
+    if (intlResponse) return intlResponse;
+  }
+
+  // Always update session at the end
+  return updateSession(request);
 }
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - assets/ (static assets directory)
-     * - Common static file extensions (images, videos, audio, fonts, etc.)
-     */
     '/((?!_next/static|_next/image|favicon.ico|assets/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|mp4|webm|ogg|mp3|wav|woff|woff2|ttf|eot|css|js|ico)$).*)',
   ],
-}
-
+};
