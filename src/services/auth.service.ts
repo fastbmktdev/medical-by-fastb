@@ -31,7 +31,7 @@ export async function signUp(credentials: SignUpCredentials) {
     email: credentials.email,
     password: credentials.password,
     options: {
-      emailRedirectTo: `${window.location.origin}/${locale}/auth/callback`,
+      emailRedirectTo: `${window.location.origin}/api/auth/callback`,
     },
   });
 
@@ -113,7 +113,7 @@ async function signInWithOAuthProvider(provider: OAuthProvider) {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
     options: {
-      redirectTo: `${window.location.origin}/${locale}/auth/callback`,
+      redirectTo: `${window.location.origin}/api/auth/callback`,
     },
   });
 
@@ -150,7 +150,7 @@ async function linkOAuthAccount(provider: Exclude<OAuthProvider, 'apple'>) {
   const { data, error } = await supabase.auth.linkIdentity({
     provider,
     options: {
-      redirectTo: `${window.location.origin}/${locale}/auth/callback`,
+      redirectTo: `${window.location.origin}/api/auth/callback`,
     },
   });
 

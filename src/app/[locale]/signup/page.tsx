@@ -312,8 +312,8 @@ function SignupContent() {
             full_name: formData.fullName,
             phone: formData.phone,
           },
-          // Email confirmation URL (locale-aware)
-          emailRedirectTo: `${window.location.origin}/${locale}/auth/callback`,
+          // Email confirmation URL - use /api/auth/callback to avoid i18n middleware
+          emailRedirectTo: `${window.location.origin}/api/auth/callback`,
         },
       });
 

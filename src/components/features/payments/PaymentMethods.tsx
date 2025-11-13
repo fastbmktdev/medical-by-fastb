@@ -280,7 +280,7 @@ export default function PaymentMethods({
                   </div>
                 </div>
                 <button
-                  onClick={handleBankTransfer}
+                  onClick={handlePaymentSubmit}
                   disabled={isProcessing}
                   className="w-full bg-brand-primary hover:bg-red-600 disabled:bg-zinc-600 disabled:opacity-50 py-3 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed"
                  aria-label="Button">
@@ -311,7 +311,7 @@ export default function PaymentMethods({
                   </div>
                 </div>
                 <button
-                  onClick={handlePromptPay}
+                  onClick={handlePaymentSubmit}
                   disabled={isProcessing}
                   className="w-full bg-brand-primary hover:bg-red-600 disabled:bg-zinc-600 disabled:opacity-50 py-3 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed"
                  aria-label="Button">
@@ -347,7 +347,7 @@ export default function PaymentMethods({
                   </p>
                 </div>
                 <button
-                  onClick={handleOnsitePayment}
+                  onClick={handlePaymentSubmit}
                   disabled={isProcessing}
                   className="w-full bg-brand-primary hover:bg-red-600 disabled:bg-zinc-600 disabled:opacity-50 py-3 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed"
                  aria-label="Button">

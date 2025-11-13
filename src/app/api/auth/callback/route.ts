@@ -1,9 +1,8 @@
 import { createClientForMiddleware, createAdminClient } from '@/lib/database/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
-import { getLocale } from 'next-intl/server';
 
 /**
- * Auth Callback Route Handler (Locale-aware)
+ * Auth Callback Route Handler
  * Handles authentication callbacks from Supabase Auth
  * 
  * This route processes:
@@ -11,15 +10,26 @@ import { getLocale } from 'next-intl/server';
  * - Password reset tokens
  * - OAuth callbacks
  * - Magic link authentications
+ * 
+ * Note: This route is at /api/auth/callback to avoid i18n middleware processing.
+ * After successful authentication, it redirects to locale-aware pages.
  */
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get('code');
   const next = requestUrl.searchParams.get('next') ?? '/';
   const type = requestUrl.searchParams.get('type');
-
-  // Get locale from the URL path
-  const locale = await getLocale();
+  
+  // Try to detect locale from referer or default to 'th'
+  const referer = request.headers.get('referer');
+  let locale = 'th';
+  if (referer) {
+    const refererUrl = new URL(referer);
+    const localeMatch = refererUrl.pathname.match(/^\/(th|en|jp)(\/|$)/);
+    if (localeMatch) {
+      locale = localeMatch[1];
+    }
+  }
   const localePrefix = `/${locale}`;
 
   if (code) {
