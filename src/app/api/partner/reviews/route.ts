@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/database/supabase/server';
-import type { ReviewListQuery } from '@/types/review.types';
 
 /**
  * GET /api/partner/reviews
@@ -112,7 +111,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Format response
-    const formattedReviews = reviews?.map((review: any) => ({
+    const formattedReviews = reviews?.map((review: { profiles?: { full_name?: string; avatar_url?: string }; review_replies?: Array<Record<string, unknown>> }) => ({
       ...review,
       user_full_name: review.profiles?.full_name,
       user_avatar_url: review.profiles?.avatar_url,

@@ -5,6 +5,7 @@ import { ProductCard } from "@/components/shared";
 import { PageHeader } from "@/components/shared";
 import { MagnifyingGlassIcon, FunnelIcon } from "@heroicons/react/24/outline";
 import { trackSearch } from "@/lib/utils/analytics";
+import { useDebouncedValue } from "@/lib/hooks/useDebouncedValue";
 
 interface Product {
   id: string;
@@ -34,21 +35,14 @@ interface Category {
 
 export default function ShopPage() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Debounce search query
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearchQuery(searchQuery);
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [searchQuery]);
+  // Debounce search query with loading state
+  const { debouncedValue: debouncedSearchQuery, isDebouncing } = useDebouncedValue(searchQuery, 300);
 
   // Fetch categories first
   useEffect(() => {
@@ -165,6 +159,11 @@ export default function ShopPage() {
                 onChange={handleSearch}
                 className="bg-zinc-950 py-3 pr-4 pl-10 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full placeholder-zinc-400"
               />
+              {isDebouncing && (
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                  <div className="w-5 h-5 border-2 border-red-500 border-t-transparent rounded-full animate-spin" />
+                </div>
+              )}
             </div>
 
             {/* Category Filter */}

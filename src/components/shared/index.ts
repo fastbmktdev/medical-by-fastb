@@ -49,6 +49,8 @@ export { NotificationBell } from './NotificationBell';
 export { NotificationList } from './NotificationList';
 export { ResponsiveTable } from './ResponsiveTable';
 export type { ResponsiveTableColumn, ResponsiveTableProps } from './ResponsiveTable';
+export { Pagination, usePagination } from './ui/Pagination';
+export type { PaginationProps } from './ui/Pagination';
 
 // === TYPE EXPORTS ===
 // Component Types

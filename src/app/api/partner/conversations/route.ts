@@ -105,7 +105,7 @@ export async function GET(request: NextRequest) {
 
     // เติมข้อมูล profile ของลูกค้า
     const conversationsWithProfiles = await Promise.all(
-      (conversations || []).map(async (conv: any) => {
+      (conversations || []).map(async (conv) => {
         try {
           const { data: profile } = await supabase
             .from('profiles')

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   Card,
   CardBody,
@@ -188,11 +188,7 @@ export function GalleryManager({ gymId, onRefresh }: GalleryManagerProps) {
     })
   );
 
-  useEffect(() => {
-    loadGallery();
-  }, [gymId]);
-
-  const loadGallery = async () => {
+  const loadGallery = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(`/api/partner/gallery?gym_id=${gymId}`);
@@ -209,7 +205,11 @@ export function GalleryManager({ gymId, onRefresh }: GalleryManagerProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [gymId]);
+
+  useEffect(() => {
+    loadGallery();
+  }, [loadGallery]);
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;

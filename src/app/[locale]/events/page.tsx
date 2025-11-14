@@ -11,6 +11,7 @@ import {
 import { PageHeader } from "@/components/shared";
 import { EventCard } from "@/components/shared";
 import { trackSearch } from "@/lib/utils/analytics";
+import { useDebouncedValue } from "@/lib/hooks/useDebouncedValue";
 
 type ViewMode = "list" | "grid";
 
@@ -21,6 +22,9 @@ export default function EventsPage() {
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  // Debounce search query with loading state
+  const { debouncedValue: debouncedSearchQuery, isDebouncing } = useDebouncedValue(searchQuery, 300);
 
   // Fetch events from API
   useEffect(() => {
@@ -58,13 +62,13 @@ export default function EventsPage() {
     ),
   ];
 
-  // Filter events
+  // Filter events (using debounced query)
   const filteredEvents = events.filter((event) => {
     const matchesSearch =
-      event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (event.name_english?.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      event.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (event.description?.toLowerCase().includes(searchQuery.toLowerCase()));
+      event.name.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
+      (event.name_english?.toLowerCase().includes(debouncedSearchQuery.toLowerCase())) ||
+      event.location.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
+      (event.description?.toLowerCase().includes(debouncedSearchQuery.toLowerCase()));
 
     const eventCity = event.location.split(",").pop()?.trim() || event.location;
     const matchesCity =
@@ -84,17 +88,17 @@ export default function EventsPage() {
 
   const prevSearchQuery = useRef<string>("");
 
-  // Track search event when search query changes
+  // Track search event when debounced search query changes
   useEffect(() => {
-    if (searchQuery.trim() && searchQuery.trim() !== prevSearchQuery.current) {
+    if (debouncedSearchQuery.trim() && debouncedSearchQuery.trim() !== prevSearchQuery.current) {
       try {
-        trackSearch(searchQuery.trim(), selectedCity !== "all" ? selectedCity : "events", filteredEvents.length);
-        prevSearchQuery.current = searchQuery.trim();
+        trackSearch(debouncedSearchQuery.trim(), selectedCity !== "all" ? selectedCity : "events", filteredEvents.length);
+        prevSearchQuery.current = debouncedSearchQuery.trim();
       } catch (error) {
         console.warn('Analytics tracking error:', error);
       }
     }
-  }, [searchQuery, selectedCity, filteredEvents.length]);
+  }, [debouncedSearchQuery, selectedCity, filteredEvents.length]);
 
   return (
     <div className="bg-zinc-950 min-h-screen">
@@ -117,6 +121,11 @@ export default function EventsPage() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="bg-zinc-950 py-3 pr-4 pl-10 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full placeholder-zinc-400"
               />
+              {isDebouncing && (
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                  <div className="w-5 h-5 border-2 border-red-500 border-t-transparent rounded-full animate-spin" />
+                </div>
+              )}
             </div>
 
             {/* City Filter */}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   Card,
   CardBody,
@@ -46,7 +46,7 @@ export function ReviewList({
   const reviewsPerPage = 10;
 
   // Fetch reviews based on filters
-  const fetchReviews = async () => {
+  const fetchReviews = useCallback(async () => {
     setIsLoading(true);
     try {
       const params = new URLSearchParams({
@@ -88,20 +88,15 @@ export function ReviewList({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [gymId, currentPage, filterRating, filterStatus, sortBy]);
 
   useEffect(() => {
     fetchReviews();
-  }, [gymId, currentPage, filterRating, filterStatus, sortBy]);
+  }, [fetchReviews]);
 
   const handleRefresh = () => {
     fetchReviews();
     onRefresh?.();
-  };
-
-  const handleFilterChange = () => {
-    setCurrentPage(1); // Reset to first page when filters change
-    fetchReviews();
   };
 
   if (isLoading && reviews.length === 0) {

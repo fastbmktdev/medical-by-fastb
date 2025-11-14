@@ -5,7 +5,6 @@ import {
   StarIcon,
   ChatBubbleLeftRightIcon,
   HandThumbUpIcon,
-  ClockIcon,
 } from '@heroicons/react/24/outline';
 import { StarIcon as StarIconSolid } from '@heroicons/react/24/solid';
 import { useTranslations } from 'next-intl';

@@ -143,7 +143,7 @@ export async function GET(request: NextRequest) {
 
     // Group rating trend by month
     const trendByMonth: { [key: string]: { total: number; sum: number; avg: number } } = {};
-    ratingTrend?.forEach((review: any) => {
+    ratingTrend?.forEach((review: { rating: number; created_at: string }) => {
       const month = new Date(review.created_at).toISOString().slice(0, 7); // YYYY-MM
       if (!trendByMonth[month]) {
         trendByMonth[month] = { total: 0, sum: 0, avg: 0 };
@@ -178,7 +178,7 @@ export async function GET(request: NextRequest) {
     let totalResponseTimeHours = 0;
     let responseCount = 0;
 
-    responseTimeData?.forEach((review: any) => {
+    responseTimeData?.forEach((review: { created_at: string; review_replies?: Array<{ created_at: string }> }) => {
       if (review.review_replies && review.review_replies.length > 0) {
         const reviewDate = new Date(review.created_at);
         const replyDate = new Date(review.review_replies[0].created_at);
@@ -192,12 +192,15 @@ export async function GET(request: NextRequest) {
       responseCount > 0 ? parseFloat((totalResponseTimeHours / responseCount).toFixed(2)) : null;
 
     // Format top and recent reviews
-    const formatReview = (review: any) => ({
-      ...review,
-      user_full_name: review.profiles?.full_name || 'Anonymous',
-      user_avatar_url: review.profiles?.avatar_url,
-      profiles: undefined,
-    });
+    const formatReview = (review: { profiles?: Array<{ full_name?: string; avatar_url?: string }> | { full_name?: string; avatar_url?: string } }) => {
+      const profile = Array.isArray(review.profiles) ? review.profiles[0] : review.profiles;
+      return {
+        ...review,
+        user_full_name: profile?.full_name || 'Anonymous',
+        user_avatar_url: profile?.avatar_url,
+        profiles: undefined,
+      };
+    };
 
     const formattedTopReviews = topReviews?.map(formatReview) || [];
     const formattedRecentReviews = recentReviews?.map(formatReview) || [];

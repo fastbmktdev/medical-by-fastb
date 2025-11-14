@@ -14,6 +14,7 @@ import { GymCard } from "@/components/shared";
 import { Loading } from "@/components/design-system/primitives/Loading";
 import type { Gym } from "@/types/app.types";
 import { trackSearch } from "@/lib/utils/analytics";
+import { useDebouncedValue } from "@/lib/hooks/useDebouncedValue";
 
 export default function GymsPage() {
   const supabase = createClient();
@@ -21,6 +22,9 @@ export default function GymsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState<string>("all");
+  
+  // Debounce search query with loading state
+  const { debouncedValue: debouncedSearchQuery, isDebouncing } = useDebouncedValue(searchQuery, 300);
 
   // Fetch approved gyms from database
   useEffect(() => {
@@ -51,29 +55,29 @@ export default function GymsPage() {
 
   const prevSearchQuery = useRef<string>("");
 
-  // Filter gyms based on search and type
+  // Filter gyms based on search and type (using debounced query)
   const filteredGyms = gyms.filter((gym) => {
     const matchesSearch =
-      gym.gym_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      gym.gym_name_english?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      gym.address?.toLowerCase().includes(searchQuery.toLowerCase());
+      gym.gym_name.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
+      gym.gym_name_english?.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
+      gym.address?.toLowerCase().includes(debouncedSearchQuery.toLowerCase());
 
     const matchesType = selectedType === "all" || gym.gym_type === selectedType;
 
     return matchesSearch && matchesType;
   });
 
-  // Track search event when search query changes
+  // Track search event when debounced search query changes
   useEffect(() => {
-    if (searchQuery.trim() && searchQuery.trim() !== prevSearchQuery.current) {
+    if (debouncedSearchQuery.trim() && debouncedSearchQuery.trim() !== prevSearchQuery.current) {
       try {
-        trackSearch(searchQuery.trim(), selectedType !== "all" ? selectedType : "gyms", filteredGyms.length);
-        prevSearchQuery.current = searchQuery.trim();
+        trackSearch(debouncedSearchQuery.trim(), selectedType !== "all" ? selectedType : "gyms", filteredGyms.length);
+        prevSearchQuery.current = debouncedSearchQuery.trim();
       } catch (error) {
         console.warn('Analytics tracking error:', error);
       }
     }
-  }, [searchQuery, selectedType, filteredGyms.length]);
+  }, [debouncedSearchQuery, selectedType, filteredGyms.length]);
 
   const gymTypes = [
     "all",
@@ -105,6 +109,11 @@ export default function GymsPage() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="bg-zinc-950 py-3 pr-4 pl-10 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full placeholder-zinc-400"
               />
+              {isDebouncing && (
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                  <div className="w-5 h-5 border-2 border-red-500 border-t-transparent rounded-full animate-spin" />
+                </div>
+              )}
             </div>
 
             {/* Filter */}

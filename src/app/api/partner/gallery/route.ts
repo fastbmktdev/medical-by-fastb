@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/database/supabase/server';
-import type { GalleryImage } from '@/types/gallery.types';
 
 /**
  * GET /api/partner/gallery

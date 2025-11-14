@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { createClient } from '@/lib/database/supabase/client';
 import { RoleGuard } from '@/components/features/auth';
-import { DashboardLayout, ResponsiveTable } from '@/components/shared';
+import { DashboardLayout, ResponsiveTable, Pagination, usePagination } from '@/components/shared';
 import type { ResponsiveTableColumn } from '@/components/shared';
 import { adminMenuItems } from '@/components/features/admin/adminMenuItems';
 import { Card, CardBody, Chip, Button, Input, Tabs, Tab, useDisclosure, Spinner } from '@heroui/react';
@@ -56,6 +56,16 @@ function AdminGymsContent() {
   const detailModal = useDisclosure();
   const editModal = useDisclosure();
   const deleteDialog = useDisclosure();
+
+  // Pagination
+  const pagination = usePagination({
+    totalItems: filteredGyms.length,
+    initialPage: 1,
+    initialItemsPerPage: 10,
+  });
+
+  // Get paginated gyms
+  const paginatedGyms = filteredGyms.slice(pagination.startIndex, pagination.endIndex);
 
   useEffect(() => {
     async function loadUser() {
@@ -164,6 +174,17 @@ function AdminGymsContent() {
                   endContent={isSearching && <Spinner size="sm" color="default" />}
                   className="w-full sm:w-64"
                 />
+                <Button
+                  color="success"
+                  variant="flat"
+                  size="sm"
+                  startContent={!isExporting && <ArrowDownTrayIcon className="w-4 h-4" />}
+                  onPress={exportGyms}
+                  isLoading={isExporting}
+                  className="w-full sm:w-auto"
+                >
+                  Export ข้อมูล
+                </Button>
               </div>
             </div>
 
@@ -180,6 +201,7 @@ function AdminGymsContent() {
             </Tabs>
 
             <ResponsiveTable
+              data={paginatedGyms}
               exportConfig={{
                 enabled: true,
                 filename: `admin-gyms-${selectedTab}`,
@@ -295,12 +317,27 @@ function AdminGymsContent() {
                   hideLabelOnMobile: true,
                 },
               ] as ResponsiveTableColumn<Gym>[]}
-              data={filteredGyms}
               keyExtractor={(gym) => gym.id}
               emptyContent="ไม่พบข้อมูลยิม"
               ariaLabel="Gyms table"
               className="border border-default-200 rounded-lg overflow-hidden"
             />
+
+            {/* Pagination */}
+            {filteredGyms.length > 10 && (
+              <div className="mt-6">
+                <Pagination
+                  currentPage={pagination.currentPage}
+                  totalPages={pagination.totalPages}
+                  totalItems={filteredGyms.length}
+                  itemsPerPage={pagination.itemsPerPage}
+                  onPageChange={pagination.setCurrentPage}
+                  showItemsPerPage
+                  onItemsPerPageChange={pagination.setItemsPerPage}
+                  itemsPerPageOptions={[10, 25, 50, 100]}
+                />
+              </div>
+            )}
           </CardBody>
         </Card>
       </section>

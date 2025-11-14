@@ -65,8 +65,14 @@ export async function GET(
       .single();
 
     const isAdmin = role?.role === 'admin';
-    const isGymOwner = (review as any).gyms?.user_id === user.id;
-    const isReviewer = review.user_id === user.id;
+    const reviewData = review as {
+      gyms?: { user_id: string; gym_name?: string; slug?: string };
+      profiles?: { full_name?: string; avatar_url?: string };
+      review_replies?: Array<Record<string, unknown>>;
+      user_id: string;
+    };
+    const isGymOwner = reviewData.gyms?.user_id === user.id;
+    const isReviewer = reviewData.user_id === user.id;
 
     // Partners can only see reviews for their gym
     // Reviewers can see their own reviews
@@ -81,11 +87,11 @@ export async function GET(
     // Format response
     const formattedReview = {
       ...review,
-      user_full_name: (review as any).profiles?.full_name,
-      user_avatar_url: (review as any).profiles?.avatar_url,
-      gym_name: (review as any).gyms?.gym_name,
-      gym_slug: (review as any).gyms?.slug,
-      reply: (review as any).review_replies?.[0] || null,
+      user_full_name: reviewData.profiles?.full_name,
+      user_avatar_url: reviewData.profiles?.avatar_url,
+      gym_name: reviewData.gyms?.gym_name,
+      gym_slug: reviewData.gyms?.slug,
+      reply: reviewData.review_replies?.[0] || null,
       profiles: undefined,
       gyms: undefined,
       review_replies: undefined,
@@ -151,7 +157,7 @@ export async function PATCH(
       .single();
 
     const isAdmin = role?.role === 'admin';
-    const isGymOwner = (review as any).gyms?.user_id === user.id;
+    const isGymOwner = (review as { gyms?: { user_id: string } }).gyms?.user_id === user.id;
 
     if (!isAdmin && !isGymOwner) {
       return NextResponse.json(
@@ -161,7 +167,7 @@ export async function PATCH(
     }
 
     // Update review
-    const updateData: any = {};
+    const updateData: Record<string, unknown> = {};
 
     if (status) {
       updateData.status = status;

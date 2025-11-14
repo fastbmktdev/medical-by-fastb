@@ -9,8 +9,8 @@ interface GamificationLoadingStateProps {
   className?: string;
 }
 
-export function GamificationLoadingState({ 
-  message = 'กำลังโหลด...', 
+export function GamificationLoadingState({
+  message: _message = 'กำลังโหลด...',
   variant = 'skeleton',
   className = ''
 }: GamificationLoadingStateProps) {

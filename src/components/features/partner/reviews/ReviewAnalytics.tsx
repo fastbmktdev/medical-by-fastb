@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardBody, Spinner, Chip } from '@heroui/react';
 import { StarIcon as StarIconSolid } from '@heroicons/react/24/solid';
 import { useTranslations } from 'next-intl';
@@ -17,11 +17,7 @@ export function ReviewAnalytics({ gymId }: ReviewAnalyticsProps) {
   const [data, setData] = useState<ReviewAnalyticsSummary | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchAnalytics();
-  }, [gymId]);
-
-  const fetchAnalytics = async () => {
+  const fetchAnalytics = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
@@ -40,7 +36,11 @@ export function ReviewAnalytics({ gymId }: ReviewAnalyticsProps) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [gymId]);
+
+  useEffect(() => {
+    fetchAnalytics();
+  }, [fetchAnalytics]);
 
   if (isLoading) {
     return (

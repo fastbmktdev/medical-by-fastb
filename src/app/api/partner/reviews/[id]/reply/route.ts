@@ -48,7 +48,7 @@ export async function POST(
     }
 
     // Check if user is the gym owner
-    const isGymOwner = (review as any).gyms?.user_id === user.id;
+    const isGymOwner = (review as { gyms?: { user_id: string } }).gyms?.user_id === user.id;
 
     // Check if user is admin
     const { data: role } = await supabase

@@ -41,7 +41,7 @@ export async function PATCH(
     }
 
     // Verify ownership
-    const gym = image.gyms as any;
+    const gym = image.gyms as { user_id: string };
     if (gym.user_id !== user.id) {
       // Check if admin
       const { data: role } = await supabase
@@ -59,7 +59,7 @@ export async function PATCH(
     }
 
     // Build update object
-    const updates: any = {};
+    const updates: Record<string, unknown> = {};
     if (title !== undefined) updates.title = title;
     if (description !== undefined) updates.description = description;
     if (alt_text !== undefined) updates.alt_text = alt_text;
@@ -133,7 +133,7 @@ export async function DELETE(
     }
 
     // Verify ownership
-    const gym = image.gyms as any;
+    const gym = image.gyms as { user_id: string };
     if (gym.user_id !== user.id) {
       // Check if admin
       const { data: role } = await supabase

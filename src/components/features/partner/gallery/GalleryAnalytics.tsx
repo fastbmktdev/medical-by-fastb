@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardBody, Chip, Spinner } from '@heroui/react';
 import {
   EyeIcon,
@@ -38,11 +38,7 @@ export function GalleryAnalytics({ gymId }: GalleryAnalyticsProps) {
   const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
   const [topImages, setTopImages] = useState<TopImage[]>([]);
 
-  useEffect(() => {
-    loadAnalytics();
-  }, [gymId]);
-
-  const loadAnalytics = async () => {
+  const loadAnalytics = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(`/api/partner/gallery/analytics?gym_id=${gymId}&limit=10`);
@@ -60,7 +56,11 @@ export function GalleryAnalytics({ gymId }: GalleryAnalyticsProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [gymId]);
+
+  useEffect(() => {
+    loadAnalytics();
+  }, [loadAnalytics]);
 
   if (loading) {
     return (

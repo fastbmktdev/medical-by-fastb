@@ -75,17 +75,6 @@ const GymHeader = memo(function GymHeader({ gym }: { gym: Gym }) {
   );
 });
 
-const GalleryPlaceholder = memo(function GalleryPlaceholder() {
-  return (
-    <div className="flex justify-center items-center bg-linear-to-br from-zinc-700 to-zinc-950 rounded-lg h-96">
-      <div className="text-center">
-        <div className="mb-4 text-zinc-600 text-9xl">🥊</div>
-        <p className="text-zinc-400">ภาพประกอบจะมาเร็วๆ นี้</p>
-      </div>
-    </div>
-  );
-});
-
 const AboutSection = memo(function AboutSection({ details }: { details?: string | null }) {
   return (
     <div className="bg-zinc-950 p-6 border border-zinc-700 rounded-lg">
