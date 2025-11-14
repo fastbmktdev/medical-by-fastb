@@ -127,14 +127,14 @@ export function ReviewAnalytics({ gymId }: ReviewAnalyticsProps) {
       )}
 
       {/* Recent Activity */}
-      {data.recent_reviews && data.recent_reviews.length > 0 && (
+      {data.top_reviews && data.top_reviews.length > 0 && (
         <Card>
           <CardBody className="gap-4">
             <h3 className="text-lg font-semibold text-default-900">
               {t('recentActivity')}
             </h3>
             <div className="space-y-3">
-              {data.recent_reviews.slice(0, 5).map((review: GymReviewWithUser) => (
+              {data.top_reviews.slice(0, 5).map((review: GymReviewWithUser) => (
                 <div
                   key={review.id}
                   className="flex items-start gap-3 rounded-lg border-l-4 border-primary-500 bg-default-50 p-3"
@@ -178,48 +178,6 @@ export function ReviewAnalytics({ gymId }: ReviewAnalyticsProps) {
         </Card>
       )}
 
-      {/* Rating Trend */}
-      {data.rating_trend && Object.keys(data.rating_trend).length > 0 && (
-        <Card>
-          <CardBody className="gap-4">
-            <h3 className="text-lg font-semibold text-default-900">
-              {t('reviewsTrend')}
-            </h3>
-            <div className="space-y-2">
-              {Object.entries(data.rating_trend)
-                .sort(([a], [b]) => a.localeCompare(b))
-                .map(([month, stats]: [string, any]) => (
-                  <div
-                    key={month}
-                    className="flex items-center justify-between rounded-lg bg-default-50 p-3"
-                  >
-                    <span className="text-sm font-medium text-default-700">
-                      {month}
-                    </span>
-                    <div className="flex items-center gap-4">
-                      <span className="text-sm text-default-600">
-                        {stats.total} {t('chart.reviews')}
-                      </span>
-                      <div className="flex items-center gap-1">
-                        <StarIconSolid className="h-4 w-4 text-warning-500" />
-                        <span className="text-sm font-semibold text-default-900">
-                          {stats.avg.toFixed(1)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-            </div>
-          </CardBody>
-        </Card>
-      )}
-
-      {/* Last Updated */}
-      {data.last_calculated_at && (
-        <p className="text-center text-xs text-default-400">
-          Last updated: {formatDate(data.last_calculated_at)}
-        </p>
-      )}
     </div>
   );
 }

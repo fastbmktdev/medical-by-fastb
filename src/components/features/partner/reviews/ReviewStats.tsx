@@ -153,28 +153,6 @@ export function ReviewStats({ data, isLoading = false }: ReviewStatsProps) {
           </CardBody>
         </Card>
 
-        {/* Average Response Time */}
-        {data.avg_response_time_hours !== null && data.avg_response_time_hours !== undefined && (
-          <Card>
-            <CardBody className="gap-3">
-              <div className="flex items-center gap-2">
-                <ClockIcon className="h-5 w-5 text-default-400" />
-                <h3 className="font-semibold text-default-900">
-                  Average Response Time
-                </h3>
-              </div>
-              <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-bold text-success-600">
-                  {data.avg_response_time_hours.toFixed(1)}
-                </span>
-                <span className="text-lg text-default-600">hours</span>
-              </div>
-              <p className="text-xs text-default-500">
-                How quickly you respond to reviews
-              </p>
-            </CardBody>
-          </Card>
-        )}
       </div>
     </div>
   );

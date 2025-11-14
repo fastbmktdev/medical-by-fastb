@@ -8,7 +8,7 @@ import { createClient } from '@/lib/database/supabase/server';
  */
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createClient();
@@ -21,7 +21,8 @@ export async function POST(
       );
     }
 
-    const reviewId = params.id;
+    const { id } = await params;
+    const reviewId = id;
     const body = await request.json();
     const { message } = body;
 
@@ -118,7 +119,7 @@ export async function POST(
  */
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createClient();
@@ -131,7 +132,8 @@ export async function PATCH(
       );
     }
 
-    const reviewId = params.id;
+    const { id } = await params;
+    const reviewId = id;
     const body = await request.json();
     const { message } = body;
 
@@ -212,7 +214,7 @@ export async function PATCH(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createClient();
@@ -225,7 +227,8 @@ export async function DELETE(
       );
     }
 
-    const reviewId = params.id;
+    const { id } = await params;
+    const reviewId = id;
 
     // Get existing reply
     const { data: reply, error: replyError } = await supabase
