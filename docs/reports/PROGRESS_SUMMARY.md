@@ -212,7 +212,7 @@
 | Affiliate | 100% ✅ |
 | Maps Integration | 100% ✅ |
 | User Profile | 100% ✅ |
-| Connected Accounts | 92% ✅ (มี Google OAuth - ยังไม่มี Facebook/Apple OAuth) |
+| Connected Accounts | 98% ✅ (มี Google & Facebook OAuth - รอทดสอบ Facebook OAuth) |
 | API Endpoints | 104% ✅ |
 | Notifications | 100% ✅ |
 | Newsletter System | 100% ✅ |

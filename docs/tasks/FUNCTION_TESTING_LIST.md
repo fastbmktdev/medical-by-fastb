@@ -12,9 +12,11 @@
 | หมวดหมู่ | จำนวน Functions | มี Test แล้ว | ยังไม่ทดสอบ | สถานะ |
 |---------|----------------|-------------|------------|-------|
 | **Services** | 50+ | 0 | 50+ | ⚠️ |
-| **Utils** | 60+ | 27 | 33+ | ⚠️ |
+| **Utils** | 63+ | 33 | 30+ | 🟡 |
 | **API Routes** | 125+ | 16 | 109+ | ⚠️ |
-| **รวม** | **235+** | **43** | **192+** | ⚠️ |
+| **รวม** | **238+** | **49** | **189+** | ⚠️ |
+
+**อัปเดต 2025-11-14**: เพิ่ม Export Utils (6 functions) - ✅ Implementation เสร็จแล้ว, ⚠️ ยังต้องเพิ่ม tests
 
 ---
 
@@ -289,48 +291,73 @@
 
 ### 4. Auth Service (`src/services/auth.service.ts`)
 
+#### ✅ มี Tests แล้ว (3 functions - Facebook OAuth)
+
+1. **`signInWithFacebook()`** ✅
+   - [x] Test: Facebook OAuth provider call (Unit test)
+   - [x] Test: Clean redirect URL without query params
+   - [x] Test: Cookie-based locale persistence
+   - [x] Test: Error handling
+   - ⚠️ Manual test required for full OAuth flow
+   - 📝 Tests: `tests/unit/auth-facebook-oauth.test.ts`
+   - 📝 E2E: `tests/e2e/auth/facebook-oauth.spec.ts`
+   - 📝 Manual Guide: `docs/guild/FACEBOOK_OAUTH_MANUAL_TEST.md`
+
+2. **`linkFacebookAccount()`** ✅
+   - [x] Test: Link identity call with Facebook provider
+   - [x] Test: Clean redirect URL for Facebook
+   - [x] Test: Redirect to profile page after linking
+   - [x] Test: Error handling (identity already linked)
+   - ⚠️ Manual test required for full flow
+   - 📝 Tests: `tests/unit/auth-facebook-oauth.test.ts`
+
+3. **`unlinkOAuthAccount('facebook')`** ✅
+   - [x] Test: Unlink identity call
+   - [x] Test: Error handling (cannot unlink last identity)
+   - 📝 Tests: `tests/unit/auth-facebook-oauth.test.ts`
+
 #### ⚠️ ยังไม่ทดสอบ (9 functions)
 
-1. **`signUp(credentials: SignUpCredentials)`**
+4. **`signUp(credentials: SignUpCredentials)`**
    - [ ] Test: Sign up successfully
    - [ ] Test: Email already exists
    - [ ] Test: Invalid email format
    - [ ] Test: Weak password
    - [ ] Test: Profile and user_role created automatically
 
-2. **`signIn(credentials: SignInCredentials)`**
+5. **`signIn(credentials: SignInCredentials)`**
    - [ ] Test: Sign in with email successfully
    - [ ] Test: Sign in with username successfully
    - [ ] Test: Invalid credentials
    - [ ] Test: Non-existent user
 
-3. **`signOut()`**
+6. **`signOut()`**
    - [ ] Test: Sign out successfully
    - [ ] Test: Session cleared
 
-4. **`getCurrentUser()`**
+7. **`getCurrentUser()`**
    - [ ] Test: Get authenticated user
    - [ ] Test: No authenticated user (returns null)
 
-5. **`onAuthStateChange(callback)`**
+8. **`onAuthStateChange(callback)`**
    - [ ] Test: Callback called on auth state change
    - [ ] Test: Unsubscribe works
 
-6. **`signInWithGoogle()`**
+9. **`signInWithGoogle()`**
    - [ ] Test: Google OAuth flow
    - [ ] Test: Error handling
 
-7. **`linkGoogleAccount()`**
+10. **`linkGoogleAccount()`**
    - [ ] Test: Link Google account successfully
    - [ ] Test: Account already linked
    - [ ] Test: Error handling
 
-8. **`unlinkGoogleAccount(provider: string)`**
+11. **`unlinkGoogleAccount(provider: string)`**
    - [ ] Test: Unlink account successfully
    - [ ] Test: Account not linked
    - [ ] Test: Error handling
 
-9. **`getConnectedAccounts()`**
+12. **`getConnectedAccounts()`**
    - [ ] Test: Get connected accounts
    - [ ] Test: No connected accounts (empty array)
 
@@ -723,23 +750,67 @@
 
 ### 11. Export Utils (`src/lib/utils/export.ts`)
 
-#### ⚠️ ยังไม่ทดสอบ (3 functions)
+#### ✅ เสร็จสมบูรณ์แล้ว (6 functions) - 2025-11-14
 
-1. **`exportToCSV(data: any[], filename?, options?)`**
-   - [ ] Test: Export to CSV
-   - [ ] Test: CSV format correct
-   - [ ] Test: Special characters handling
-   - [ ] Test: Empty data array
+1. **`exportToPDF<T>(options: ExportPDFOptions<T>)`** ✅
+   - [x] Export ข้อมูลเป็น PDF document
+   - [x] รองรับ landscape/portrait orientation
+   - [x] รองรับ Thai fonts (Helvetica)
+   - [x] Auto page numbers และ timestamps
+   - [x] Custom column formatting
+   - [x] Row numbers (optional)
+   - [x] Headers และ footers
+   - [x] Empty data handling
+   - ⚠️ **ต้องเพิ่ม tests**: Unit tests สำหรับ PDF generation
 
-2. **`exportToPDF(data: any[], filename?, options?)`**
-   - [ ] Test: Export to PDF
-   - [ ] Test: PDF format correct
-   - [ ] Test: Table formatting
+2. **`exportToCSV<T>(options: ExportCSVOptions<T>)`** ✅
+   - [x] Export ข้อมูลเป็น CSV file
+   - [x] UTF-8 BOM encoding (Excel-friendly)
+   - [x] Auto escape special characters (commas, quotes)
+   - [x] Custom column formatting
+   - [x] Timestamp ในชื่อไฟล์ (optional)
+   - [x] Empty data handling
+   - ⚠️ **ต้องเพิ่ม tests**: Unit tests สำหรับ CSV generation
 
-3. **`formatDataForExport(data: any[], format: string)`**
-   - [ ] Test: Format for CSV
-   - [ ] Test: Format for PDF
-   - [ ] Test: Invalid format handling
+3. **`exportToJSON<T>(options: ExportJSONOptions<T>)`** ✅ (Bonus feature)
+   - [x] Export ข้อมูลเป็น JSON file
+   - [x] Pretty print option
+   - [x] Download trigger
+   - ⚠️ **ต้องเพิ่ม tests**: Unit tests สำหรับ JSON export
+
+4. **`generateColumnsFromData<T>(data: T[])`** ✅
+   - [x] Auto-generate columns จากข้อมูล
+   - [x] Format field names (snake_case → Title Case)
+   - [x] Empty data handling
+
+5. **`formatValue(value: unknown)`** ✅
+   - [x] Format ค่าต่างๆ สำหรับ export
+   - [x] Boolean → Yes/No
+   - [x] Date → Thai format
+   - [x] Object → JSON string
+   - [x] Null/undefined → empty string
+
+**Integration Features** ✅:
+- [x] `useTableExport` hook - Custom hook สำหรับ React components
+- [x] `TableExportButton` component - Dropdown button (PDF + CSV)
+- [x] `SimpleExportButtons` component - Separate buttons
+- [x] DataTable integration - `exportConfig` prop
+- [x] ResponsiveTable integration - `exportConfig` prop
+
+**Implementation Status**:
+- ✅ Core utilities: `src/lib/utils/export.ts`
+- ✅ React hook: `src/lib/hooks/useTableExport.ts`
+- ✅ UI components: `src/components/shared/TableExportButton.tsx`
+- ✅ Partner Dashboard integration: Bookings table
+- ✅ Admin Dashboard integration: Gyms และ Bookings tables
+- ✅ Documentation: `docs/features/TABLE_EXPORT_SYSTEM.md`
+
+**ต้องทำต่อ**:
+- [ ] Unit tests สำหรับ export utilities
+- [ ] Integration tests กับ DataTable/ResponsiveTable
+- [ ] E2E tests สำหรับ download flow
+- [ ] Performance tests (large datasets > 10k rows)
+- [ ] Browser compatibility tests (Safari, Firefox)
 
 ---
 
@@ -1052,7 +1123,7 @@
 - Auth Service: 9 functions ⚠️
 - Gym Service: 9 functions ⚠️
 
-### Utils (60+ functions)
+### Utils (63+ functions)
 - Analytics: 10 functions ⚠️
 - Affiliate: 6 functions (มี test บางส่วน) ⚠️
 - Promotion: 3 functions ✅ (มี test แล้ว)
@@ -1063,7 +1134,7 @@
 - PDF Generator: 2 functions ⚠️
 - Crypto: 2 functions ⚠️
 - Slug: 3 functions ⚠️
-- Export: 3 functions ⚠️
+- **Export: 6 functions ✅ (Implementation เสร็จแล้ว - ยังต้องเพิ่ม tests)**
 - Rate Limit Error: 4 functions ⚠️
 - Text Utils: 5 functions ⚠️
 - Formatters: 2 functions ⚠️
@@ -1112,9 +1183,14 @@
 ## 📝 หมายเหตุ
 
 1. **Functions ที่มี test แล้ว**: 43 tests (Promotion Utils + Promotion API)
-2. **Functions ที่ยังไม่ทดสอบ**: 192+ functions
-3. **Priority**: เริ่มจาก High Priority ก่อน
-4. **Coverage Goal**: 80%+ สำหรับ critical functions
+2. **Functions ที่มี implementation แล้ว (ต้องเพิ่ม tests)**: 6 functions (Export Utils - 2025-11-14)
+3. **Functions ที่ยังไม่ทดสอบ**: 189+ functions
+4. **Priority**: เริ่มจาก High Priority ก่อน
+5. **Coverage Goal**: 80%+ สำหรับ critical functions
+
+**อัปเดตล่าสุด**: 2025-11-14
+- ✅ เพิ่ม Export System (6 functions) - Implementation เสร็จสมบูรณ์
+- ⚠️ ต้องเพิ่ม unit tests, integration tests, และ E2E tests สำหรับ Export features
 
 ---
 
