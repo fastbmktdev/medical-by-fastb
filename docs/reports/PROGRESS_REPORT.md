@@ -5,13 +5,14 @@
 ℹ️ **อัปเดตล่าสุด: 14 พฤศจิกายน 2025**
 
 **ระบบหลัก**: พร้อมใช้งาน 100% ✅
-**UX Improvements**: Skeleton Loaders + Aria-Labels เสร็จสมบูรณ์ ✅
+**UX Improvements**: Skeleton Loaders + Aria-Labels + Form Validation เสร็จสมบูรณ์ ✅
 
 งานที่เสร็จสิ้นล่าสุด:
 - ✅ Skeleton Loaders (UX-001)
 - ✅ Aria-Labels Accessibility (UX-002)
+- ✅ Form Validation on Blur (UX-003)
 
-งานทั้งหมดเสร็จสมบูรณ์แล้ว: S-101, S-102, S-201, S-301, S-202, S-401, S-203, S-402, S-501, S-502, UX-001, UX-002
+งานทั้งหมดเสร็จสมบูรณ์แล้ว: S-101, S-102, S-201, S-301, S-202, S-401, S-203, S-402, S-501, S-502, UX-001, UX-002, UX-003
 
 ---
 
@@ -348,10 +349,11 @@
    - ✅ เพิ่ม shimmer animation
    - **Impact**: Better perceived performance + Professional UX
 
-5. **Form Validation on Blur** (0% → 100%)
+5. **Form Validation on Blur** (0% → 100%) ✅ **เสร็จสมบูรณ์ 14 พ.ย. 2025**
    - ✅ วิเคราะห์ปัญหาเสร็จแล้ว
-   - ⏳ Validate fields on blur แทนการ validate on submit
-   - Files: `signup/page.tsx`, `login/page.tsx`, `partner/apply/page.tsx`
+   - ✅ Validate fields on blur แทนการ validate on submit
+   - ✅ onBlur validation ครบทั้ง 3 forms (16 fields รวม)
+   - Files: `signup/page.tsx` (6 fields), `login/page.tsx` (2 fields), `partner/apply/page.tsx` (8 fields)
 
 6. **Error Boundaries** (0% → 100%)
    - ✅ วิเคราะห์ปัญหาเสร็จแล้ว
@@ -452,13 +454,41 @@
   - ปรับปรุง screen reader accessibility
   - พร้อมสำหรับ Lighthouse audit (คาดว่าคะแนนดีขึ้น)
 
+- ✅ **Form Validation on Blur** (100%) - **[UX-003] เสร็จสมบูรณ์ 14 พ.ย. 2025**
+  
+  **Implementation**:
+  - เพิ่ม `onBlur` validation ทั้ง 3 forms หลัก
+  - Signup Form: 6 fields (username, fullName, email, phone, password, confirmPassword)
+  - Login Form: 2 fields (identifier, password)
+  - Partner Apply Form: 8 fields (gymName, gymNameEnglish, contactName, phone, email, website, address, description)
+  
+  **Features**:
+  - Real-time validation เมื่อ blur ออกจาก field
+  - Inline error messages พร้อม ExclamationTriangleIcon
+  - Visual feedback: border สีแดงเมื่อมี error
+  - Password requirements แสดงตลอดเวลาพร้อม checkmarks แบบ real-time
+  - Clear error เมื่อผู้ใช้เริ่มพิมพ์ใหม่
+  
+  **Files Updated**:
+  - `src/app/[locale]/signup/page.tsx` - มี handleBlur function + onBlur handlers
+  - `src/app/[locale]/login/page.tsx` - มี handleBlur function + onBlur handlers
+  - `src/app/[locale]/partner/apply/page.tsx` - มี handleBlur function
+  - `src/app/[locale]/partner/apply/components/BasicInformationForm.tsx` - onBlur prop
+  - `src/app/[locale]/partner/apply/components/GymDetailsForm.tsx` - onBlur prop
+  
+  **Impact**:
+  - Better UX - ผู้ใช้เห็น error ทันทีก่อน submit
+  - Reduced form errors - validation ทำงานก่อน submit
+  - Visual feedback ชัดเจนด้วย color coding และ icons
+  - Form completion rate เพิ่มขึ้น (คาดการณ์)
+
 ---
 
 ## 🚨 ระบบที่ยังต้องพัฒนาเพิ่มเติม
 
 ### 📊 สถานะความสมบูรณ์: **100%** - ระบบหลักเสร็จสมบูรณ์แล้ว 
 **Core Features**: Affiliate 100%, I18N 100%, Payout System 100%, User Impersonation 100%, Content Moderation 100%, Referral Optimization 100%, Event Reminder System 100%, Event Waitlist System 100%
-**UX Improvements**: Skeleton Loaders 100%, Aria-Labels Accessibility 100%, Mobile Responsiveness 100%, File Upload Display 100%, Replace Browser Confirm 100%
+**UX Improvements**: Skeleton Loaders 100%, Aria-Labels Accessibility 100%, Form Validation on Blur 100%, Mobile Responsiveness 100%, File Upload Display 100%, Replace Browser Confirm 100%
 
 ---
 
