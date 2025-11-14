@@ -1,6 +1,6 @@
-# Muaythai Next Postgres
+# Thaikcik MuayThai
 
-**Muaythai Next Postgres** is a modern full-stack web application designed for managing Muay Thai bookings and gym operations. Built using Next.js and TypeScript, and powered by PostgreSQL, this project serves as the core booking and management system for thaikickmuaythai.com.
+The project is a modern full-stack web application designed for managing Muay Thai bookings and gym operations. Built using Next.js and TypeScript, and powered by PostgreSQL, this project serves as the core booking and management system for thaikickmuaythai.com.
 
 ## Features
 
