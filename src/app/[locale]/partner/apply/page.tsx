@@ -12,6 +12,7 @@ import { SuccessView } from "./components/SuccessView";
 import { ApplicationStatusView } from "./components/ApplicationStatusView";
 import { BasicInformationForm } from "./components/BasicInformationForm";
 import { GymDetailsForm } from "./components/GymDetailsForm";
+import { IdCardUpload } from "./components/IdCardUpload";
 import { TermsSection } from "./components/TermsSection";
 import { FormData } from "./types";
 import { injectStyles } from "./utils/styles";
@@ -55,7 +56,15 @@ export default function PartnerApplyPage() {
     description: "",
     services: [],
     termsAccepted: false,
+    idCardUrl: "",
+    idCardOriginalUrl: "",
   });
+
+  // ID card paths for deletion (if needed in future)
+  const [_idCardPaths, setIdCardPaths] = useState<{
+    originalPath: string;
+    watermarkedPath: string;
+  }>({ originalPath: "", watermarkedPath: "" });
 
   // Terms modal state
   const [showTermsModal, setShowTermsModal] = useState(false);
@@ -81,7 +90,10 @@ export default function PartnerApplyPage() {
         description: "",
         services: [],
         termsAccepted: false,
+        idCardUrl: "",
+        idCardOriginalUrl: "",
       });
+      setIdCardPaths({ originalPath: "", watermarkedPath: "" });
       clearFiles();
     },
   });
@@ -303,6 +315,36 @@ export default function PartnerApplyPage() {
             fileErrors={fileErrors}
             onFileChange={handleFileChange}
             onRemoveFile={removeFile}
+          />
+
+          {/* ID Card Upload */}
+          <IdCardUpload
+            onUploadComplete={(data) => {
+              setFormData((prev) => ({
+                ...prev,
+                idCardUrl: data.watermarkedUrl,
+                idCardOriginalUrl: data.originalUrl,
+              }));
+              setIdCardPaths({
+                originalPath: data.originalPath,
+                watermarkedPath: data.watermarkedPath,
+              });
+              // Clear error if exists
+              if (errors.idCard) {
+                setErrors((prev) => {
+                  const newErrors = { ...prev };
+                  delete newErrors.idCard;
+                  return newErrors;
+                });
+              }
+            }}
+            onUploadError={(error) => {
+              setErrors((prev) => ({
+                ...prev,
+                idCard: error,
+              }));
+            }}
+            currentWatermarkedUrl={formData.idCardUrl}
           />
 
           {/* Terms & Conditions */}

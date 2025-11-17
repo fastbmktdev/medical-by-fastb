@@ -24,6 +24,13 @@ export const useFormSubmission = ({ supabase, user, onSuccess }: UseFormSubmissi
       return false;
     }
 
+    // Check if ID card is uploaded
+    if (!formData.idCardUrl || !formData.idCardOriginalUrl) {
+      setErrors({ idCard: "กรุณาอัปโหลดบัตรประชาชน" });
+      setSubmitError("กรุณาอัปโหลดบัตรประชาชนก่อนส่งใบสมัคร");
+      return false;
+    }
+
     // Check if user is authenticated
     if (!user) {
       setSubmitError("กรุณาเข้าสู่ระบบก่อนสมัคร");
@@ -55,6 +62,8 @@ export const useFormSubmission = ({ supabase, user, onSuccess }: UseFormSubmissi
         services: formData.services,
         images: imageUrls,
         status: "pending",
+        id_card_url: formData.idCardUrl,
+        id_card_original_url: formData.idCardOriginalUrl,
       };
 
       const { data: insertedGym, error: insertError } = await supabase

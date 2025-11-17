@@ -41,6 +41,8 @@ export interface Gym {
   socials?: string;
   gym_type?: string;
   slug?: string;
+  id_card_url?: string;
+  id_card_original_url?: string;
   created_at: string;
   updated_at: string;
 }

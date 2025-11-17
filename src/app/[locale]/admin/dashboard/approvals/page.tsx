@@ -203,6 +203,58 @@ const ApplicationDetailModal = ({
           <ModalBody>
             {application && (
               <div className="space-y-6">
+                {/* ID Card Section */}
+                {(application.id_card_url || application.id_card_original_url) && (
+                  <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+                    <p className="mb-3 font-semibold text-purple-300 text-sm flex items-center gap-2">
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+                      </svg>
+                      บัตรประชาชน
+                    </p>
+                    <div className="space-y-3">
+                      {/* Watermarked Version (default display) */}
+                      {application.id_card_url && (
+                        <div>
+                          <p className="mb-2 text-sm text-default-400">แบบมีลายน้ำ (สำหรับตรวจสอบ):</p>
+                          <div className="relative rounded-lg w-full max-w-md h-56 overflow-hidden">
+                            <Image
+                              src={application.id_card_url}
+                              alt="ID Card (Watermarked)"
+                              fill
+                              sizes='100%'
+                              className="object-contain"
+                            />
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Original Version (admin only - with warning) */}
+                      {application.id_card_original_url && (
+                        <details className="mt-4">
+                          <summary className="cursor-pointer text-yellow-400 text-sm font-medium hover:text-yellow-300">
+                            🔒 ดูบัตรประชาชนต้นฉบับ (ไม่มีลายน้ำ - สำหรับแอดมินเท่านั้น)
+                          </summary>
+                          <div className="mt-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3">
+                            <p className="mb-3 text-yellow-200 text-xs">
+                              ⚠️ นี่คือบัตรประชาชนต้นฉบับ กรุณาใช้เพื่อวัตถุประสงค์ในการตรวจสอบเท่านั้น
+                            </p>
+                            <div className="relative rounded-lg w-full max-w-md h-56 overflow-hidden">
+                              <Image
+                                src={application.id_card_original_url}
+                                alt="ID Card (Original)"
+                                fill
+                                sizes='100%'
+                                className="object-contain"
+                              />
+                            </div>
+                          </div>
+                        </details>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 {(application.images?.length ?? 0) > 0 && (
                   <div>
                     <p className="mb-3 text-default-400 text-sm">รูปภาพยิม</p>

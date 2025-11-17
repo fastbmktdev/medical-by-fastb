@@ -23,6 +23,8 @@ export interface Gym {
   price?: string | null;
   usage_details?: string | null;
   status?: string;
+  id_card_url?: string;
+  id_card_original_url?: string;
   created_at?: string;
   updated_at?: string;
 }

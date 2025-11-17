@@ -13,6 +13,8 @@ export interface FormData {
   description: string;
   services: string[];
   termsAccepted: boolean;
+  idCardUrl?: string;
+  idCardOriginalUrl?: string;
 }
 
 export interface FormErrors {
@@ -35,6 +37,8 @@ export interface GymData {
   status?: string;
   created_at?: string;
   updated_at?: string;
+  id_card_url?: string;
+  id_card_original_url?: string;
 }
 
 export type ApplicationStatus = "pending" | "approved" | "denied" | "none";
