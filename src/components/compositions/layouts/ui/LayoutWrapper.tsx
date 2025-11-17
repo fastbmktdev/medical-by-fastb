@@ -30,6 +30,7 @@ export default function LayoutWrapper({
     "forget-password",
     "reset-password",
     "update-password",
+    "verification-pending",
   ]);
   const lastSegment = segments[segments.length - 1];
   const isAuthPage = !!lastSegment && authPages.has(lastSegment);

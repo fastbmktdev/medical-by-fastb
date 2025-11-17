@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import { ReactNode } from "react";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
@@ -72,7 +72,7 @@ export function AuthLayout({
           </div>
 
           {/* Form Content */}
-          <div className="bg-zinc-950/95 backdrop-blur-sm shadow-2xl rounded-2xl p-6 pr-0 border border-zinc-800/50">
+          <div className="bg-zinc-950/95 backdrop-blur-sm shadow-2xl rounded-2xl p-6 pl-2 border border-zinc-800/50">
             {children}
           </div>
         </div>

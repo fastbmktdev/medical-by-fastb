@@ -28,7 +28,7 @@ function VerificationPendingContent() {
       title="ยืนยันอีเมลของคุณ"
       subtitle="เราได้ส่งลิงก์ยืนยันไปที่อีเมลของคุณแล้ว"
     >
-      <div className="space-y-6">
+      <div className="space-y-6 pl-4">
         {/* Success Icon */}
         <div className="flex justify-center">
           <div className="relative">
@@ -43,55 +43,30 @@ function VerificationPendingContent() {
 
         {/* Message */}
         <div className="text-center space-y-4">
-          <h2 className="text-2xl font-bold text-white">
-            ลงทะเบียนสำเร็จ! 🎉
-          </h2>
+          <h2 className="text-2xl font-bold text-white">ลงทะเบียนสำเร็จ!</h2>
 
           {email && (
             <div className="bg-zinc-800/50 border border-zinc-700 rounded-lg p-4">
               <p className="text-zinc-300 text-sm mb-2">
                 เราได้ส่งอีเมลยืนยันไปที่:
               </p>
-              <p className="text-white font-semibold break-all">
-                {email}
-              </p>
+              <p className="text-white font-semibold break-all">{email}</p>
             </div>
           )}
 
-          <div className="bg-blue-600/20 border border-blue-500/30 rounded-lg p-4 space-y-3">
-            <p className="text-blue-300 text-sm font-semibold">
-              📧 กรุณาตรวจสอบอีเมลของคุณ
-            </p>
-            <ul className="text-left text-zinc-300 text-sm space-y-2">
-              <li className="flex items-start gap-2">
-                <span className="text-blue-400 mt-1">•</span>
-                <span>เปิดอีเมลที่เราส่งให้คุณ</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-400 mt-1">•</span>
-                <span>คลิกลิงก์ยืนยันในอีเมล</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-400 mt-1">•</span>
-                <span>กลับมาเข้าสู่ระบบ</span>
-              </li>
-            </ul>
-          </div>
-
-          <div className="bg-yellow-600/20 border border-yellow-500/30 rounded-lg p-4">
-            <p className="text-yellow-300 text-sm">
-              ⚠️ <span className="font-semibold">หมายเหตุ:</span> หากไม่พบอีเมล กรุณาตรวจสอบในโฟลเดอร์ Spam หรือ Junk Mail
-            </p>
-          </div>
+          <p className="text-yellow-300 text-sm">
+            ⚠️ <span className="font-semibold">หมายเหตุ:</span> หากไม่พบอีเมล
+            กรุณาตรวจสอบในโฟลเดอร์ Spam หรือ Junk Mail
+          </p>
         </div>
 
         {/* Action Buttons */}
-        <div className="space-y-3 pt-4">
+        <div className="space-y-3 pt-2">
           <Link href="/login">
             <Button
               fullWidth
               size="lg"
-              className="bg-linear-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"
+              className="bg-linear-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 mb-4"
             >
               ไปที่หน้าเข้าสู่ระบบ
             </Button>
@@ -111,17 +86,16 @@ function VerificationPendingContent() {
 
         {/* Additional Info */}
         <div className="text-center pt-4 border-t border-zinc-700">
-          <p className="text-zinc-400 text-sm mb-2">
-            ไม่ได้รับอีเมล?
-          </p>
+          <p className="text-zinc-400 text-sm mb-2">ไม่ได้รับอีเมล?</p>
           <p className="text-zinc-500 text-xs">
-            กรุณารอสักครู่แล้วลองตรวจสอบอีกครั้ง<br />
+            กรุณารอสักครู่แล้วลองตรวจสอบอีกครั้ง
+            <br />
             หรือติดต่อทีมสนับสนุนได้ที่{" "}
             <a
-              href="mailto:support@muaythai.com"
+              href="mailto:thaikickmuaythai@gmail.com"
               className="text-red-400 hover:text-red-300 underline"
             >
-              support@muaythai.com
+              thaikickmuaythai@gmail.com
             </a>
           </p>
         </div>
@@ -138,16 +112,18 @@ function VerificationPendingContent() {
  */
 export default function VerificationPendingPage() {
   return (
-    <Suspense fallback={
-      <AuthLayout
-        title="ยืนยันอีเมลของคุณ"
-        subtitle="เราได้ส่งลิงก์ยืนยันไปที่อีเมลของคุณแล้ว"
-      >
-        <div className="flex justify-center items-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-500"></div>
-        </div>
-      </AuthLayout>
-    }>
+    <Suspense
+      fallback={
+        <AuthLayout
+          title="ยืนยันอีเมลของคุณ"
+          subtitle="เราได้ส่งลิงก์ยืนยันไปที่อีเมลของคุณแล้ว"
+        >
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-500"></div>
+          </div>
+        </AuthLayout>
+      }
+    >
       <VerificationPendingContent />
     </Suspense>
   );

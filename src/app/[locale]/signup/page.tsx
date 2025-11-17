@@ -3,7 +3,6 @@
 import { useState, useEffect, Suspense } from "react";
 import { useRouter } from "@/navigation";
 import { useSearchParams } from "next/navigation";
-import { useLocale } from "next-intl";
 import { Link } from "@/navigation";
 import { createClient } from "@/lib/database/supabase/client";
 import {
@@ -64,7 +63,6 @@ interface FormErrors {
 function SignupContent() {
   // Router for navigation
   const router = useRouter();
-  const locale = useLocale();
 
   // Supabase client instance
   const supabase = createClient();
@@ -200,8 +198,14 @@ function SignupContent() {
    * @param value - Value to validate (optional, uses formData if not provided)
    * @returns Error message or empty string if valid
    */
-  const validateField = (fieldName: keyof FormErrors, value?: string): string => {
-    const val = value !== undefined ? value : formData[fieldName as keyof SignupFormData] as string;
+  const validateField = (
+    fieldName: keyof FormErrors,
+    value?: string
+  ): string => {
+    const val =
+      value !== undefined
+        ? value
+        : (formData[fieldName as keyof SignupFormData] as string);
 
     switch (fieldName) {
       case "username":
@@ -261,12 +265,12 @@ function SignupContent() {
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const fieldName = name as keyof FormErrors;
-    
+
     // Skip validation for empty optional fields
     if (fieldName === "referralCode") return;
-    
+
     const error = validateField(fieldName, value);
-    
+
     if (error) {
       setErrors((prev) => ({
         ...prev,
@@ -517,7 +521,9 @@ function SignupContent() {
         }
 
         // Redirect to verification pending page
-        router.push(`/${locale}/verification-pending?email=${encodeURIComponent(formData.email)}`);
+        router.push(
+          `/verification-pending?email=${encodeURIComponent(formData.email)}`
+        );
       }
     } catch {
       setErrors({
@@ -611,7 +617,7 @@ function SignupContent() {
       }
 
       // Redirect to dashboard
-      router.push(`/${locale}/dashboard`);
+      router.push(`/dashboard`);
     } catch (error) {
       console.error("OTP verification error:", error);
       setErrors({
@@ -689,452 +695,484 @@ function SignupContent() {
       title="สมัครสมาชิก"
       subtitle="เข้าร่วมชุมชนนักมวยไทยที่ใหญ่ที่สุด"
     >
-        <div className="max-h-[calc(100vh-300px)] overflow-y-auto">
-          <form onSubmit={handleSubmit} className="space-y-4 pr-4">
-            {/* General Error Message */}
-            {errors.general && (
-              <div className="bg-red-500/20 p-4 border border-red-500/70 shadow-red-500/20 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <ExclamationTriangleIcon className="shrink-0 w-6 h-6 text-red-400" />
-                  <p className="text-red-400 text-sm">{errors.general}</p>
+      <div className="max-h-[calc(100vh-300px)] overflow-y-auto">
+        <form onSubmit={handleSubmit} className="space-y-4 px-4">
+          {/* General Error Message */}
+          {errors.general && (
+            <div className="bg-red-500/20 p-4 border border-red-500/70 shadow-red-500/20 rounded-lg">
+              <div className="flex items-center gap-3">
+                <ExclamationTriangleIcon className="shrink-0 w-6 h-6 text-red-400" />
+                <p className="text-red-400 text-sm">{errors.general}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Username Field */}
+          <div>
+            <label
+              htmlFor="username"
+              className="block mb-2 font-medium text-zinc-300 text-sm"
+            >
+              Username
+            </label>
+            <div className="relative group">
+              <input
+                type="text"
+                id="username"
+                name="username"
+                value={formData.username}
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                className={`w-full bg-zinc-800/50 backdrop-blur-sm border ${
+                  errors.username
+                    ? "border-red-500/70 shadow-red-500/20"
+                    : "border-zinc-600/50 hover:border-zinc-500/70 group-hover:border-zinc-500/50"
+                } rounded-xl px-4 py-3 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 focus:shadow-lg focus:shadow-red-500/10 transition-all duration-200 font-mono text-sm`}
+                placeholder="john_doe123"
+                autoComplete="username"
+              />
+            </div>
+            {errors.username && (
+              <p className="flex items-center gap-1 mt-2 text-red-400 text-sm">
+                <ExclamationTriangleIcon className="w-4 h-4" />
+                {errors.username}
+              </p>
+            )}
+          </div>
+
+          {/* Full Name Field */}
+          <div>
+            <label
+              htmlFor="fullName"
+              className="block mb-2 font-medium text-zinc-300 text-sm"
+            >
+              ชื่อ-นามสกุล
+            </label>
+            <div className="relative group">
+              <input
+                type="text"
+                id="fullName"
+                name="fullName"
+                value={formData.fullName}
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                className={`w-full bg-zinc-800/50 backdrop-blur-sm border ${
+                  errors.fullName
+                    ? "border-red-500/70 shadow-red-500/20"
+                    : "border-zinc-600/50 hover:border-zinc-500/70 group-hover:border-zinc-500/50"
+                } rounded-xl px-4 py-3 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 focus:shadow-lg focus:shadow-red-500/10 transition-all duration-200 text-sm`}
+                placeholder="สมชาย ใจดี"
+                autoComplete="name"
+              />
+            </div>
+            {errors.fullName && (
+              <p className="flex items-center gap-1 mt-2 text-red-400 text-sm">
+                <ExclamationTriangleIcon className="w-4 h-4" />
+                {errors.fullName}
+              </p>
+            )}
+          </div>
+
+          {/* Email Field */}
+          <div>
+            <label
+              htmlFor="email"
+              className="block mb-2 font-medium text-zinc-300 text-sm"
+            >
+              อีเมล
+            </label>
+            <div className="relative group">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                className={`w-full bg-zinc-800/50 backdrop-blur-sm border ${
+                  errors.email
+                    ? "border-red-500/70 shadow-red-500/20"
+                    : "border-zinc-600/50 hover:border-zinc-500/70 group-hover:border-zinc-500/50"
+                } rounded-xl px-4 py-3 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 focus:shadow-lg focus:shadow-red-500/10 transition-all duration-200 font-mono text-sm`}
+                placeholder="your@email.com"
+                autoComplete="email"
+              />
+            </div>
+            {errors.email && (
+              <p className="flex items-center gap-1 mt-2 text-red-400 text-sm">
+                <ExclamationTriangleIcon className="w-4 h-4" />
+                {errors.email}
+              </p>
+            )}
+          </div>
+
+          {/* Phone Field */}
+          <div>
+            <label
+              htmlFor="phone"
+              className="block mb-2 font-medium text-zinc-300 text-sm"
+            >
+              เบอร์โทรศัพท์
+            </label>
+            <div className="relative group">
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                className={`w-full bg-zinc-800/50 backdrop-blur-sm border ${
+                  errors.phone
+                    ? "border-red-500/70 shadow-red-500/20"
+                    : "border-zinc-600/50 hover:border-zinc-500/70 group-hover:border-zinc-500/50"
+                } rounded-xl px-4 py-3 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 focus:shadow-lg focus:shadow-red-500/10 transition-all duration-200 font-mono text-sm`}
+                placeholder="0812345678"
+                autoComplete="tel"
+              />
+            </div>
+            {errors.phone && (
+              <p className="flex items-center gap-1 mt-2 text-red-400 text-sm">
+                <ExclamationTriangleIcon className="w-4 h-4" />
+                {errors.phone}
+              </p>
+            )}
+          </div>
+
+          {/* Password Field */}
+          <div>
+            <label
+              htmlFor="password"
+              className="block mb-2 font-medium text-zinc-300 text-sm"
+            >
+              รหัสผ่าน
+            </label>
+            <div className="relative group">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                className={`w-full bg-zinc-800/50 backdrop-blur-sm border ${
+                  errors.password
+                    ? "border-red-500/70 shadow-red-500/20"
+                    : "border-zinc-600/50 hover:border-zinc-500/70 group-hover:border-zinc-500/50"
+                } rounded-lg px-4 py-3 pr-12 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 focus:shadow-lg focus:shadow-red-500/10 transition-all duration-200 font-mono`}
+                placeholder="••••••••"
+                autoComplete="new-password"
+              />
+              <Button
+                type="button"
+                onClick={togglePasswordVisibility}
+                variant="ghost"
+                size="icon"
+                className="absolute top-1/2 -translate-y-1/2 right-4 text-zinc-400 hover:text-zinc-300 p-1"
+              >
+                {showPassword ? (
+                  <EyeSlashIcon className="w-5 h-5" />
+                ) : (
+                  <EyeIcon className="w-5 h-5" />
+                )}
+              </Button>
+            </div>
+
+            {/* Password Requirements - Show always */}
+            {!errors.password && (
+              <div className="mt-2 space-y-1">
+                {formData.password && (
+                  <p className={`text-sm ${passwordStrength.color}`}>
+                    ความแข็งแรง: {passwordStrength.level}
+                  </p>
+                )}
+                <div className="bg-zinc-800/30 border border-zinc-700/50 rounded-lg p-3">
+                  <p className="text-zinc-400 text-xs mb-2">รหัสผ่านต้องมี:</p>
+                  <ul className="space-y-1 text-zinc-500 text-xs">
+                    <li className="flex items-center gap-2">
+                      <span
+                        className={
+                          formData.password.length >= 8 ? "text-green-400" : ""
+                        }
+                      >
+                        {formData.password.length >= 8 ? "✓" : "○"}
+                      </span>
+                      อย่างน้อย 8 ตัวอักษร
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span
+                        className={
+                          /[a-z]/.test(formData.password)
+                            ? "text-green-400"
+                            : ""
+                        }
+                      >
+                        {/[a-z]/.test(formData.password) ? "✓" : "○"}
+                      </span>
+                      ตัวอักษรพิมพ์เล็ก (a-z)
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span
+                        className={
+                          /[A-Z]/.test(formData.password)
+                            ? "text-green-400"
+                            : ""
+                        }
+                      >
+                        {/[A-Z]/.test(formData.password) ? "✓" : "○"}
+                      </span>
+                      ตัวอักษรพิมพ์ใหญ่ (A-Z)
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span
+                        className={
+                          /\d/.test(formData.password) ? "text-green-400" : ""
+                        }
+                      >
+                        {/\d/.test(formData.password) ? "✓" : "○"}
+                      </span>
+                      ตัวเลข (0-9)
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span
+                        className={
+                          /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(
+                            formData.password
+                          )
+                            ? "text-green-400"
+                            : ""
+                        }
+                      >
+                        {/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(
+                          formData.password
+                        )
+                          ? "✓"
+                          : "○"}
+                      </span>
+                      อักขระพิเศษ (!@#$%^&*)
+                    </li>
+                  </ul>
                 </div>
               </div>
             )}
 
-            {/* Username Field */}
-            <div>
-              <label
-                htmlFor="username"
-                className="block mb-2 font-medium text-zinc-300 text-sm"
-              >
-                Username
-              </label>
-              <div className="relative group">
-                <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleInputChange}
-                  onBlur={handleBlur}
-                  className={`w-full bg-zinc-800/50 backdrop-blur-sm border ${
-                    errors.username
-                      ? "border-red-500/70 shadow-red-500/20"
-                      : "border-zinc-600/50 hover:border-zinc-500/70 group-hover:border-zinc-500/50"
-                  } rounded-xl px-4 py-3 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 focus:shadow-lg focus:shadow-red-500/10 transition-all duration-200 font-mono text-sm`}
-                  placeholder="john_doe123"
-                  autoComplete="username"
-                />
-              </div>
-              {errors.username && (
-                <p className="flex items-center gap-1 mt-2 text-red-400 text-sm">
-                  <ExclamationTriangleIcon className="w-4 h-4" />
-                  {errors.username}
-                </p>
-              )}
-            </div>
+            {errors.password && (
+              <p className="flex items-center gap-1 mt-2 text-red-400 text-sm">
+                <ExclamationTriangleIcon className="w-4 h-4" />
+                {errors.password}
+              </p>
+            )}
+          </div>
 
-            {/* Full Name Field */}
-            <div>
-              <label
-                htmlFor="fullName"
-                className="block mb-2 font-medium text-zinc-300 text-sm"
-              >
-                ชื่อ-นามสกุล
-              </label>
-              <div className="relative group">
-                <input
-                  type="text"
-                  id="fullName"
-                  name="fullName"
-                  value={formData.fullName}
-                  onChange={handleInputChange}
-                  onBlur={handleBlur}
-                  className={`w-full bg-zinc-800/50 backdrop-blur-sm border ${
-                    errors.fullName
-                      ? "border-red-500/70 shadow-red-500/20"
-                      : "border-zinc-600/50 hover:border-zinc-500/70 group-hover:border-zinc-500/50"
-                  } rounded-xl px-4 py-3 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 focus:shadow-lg focus:shadow-red-500/10 transition-all duration-200 text-sm`}
-                  placeholder="สมชาย ใจดี"
-                  autoComplete="name"
-                />
-              </div>
-              {errors.fullName && (
-                <p className="flex items-center gap-1 mt-2 text-red-400 text-sm">
-                  <ExclamationTriangleIcon className="w-4 h-4" />
-                  {errors.fullName}
-                </p>
-              )}
-            </div>
-
-            {/* Email Field */}
-            <div>
-              <label
-                htmlFor="email"
-                className="block mb-2 font-medium text-zinc-300 text-sm"
-              >
-                อีเมล
-              </label>
-              <div className="relative group">
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  onBlur={handleBlur}
-                  className={`w-full bg-zinc-800/50 backdrop-blur-sm border ${
-                    errors.email
-                      ? "border-red-500/70 shadow-red-500/20"
-                      : "border-zinc-600/50 hover:border-zinc-500/70 group-hover:border-zinc-500/50"
-                  } rounded-xl px-4 py-3 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 focus:shadow-lg focus:shadow-red-500/10 transition-all duration-200 font-mono text-sm`}
-                  placeholder="your@email.com"
-                  autoComplete="email"
-                />
-              </div>
-              {errors.email && (
-                <p className="flex items-center gap-1 mt-2 text-red-400 text-sm">
-                  <ExclamationTriangleIcon className="w-4 h-4" />
-                  {errors.email}
-                </p>
-              )}
-            </div>
-
-            {/* Phone Field */}
-            <div>
-              <label
-                htmlFor="phone"
-                className="block mb-2 font-medium text-zinc-300 text-sm"
-              >
-                เบอร์โทรศัพท์
-              </label>
-              <div className="relative group">
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  onBlur={handleBlur}
-                  className={`w-full bg-zinc-800/50 backdrop-blur-sm border ${
-                    errors.phone
-                      ? "border-red-500/70 shadow-red-500/20"
-                      : "border-zinc-600/50 hover:border-zinc-500/70 group-hover:border-zinc-500/50"
-                  } rounded-xl px-4 py-3 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 focus:shadow-lg focus:shadow-red-500/10 transition-all duration-200 font-mono text-sm`}
-                  placeholder="0812345678"
-                  autoComplete="tel"
-                />
-              </div>
-              {errors.phone && (
-                <p className="flex items-center gap-1 mt-2 text-red-400 text-sm">
-                  <ExclamationTriangleIcon className="w-4 h-4" />
-                  {errors.phone}
-                </p>
-              )}
-            </div>
-
-            {/* Password Field */}
-            <div>
-              <label
-                htmlFor="password"
-                className="block mb-2 font-medium text-zinc-300 text-sm"
-              >
-                รหัสผ่าน
-              </label>
-              <div className="relative group">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  onBlur={handleBlur}
-                  className={`w-full bg-zinc-800/50 backdrop-blur-sm border ${
-                    errors.password
-                      ? "border-red-500/70 shadow-red-500/20"
-                      : "border-zinc-600/50 hover:border-zinc-500/70 group-hover:border-zinc-500/50"
-                  } rounded-lg px-4 py-3 pr-12 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 focus:shadow-lg focus:shadow-red-500/10 transition-all duration-200 font-mono`}
-                  placeholder="••••••••"
-                  autoComplete="new-password"
-                />
-                <Button
-                  type="button"
-                  onClick={togglePasswordVisibility}
-                  variant="ghost"
-                  size="icon"
-                  className="absolute top-1/2 -translate-y-1/2 right-4 text-zinc-400 hover:text-zinc-300 p-1"
-                >
-                  {showPassword ? (
-                    <EyeSlashIcon className="w-5 h-5" />
-                  ) : (
-                    <EyeIcon className="w-5 h-5" />
-                  )}
-                </Button>
-              </div>
-              
-              {/* Password Requirements - Show always */}
-              {!errors.password && (
-                <div className="mt-2 space-y-1">
-                  {formData.password && (
-                    <p className={`text-sm ${passwordStrength.color}`}>
-                      ความแข็งแรง: {passwordStrength.level}
-                    </p>
-                  )}
-                  <div className="bg-zinc-800/30 border border-zinc-700/50 rounded-lg p-3">
-                    <p className="text-zinc-400 text-xs mb-2">รหัสผ่านต้องมี:</p>
-                    <ul className="space-y-1 text-zinc-500 text-xs">
-                      <li className="flex items-center gap-2">
-                        <span className={formData.password.length >= 8 ? "text-green-400" : ""}>
-                          {formData.password.length >= 8 ? "✓" : "○"}
-                        </span>
-                        อย่างน้อย 8 ตัวอักษร
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className={/[a-z]/.test(formData.password) ? "text-green-400" : ""}>
-                          {/[a-z]/.test(formData.password) ? "✓" : "○"}
-                        </span>
-                        ตัวอักษรพิมพ์เล็ก (a-z)
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className={/[A-Z]/.test(formData.password) ? "text-green-400" : ""}>
-                          {/[A-Z]/.test(formData.password) ? "✓" : "○"}
-                        </span>
-                        ตัวอักษรพิมพ์ใหญ่ (A-Z)
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className={/\d/.test(formData.password) ? "text-green-400" : ""}>
-                          {/\d/.test(formData.password) ? "✓" : "○"}
-                        </span>
-                        ตัวเลข (0-9)
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className={/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formData.password) ? "text-green-400" : ""}>
-                          {/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formData.password) ? "✓" : "○"}
-                        </span>
-                        อักขระพิเศษ (!@#$%^&*)
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              )}
-              
-              {errors.password && (
-                <p className="flex items-center gap-1 mt-2 text-red-400 text-sm">
-                  <ExclamationTriangleIcon className="w-4 h-4" />
-                  {errors.password}
-                </p>
-              )}
-            </div>
-
-            {/* Confirm Password Field */}
-            <div>
-              <label
-                htmlFor="confirmPassword"
-                className="block mb-2 font-medium text-zinc-300 text-sm"
-              >
-                ยืนยันรหัสผ่าน
-              </label>
-              <div className="relative group">
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  onBlur={handleBlur}
-                  className={`w-full bg-zinc-800/50 backdrop-blur-sm border ${
-                    errors.confirmPassword
-                      ? "border-red-500/70 shadow-red-500/20"
-                      : "border-zinc-600/50 hover:border-zinc-500/70 group-hover:border-zinc-500/50"
-                  } rounded-lg px-4 py-3 pr-12 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 focus:shadow-lg focus:shadow-red-500/10 transition-all duration-200 font-mono`}
-                  placeholder="••••••••"
-                  autoComplete="new-password"
-                />
-                <Button
-                  type="button"
-                  onClick={toggleConfirmPasswordVisibility}
-                  variant="ghost"
-                  size="icon"
-                  className="absolute top-1/2 -translate-y-1/2 right-4 text-zinc-400 hover:text-zinc-300 p-1"
-                >
-                  {showConfirmPassword ? (
-                    <EyeSlashIcon className="w-5 h-5" />
-                  ) : (
-                    <EyeIcon className="w-5 h-5" />
-                  )}
-                </Button>
-              </div>
-              {errors.confirmPassword && (
-                <p className="flex items-center gap-1 mt-2 text-red-400 text-sm">
-                  <ExclamationTriangleIcon className="w-4 h-4" />
-                  {errors.confirmPassword}
-                </p>
-              )}
-            </div>
-
-            {/* Referral Code Field */}
-            <div className="space-y-2">
-              <label
-                htmlFor="referralCode"
-                className="block text-zinc-300 text-sm font-medium"
-              >
-                โค้ดแนะนำ (ไม่บังคับ)
-              </label>
-              <div className="relative group">
-                <input
-                  type="text"
-                  id="referralCode"
-                  name="referralCode"
-                  value={formData.referralCode}
-                  onChange={handleInputChange}
-                  className={`w-full bg-zinc-800/50 backdrop-blur-sm border ${
-                    errors.referralCode
-                      ? "border-red-500/70 shadow-red-500/20"
-                      : "border-zinc-600/50 hover:border-zinc-500/70 group-hover:border-zinc-500/50"
-                  } rounded-lg px-4 py-3 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 focus:shadow-lg focus:shadow-red-500/10 transition-all duration-200`}
-                  placeholder="MT12345678"
-                />
-              </div>
-              {errors.referralCode && (
-                <p className="flex items-center gap-1 mt-2 text-red-400 text-sm">
-                  <ExclamationTriangleIcon className="w-4 h-4" />
-                  {errors.referralCode}
-                </p>
-              )}
-              {formData.referralCode && (
-                <p className="text-green-400 text-sm">
-                  🎁 คุณจะได้รับสิทธิพิเศษเมื่อใช้โค้ดแนะนำ!
-                </p>
-              )}
-            </div>
-
-            {/* Submit Button */}
-            <div className="pt-4">
+          {/* Confirm Password Field */}
+          <div>
+            <label
+              htmlFor="confirmPassword"
+              className="block mb-2 font-medium text-zinc-300 text-sm"
+            >
+              ยืนยันรหัสผ่าน
+            </label>
+            <div className="relative group">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                id="confirmPassword"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                className={`w-full bg-zinc-800/50 backdrop-blur-sm border ${
+                  errors.confirmPassword
+                    ? "border-red-500/70 shadow-red-500/20"
+                    : "border-zinc-600/50 hover:border-zinc-500/70 group-hover:border-zinc-500/50"
+                } rounded-lg px-4 py-3 pr-12 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 focus:shadow-lg focus:shadow-red-500/10 transition-all duration-200 font-mono`}
+                placeholder="••••••••"
+                autoComplete="new-password"
+              />
               <Button
-                type="submit"
-                disabled={isLoading}
-                loading={isLoading}
-                loadingText="กำลังสมัครสมาชิก..."
+                type="button"
+                onClick={toggleConfirmPasswordVisibility}
+                variant="ghost"
+                size="icon"
+                className="absolute top-1/2 -translate-y-1/2 right-4 text-zinc-400 hover:text-zinc-300 p-1"
+              >
+                {showConfirmPassword ? (
+                  <EyeSlashIcon className="w-5 h-5" />
+                ) : (
+                  <EyeIcon className="w-5 h-5" />
+                )}
+              </Button>
+            </div>
+            {errors.confirmPassword && (
+              <p className="flex items-center gap-1 mt-2 text-red-400 text-sm">
+                <ExclamationTriangleIcon className="w-4 h-4" />
+                {errors.confirmPassword}
+              </p>
+            )}
+          </div>
+
+          {/* Referral Code Field */}
+          <div className="space-y-2">
+            <label
+              htmlFor="referralCode"
+              className="block text-zinc-300 text-sm font-medium"
+            >
+              โค้ดแนะนำ (ไม่บังคับ)
+            </label>
+            <div className="relative group">
+              <input
+                type="text"
+                id="referralCode"
+                name="referralCode"
+                value={formData.referralCode}
+                onChange={handleInputChange}
+                className={`w-full bg-zinc-800/50 backdrop-blur-sm border ${
+                  errors.referralCode
+                    ? "border-red-500/70 shadow-red-500/20"
+                    : "border-zinc-600/50 hover:border-zinc-500/70 group-hover:border-zinc-500/50"
+                } rounded-lg px-4 py-3 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 focus:shadow-lg focus:shadow-red-500/10 transition-all duration-200`}
+                placeholder="MT12345678"
+              />
+            </div>
+            {errors.referralCode && (
+              <p className="flex items-center gap-1 mt-2 text-red-400 text-sm">
+                <ExclamationTriangleIcon className="w-4 h-4" />
+                {errors.referralCode}
+              </p>
+            )}
+            {formData.referralCode && (
+              <p className="text-green-400 text-sm">
+                🎁 คุณจะได้รับสิทธิพิเศษเมื่อใช้โค้ดแนะนำ!
+              </p>
+            )}
+          </div>
+
+          {/* Submit Button */}
+          <div className="pt-4">
+            <Button
+              type="submit"
+              disabled={isLoading}
+              loading={isLoading}
+              loadingText="กำลังสมัครสมาชิก..."
+              fullWidth
+              size="lg"
+            >
+              สมัครสมาชิก
+            </Button>
+          </div>
+        </form>
+        {/* Login Link */}
+      </div>
+      <div className="mt-6 text-center">
+        <p className="text-zinc-400 text-sm">
+          มีบัญชีอยู่แล้ว?{" "}
+          <Link
+            href="/login"
+            className="font-semibold text-red-500 hover:text-red-400 transition-colors"
+          >
+            เข้าสู่ระบบ
+          </Link>
+        </p>
+      </div>
+
+      {/* OTP Verification Modal */}
+      {showOTPModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-zinc-900 border border-zinc-700 rounded-2xl shadow-2xl max-w-md w-full p-8">
+            <div className="text-center mb-6">
+              <div className="mx-auto w-16 h-16 bg-red-600/20 rounded-full flex items-center justify-center mb-4">
+                <svg
+                  className="w-8 h-8 text-red-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-white mb-2">
+                ยืนยันอีเมลของคุณ
+              </h2>
+              <p className="text-zinc-400 text-sm">
+                เราได้ส่งรหัส OTP ไปยัง <br />
+                <span className="font-semibold text-white">
+                  {formData.email}
+                </span>
+              </p>
+            </div>
+
+            {/* Error Message */}
+            {errors.general && (
+              <div className="mb-4 bg-red-500/20 p-3 border border-red-500/70 rounded-lg">
+                <p className="text-red-400 text-sm text-center">
+                  {errors.general}
+                </p>
+              </div>
+            )}
+
+            {/* OTP Input */}
+            <div className="mb-6">
+              <label className="block mb-2 font-medium text-zinc-300 text-sm">
+                รหัส OTP
+              </label>
+              <input
+                type="text"
+                maxLength={6}
+                value={otp}
+                onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
+                className="w-full bg-zinc-800/50 border border-zinc-600 rounded-lg px-4 py-3 text-center text-2xl font-mono tracking-widest focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70"
+                placeholder="000000"
+              />
+            </div>
+
+            {/* Buttons */}
+            <div className="space-y-3">
+              <Button
+                onClick={handleVerifyOTP}
+                disabled={otp.length !== 6 || isVerifying}
+                loading={isVerifying}
+                loadingText="กำลังยืนยัน..."
                 fullWidth
                 size="lg"
               >
-                สมัครสมาชิก
+                ยืนยัน
               </Button>
-              {/* Login Link */}
-              <div className="mt-6 text-center">
-                <p className="text-zinc-400 text-sm">
-                  มีบัญชีอยู่แล้ว?{" "}
-                  <Link
-                    href="/login"
-                    className="font-semibold text-red-500 hover:text-red-400 transition-colors"
-                  >
-                    เข้าสู่ระบบ
-                  </Link>
-                </p>
-              </div>
+              <Button
+                onClick={handleResendOTP}
+                variant="ghost"
+                fullWidth
+                size="lg"
+              >
+                ส่งรหัสใหม่
+              </Button>
+              <Button
+                onClick={() => {
+                  setShowOTPModal(false);
+                  setOtp("");
+                  setErrors({});
+                }}
+                variant="ghost"
+                fullWidth
+                size="lg"
+              >
+                ยกเลิก
+              </Button>
             </div>
-          </form>
-        </div>
 
-        {/* OTP Verification Modal */}
-        {showOTPModal && (
-          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-zinc-900 border border-zinc-700 rounded-2xl shadow-2xl max-w-md w-full p-8">
-              <div className="text-center mb-6">
-                <div className="mx-auto w-16 h-16 bg-red-600/20 rounded-full flex items-center justify-center mb-4">
-                  <svg
-                    className="w-8 h-8 text-red-500"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                    />
-                  </svg>
-                </div>
-                <h2 className="text-2xl font-bold text-white mb-2">
-                  ยืนยันอีเมลของคุณ
-                </h2>
-                <p className="text-zinc-400 text-sm">
-                  เราได้ส่งรหัส OTP ไปยัง <br />
-                  <span className="font-semibold text-white">
-                    {formData.email}
-                  </span>
-                </p>
-              </div>
-
-              {/* Error Message */}
-              {errors.general && (
-                <div className="mb-4 bg-red-500/20 p-3 border border-red-500/70 rounded-lg">
-                  <p className="text-red-400 text-sm text-center">
-                    {errors.general}
-                  </p>
-                </div>
-              )}
-
-              {/* OTP Input */}
-              <div className="mb-6">
-                <label className="block mb-2 font-medium text-zinc-300 text-sm">
-                  รหัส OTP
-                </label>
-                <input
-                  type="text"
-                  maxLength={6}
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-                  className="w-full bg-zinc-800/50 border border-zinc-600 rounded-lg px-4 py-3 text-center text-2xl font-mono tracking-widest focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70"
-                  placeholder="000000"
-                />
-              </div>
-
-              {/* Buttons */}
-              <div className="space-y-3">
-                <Button
-                  onClick={handleVerifyOTP}
-                  disabled={otp.length !== 6 || isVerifying}
-                  loading={isVerifying}
-                  loadingText="กำลังยืนยัน..."
-                  fullWidth
-                  size="lg"
-                >
-                  ยืนยัน
-                </Button>
-                <Button
-                  onClick={handleResendOTP}
-                  variant="ghost"
-                  fullWidth
-                  size="lg"
-                >
-                  ส่งรหัสใหม่
-                </Button>
-                <Button
-                  onClick={() => {
-                    setShowOTPModal(false);
-                    setOtp("");
-                    setErrors({});
-                  }}
-                  variant="ghost"
-                  fullWidth
-                  size="lg"
-                >
-                  ยกเลิก
-                </Button>
-              </div>
-
-              {/* Info */}
-              <div className="mt-6 text-center">
-                <p className="text-zinc-500 text-xs">
-                  ⏰ รหัส OTP จะหมดอายุใน 10 นาที
-                </p>
-              </div>
+            {/* Info */}
+            <div className="mt-6 text-center">
+              <p className="text-zinc-500 text-xs">
+                ⏰ รหัส OTP จะหมดอายุใน 10 นาที
+              </p>
             </div>
           </div>
-        )}
-      </AuthLayout>
+        </div>
+      )}
+    </AuthLayout>
   );
 }
 
