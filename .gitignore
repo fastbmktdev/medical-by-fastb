@@ -60,3 +60,6 @@ client/out/
 *.md
 !README.md
 docs/
+
+.vscode/
+.claude/

@@ -254,7 +254,7 @@ export default function ProductDetailPage({
             {/* Price */}
             <div className="mb-6 pb-6 border-zinc-700 border-b">
               <p className="mb-2 text-zinc-400 text-sm">ราคา</p>
-              <p className="font-bold text-red-500 text-4xl">
+              <p className="font-bold text-violet-700 text-4xl">
                 ฿{finalPrice.toLocaleString()}
               </p>
               {currentVariant && currentVariant.priceAdjustment !== 0 && (

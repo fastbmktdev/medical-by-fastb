@@ -1,7 +1,0 @@
-{
-  "css.lint.unknownAtRules": "ignore",
-  "kiroAgent.configureMCP": "Disabled",
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true
-}
-
