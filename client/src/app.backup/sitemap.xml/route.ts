@@ -1,0 +1,136 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { createClient } from '@shared/lib/database/supabase/server';
+
+// Force dynamic rendering for sitemap (uses database queries)
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // Revalidate every hour
+
+/**
+ * GET /sitemap.xml
+ * Generate sitemap.xml for SEO
+ * Includes:
+ * - Static pages
+ * - Published articles
+ * - Published products
+ */
+export async function GET(request: NextRequest) {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.medicalhospital.com';
+    const supabase = await createClient();
+
+    const urls: string[] = [];
+
+    // Static pages with locale support
+    const locales = ['th', 'en', 'jp'];
+    const staticPages = [
+      { path: '/', changefreq: 'daily', priority: '1.0' },
+      { path: '/articles', changefreq: 'daily', priority: '0.9' },
+      { path: '/hospitals', changefreq: 'weekly', priority: '0.9' },
+      { path: '/shop', changefreq: 'weekly', priority: '0.8' },
+      { path: '/about', changefreq: 'monthly', priority: '0.7' },
+      { path: '/contact', changefreq: 'monthly', priority: '0.7' },
+      { path: '/faq', changefreq: 'monthly', priority: '0.6' },
+      { path: '/privacy', changefreq: 'yearly', priority: '0.5' },
+      { path: '/terms', changefreq: 'yearly', priority: '0.5' },
+    ];
+
+    // Add static pages with locale variants
+    for (const page of staticPages) {
+      for (const locale of locales) {
+        urls.push(`
+    <url>
+      <loc>${baseUrl}/${locale}${page.path}</loc>
+      <changefreq>${page.changefreq}</changefreq>
+      <priority>${page.priority}</priority>
+    </url>`);
+      }
+    }
+
+    // Fetch published articles
+    const { data: articles, error: articlesError } = await supabase
+      .from('articles')
+      .select('slug, updated_at, published_at, date')
+      .eq('is_published', true)
+      .order('published_at', { ascending: false });
+
+    if (!articlesError && articles) {
+      for (const article of articles) {
+        const lastmod = article.updated_at || article.published_at || article.date || new Date().toISOString();
+        for (const locale of locales) {
+          urls.push(`
+    <url>
+      <loc>${baseUrl}/${locale}/articles/${article.slug}</loc>
+      <lastmod>${new Date(lastmod).toISOString()}</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+    </url>`);
+        }
+      }
+    }
+
+    // Fetch published products
+    const { data: products, error: productsError } = await supabase
+      .from('products')
+      .select('slug, updated_at')
+      .eq('is_published', true)
+      .order('created_at', { ascending: false });
+
+    if (!productsError && products) {
+      for (const product of products) {
+        const lastmod = product.updated_at || new Date().toISOString();
+        for (const locale of locales) {
+          urls.push(`
+    <url>
+      <loc>${baseUrl}/${locale}/shop/${product.slug}</loc>
+      <lastmod>${new Date(lastmod).toISOString()}</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.7</priority>
+    </url>`);
+        }
+      }
+    }
+
+    // Fetch published hospitals
+    const { data: hospitals, error: hospitalsError } = await supabase
+      .from('hospitals')
+      .select('slug, updated_at')
+      .eq('is_approved', true)
+      .order('created_at', { ascending: false });
+
+    if (!hospitalsError && hospitals) {
+      for (const hospital of hospitals) {
+        const lastmod = hospital.updated_at || new Date().toISOString();
+        for (const locale of locales) {
+          urls.push(`
+    <url>
+      <loc>${baseUrl}/${locale}/hospitals/${hospital.slug}</loc>
+      <lastmod>${new Date(lastmod).toISOString()}</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+    </url>`);
+        }
+      }
+    }
+
+    // Build sitemap XML
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  ${urls.join('')}
+</urlset>`;
+
+    return new NextResponse(sitemap, {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/xml',
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+      },
+    });
+  } catch (error) {
+    console.error('Sitemap generation error:', error);
+    return NextResponse.json(
+      { error: 'Failed to generate sitemap' },
+      { status: 500 }
+    );
+  }
+}
+

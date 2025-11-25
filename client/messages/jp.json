@@ -1,0 +1,297 @@
+{
+  "common": {
+    "buttons": {
+      "save": "保存",
+      "cancel": "キャンセル",
+      "delete": "削除",
+      "edit": "編集",
+      "confirm": "確認",
+      "submit": "送信",
+      "close": "閉じる",
+      "back": "戻る",
+      "next": "次へ",
+      "previous": "前へ",
+      "search": "検索",
+      "filter": "フィルター",
+      "export": "エクスポート",
+      "import": "インポート",
+      "upload": "アップロード",
+      "download": "ダウンロード",
+      "view": "表示",
+      "details": "詳細"
+    },
+    "labels": {
+      "email": "メール",
+      "password": "パスワード",
+      "name": "名前",
+      "phone": "電話番号",
+      "address": "住所",
+      "status": "ステータス",
+      "actions": "アクション",
+      "date": "日付",
+      "time": "時間",
+      "description": "説明"
+    },
+    "status": {
+      "active": "アクティブ",
+      "inactive": "非アクティブ",
+      "pending": "保留中",
+      "approved": "承認済み",
+      "rejected": "却下",
+      "completed": "完了",
+      "cancelled": "キャンセル"
+    },
+    "messages": {
+      "loading": "読み込み中...",
+      "saving": "保存中...",
+      "success": "成功",
+      "error": "エラーが発生しました",
+      "noData": "データなし",
+      "confirmDelete": "このアイテムを削除してもよろしいですか？"
+    }
+  },
+  "navigation": {
+    "home": "ホーム",
+    "hospitals": "ジム",
+    "events": "イベント",
+    "programs": "プログラム",
+    "shop": "ショップ",
+    "articles": "記事",
+    "about": "について",
+    "faq": "よくある質問",
+    "contact": "お問い合わせ",
+    "dashboard": "ダッシュボード",
+    "profile": "プロフィール",
+    "settings": "設定",
+    "logout": "ログアウト"
+  },
+  "auth": {
+    "login": {
+      "title": "ログイン",
+      "subtitle": "お帰りなさい",
+      "email": "メール",
+      "password": "パスワード",
+      "button": "ログイン",
+      "forgotPassword": "パスワードを忘れた？",
+      "noAccount": "アカウントをお持ちでないですか？",
+      "signupLink": "新規登録"
+    },
+    "signup": {
+      "title": "新規登録",
+      "subtitle": "アカウントを作成",
+      "fullName": "氏名",
+      "email": "メール",
+      "password": "パスワード",
+      "confirmPassword": "パスワード確認",
+      "button": "新規登録",
+      "hasAccount": "すでにアカウントをお持ちですか？",
+      "loginLink": "ログイン"
+    },
+    "forgotPassword": {
+      "title": "パスワードを忘れた",
+      "subtitle": "ご心配なく、パスワードのリセットをお手伝いします",
+      "button": "リセットリンクを送信",
+      "emailLabel": "メール",
+      "emailPlaceholder": "your@email.com",
+      "infoMessage": "📧 登録時に使用したメールアドレスを入力してください。パスワードリセットリンクをお送りします",
+      "backToLogin": "ログインに戻る",
+      "noAccount": "アカウントをお持ちでないですか？",
+      "signupLink": "新規登録",
+      "loadingText": "メール送信中...",
+      "success": {
+        "title": "メール送信成功！",
+        "subtitle": "パスワードリセットリンクをメールで送信しました",
+        "message": "パスワードリセットリンクを以下に送信しました",
+        "tip": "💡 メールを確認し、リンクをクリックしてパスワードをリセットしてください\n（見つからない場合はスパムフォルダーを確認してください）"
+      },
+      "errors": {
+        "emailRequired": "メールアドレスを入力してください",
+        "emailInvalid": "無効なメール形式",
+        "emailInvalidFormat": "メールアドレスが無効です。もう一度確認してください",
+        "userNotFound": "このメールアドレスでユーザーが見つかりませんでした。メールアドレスを確認するか、新規登録してください",
+        "connectionError": "サーバーに接続できません。インターネット接続を確認してください",
+        "sendEmailFailed": "パスワードリセットメールを送信できませんでした。もう一度お試しください",
+        "configError": "システム設定が正しくありません。管理者にお問い合わせください",
+        "unknownError": "不明なエラーが発生しました。もう一度お試しください",
+        "errorPrefix": "エラー: "
+      }
+    }
+  },
+  "dashboard": {
+    "welcome": "ようこそ",
+    "overview": "概要",
+    "recentActivity": "最近のアクティビティ",
+    "quickActions": "クイックアクション"
+  },
+  "error": {
+    "boundary": {
+      "title": "エラーが発生しました",
+      "description": "申し訳ございません。予期しないエラーが発生しました。チームに通知され、対応中です。",
+      "tryAgain": "もう一度試す",
+      "goHome": "ホームに戻る",
+      "goToDashboard": "ダッシュボードに移動",
+      "reportIssue": "問題を報告",
+      "details": "エラー詳細",
+      "showDetails": "詳細を表示",
+      "hideDetails": "詳細を非表示"
+    }
+  },
+  "validation": {
+    "required": "{field}を入力してください",
+    "invalidEmail": "無効なメール形式",
+    "passwordTooShort": "パスワードは{min}文字以上である必要があります",
+    "passwordMismatch": "パスワードが一致しません",
+    "invalidPhone": "無効な電話番号"
+  },
+  "reviews": {
+    "title": "レビュー管理",
+    "subtitle": "顧客レビューの管理と返信",
+    "tabs": {
+      "all": "すべてのレビュー",
+      "pending": "保留中",
+      "needsResponse": "返信が必要",
+      "analytics": "分析"
+    },
+    "stats": {
+      "totalReviews": "総レビュー数",
+      "averageRating": "平均評価",
+      "responseRate": "返信率",
+      "recommendRate": "推薦率",
+      "pendingReviews": "保留中のレビュー",
+      "needsResponse": "返信が必要",
+      "recentReviews": "最近のレビュー",
+      "last7Days": "過去7日間",
+      "last30Days": "過去30日間"
+    },
+    "filters": {
+      "allRatings": "すべての評価",
+      "5stars": "5つ星",
+      "4stars": "4つ星",
+      "3stars": "3つ星",
+      "2stars": "2つ星",
+      "1star": "1つ星",
+      "allStatus": "すべてのステータス",
+      "hasResponse": "返信あり",
+      "noResponse": "未返信",
+      "sortBy": "並べ替え",
+      "newest": "新しい順",
+      "oldest": "古い順",
+      "highestRating": "評価が高い順",
+      "lowestRating": "評価が低い順",
+      "mostHelpful": "役立つ順"
+    },
+    "card": {
+      "rating": "評価",
+      "visitDate": "訪問日",
+      "verified": "確認済み訪問",
+      "recommend": "このジムをお勧めします",
+      "helpful": "役立つ",
+      "reply": "返信",
+      "edit": "返信を編集",
+      "delete": "返信を削除",
+      "viewMore": "もっと見る",
+      "yourReply": "あなたの返信",
+      "edited": "編集済み",
+      "postedOn": "投稿日"
+    },
+    "reply": {
+      "title": "レビューに返信",
+      "placeholder": "返信を書く...",
+      "submit": "返信を送信",
+      "update": "返信を更新",
+      "cancel": "キャンセル",
+      "successCreate": "返信を投稿しました",
+      "successUpdate": "返信を更新しました",
+      "successDelete": "返信を削除しました",
+      "errorCreate": "返信の投稿に失敗しました",
+      "errorUpdate": "返信の更新に失敗しました",
+      "errorDelete": "返信の削除に失敗しました",
+      "confirmDelete": "この返信を削除してもよろしいですか？",
+      "guidelines": {
+        "title": "返信のガイドライン",
+        "tip1": "プロフェッショナルで礼儀正しく",
+        "tip2": "具体的な懸念事項に対応する",
+        "tip3": "フィードバックに感謝する",
+        "tip4": "簡潔で明確に"
+      }
+    },
+    "moderation": {
+      "approve": "承認",
+      "reject": "却下",
+      "hide": "非表示",
+      "flag": "報告",
+      "reason": "理由",
+      "reasonPlaceholder": "理由を説明...",
+      "successApprove": "レビューを承認しました",
+      "successReject": "レビューを却下しました",
+      "successHide": "レビューを非表示にしました",
+      "errorModerate": "操作に失敗しました"
+    },
+    "analytics": {
+      "title": "レビュー分析",
+      "overview": "概要",
+      "ratingDistribution": "評価分布",
+      "reviewsTrend": "レビュー傾向",
+      "topReviews": "人気のレビュー",
+      "recentActivity": "最近のアクティビティ",
+      "responseTime": "平均返信時間",
+      "hours": "時間",
+      "reviews": "レビュー",
+      "noData": "レビューデータがまだありません",
+      "chart": {
+        "reviews": "レビュー",
+        "rating": "評価",
+        "month": "月"
+      }
+    },
+    "empty": {
+      "title": "まだレビューがありません",
+      "description": "ジムのレビューをまだ受け取っていません",
+      "tip": "💡 良いレビューは新しい顧客を引き付けます。満足している顧客にレビューを残すよう促しましょう！",
+      "noFiltered": "フィルターに一致するレビューがありません",
+      "tryAdjust": "フィルターを調整してみてください"
+    },
+    "actions": {
+      "refresh": "更新",
+      "exportData": "データをエクスポート",
+      "viewDetails": "詳細を表示",
+      "markAsRead": "既読にする"
+    },
+    "notifications": {
+      "newReview": "新しいレビューを受信しました",
+      "newReply": "あなたのレビューに返信がありました",
+      "reviewFlagged": "レビューが報告されました"
+    },
+    "google": {
+      "title": "Google レビュー連携",
+      "subtitle": "Google ビジネスプロフィールを接続してレビューを同期",
+      "connect": "Google に接続",
+      "disconnect": "接続を解除",
+      "sync": "今すぐ同期",
+      "autoSync": "自動同期",
+      "syncFrequency": "同期頻度",
+      "lastSync": "最後の同期",
+      "totalSynced": "同期されたレビュー総数",
+      "status": {
+        "connected": "接続済み",
+        "disconnected": "未接続",
+        "syncing": "同期中...",
+        "success": "同期成功",
+        "failed": "同期失敗",
+        "disabled": "無効"
+      }
+    }
+  },
+  "product": {
+    "nameFallback": "商品",
+    "viewProduct": "商品を見る",
+    "outOfStock": "在庫切れ",
+    "outOfStockBadge": "在庫切れ",
+    "inStock": "在庫 {count} 個",
+    "category": "カテゴリー",
+    "description": "説明",
+    "price": "価格: {amount} バーツ",
+    "addToCart": "{productName} をカートに追加",
+    "addToCartDisabled": "カートに追加できません（在庫切れ）"
+  }
+}

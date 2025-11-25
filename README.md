@@ -1,13 +1,13 @@
-# Thaikick MuayThai
+# Medical Hospital Management System
 
-The project is a modern full-stack web application designed for managing Muay Thai bookings and gym operations. Built using Next.js and TypeScript, and powered by PostgreSQL, this project serves as the core booking and management system for thaikickmuaythai.com.
+The project is a modern full-stack web application designed for managing hospital appointments and medical operations. Built using Next.js and TypeScript, and powered by PostgreSQL, this project serves as the core appointment and management system for medical facilities.
 
 ## Features
 
-- **Booking System:** Allow users to book gyms, classes, or trainers directly through the platform.
-- **User Management:** Secure registration, authentication, and different user roles (athletes, trainers, owners, admins).
-- **Review Management:** Users can leave and manage reviews for gyms, trainers, and classes.
-- **Admin Tools:** Comprehensive dashboard and controls for managing users, bookings, and reviews.
+- **Appointment System:** Allow users to book hospitals, departments, or doctors directly through the platform.
+- **User Management:** Secure registration, authentication, and different user roles (patients, doctors, hospital owners, admins).
+- **Review Management:** Users can leave and manage reviews for hospitals, doctors, and departments.
+- **Admin Tools:** Comprehensive dashboard and controls for managing users, appointments, and reviews.
 - **API Integration:** Seamless integration with Supabase, supporting robust data handling and real-time updates.
 - **Modern UI:** Developed with Tailwind CSS for responsive and user-friendly interfaces.
 - **Automated Testing:** Includes Jest, Playwright, and ESLint for code quality and reliability.
@@ -24,6 +24,6 @@ The project is a modern full-stack web application designed for managing Muay Th
 
 ## Project Purpose
 
-This platform powers advanced booking and management for Muay Thai gyms and communities, serving users, trainers, and gym owners. With its modern tech stack and robust architecture, it’s built to scale and support ongoing development within the Muay Thai ecosystem.
+This platform powers advanced appointment and management for hospitals and medical facilities, serving patients, doctors, and hospital administrators. With its modern tech stack and robust architecture, it's built to scale and support ongoing development within the medical ecosystem.
 
 ---

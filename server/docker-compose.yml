@@ -1,0 +1,12 @@
+# docker-compose.yml
+services:
+  mongo:
+    image: "mongo:latest"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - mongodata:/data/db
+volumes:
+  uploads:
+  mongodata:

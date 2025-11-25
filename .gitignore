@@ -1,225 +1,62 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # Dependencies
-node_modules
-/.pnp
+node_modules/
+.pnp
 .pnp.js
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
 
 # Testing
-/coverage
-*.log
-logs/
-# Test outputs (keep test files, ignore outputs)
-tests/**/*.log
-tests/**/*.tmp
-tests/**/coverage/
-tests/**/.cache/
-# Playwright test outputs
-/playwright-report/
-/test-results/
-/playwright/.cache/
-playwright/**/*.trace
-playwright/**/*.webm
-playwright/**/*.png
-tests/screenshots/**/*.png
-tests/screenshots/**/*.jpg
-/blob-report/
-playwright/.cache/
+coverage/
+.nyc_output
 
 # Next.js
-/.next/
-/out/
-/.next
-/out
 .next/
 out/
-next-env.d.ts
-tsconfig.tsbuildinfo
-
-# Production
-/build
-/build/
 build/
-/dist
 dist/
 
-# Misc
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-Desktop.ini
-*.pem
+# Production
+*.log
+*.pid
+*.seed
+*.pid.lock
 
-# Backup files
-*.backup
-*.bak
-*.orig
-*.swp
-*.swo
-*~
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # Debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 
-# Local env files
-.env
-.env*.local
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-.env.test
-.env.backup
-.env.local.backup.*
-.env.backup.*
-*.env.backup.*
-**/.env.local.backup.*
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
-# Vercel
-.vercel
+# OS
+.DS_Store
+Thumbs.db
 
 # TypeScript
 *.tsbuildinfo
-.tsbuildinfo
 
-# IDE & Editor
-.vscode/
-.vscode/*
-!.vscode/settings.json
-!.vscode/extensions.json
-!.vscode/launch.json
-.vscode-test/
-*.code-workspace
-.idea/
-.claude/
-.kiro/
-# Note: *.swp, *.swo, *~ are already covered in "Backup files" section
+# Shared package build output
+shared/dist/
 
-# Supabase
-supabase/.branches
-supabase/.temp
-supabase/.env
-.branches
-.temp
+# Server build output
+server/dist/
 
-# Sensitive data (scripts folder)
-scripts/production-users.json
-scripts/test-login.js
-scripts/test-email-confirmation.sh
-scripts/test-email-confirmation.md
-scripts/create-user.js
-scripts/production-user-creation.js
-# Script outputs (keep scripts, ignore outputs)
-scripts/**/*.log
-scripts/**/*.tmp
-scripts/**/*.temp
-scripts/**/*.output
-scripts/**/.cache/
+# Client build output
+client/.next/
+client/out/
 
-# Sensitive data files (general)
-**/production-users.json
-**/*-users.json
-**/secrets.json
-**/credentials.json
-
-# Security reports (may contain sensitive info)
-SECURITY_INCIDENT_REPORT.md
-SECURITY_COMPLETE_STATUS.md
-SECURITY_VERIFICATION_REPORT.md
-SECURITY_SUMMARY.md
-PRODUCTION_SECRET_ROTATION_GUIDE.md
-PLAN_TODAY.md
-PRODUCTION_SECURITY_CHECK_GUIDE.md
-# Temporary documentation with sensitive info
+# Documentation
 *.md
-QUICK_FIX_LOGIN.md
-TROUBLESHOOTING_LOGIN.md
-MOCK_USERS.md
-FIX_SUPABASE_LOCAL.md
-*_LOGIN.md
-*_FIX*.md
-*TROUBLESHOOT*.md
-# Keep essential documentation
 !README.md
-!docs/**/*.md
-!scripts/**/*.md
-!tests/**/*.md
-
-# Debug files that may expose sensitive information
-src/app/login/debug.tsx
-**/debug.tsx
-**/*debug*.tsx
-**/*debug*.ts
-**/*debug*.js
-
-# Temporary files
-*.tmp
-*.temp
-.cache/
-*.cache
-.turbo
-.swc
-
-# Database dumps (but keep migration files)
-*.dump
-# Ignore database files but allow Thumbs.db to be caught by OS files section
-*.db
-!Thumbs.db
-# Ignore SQL dumps but keep migration files
-*.sql
-!supabase/migrations/**/*.sql
-
-# Build artifacts
-*.map
-*.js.map
-*.min.js
-*.min.css
-.eslintcache
-
-# Package manager locks (optional - usually you want to commit these)
-# Uncomment if you don't want to commit lock files
-# package-lock.json
-# yarn.lock
-# pnpm-lock.yaml
-# bun.lockb
-package-lock.json.backup
-yarn.lock.backup
-pnpm-lock.yaml.backup
-
-# Temporary scripts
-cleanup-files.sh
-test-smtp.js
-
-# Analysis tools (if you want to ignore these)
-# /src/analysis
-# /tests/analysis
-
-# Storybook
-storybook-static/
-
-# PWA files
-**/public/sw.js
-**/public/workbox-*.js
-**/public/worker-*.js
-**/public/sw.js.map
-**/public/workbox-*.js.map
-**/public/worker-*.js.map
-
-# Sentry
-.sentryclirc
-
-# Local development
-.local/
-.localhost/
+docs/

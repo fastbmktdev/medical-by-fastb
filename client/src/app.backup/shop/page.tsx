@@ -1,0 +1,260 @@
+"use client";
+
+import { useState, useEffect, ChangeEvent, useRef } from "react";
+import { ProductCard } from "@/components/shared";
+import { PageHeader } from "@/components/shared";
+import { MagnifyingGlassIcon, FunnelIcon } from "@heroicons/react/24/outline";
+import { trackSearch } from '@shared/lib/utils/analytics';
+import { useDebouncedValue } from '@shared/lib/hooks';
+
+interface Product {
+  id: string;
+  slug: string;
+  nameThai?: string | null;
+  nameEnglish?: string | null;
+  description?: string | null;
+  price: number;
+  stock: number;
+  category?: {
+    id: string;
+    nameThai?: string | null;
+    nameEnglish?: string | null;
+    slug?: string | null;
+  } | null;
+  image?: string | null;
+  isActive?: boolean;
+  isFeatured?: boolean;
+}
+
+interface Category {
+  id: string;
+  nameThai?: string | null;
+  nameEnglish?: string | null;
+  slug?: string | null;
+}
+
+export default function ShopPage() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Debounce search query with loading state
+  const { debouncedValue: debouncedSearchQuery, isDebouncing } = useDebouncedValue(searchQuery, 300);
+
+  // Fetch categories first
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const response = await fetch('/api/product-categories?active=true');
+        const data = await response.json();
+        
+        if (data.success && data.data) {
+          setCategories(data.data.map((cat: {
+            id: string;
+            nameThai?: string | null;
+            nameEnglish?: string | null;
+            slug?: string | null;
+          }) => ({
+            id: cat.id,
+            nameThai: cat.nameThai,
+            nameEnglish: cat.nameEnglish,
+            slug: cat.slug,
+          })));
+        }
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+      }
+    }
+    
+    fetchCategories();
+  }, []);
+
+  const prevSearchQuery = useRef<string>("");
+
+  // Fetch products
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const productsParams = new URLSearchParams();
+        productsParams.append("active", "true");
+        productsParams.append("limit", "100");
+        
+        if (selectedCategory !== "all") {
+          productsParams.append("category", selectedCategory);
+        }
+        
+        if (debouncedSearchQuery.trim()) {
+          productsParams.append("search", debouncedSearchQuery.trim());
+        }
+
+        const productsResponse = await fetch(`/api/products?${productsParams.toString()}`);
+        const productsData = await productsResponse.json();
+
+        if (productsData.success) {
+          setProducts(productsData.data || []);
+          
+          // Track search event when search query changes
+          if (debouncedSearchQuery.trim() && debouncedSearchQuery.trim() !== prevSearchQuery.current) {
+            try {
+              trackSearch(debouncedSearchQuery.trim(), selectedCategory !== "all" ? selectedCategory : "shop", productsData.data?.length || 0);
+              prevSearchQuery.current = debouncedSearchQuery.trim();
+            } catch (error) {
+              console.warn('Analytics tracking error:', error);
+            }
+          }
+        } else {
+          setError(productsData.error || "Failed to load products");
+        }
+
+      } catch (err) {
+        console.error("Error fetching products:", err);
+        setError("Failed to load products");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchProducts();
+  }, [debouncedSearchQuery, selectedCategory]);
+
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleCategory = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCategory(e.target.value);
+  };
+
+  const handleReset = () => {
+    setSearchQuery("");
+    setSelectedCategory("all");
+  };
+
+  const filteredProducts = products;
+
+  return (
+    <div className="bg-white min-h-screen">
+      <PageHeader
+        title="ร้านค้า"
+        description="อุปกรณ์และเครื่องแต่งกายการแพทย์คุณภาพสูง"
+      />
+
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
+        {/* Search and Filter */}
+        <div className="mb-8">
+          <div className="gap-4 grid grid-cols-1 md:grid-cols-2">
+            {/* Search */}
+            <div className="relative">
+              <MagnifyingGlassIcon className="top-1/2 left-3 absolute w-5 h-5 text-gray-400 -translate-y-1/2" />
+              <input
+                type="text"
+                placeholder="ค้นหาสินค้า..."
+                value={searchQuery}
+                onChange={handleSearch}
+                className="bg-white py-3 pr-4 pl-10 border border-gray-300  focus:outline-none focus:ring-2 focus:ring-purple-500 w-full placeholder-gray-400 text-zinc-950"
+              />
+              {isDebouncing && (
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                  <div className="w-5 h-5 border-2 border-purple-500 border-t-transparent  animate-spin" />
+                </div>
+              )}
+            </div>
+
+            {/* Category Filter */}
+            <div className="relative">
+              <FunnelIcon className="top-1/2 left-3 absolute w-5 h-5 text-gray-400 -translate-y-1/2" />
+              <select
+                value={selectedCategory}
+                onChange={handleCategory}
+                className="bg-white py-3 pr-4 pl-10 border border-gray-300  focus:outline-none focus:ring-2 focus:ring-purple-500 w-full appearance-none cursor-pointer text-zinc-950"
+              >
+                <option value="all">หมวดหมู่ทั้งหมด</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.nameThai || category.nameEnglish || "Unknown"}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Results Count */}
+        <div className="mb-6 text-gray-600">
+          {isLoading ? (
+            "กำลังโหลด..."
+          ) : error ? (
+            <span className="text-red-500">{error}</span>
+          ) : (
+            `พบ ${filteredProducts.length} สินค้า`
+          )}
+        </div>
+
+        {/* Loading State */}
+        {isLoading && (
+          <div className="flex justify-center items-center py-20">
+            <div className="border-4 border-red-600 border-t-transparent  w-12 h-12 animate-spin"></div>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && !isLoading && (
+          <div className="py-20 text-center">
+            <p className="text-red-500 text-xl mb-4">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-brand-primary hover:bg-purple-600 px-6 py-2  transition-colors"
+            >
+              ลองใหม่อีกครั้ง
+            </button>
+          </div>
+        )}
+
+        {/* Products Grid */}
+        {!isLoading && !error && (
+          <>
+            {filteredProducts.length === 0 ? (
+              <div className="py-20 text-center">
+                <p className="text-gray-600 text-xl">
+                  ไม่พบสินค้าที่ตรงกับการค้นหา
+                </p>
+                <button
+                  onClick={handleReset}
+                  className="bg-brand-primary hover:bg-red-600 mt-4 px-6 py-2  transition-colors"
+                  aria-label="ล้างการค้นหาและเริ่มใหม่"
+                >
+                  ล้างการค้นหา
+                </button>
+              </div>
+            ) : (
+              <div className="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {filteredProducts.map((product) => (
+                  <ProductCard 
+                    key={product.id} 
+                    product={{
+                      id: product.id,
+                      slug: product.slug,
+                      nameThai: product.nameThai || undefined,
+                      nameEnglish: product.nameEnglish || undefined,
+                      description: product.description || undefined,
+                      price: product.price,
+                      stock: product.stock,
+                      category: product.category?.nameThai || product.category?.nameEnglish || undefined,
+                      image: product.image || undefined,
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </div>
+  );
+}

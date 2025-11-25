@@ -1,0 +1,27 @@
+{
+  "name": "@medical/shared",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.7.0",
+    "@supabase/supabase-js": "^2.76.1",
+    "date-fns": "^4.1.0",
+    "dotenv": "^17.2.3",
+    "nodemailer": "^7.0.10",
+    "resend": "^6.2.0",
+    "stripe": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "@types/nodemailer": "^7.0.3",
+    "typescript": "^5"
+  }
+}
+

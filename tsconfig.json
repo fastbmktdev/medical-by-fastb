@@ -13,38 +13,24 @@
     "allowImportingTsExtensions": false,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "paths": {
-      "@/*": ["./src/*"],
-      "@/components/ui/*": ["./src/components/ui/*"],
-      "@/components/shared/*": ["./src/components/shared/*"],
-      "@/components/features/*": ["./src/components/features/*"],
-      "@/lib/auth/*": ["./src/lib/auth/*"],
-      "@/lib/database/*": ["./src/lib/database/*"],
-      "@/lib/utils/*": ["./src/lib/utils/*"],
-      "@/lib/hooks/*": ["./src/lib/hooks/*"],
-      "@/lib/payments/*": ["./src/lib/payments/*"],
-      "@/lib/email/*": ["./src/lib/email/*"],
-      "@/lib/api/*": ["./src/lib/api/*"],
-      "@/services/*": ["./src/services/*"],
-      "@/contexts/*": ["./src/contexts/*"],
-      "@/types/*": ["./src/types/*"]
-    }
+    "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "tests/e2e/admin/admin-gym-management.spec.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": [
     "node_modules",
-    "src/analysis",
     "**/__tests__/**",
     "**/*.test.ts",
     "**/*.test.tsx",
     "**/*.spec.ts",
     "**/*.spec.tsx",
-    "tests/**"
+    "tests/**",
+    "client/**",
+    "server/**",
+    "shared/**"
+  ],
+  "references": [
+    { "path": "./client" },
+    { "path": "./server" },
+    { "path": "./shared" }
   ]
 }

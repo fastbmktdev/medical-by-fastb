@@ -1,2 +1,0 @@
-export { GymGallery } from './GymGallery';
-
