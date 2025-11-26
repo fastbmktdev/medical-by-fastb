@@ -44,7 +44,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     initializeAuth();
 
     try {
-      const { data: { subscription } } = supabase.auth.onAuthStateChange((event, currentSession) => {
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((event: string, currentSession: any) => {
         setSession(currentSession);
         setUser(currentSession?.user ?? null);
         setIsLoading(false);

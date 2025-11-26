@@ -42,7 +42,7 @@ function MarqueeComponent() {
 
         const nowDate = new Date(now);
         const filteredPromotions =
-          (data ?? []).filter((promo) => {
+          (data ?? []).filter((promo: Promotion) => {
             const startsBeforeNow =
               !promo.start_date || new Date(promo.start_date) <= nowDate;
             const endsAfterNow =

@@ -163,7 +163,7 @@ export default function PartnerMessagesPage() {
         return;
       }
 
-      const userIds = [...new Set(appointments.map((b: { user_id: string }) => b.user_id))];
+      const userIds: string[] = Array.from(new Set<string>(appointments.map((b: { user_id: string }) => b.user_id)));
 
       // Get user profiles
       const { data: profiles } = await supabase

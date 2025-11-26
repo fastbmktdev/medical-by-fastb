@@ -163,8 +163,8 @@ function PartnerDashboardContent() {
 
           // Use appointments with payment_status=paid as transactions
           const paidBookings = bookingsData
-            .filter((b) => b.payment_status === "paid")
-            .map((b) => ({
+            .filter((b: { payment_status: string; booking_number: string; created_at: string; package_name: string; customer_name: string; price_paid: number | null; status: string }) => b.payment_status === "paid")
+            .map((b: { payment_status: string; booking_number: string; created_at: string; package_name: string; customer_name: string; price_paid: number | null; status: string }) => ({
               id: b.booking_number,
               date: b.created_at,
               type: "รายได้",
