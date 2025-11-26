@@ -129,12 +129,22 @@ const nextConfig: NextConfig = {
     }
 
     // Fix for Next.js 15.5.x WebpackError constructor bug
-    // Disable minification to avoid the error until Next.js fixes this
+    // Use Terser plugin instead of Next.js built-in minifier to avoid the error
     if (!isDevelopment) {
-      config.optimization = {
-        ...config.optimization,
-        minimize: false,
-      };
+      const TerserPlugin = require('terser-webpack-plugin');
+      config.optimization.minimizer = [
+        new TerserPlugin({
+          terserOptions: {
+            compress: {
+              drop_console: false, // Keep console.error and console.warn
+            },
+            format: {
+              comments: false, // Remove comments
+            },
+          },
+          extractComments: false, // Don't extract comments to separate files
+        }),
+      ];
     }
 
     config.ignoreWarnings = [

@@ -68,7 +68,8 @@
   },
   "devDependencies": {
     "ajv": "^8.17.1",
-    "supabase": "^2.51.0"
+    "supabase": "^2.51.0",
+    "terser-webpack-plugin": "^5.3.14"
   },
   "overrides": {
     "quill": "^2.0.3",

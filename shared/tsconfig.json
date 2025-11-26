@@ -3,7 +3,7 @@
     "target": "ES2018",
     "lib": ["ES2018", "DOM"],
     "module": "esnext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "declaration": true,
     "declarationMap": true,
     "outDir": "./dist",
@@ -14,6 +14,10 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "../node_modules/@types"
+    ],
     "paths": {
       "@/*": ["./src/*"],
       "@shared/*": ["./src/*"]
