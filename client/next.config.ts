@@ -113,11 +113,14 @@ const nextConfig: NextConfig = {
       '@': path.resolve(__dirname, '../shared/src'),
     };
 
-    // Disable minification to avoid webpack errors
-    config.optimization = {
-      ...config.optimization,
-      minimize: false,
-    };
+    // Only disable minification in development to avoid webpack errors
+    // Production builds must have minification enabled for optimal performance
+    if (isDevelopment) {
+      config.optimization = {
+        ...config.optimization,
+        minimize: false,
+      };
+    }
 
     // Exclude server-only packages from client bundle
     if (!isServer) {
