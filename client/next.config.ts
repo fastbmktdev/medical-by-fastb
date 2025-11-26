@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
-import { withSentryConfig } from "@sentry/nextjs";
+// Temporarily disabled due to compatibility issues with Next.js 15.1.6
+// import { withSentryConfig } from "@sentry/nextjs";
 import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin('./src/i18n.ts');
@@ -105,22 +106,13 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  webpack: (config, { isServer }) => {
+  webpack: (config, { isServer, webpack }) => {
     // Add alias for shared package to resolve @/* imports
     const path = require('path');
     config.resolve.alias = {
       ...config.resolve.alias,
-      '@': path.resolve(__dirname, '../shared/src'),
+      '@': path.resolve(__dirname, './src'),
     };
-
-    // Only disable minification in development to avoid webpack errors
-    // Production builds must have minification enabled for optimal performance
-    if (isDevelopment) {
-      config.optimization = {
-        ...config.optimization,
-        minimize: false,
-      };
-    }
 
     // Exclude server-only packages from client bundle
     if (!isServer) {
@@ -134,40 +126,39 @@ const nextConfig: NextConfig = {
         'child_process': false,
         'isomorphic-dompurify': false,
       };
-      
-      // Ignore server-only modules in client bundle
-      const webpack = require('webpack');
-      config.plugins = config.plugins || [];
-      config.plugins.push(
-        new webpack.IgnorePlugin({
-          resourceRegExp: /^@supabase\/ssr$/,
-          contextRegExp: /shared\/src\/lib\/database\/supabase\/server/,
-        })
-      );
+    }
+
+    // Fix for Next.js 15.5.x WebpackError constructor bug
+    // Disable minification to avoid the error until Next.js fixes this
+    if (!isDevelopment) {
+      config.optimization = {
+        ...config.optimization,
+        minimize: false,
+      };
     }
 
     config.ignoreWarnings = [
-      {
-        module: /node_modules\/@prisma\/instrumentation/,
-      },
-      {
-        module: /node_modules\/@opentelemetry\/instrumentation/,
-      },
-      {
-        module: /node_modules\/require-in-the-middle/,
-      },
-      {
-        module: /node_modules\/@supabase\/realtime-js/,
-      },
-      {
-        message: /Critical dependency: the request of a dependency is an expression/,
-      },
-      {
-        message: /Critical dependency: require function is used in a way/,
-      },
-      {
-        message: /A Node\.js API is used \(process\.version/,
-      },
+    //   {
+    //     module: /node_modules\/@prisma\/instrumentation/,
+    //   },
+    //   {
+    //     module: /node_modules\/@opentelemetry\/instrumentation/,
+    //   },
+    //   {
+    //     module: /node_modules\/require-in-the-middle/,
+    //   },
+    //   {
+    //     module: /node_modules\/@supabase\/realtime-js/,
+    //   },
+    //   {
+    //     message: /Critical dependency: the request of a dependency is an expression/,
+    //   },
+    //   {
+    //     message: /Critical dependency: require function is used in a way/,
+    //   },
+    //   {
+    //     message: /A Node\.js API is used \(process\.version/,
+    //   },
       {
         module: /node_modules\/@supabase\/supabase-js/,
       },
@@ -180,18 +171,18 @@ const nextConfig: NextConfig = {
 const configWithIntl = withNextIntl(nextConfig);
 
 // Then wrap with Sentry configuration if DSN is provided
-// Temporarily disable Sentry during build due to webpack compatibility issues
-const configWithSentry = false && (process.env.NEXT_PUBLIC_SENTRY_DSN || process.env.SENTRY_DSN)
-  ? withSentryConfig(configWithIntl, {
-      org: process.env.SENTRY_ORG,
-      project: process.env.SENTRY_PROJECT,
-      silent: !isDevelopment,
-      widenClientFileUpload: true,
-      tunnelRoute: "/monitoring",
-      disableLogger: true,
-      automaticVercelMonitors: true,
-    })
-  : configWithIntl;
+// Temporarily disable Sentry during build due to compatibility issues with Next.js 15.1.6
+// const configWithSentry = false && (process.env.NEXT_PUBLIC_SENTRY_DSN || process.env.SENTRY_DSN)
+//   ? withSentryConfig(configWithIntl, {
+//       org: process.env.SENTRY_ORG,
+//       project: process.env.SENTRY_PROJECT,
+//       silent: !isDevelopment,
+//       widenClientFileUpload: true,
+//       tunnelRoute: "/monitoring",
+//       disableLogger: true,
+//       automaticVercelMonitors: true,
+//     })
+//   : configWithIntl;
 
-export default configWithSentry;
+export default configWithIntl;
 
