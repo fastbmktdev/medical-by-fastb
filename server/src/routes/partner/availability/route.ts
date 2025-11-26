@@ -120,7 +120,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-async function handleRegularAvailability(supabase: any, hospitalId: string, availabilityData: any) {
+async function handleRegularAvailability(supabase: any, hospitalId: string, availabilityData: AvailabilityBody['data']) {
   const { data, error } = await supabase
     .from('hospital_availability')
     .upsert({
