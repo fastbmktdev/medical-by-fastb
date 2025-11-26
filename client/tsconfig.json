@@ -1,5 +1,4 @@
 {
-  "extends": "next/core-web/recommended",
   "compilerOptions": {
     "target": "ES2018",
     "lib": ["dom", "dom.iterable", "esnext"],
