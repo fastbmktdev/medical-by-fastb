@@ -4,7 +4,7 @@
  */
 
 import { createClient } from '@shared/lib/database/supabase/client';
-import type { SignUpCredentials, SignInCredentials } from '@shared/types';
+import type { SignUpCredentials, SignInCredentials, User } from '@shared/types';
 
 // Type declarations for browser APIs (for server-side compilation)
 interface BrowserWindow {
@@ -60,7 +60,7 @@ export async function signUp(credentials: SignUpCredentials) {
   });
 
   if (error) {
-    throw new Error(error.message);
+    throw new Error((error as { message?: string }).message || 'Sign up failed');
   }
 
   return data;
@@ -78,7 +78,7 @@ export async function signIn(credentials: SignInCredentials) {
   });
 
   if (error) {
-    throw new Error(error.message);
+    throw new Error((error as { message?: string }).message || 'Sign in failed');
   }
 
   return data;
@@ -93,32 +93,32 @@ export async function signOut() {
   const { error } = await supabase.auth.signOut();
 
   if (error) {
-    throw new Error(error.message);
+    throw new Error((error as { message?: string }).message || 'Sign out failed');
   }
 }
 
 /**
  * ดึงข้อมูลผู้ใช้ปัจจุบัน
  */
-export async function getCurrentUser() {
+export async function getCurrentUser(): Promise<User | null> {
   const supabase = createClient();
   
   const { data: { user }, error } = await supabase.auth.getUser();
 
   if (error) {
-    throw new Error(error.message);
+    throw new Error((error as { message?: string }).message || 'Failed to get user');
   }
 
-  return user;
+  return user as User | null;
 }
 
 /**
  * Subscribe to auth state changes
  */
-export function onAuthStateChange(callback: (user: ReturnType<typeof getCurrentUser> extends Promise<infer U> ? U : never) => void) {
+export function onAuthStateChange(callback: (user: User | null) => void) {
   const supabase = createClient();
   
-  const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+  const { data: { subscription } } = supabase.auth.onAuthStateChange((_event: string, session: { user: User | null } | null) => {
     callback(session?.user ?? null);
   });
 
@@ -168,7 +168,7 @@ async function signInWithOAuthProvider(provider: OAuthProvider) {
   });
 
   if (error) {
-    throw new Error(error.message);
+    throw new Error((error as { message?: string }).message || 'OAuth sign in failed');
   }
 
   return data;
@@ -227,7 +227,7 @@ async function linkOAuthAccount(provider: Exclude<OAuthProvider, 'apple'>) {
   });
 
   if (error) {
-    throw new Error(error.message);
+    throw new Error((error as { message?: string }).message || 'Failed to link account');
   }
 
   return data;
@@ -253,7 +253,7 @@ export async function unlinkOAuthAccount(provider: OAuthProvider = 'google') {
   const { data: identitiesData, error: identitiesError } = await supabase.auth.getUserIdentities();
   
   if (identitiesError) {
-    throw new Error(identitiesError.message || 'ไม่สามารถดึงข้อมูลบัญชีที่เชื่อมต่อได้');
+    throw new Error((identitiesError as { message?: string }).message || 'ไม่สามารถดึงข้อมูลบัญชีที่เชื่อมต่อได้');
   }
 
   if (!identitiesData || !identitiesData.identities) {
@@ -278,14 +278,14 @@ export async function unlinkOAuthAccount(provider: OAuthProvider = 'google') {
   const { data, error } = await supabase.auth.unlinkIdentity(identityToUnlink);
 
   if (error) {
-    throw new Error(error.message || 'ไม่สามารถยกเลิกการเชื่อมต่อได้');
+    throw new Error((error as { message?: string }).message || 'ไม่สามารถยกเลิกการเชื่อมต่อได้');
   }
 
   return data;
 }
 
 // Backwards compatibility
-export async function unlinkGoogleAccount(provider: string = 'google') {
+export async function unlinkGoogleAccount(provider: OAuthProvider = 'google') {
   return unlinkOAuthAccount(provider as OAuthProvider);
 }
 
@@ -301,7 +301,7 @@ export async function getConnectedAccounts() {
   const { data: identitiesData, error: identitiesError } = await supabase.auth.getUserIdentities();
   
   if (identitiesError) {
-    throw new Error(identitiesError.message || 'ไม่สามารถดึงข้อมูลบัญชีที่เชื่อมต่อได้');
+    throw new Error((identitiesError as { message?: string }).message || 'ไม่สามารถดึงข้อมูลบัญชีที่เชื่อมต่อได้');
   }
 
   if (!identitiesData || !identitiesData.identities) {
