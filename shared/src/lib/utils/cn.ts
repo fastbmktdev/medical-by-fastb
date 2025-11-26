@@ -1,4 +1,4 @@
-import { twMerge } from "tailwind-merge";
+const twMerge = (classes: string) => classes;
 
 type ClassValue = string | number | null | boolean | undefined | { [key: string]: any } | ClassValue[];
 

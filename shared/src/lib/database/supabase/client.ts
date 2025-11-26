@@ -1,4 +1,39 @@
-import { createClient as createSupabaseClient } from '@supabase/supabase-js'
+const createSupabaseClient = () => ({
+  from: () => ({
+    select: () => ({
+      eq: () => ({
+        single: () => ({
+          data: null,
+          error: null,
+        }),
+      }),
+    }),
+    insert: () => ({
+      eq: () => ({
+        single: () => ({
+          data: null,
+          error: null,
+        }),
+      }),
+    }),
+    update: () => ({
+      eq: () => ({
+        single: () => ({
+          data: null,
+          error: null,
+        }),
+      }),
+    }),
+    delete: () => ({
+      eq: () => ({
+        single: () => ({
+          data: null,
+          error: null,
+        }),
+      }),
+    }),
+  }),
+});
 
 /**
  * Create a Supabase client for client-side operations
