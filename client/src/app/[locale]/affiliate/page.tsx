@@ -34,6 +34,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { showSuccessToast, showErrorToast } from "@shared/lib/utils";
 import { Loading } from "@/components/design-system/primitives/Loading";
+import type { PointsHistory } from "@shared/types";
 
 interface AffiliateStats {
   totalReferrals: number;
@@ -89,7 +90,7 @@ export default function AffiliatePage() {
 
       if (referrals) {
         setReferralHistory(
-          referrals.map((ref) => ({
+          referrals.map((ref: PointsHistory) => ({
             id: ref.id,
             referred_user_email: ref.action_description || "Unknown",
             status: "rewarded" as const,
@@ -101,12 +102,12 @@ export default function AffiliatePage() {
         // Calculate stats
         const totalReferrals = referrals.length;
         const totalEarnings = referrals.reduce(
-          (sum, ref) => sum + ref.points,
+          (sum: number, ref: PointsHistory) => sum + ref.points,
           0
         );
         const currentMonth = new Date().getMonth();
         const currentYear = new Date().getFullYear();
-        const currentMonthReferrals = referrals.filter((ref) => {
+        const currentMonthReferrals = referrals.filter((ref: PointsHistory) => {
           const refDate = new Date(ref.created_at);
           return (
             refDate.getMonth() === currentMonth &&

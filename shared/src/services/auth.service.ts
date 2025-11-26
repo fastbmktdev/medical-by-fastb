@@ -267,7 +267,7 @@ export async function unlinkOAuthAccount(provider: OAuthProvider = 'google') {
 
   // Find the identity to unlink
   const identityToUnlink = identitiesData.identities.find(
-    (identity) => identity.provider === provider
+    (identity: { provider: string; identity_id: string }) => identity.provider === provider
   );
 
   if (!identityToUnlink) {
@@ -310,7 +310,7 @@ export async function getConnectedAccounts() {
 
   // Filter to only OAuth providers (exclude email and phone)
   const oauthIdentities = identitiesData.identities.filter(
-    (identity) => identity.provider !== 'email' && identity.provider !== 'phone'
+    (identity: { provider: string; identity_id: string }) => identity.provider !== 'email' && identity.provider !== 'phone'
   );
 
   return oauthIdentities;

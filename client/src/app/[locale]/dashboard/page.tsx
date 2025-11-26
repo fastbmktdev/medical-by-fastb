@@ -348,7 +348,22 @@ function DashboardContent() {
         .limit(3);
 
       if (bookingsData) {
-        const mappedBookings = bookingsData.map((appointment) => ({
+        const mappedBookings = bookingsData.map((appointment: {
+          id: string;
+          booking_number: string;
+          package_name: string;
+          start_date: string;
+          status: string;
+          payment_status: string;
+          price_paid: number;
+          hospitals?: {
+            hospital_name: string;
+            slug: string;
+          } | {
+            hospital_name: string;
+            slug: string;
+          }[] | null;
+        }) => ({
           ...appointment,
           hospitals: Array.isArray(appointment.hospitals) ? appointment.hospitals[0] : appointment.hospitals,
         })) as BookingWithHospital[];

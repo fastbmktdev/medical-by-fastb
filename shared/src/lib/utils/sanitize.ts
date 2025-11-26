@@ -6,6 +6,20 @@
 
 type DOMPurifyLike = { sanitize: (dirty: string, config?: unknown) => string };
 
+// DOMPurify config type (local definition to avoid bundling issues)
+interface DOMPurifyConfig {
+  ALLOWED_TAGS?: string[];
+  ALLOWED_ATTR?: string[];
+  ALLOWED_URI_REGEXP?: RegExp;
+  FORBID_ATTR?: string[];
+  FORBID_TAGS?: string[];
+  USE_PROFILES?: { html?: boolean; svg?: boolean; svgFilters?: boolean };
+  KEEP_CONTENT?: boolean;
+  RETURN_DOM?: boolean;
+  RETURN_DOM_FRAGMENT?: boolean;
+  RETURN_TRUSTED_TYPE?: boolean;
+}
+
 // Singleton holders for DOMPurify instances
 let domPurifyClient: DOMPurifyLike | null = null;
 let domPurifyServer: DOMPurifyLike | null = null;
@@ -17,19 +31,35 @@ function getDOMPurify(): DOMPurifyLike {
   if (typeof (globalThis as { window?: unknown }).window !== 'undefined') {
     // Browser: use dompurify
     if (!domPurifyClient) {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      domPurifyClient = require('dompurify');
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        domPurifyClient = require('dompurify');
+      } catch (err) {
+        console.warn('dompurify not available, using fallback sanitization');
+        // Fallback: basic sanitization
+        domPurifyClient = {
+          sanitize: (dirty: string) => dirty.replace(/<[^>]*>/g, '')
+        };
+      }
     }
     return domPurifyClient!;
   } else {
     // Server: isomorphic-dompurify + jsdom
     if (!domPurifyServer) {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const createDOMPurify = require('isomorphic-dompurify').default;
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const { JSDOM } = require('jsdom');
-      const window = new JSDOM('').window as unknown as Window & typeof globalThis;
-      domPurifyServer = createDOMPurify(window);
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const createDOMPurify = require('isomorphic-dompurify').default;
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const { JSDOM } = require('jsdom');
+        const window = new JSDOM('').window as unknown as Window & typeof globalThis;
+        domPurifyServer = createDOMPurify(window);
+      } catch (err) {
+        console.warn('isomorphic-dompurify not available, using fallback sanitization');
+        // Fallback: basic sanitization
+        domPurifyServer = {
+          sanitize: (dirty: string) => dirty.replace(/<[^>]*>/g, '')
+        };
+      }
     }
     return domPurifyServer!;
   }
@@ -38,7 +68,7 @@ function getDOMPurify(): DOMPurifyLike {
 /**
  * Strict DOMPurify configuration for HTML sanitization.
  */
-const PURIFY_CONFIG: import('dompurify').Config = {
+const PURIFY_CONFIG: DOMPurifyConfig = {
   ALLOWED_TAGS: [
     'p', 'br', 'strong', 'em', 'u', 's', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
     'ul', 'ol', 'li', 'blockquote', 'code', 'pre', 'a', 'span', 'div',

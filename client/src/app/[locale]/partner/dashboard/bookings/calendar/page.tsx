@@ -63,7 +63,7 @@ function BookingCalendarView() {
 
     if (bookingsData) {
       setBookings(
-        bookingsData.map((appointment) => ({
+        bookingsData.map((appointment: { start_date: string; [key: string]: any }) => ({
           ...appointment,
           date: appointment.start_date,
         }))

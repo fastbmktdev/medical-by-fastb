@@ -44,7 +44,18 @@ function TransactionsContent() {
         .order('created_at', { ascending: false });
       
       if (bookingsData) {
-        const mappedTransactions: Transaction[] = bookingsData.map(appointment => {
+        const mappedTransactions: Transaction[] = bookingsData.map((appointment: {
+          booking_number: string;
+          created_at: string;
+          package_name: string | null;
+          payment_status: string;
+          price_paid: number | null;
+          hospitals?: {
+            hospital_name: string;
+          } | {
+            hospital_name: string;
+          }[] | null;
+        }) => {
           const hospitalName = Array.isArray(appointment.hospitals) ? appointment.hospitals[0]?.hospital_name : appointment.hospitals?.hospital_name || 'Unknown hospital';
           
           let type: 'payment' | 'refund' | 'topup' = 'payment';

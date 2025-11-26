@@ -129,7 +129,18 @@ const nextConfig: NextConfig = {
         tls: false,
         fs: false,
         'child_process': false,
+        'isomorphic-dompurify': false,
       };
+      
+      // Ignore server-only modules in client bundle
+      const webpack = require('webpack');
+      config.plugins = config.plugins || [];
+      config.plugins.push(
+        new webpack.IgnorePlugin({
+          resourceRegExp: /^@supabase\/ssr$/,
+          contextRegExp: /shared\/src\/lib\/database\/supabase\/server/,
+        })
+      );
     }
 
     config.ignoreWarnings = [
