@@ -10,59 +10,27 @@
     "dev": "tsc --watch"
   },
   "dependencies": {
+    "@sentry/nextjs": "^10.27.0",
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.76.1",
     "date-fns": "^4.1.0",
+    "dompurify": "^3.3.0",
     "dotenv": "^17.2.3",
+    "isomorphic-dompurify": "^2.31.0",
+    "jsdom": "^25.0.1",
+    "jspdf": "^3.0.3",
+    "jspdf-autotable": "^5.0.2",
+    "next": "^15.5.6",
     "nodemailer": "^7.0.10",
+    "react-hot-toast": "^2.6.0",
     "resend": "^6.2.0",
     "stripe": "^19.1.0"
   },
   "devDependencies": {
-    "@sentry/nextjs": "^10.27.0",
     "@types/node": "^22",
     "@types/nodemailer": "^7.0.3",
-    "dompurify": "^3.3.0",
-    "isomorphic-dompurify": "^2.31.0",
-    "jspdf": "^3.0.3",
-    "jspdf-autotable": "^5.0.2",
-    "jsdom": "^25.0.1",
-    "next": "^15.5.6",
-    "react-hot-toast": "^2.6.0",
     "typescript": "^5"
   },
-  "peerDependencies": {
-    "@sentry/nextjs": "^10.0.0",
-    "dompurify": "^3.0.0",
-    "isomorphic-dompurify": "^2.0.0",
-    "jspdf": "^3.0.0",
-    "jspdf-autotable": "^5.0.0",
-    "jsdom": "^25.0.0",
-    "next": "^15.0.0",
-    "react-hot-toast": "^2.0.0"
-  },
-  "peerDependenciesMeta": {
-    "@sentry/nextjs": {
-      "optional": true
-    },
-    "dompurify": {
-      "optional": true
-    },
-    "isomorphic-dompurify": {
-      "optional": true
-    },
-    "jspdf": {
-      "optional": true
-    },
-    "jspdf-autotable": {
-      "optional": true
-    },
-    "jsdom": {
-      "optional": true
-    },
-    "react-hot-toast": {
-      "optional": true
-    }
-  }
+  "peerDependencies": {},
+  "peerDependenciesMeta": {}
 }
-
