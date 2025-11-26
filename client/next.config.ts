@@ -137,11 +137,17 @@ const nextConfig: NextConfig = {
         new TerserPlugin({
           parallel: isVercel ? 2 : true, // Limit parallelism on Vercel to avoid memory issues
           terserOptions: {
+            ecma: 2020, // Support modern JavaScript syntax (ES2020)
+            parse: {
+              ecma: 2020, // Parse modern syntax
+            },
             compress: {
+              ecma: 2020, // Compress using ES2020 features
               drop_console: false, // Keep console.error and console.warn
               passes: isVercel ? 1 : 2, // Reduce passes on Vercel for faster builds
             },
             format: {
+              ecma: 2020, // Output ES2020 format
               comments: false, // Remove comments
             },
             mangle: {
