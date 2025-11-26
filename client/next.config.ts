@@ -6,6 +6,7 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const withNextIntl = createNextIntlPlugin('./src/i18n.ts');
 
 const isDevelopment = process.env.NODE_ENV === "development";
+const isVercel = process.env.VERCEL === "1";
 
 function getContentSecurityPolicy(isDev: boolean): string {
   const connectSrc =
@@ -134,12 +135,17 @@ const nextConfig: NextConfig = {
       const TerserPlugin = require('terser-webpack-plugin');
       config.optimization.minimizer = [
         new TerserPlugin({
+          parallel: isVercel ? 2 : true, // Limit parallelism on Vercel to avoid memory issues
           terserOptions: {
             compress: {
               drop_console: false, // Keep console.error and console.warn
+              passes: isVercel ? 1 : 2, // Reduce passes on Vercel for faster builds
             },
             format: {
               comments: false, // Remove comments
+            },
+            mangle: {
+              safari10: true, // Ensure Safari 10+ compatibility
             },
           },
           extractComments: false, // Don't extract comments to separate files

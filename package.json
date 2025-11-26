@@ -8,6 +8,10 @@
     "server",
     "shared"
   ],
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
+  },
   "scripts": {
     "dev": "npm run dev:client & npm run dev:server",
     "dev:client": "npm run dev --workspace=@medical/client",
