@@ -14,7 +14,7 @@ let domPurifyServer: DOMPurifyLike | null = null;
  * Gets the correct DOMPurify instance for the environment.
  */
 function getDOMPurify(): DOMPurifyLike {
-  if (typeof window !== 'undefined') {
+  if (typeof (globalThis as { window?: unknown }).window !== 'undefined') {
     // Browser: use dompurify
     if (!domPurifyClient) {
       // eslint-disable-next-line @typescript-eslint/no-require-imports

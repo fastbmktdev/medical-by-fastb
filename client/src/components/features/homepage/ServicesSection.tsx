@@ -48,15 +48,6 @@ const SERVICES = [
     iconBg: "bg-pink-100",
     iconColor: "text-pink-600",
   },
-  {
-    icon: UserGroupIcon,
-    title: "ชุมชน",
-    description: "เข้าร่วมชุมชนและแลกเปลี่ยนประสบการณ์",
-    href: "/dashboard",
-    color: "from-indigo-500 to-indigo-600",
-    iconBg: "bg-indigo-100",
-    iconColor: "text-indigo-600",
-  },
 ];
 
 export default function ServicesSection() {
@@ -72,7 +63,7 @@ export default function ServicesSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {SERVICES.map((service, index) => {
             const Icon = service.icon;
             return (

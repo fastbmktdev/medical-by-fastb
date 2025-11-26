@@ -12,7 +12,11 @@ export async function POST(request: NextRequest) {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     
-    const body = await request.json();
+    const body = await request.json() as {
+      email?: string;
+      preferences?: Record<string, unknown>;
+      source?: string;
+    };
     const { email, preferences, source = 'manual' } = body;
 
     if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {

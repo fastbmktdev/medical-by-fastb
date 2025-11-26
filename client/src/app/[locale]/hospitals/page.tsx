@@ -107,7 +107,7 @@ export default function HospitalsPage() {
                 placeholder="ค้นหาโรงพยาบาล..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-white py-3 pr-4 pl-10 border border-gray-300  focus:outline-none focus:ring-2 focus:ring-purple-500 w-full placeholder-gray-400 text-zinc-950"
+                className="bg-white py-3 pr-4 pl-10 border border-gray-300  focus:outline-none focus:ring-2 w-full placeholder-gray-400 text-zinc-950"
               />
               {isDebouncing && (
                 <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
@@ -122,7 +122,7 @@ export default function HospitalsPage() {
               <select
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)}
-                className="bg-white py-3 pr-4 pl-10 border border-gray-300  focus:outline-none focus:ring-2 focus:ring-purple-500 w-full appearance-none cursor-pointer text-zinc-950"
+                className="bg-white py-3 pr-4 pl-10 border border-gray-300  focus:outline-none focus:ring-2 w-full appearance-none cursor-pointer text-zinc-950"
               >
                 <option value="all">ทุกประเภท</option>
                 {hospitalTypes
@@ -163,7 +163,7 @@ export default function HospitalsPage() {
                       setSearchQuery("");
                       setSelectedType("all");
                     }}
-                    className="bg-brand-primary hover:bg-purple-600 mt-4 px-6 py-2  transition-colors"
+                    className="bg-brand-primary hover:bg-[#8B5CF6] mt-4 px-6 py-2  transition-colors"
                   >
                     ล้างการค้นหา
                   </button>

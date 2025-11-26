@@ -6,6 +6,22 @@
 import { createClient } from '@shared/lib/database/supabase/client';
 import type { SignUpCredentials, SignInCredentials } from '@shared/types';
 
+// Type declarations for browser APIs (for server-side compilation)
+interface BrowserWindow {
+  location: {
+    origin: string;
+    pathname: string;
+  };
+}
+
+interface BrowserDocument {
+  cookie: string;
+}
+
+// Global declarations for browser APIs (for TypeScript compilation in server environment)
+declare var window: BrowserWindow | undefined;
+declare var document: BrowserDocument | undefined;
+
 /**
  * Helper function to get current locale from pathname
  * Falls back to 'th' if locale cannot be determined
@@ -15,7 +31,7 @@ function getCurrentLocale(): string {
     return 'th'; // Default locale for SSR
   }
   
-  const pathname = window.location.pathname;
+  const pathname = (window as unknown as BrowserWindow).location.pathname;
   const localeMatch = pathname.match(/^\/(th|en|jp)(\/|$)/);
   return localeMatch ? localeMatch[1] : 'th';
 }
@@ -24,11 +40,15 @@ function getCurrentLocale(): string {
  * ลงทะเบียนผู้ใช้ใหม่
  */
 export async function signUp(credentials: SignUpCredentials) {
+  if (typeof window === 'undefined') {
+    throw new Error('Sign up is only available in browser environment');
+  }
+
   const supabase = createClient();
   const locale = getCurrentLocale();
   
   // Include locale in callback URL so redirect preserves locale
-  const callbackUrl = new URL(`${window.location.origin}/api/auth/callback`);
+  const callbackUrl = new URL(`${(window as unknown as BrowserWindow).location.origin}/api/auth/callback`);
   callbackUrl.searchParams.set('next', `/${locale}/dashboard`);
   
   const { data, error } = await supabase.auth.signUp({
@@ -119,18 +139,23 @@ async function signInWithOAuthProvider(provider: OAuthProvider) {
   // We'll store the locale and next destination in cookies instead
   let callbackUrl: string;
   
+  if (typeof window === 'undefined') {
+    throw new Error('OAuth sign-in is only available in browser environment');
+  }
+
+  const win = window as unknown as BrowserWindow;
+  const doc = document as unknown as BrowserDocument;
+
   if (provider === 'facebook') {
     // Facebook requires a clean redirect URL without query parameters
     // Store locale and next destination in cookies for server-side retrieval
-    if (typeof window !== 'undefined') {
-      // Set cookies that will be available in the callback route
-      document.cookie = `oauth_locale=${locale}; path=/; max-age=600; SameSite=Lax`;
-      document.cookie = `oauth_next=/${locale}/dashboard; path=/; max-age=600; SameSite=Lax`;
-    }
-    callbackUrl = `${window.location.origin}/api/auth/callback`;
+    // Set cookies that will be available in the callback route
+    doc.cookie = `oauth_locale=${locale}; path=/; max-age=600; SameSite=Lax`;
+    doc.cookie = `oauth_next=/${locale}/dashboard; path=/; max-age=600; SameSite=Lax`;
+    callbackUrl = `${win.location.origin}/api/auth/callback`;
   } else {
     // For other providers (Google, etc.), we can use query parameters
-    const callbackUrlObj = new URL(`${window.location.origin}/api/auth/callback`);
+    const callbackUrlObj = new URL(`${win.location.origin}/api/auth/callback`);
     callbackUrlObj.searchParams.set('next', `/${locale}/dashboard`);
     callbackUrl = callbackUrlObj.toString();
   }
@@ -175,16 +200,21 @@ async function linkOAuthAccount(provider: Exclude<OAuthProvider, 'apple'>) {
   // For Facebook, use cookies instead of query parameters
   let callbackUrl: string;
   
+  if (typeof window === 'undefined') {
+    throw new Error('OAuth account linking is only available in browser environment');
+  }
+
+  const win = window as unknown as BrowserWindow;
+  const doc = document as unknown as BrowserDocument;
+
   if (provider === 'facebook') {
     // Facebook requires a clean redirect URL without query parameters
-    if (typeof window !== 'undefined') {
-      document.cookie = `oauth_locale=${locale}; path=/; max-age=600; SameSite=Lax`;
-      document.cookie = `oauth_next=/${locale}/dashboard/profile; path=/; max-age=600; SameSite=Lax`;
-    }
-    callbackUrl = `${window.location.origin}/api/auth/callback`;
+    doc.cookie = `oauth_locale=${locale}; path=/; max-age=600; SameSite=Lax`;
+    doc.cookie = `oauth_next=/${locale}/dashboard/profile; path=/; max-age=600; SameSite=Lax`;
+    callbackUrl = `${win.location.origin}/api/auth/callback`;
   } else {
     // For other providers, use query parameters
-    const callbackUrlObj = new URL(`${window.location.origin}/api/auth/callback`);
+    const callbackUrlObj = new URL(`${win.location.origin}/api/auth/callback`);
     callbackUrlObj.searchParams.set('next', `/${locale}/dashboard/profile`);
     callbackUrl = callbackUrlObj.toString();
   }

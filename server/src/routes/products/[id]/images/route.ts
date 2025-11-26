@@ -75,7 +75,9 @@ export const POST = withAdminAuth(async (
   try {
     const supabase = await createClient();
     const { id } = await params;
-    const body = await request.json();
+    const body = await request.json() as {
+      images?: Array<{ url: string; alt?: string; is_primary?: boolean }>;
+    };
 
     // Validate required fields
     const { images } = body;

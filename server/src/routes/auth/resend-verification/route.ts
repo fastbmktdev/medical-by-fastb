@@ -26,7 +26,8 @@ const OTP_EXPIRY = 10 * 60 * 1000;
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, fullName } = body;
+    const email = (body as any).email as string;
+    const fullName = (body as any).fullName as string | undefined;
 
     // Validate email
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -103,7 +104,14 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    const body = await request.json();
+    const body = await request.json() as {
+      email?: string;
+      otp?: string;
+      username?: string;
+      fullName?: string;
+      phone?: string;
+      password?: string;
+    };
     const { email, otp, username, fullName, phone, password } = body;
 
     // Validate required fields
@@ -173,7 +181,7 @@ export async function PUT(request: NextRequest) {
 
     // Check if email already exists
     const { data: { users }, error: userListError } = await supabase.auth.admin.listUsers();
-    const existingUser = users?.find(u => u.email === email);
+    const existingUser = users?.find((u: any) => u.email === email);
     
     if (userListError) {
       console.error('Error listing users:', userListError);

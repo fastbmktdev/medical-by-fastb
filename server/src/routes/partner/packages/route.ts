@@ -134,7 +134,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      package_type?: string;
+      name?: string;
+      name_english?: string;
+      description?: string;
+      price?: number;
+      duration_months?: number;
+      features?: string[];
+    };
     const {
       package_type,
       name,
@@ -174,6 +182,13 @@ export async function POST(request: NextRequest) {
     }
 
     // สร้างแพ็คเกจ
+    if (!name) {
+      return NextResponse.json(
+        { success: false, error: 'name is required' },
+        { status: 400 }
+      );
+    }
+
     const { data: newPackage, error: createError } = await supabase
       .from('hospital_packages')
       .insert({
@@ -182,7 +197,7 @@ export async function POST(request: NextRequest) {
         name: name.trim(),
         name_english: name_english?.trim() || null,
         description: description?.trim() || null,
-        price: parseFloat(price),
+        price: typeof price === 'number' ? price : parseFloat(String(price)),
         duration_months: package_type === 'package' ? duration_months : null,
         features: features || [],
         is_active: true,

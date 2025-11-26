@@ -29,7 +29,9 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      bio?: string;
+    };
     let { bio } = body;
 
     // Sanitize HTML content to prevent XSS attacks

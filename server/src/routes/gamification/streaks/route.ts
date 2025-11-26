@@ -16,7 +16,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      streak_type?: string;
+      activity_date?: string;
+    };
     const { streak_type, activity_date } = body;
 
     // Validate required fields
@@ -30,7 +33,7 @@ export async function POST(request: NextRequest) {
     // Update user streak
     const result = await updateUserStreak({
       user_id: user.id,
-      streak_type,
+      streak_type: streak_type as 'appointment' | 'login' | 'review' | 'article_read',
       activity_date,
     });
 

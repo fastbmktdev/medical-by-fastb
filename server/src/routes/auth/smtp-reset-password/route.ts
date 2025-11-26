@@ -26,7 +26,7 @@ const RESET_TOKEN_EXPIRY = 60 * 60 * 1000;
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email } = body;
+    const email = (body as any).email as string;
 
     // Validate email
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     // Check if user exists
     const supabase = createAdminClient();
     const { data: { users }, error: usersError } = await supabase.auth.admin.listUsers();
-    const existingUser = users?.find(u => u.email === email);
+    const existingUser = users?.find((u: any) => u.email === email);
 
     if (usersError || !existingUser) {
       // Don't reveal if user exists or not (security best practice)
@@ -106,7 +106,9 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, token, newPassword } = body;
+    const email = (body as any).email as string;
+    const token = (body as any).token as string;
+    const newPassword = (body as any).newPassword as string;
 
     // Validate input
     if (!email || !token || !newPassword) {
@@ -168,7 +170,7 @@ export async function PUT(request: NextRequest) {
     // Update password using Supabase admin
     const supabase = createAdminClient();
     const { data: { users } } = await supabase.auth.admin.listUsers();
-    const user = users?.find(u => u.email === email);
+    const user = users?.find((u: any) => u.email === email);
 
     if (!user) {
       return NextResponse.json(

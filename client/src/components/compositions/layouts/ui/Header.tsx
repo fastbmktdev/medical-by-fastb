@@ -118,7 +118,7 @@ function DesktopUserMenu({
   isLoggingOut: boolean;
 }) {
   return (
-      <div className="hidden md:block relative group">
+    <div className="hidden md:block relative group">
       <div className="flex items-center gap-2 hover:bg-gray-100 px-3 border border-gray-300  h-10 transition-all duration-200 cursor-pointer">
         <UserCircleIcon className="w-5 h-5 group-hover:text-purple-600 transition-colors text-zinc-950" />
         <span className="max-w-[100px] text-sm truncate group-hover:text-zinc-950 transition-colors text-zinc-950">
@@ -276,13 +276,11 @@ function MobileUserMenu({
       <button
         onClick={handleLogout}
         disabled={isLoggingOut}
-        className="flex justify-center items-center gap-2 bg-brand-primary hover:bg-purple-600 disabled:bg-purple-400 px-4 py-2  w-full font-medium text-sm transition-colors"
+        className="flex justify-center items-center gap-2 bg-brand-primary hover:bg-[#8B5CF6] disabled:bg-purple-400 px-4 py-2  w-full font-medium text-sm transition-colors"
         aria-label="ออกจากระบบ"
       >
         <ArrowRightStartOnRectangleIcon className="w-5 h-5" />
-        <span>
-          {isLoggingOut ? "กำลังออกจากระบบ..." : "ออกจากระบบ"}
-        </span>
+        <span>{isLoggingOut ? "กำลังออกจากระบบ..." : "ออกจากระบบ"}</span>
       </button>
     </div>
   ) : (
@@ -388,7 +386,7 @@ export default function Header() {
             ) : (
               <Link
                 href="/login"
-                className="hidden md:inline-flex items-center gap-2 bg-brand-primary hover:bg-purple-600 px-4  h-10 font-medium text-sm transition-colors"
+                className="hidden md:inline-flex items-center gap-2 bg-brand-primary hover:bg-[#8B5CF6] px-4  h-10 font-medium text-sm transition-colors"
               >
                 <UserCircleIcon className="w-5 h-5" />
                 เข้าสู่ระบบ

@@ -23,7 +23,9 @@ export async function PUT(
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      is_read?: boolean;
+    };
     const { is_read } = body;
 
     const updateData: Record<string, unknown> = {};

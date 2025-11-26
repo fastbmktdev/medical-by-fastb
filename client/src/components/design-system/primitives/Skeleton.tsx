@@ -35,22 +35,22 @@ export function Skeleton({
   ...props
 }: SkeletonProps): React.ReactElement {
   const variantClasses = {
-    default: "",
-    "": "",
+    default: "rounded-none",
+    "": "rounded-none",
     circle: "rounded-full",
-    none: "",
+    none: "rounded-none",
   };
 
   const animationClasses = {
     pulse: "animate-pulse",
-    wave: "animate-shimmer bg-linear-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%]",
+    wave: "animate-shimmer bg-linear-to-r from-purple-400 via-purple-500 to-purple-400 bg-[length:200%_100%]",
     none: "",
   };
 
   return (
     <div
       className={cn(
-        "bg-gray-200",
+        "bg-purple-500 rounded-none",
         variantClasses[variant],
         animationClasses[animation],
         className
@@ -72,28 +72,28 @@ export function SkeletonCard({ className, ...props }: React.HTMLAttributes<HTMLD
   return (
     <div
       className={cn(
-        " border border-gray-300 bg-gray-100 p-6 space-y-4",
+        " border border-purple-300 bg-purple-50 p-6 space-y-4 rounded-none",
         className
       )}
       {...props}
     >
       {/* Image placeholder */}
-      <Skeleton className="w-full h-48 mb-4" variant="default" />
+      <Skeleton className="w-full h-48 mb-4 rounded-none" variant="default" />
       
       {/* Title */}
-      <Skeleton className="h-6 w-3/4" />
+      <Skeleton className="h-6 w-3/4 rounded-none" />
       
       {/* Description lines */}
       <div className="space-y-2">
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-5/6" />
-        <Skeleton className="h-4 w-4/6" />
+        <Skeleton className="h-4 w-full rounded-none" />
+        <Skeleton className="h-4 w-5/6 rounded-none" />
+        <Skeleton className="h-4 w-4/6 rounded-none" />
       </div>
       
       {/* Footer actions */}
       <div className="flex gap-2 pt-4">
-        <Skeleton className="h-10 w-24" variant="default" />
-        <Skeleton className="h-10 w-24" variant="default" />
+        <Skeleton className="h-10 w-24 rounded-none" variant="default" />
+        <Skeleton className="h-10 w-24 rounded-none" variant="default" />
       </div>
     </div>
   );
@@ -114,11 +114,11 @@ export function SkeletonTable({
       {...props}
     >
       {/* Table header */}
-      <div className="flex gap-4 pb-3 border-b border-gray-300">
+      <div className="flex gap-4 pb-3 border-b border-purple-300">
         {Array.from({ length: columns }).map((_, i) => (
           <Skeleton
             key={`header-${i}`}
-            className="h-5 flex-1"
+            className="h-5 flex-1 rounded-none"
             width={i === 0 ? "40%" : undefined}
           />
         ))}
@@ -131,7 +131,7 @@ export function SkeletonTable({
             {Array.from({ length: columns }).map((_, colIndex) => (
               <Skeleton
                 key={`cell-${rowIndex}-${colIndex}`}
-                className="h-4 flex-1"
+                className="h-4 flex-1 rounded-none"
                 width={colIndex === 0 ? "40%" : undefined}
               />
             ))}
@@ -162,9 +162,9 @@ export function SkeletonList({
           
           {/* Content */}
           <div className="flex-1 space-y-2">
-            <Skeleton className="h-4 w-3/4" />
-            <Skeleton className="h-3 w-full" />
-            <Skeleton className="h-3 w-5/6" />
+            <Skeleton className="h-4 w-3/4 rounded-none" />
+            <Skeleton className="h-3 w-full rounded-none" />
+            <Skeleton className="h-3 w-5/6 rounded-none" />
           </div>
         </div>
       ))}
@@ -185,7 +185,7 @@ export function SkeletonText({
       {Array.from({ length: lines }).map((_, i) => (
         <Skeleton
           key={`text-${i}`}
-          className="h-4"
+          className="h-4 rounded-none"
           width={i === lines - 1 ? "80%" : "100%"}
         />
       ))}
@@ -237,7 +237,7 @@ export function SkeletonButton({
 
   return (
     <Skeleton
-      className={cn(sizeClasses[size], className)}
+      className={cn(sizeClasses[size], "rounded-none", className)}
       variant="default"
       {...props}
     />
@@ -257,9 +257,9 @@ export function SkeletonForm({
       {Array.from({ length: fields }).map((_, i) => (
         <div key={`field-${i}`} className="space-y-2">
           {/* Label */}
-          <Skeleton className="h-4 w-24" />
+          <Skeleton className="h-4 w-24 rounded-none" />
           {/* Input */}
-          <Skeleton className="h-10 w-full" variant="default" />
+          <Skeleton className="h-10 w-full rounded-none" variant="default" />
         </div>
       ))}
       
@@ -280,8 +280,8 @@ export function SkeletonDashboard({ className, ...props }: React.HTMLAttributes<
     <div className={cn("space-y-6", className)} {...props}>
       {/* Header */}
       <div className="space-y-2">
-        <Skeleton className="h-8 w-64" />
-        <Skeleton className="h-4 w-96" />
+        <Skeleton className="h-8 w-64 rounded-none" />
+        <Skeleton className="h-4 w-96 rounded-none" />
       </div>
       
       {/* Stats Grid */}
@@ -289,11 +289,11 @@ export function SkeletonDashboard({ className, ...props }: React.HTMLAttributes<
         {Array.from({ length: 4 }).map((_, i) => (
           <div
             key={`stat-${i}`}
-            className=" border border-gray-300 bg-gray-100 p-4 space-y-2"
+            className=" border border-purple-300 bg-purple-50 p-4 space-y-2 rounded-none"
           >
-            <Skeleton className="h-4 w-20" />
-            <Skeleton className="h-8 w-16" />
-            <Skeleton className="h-3 w-24" />
+            <Skeleton className="h-4 w-20 rounded-none" />
+            <Skeleton className="h-8 w-16 rounded-none" />
+            <Skeleton className="h-3 w-24 rounded-none" />
           </div>
         ))}
       </div>

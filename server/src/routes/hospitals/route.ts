@@ -40,7 +40,18 @@ const postHospitalHandler = withAdminAuth(async (
     user
 ) => {
   try {
-    const body = await request.json();
+    const body = await request.json() as {
+      hospital_name?: string;
+      hospital_name_english?: string;
+      contact_name?: string;
+      phone?: string;
+      email?: string;
+      website?: string;
+      location?: string;
+      hospital_details?: string;
+      services?: string[];
+      status?: string;
+    };
     const {
       hospital_name,
       hospital_name_english,
@@ -54,18 +65,26 @@ const postHospitalHandler = withAdminAuth(async (
       status,
     } = body;
 
+    // Validate required fields
+    if (!hospital_name || !contact_name || !phone || !email || !location) {
+      return NextResponse.json(
+        { success: false, error: 'Missing required fields' },
+        { status: 400 }
+      );
+    }
+
     const createdHospital = await createHospital({
       user_id: user.id,
-      hospital_name,
+      hospital_name: hospital_name as string,
       hospital_name_english,
-      contact_name,
-      phone,
-      email,
+      contact_name: contact_name as string,
+      phone: phone as string,
+      email: email as string,
       website,
-      location,
+      location: location as string,
       hospital_details,
       services,
-      status: status || 'approved', // Default เป็น approved เพราะ admin สร้างเอง
+      status: (status as 'pending' | 'approved' | 'rejected' | undefined) || 'approved', // Default เป็น approved เพราะ admin สร้างเอง
     });
 
     return NextResponse.json({

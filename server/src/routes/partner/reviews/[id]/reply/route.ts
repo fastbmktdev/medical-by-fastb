@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@shared/lib/database/supabase/server';
 
+interface ReplyBody {
+  message?: string;
+}
+
 /**
  * POST /api/partner/reviews/[id]/reply
  * Reply to a review
@@ -8,7 +12,7 @@ import { createClient } from '@shared/lib/database/supabase/server';
  */
 export async function POST(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
     const supabase = await createClient();
@@ -21,10 +25,9 @@ export async function POST(
       );
     }
 
-    const { id } = await params;
+    const { id } = params;
     const reviewId = id;
-    const body = await request.json();
-    const { message } = body;
+    const { message } = (await request.json()) as ReplyBody;
 
     if (!message || message.trim().length === 0) {
       return NextResponse.json(
@@ -33,30 +36,30 @@ export async function POST(
       );
     }
 
-    // Get review and verify it exists
-    const { data: review, error: reviewError } = await supabase
-      .from('hospital_reviews')
-      .select('*, hospitals!inner(user_id)')
-      .eq('id', reviewId)
-      .single();
+    // Run queries in parallel for performance
+    const [reviewResult, roleResult] = await Promise.all([
+      supabase
+        .from('hospital_reviews')
+        .select('hospitals!inner(user_id)')
+        .eq('id', reviewId)
+        .single(),
+      supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .single()
+    ]);
 
+    const { data: review, error: reviewError } = reviewResult;
     if (reviewError || !review) {
       return NextResponse.json(
         { success: false, error: 'Review not found' },
         { status: 404 }
       );
     }
-
-    // Check if user is the hospital owner
-    const isHospitalOwner = (review as { hospitals?: { user_id: string } }).hospitals?.user_id === user.id;
-
-    // Check if user is admin
-    const { data: role } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', user.id)
-      .single();
-
+    const { data: role } = roleResult;
+    const hospitals = Array.isArray(review.hospitals) ? review.hospitals[0] : review.hospitals;
+    const isHospitalOwner = hospitals?.user_id === user.id;
     const isAdmin = role?.role === 'admin';
 
     if (!isHospitalOwner && !isAdmin) {
@@ -119,7 +122,7 @@ export async function POST(
  */
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
     const supabase = await createClient();
@@ -132,9 +135,9 @@ export async function PATCH(
       );
     }
 
-    const { id } = await params;
+    const { id } = params;
     const reviewId = id;
-    const body = await request.json();
+    const body = (await request.json()) as ReplyBody;
     const { message } = body;
 
     if (!message || message.trim().length === 0) {
@@ -144,12 +147,21 @@ export async function PATCH(
       );
     }
 
-    // Get existing reply
-    const { data: reply, error: replyError } = await supabase
-      .from('review_replies')
-      .select('*')
-      .eq('review_id', reviewId)
-      .single();
+    // Run queries in parallel for performance
+    const [replyResult, roleResult] = await Promise.all([
+      supabase
+        .from('review_replies')
+        .select('*')
+        .eq('review_id', reviewId)
+        .single(),
+      supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .single(),
+    ]);
+
+    const { data: reply, error: replyError } = replyResult;
 
     if (replyError || !reply) {
       return NextResponse.json(
@@ -158,12 +170,7 @@ export async function PATCH(
       );
     }
 
-    // Check if user is the reply owner or admin
-    const { data: role } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', user.id)
-      .single();
+    const { data: role } = roleResult;
 
     const isAdmin = role?.role === 'admin';
     const isOwner = reply.user_id === user.id;
@@ -214,7 +221,7 @@ export async function PATCH(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
     const supabase = await createClient();
@@ -227,15 +234,24 @@ export async function DELETE(
       );
     }
 
-    const { id } = await params;
+    const { id } = params;
     const reviewId = id;
 
-    // Get existing reply
-    const { data: reply, error: replyError } = await supabase
-      .from('review_replies')
-      .select('*')
-      .eq('review_id', reviewId)
-      .single();
+    // Run queries in parallel for performance
+    const [replyResult, roleResult] = await Promise.all([
+      supabase
+        .from('review_replies')
+        .select('*')
+        .eq('review_id', reviewId)
+        .single(),
+      supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .single(),
+    ]);
+
+    const { data: reply, error: replyError } = replyResult;
 
     if (replyError || !reply) {
       return NextResponse.json(
@@ -244,12 +260,7 @@ export async function DELETE(
       );
     }
 
-    // Check if user is the reply owner or admin
-    const { data: role } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', user.id)
-      .single();
+    const { data: role } = roleResult;
 
     const isAdmin = role?.role === 'admin';
     const isOwner = reply.user_id === user.id;
@@ -287,4 +298,3 @@ export async function DELETE(
     );
   }
 }
-

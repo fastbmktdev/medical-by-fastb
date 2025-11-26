@@ -55,7 +55,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      setup_intent_id?: string;
+    };
     const { setup_intent_id } = body;
 
     if (!setup_intent_id) {
@@ -153,7 +155,10 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      method_id?: string;
+      is_default?: boolean;
+    };
     const { method_id, is_default } = body;
 
     if (!method_id) {

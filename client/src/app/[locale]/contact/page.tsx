@@ -14,6 +14,7 @@ import { showSuccessToast, showErrorToast } from '@shared/lib/utils';
 import { validateName, validateEmail, validatePhone, validateSubject, validateMessage } from '@shared/lib/utils/validation';
 import { Link } from "@/navigation";
 import { LoadingSpinner } from "@/components/design-system/primitives/Loading";
+import { cn } from '@shared/lib/utils/cn';
 
 interface FormErrors {
   name?: string;
@@ -185,6 +186,179 @@ export default function ContactPage() {
     { value: "other", label: "อื่นๆ" }
   ];
 
+  // Base input classes
+  const baseInputClasses = "bg-white px-3 py-2 border focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-zinc-950 placeholder-zinc-400";
+  const errorInputClasses = "border-red-500";
+  const normalInputClasses = "border-zinc-300";
+
+  // Custom FormField wrapper with correct styling for contact form
+  const ContactFormField = ({ 
+    id, 
+    label, 
+    error, 
+    required = false, 
+    children 
+  }: {
+    id: string;
+    label: string;
+    error?: string;
+    required?: boolean;
+    children: React.ReactNode;
+  }) => {
+    const fieldId = `${id}-input`;
+    return (
+      <div className="space-y-2">
+        <label
+          htmlFor={fieldId}
+          className="block text-sm font-medium text-zinc-950"
+        >
+          {label}
+          {required && (
+            <span className="text-red-500 ml-1" aria-label="required">
+              *
+            </span>
+          )}
+        </label>
+        <div>
+          {children}
+        </div>
+        {error && (
+          <p
+            id={`${id}-error`}
+            className="flex items-center gap-1 mt-1 text-sm text-red-400"
+            role="alert"
+            aria-live="polite"
+          >
+            {error}
+          </p>
+        )}
+      </div>
+    );
+  };
+
+  // Helper component for text inputs
+  const TextInput = ({ 
+    id, 
+    name, 
+    type = "text", 
+    label, 
+    placeholder, 
+    required = false,
+    value,
+    error 
+  }: {
+    id: string;
+    name: string;
+    type?: string;
+    label: string;
+    placeholder: string;
+    required?: boolean;
+    value: string;
+    error?: string;
+  }) => (
+    <ContactFormField
+      id={id}
+      label={label}
+      error={error}
+      required={required}
+    >
+      <input
+        type={type}
+        id={`${id}-input`}
+        name={name}
+        value={value}
+        onChange={handleInputChange}
+        className={cn(
+          baseInputClasses,
+          error ? errorInputClasses : normalInputClasses
+        )}
+        placeholder={placeholder}
+        aria-invalid={!!error}
+        aria-describedby={error ? `${id}-error` : undefined}
+      />
+    </ContactFormField>
+  );
+
+  // Helper component for select
+  const SelectInput = ({ 
+    id, 
+    name, 
+    label, 
+    required = false,
+    value,
+    options 
+  }: {
+    id: string;
+    name: string;
+    label: string;
+    required?: boolean;
+    value: string;
+    options: Array<{ value: string; label: string }>;
+  }) => (
+    <ContactFormField
+      id={id}
+      label={label}
+      required={required}
+    >
+      <select
+        id={`${id}-input`}
+        name={name}
+        value={value}
+        onChange={handleInputChange}
+        className={cn(baseInputClasses, normalInputClasses)}
+      >
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </ContactFormField>
+  );
+
+  // Helper component for textarea
+  const TextareaInput = ({ 
+    id, 
+    name, 
+    label, 
+    placeholder, 
+    required = false,
+    value,
+    error,
+    rows = 6
+  }: {
+    id: string;
+    name: string;
+    label: string;
+    placeholder: string;
+    required?: boolean;
+    value: string;
+    error?: string;
+    rows?: number;
+  }) => (
+    <ContactFormField
+      id={id}
+      label={label}
+      error={error}
+      required={required}
+    >
+      <textarea
+        id={`${id}-input`}
+        name={name}
+        value={value}
+        onChange={handleInputChange}
+        rows={rows}
+        className={cn(
+          baseInputClasses,
+          error ? errorInputClasses : normalInputClasses
+        )}
+        placeholder={placeholder}
+        aria-invalid={!!error}
+        aria-describedby={error ? `${id}-error` : undefined}
+      />
+    </ContactFormField>
+  );
+
   return (
     <div className="bg-zinc-100 text-zinc-950 min-h-screen">
       <PageHeader 
@@ -208,10 +382,10 @@ export default function ContactPage() {
                       <h3 className="mb-2 font-semibold text-lg">{info.title}</h3>
                       <div className="space-y-1">
                         {info.details.map((detail, detailIndex) => (
-                          <p key={detailIndex} className="text-zinc-300">{detail}</p>
+                          <p key={detailIndex} className="text-zinc-950">{detail}</p>
                         ))}
                       </div>
-                      <p className="mt-2 text-zinc-400 text-sm">{info.description}</p>
+                      <p className="mt-2 text-zinc-700 text-sm">{info.description}</p>
                     </div>
                   </div>
                 ))}
@@ -224,7 +398,7 @@ export default function ContactPage() {
               <div className="flex gap-4">
                 <Link
                   href="#"
-                  className="bg-zinc-700 hover:bg-zinc-600 p-3  transition-colors"
+                  className="bg-zinc-100 hover:bg-zinc-600 p-3  transition-colors"
                   aria-label="Facebook"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -233,7 +407,7 @@ export default function ContactPage() {
                 </Link>
                 <Link
                   href="#"
-                  className="bg-zinc-700 hover:bg-zinc-600 p-3  transition-colors"
+                  className="bg-zinc-100 hover:bg-zinc-600 p-3  transition-colors"
                   aria-label="Instagram"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -242,7 +416,7 @@ export default function ContactPage() {
                 </Link>
                 <Link
                   href="#"
-                  className="bg-zinc-700 hover:bg-zinc-600 p-3  transition-colors"
+                  className="bg-zinc-100 hover:bg-zinc-600 p-3  transition-colors"
                   aria-label="YouTube"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -260,150 +434,74 @@ export default function ContactPage() {
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="gap-6 grid grid-cols-1 md:grid-cols-2">
-                  <div>
-                    <label htmlFor="name" className="block mb-2 font-medium text-zinc-300 text-sm">
-                      ชื่อ-นามสกุล *
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      className={`bg-zinc-700 px-3 py-2 border  focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white ${
-                        errors.name ? 'border-red-500' : 'border-zinc-600'
-                      }`}
-                      placeholder="กรอกชื่อ-นามสกุล"
-                      aria-invalid={!!errors.name}
-                      aria-describedby={errors.name ? "name-error" : undefined}
-                    />
-                    {errors.name && (
-                      <p id="name-error" className="mt-1 text-red-400 text-sm">
-                        {errors.name}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block mb-2 font-medium text-zinc-300 text-sm">
-                      อีเมล *
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      className={`bg-zinc-700 px-3 py-2 border  focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white ${
-                        errors.email ? 'border-red-500' : 'border-zinc-600'
-                      }`}
-                      placeholder="กรอกอีเมล"
-                      aria-invalid={!!errors.email}
-                      aria-describedby={errors.email ? "email-error" : undefined}
-                    />
-                    {errors.email && (
-                      <p id="email-error" className="mt-1 text-red-400 text-sm">
-                        {errors.email}
-                      </p>
-                    )}
-                  </div>
+                  <TextInput
+                    id="name"
+                    name="name"
+                    type="text"
+                    label="ชื่อ-นามสกุล"
+                    placeholder="กรอกชื่อ-นามสกุล"
+                    required
+                    value={formData.name}
+                    error={errors.name}
+                  />
+                  <TextInput
+                    id="email"
+                    name="email"
+                    type="email"
+                    label="อีเมล"
+                    placeholder="กรอกอีเมล"
+                    required
+                    value={formData.email}
+                    error={errors.email}
+                  />
                 </div>
 
                 <div className="gap-6 grid grid-cols-1 md:grid-cols-2">
-                  <div>
-                    <label htmlFor="phone" className="block mb-2 font-medium text-zinc-300 text-sm">
-                      เบอร์โทรศัพท์
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      className={`bg-zinc-700 px-3 py-2 border  focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white ${
-                        errors.phone ? 'border-red-500' : 'border-zinc-600'
-                      }`}
-                      placeholder="กรอกเบอร์โทรศัพท์"
-                      aria-invalid={!!errors.phone}
-                      aria-describedby={errors.phone ? "phone-error" : undefined}
-                    />
-                    {errors.phone && (
-                      <p id="phone-error" className="mt-1 text-red-400 text-sm">
-                        {errors.phone}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <label htmlFor="inquiryType" className="block mb-2 font-medium text-zinc-300 text-sm">
-                      ประเภทคำถาม *
-                    </label>
-                    <select
-                      id="inquiryType"
-                      name="inquiryType"
-                      value={formData.inquiryType}
-                      onChange={handleInputChange}
-                      className="bg-zinc-700 px-3 py-2 border border-zinc-600  focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white"
-                    >
-                      {inquiryTypes.map((type) => (
-                        <option key={type.value} value={type.value}>
-                          {type.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                  <TextInput
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    label="เบอร์โทรศัพท์"
+                    placeholder="กรอกเบอร์โทรศัพท์"
+                    value={formData.phone}
+                    error={errors.phone}
+                  />
+                  <SelectInput
+                    id="inquiryType"
+                    name="inquiryType"
+                    label="ประเภทคำถาม"
+                    required
+                    value={formData.inquiryType}
+                    options={inquiryTypes}
+                  />
                 </div>
 
-                <div>
-                  <label htmlFor="subject" className="block mb-2 font-medium text-zinc-300 text-sm">
-                    หัวข้อ *
-                  </label>
-                  <input
-                    type="text"
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleInputChange}
-                    className={`bg-zinc-700 px-3 py-2 border  focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white ${
-                      errors.subject ? 'border-red-500' : 'border-zinc-600'
-                    }`}
-                    placeholder="กรอกหัวข้อ"
-                    aria-invalid={!!errors.subject}
-                    aria-describedby={errors.subject ? "subject-error" : undefined}
-                  />
-                  {errors.subject && (
-                    <p id="subject-error" className="mt-1 text-red-400 text-sm">
-                      {errors.subject}
-                    </p>
-                  )}
-                </div>
+                <TextInput
+                  id="subject"
+                  name="subject"
+                  type="text"
+                  label="หัวข้อ"
+                  placeholder="กรอกหัวข้อ"
+                  required
+                  value={formData.subject}
+                  error={errors.subject}
+                />
 
-                <div>
-                  <label htmlFor="message" className="block mb-2 font-medium text-zinc-300 text-sm">
-                    ข้อความ *
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    rows={6}
-                    className={`bg-zinc-700 px-3 py-2 border  focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white ${
-                      errors.message ? 'border-red-500' : 'border-zinc-600'
-                    }`}
-                    placeholder="กรอกรายละเอียดข้อความ"
-                    aria-invalid={!!errors.message}
-                    aria-describedby={errors.message ? "message-error" : undefined}
-                  />
-                  {errors.message && (
-                    <p id="message-error" className="mt-1 text-red-400 text-sm">
-                      {errors.message}
-                    </p>
-                  )}
-                </div>
+                <TextareaInput
+                  id="message"
+                  name="message"
+                  label="ข้อความ"
+                  placeholder="กรอกรายละเอียดข้อความ"
+                  required
+                  value={formData.message}
+                  error={errors.message}
+                  rows={6}
+                />
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex justify-center items-center gap-2 bg-brand-primary hover:bg-red-600 disabled:bg-zinc-600 px-6 py-3  w-full font-semibold transition-colors disabled:cursor-not-allowed"
+                  className="flex justify-center items-center gap-2 bg-brand-primary hover:bg-red-600 disabled:bg-zinc-600 px-6 py-3 w-full font-semibold text-white transition-colors disabled:cursor-not-allowed"
                   aria-label="ส่งข้อความติดต่อ"
                 >
                   {isSubmitting ? (

@@ -225,10 +225,13 @@ export async function POST(request: NextRequest) {
     } = await supabase.auth.getUser();
     currentUser = user;
 
-    const requestBody = await request.json();
-    const rawReferralCode = (requestBody?.referralCode as string | undefined)?.trim();
+    const requestBody = await request.json() as {
+      referralCode?: string;
+      referredUserId?: string;
+    };
+    const rawReferralCode = requestBody?.referralCode?.trim();
     const normalizedReferralCode = rawReferralCode?.toUpperCase();
-    const explicitReferredUserId = requestBody?.referredUserId as string | undefined;
+    const explicitReferredUserId = requestBody?.referredUserId;
 
     if (!normalizedReferralCode) {
       await logAuditEvent({

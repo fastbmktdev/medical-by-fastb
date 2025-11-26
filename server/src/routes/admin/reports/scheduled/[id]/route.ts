@@ -106,7 +106,17 @@ const updateScheduledReportHandler = withAdminAuth(async (
   try {
     const supabase = await createClient();
     const { id } = await params;
-    const body = await request.json();
+    const body = await request.json() as {
+      name?: string;
+      description?: string;
+      status?: string;
+      is_active?: boolean;
+      frequency?: string;
+      schedule_config?: Record<string, unknown>;
+      recipients?: string[];
+      cc_recipients?: string[];
+      bcc_recipients?: string[];
+    };
 
       const updateData: Record<string, unknown> = {};
       if (body.name !== undefined) updateData.name = body.name;
@@ -124,8 +134,8 @@ const updateScheduledReportHandler = withAdminAuth(async (
             .eq('id', id)
             .single();
           
-          const frequency = body.frequency || currentReport.data?.frequency;
-          const scheduleConfig = body.schedule_config || currentReport.data?.schedule_config;
+          const frequency = body.frequency || (currentReport.data as { frequency?: string } | null)?.frequency;
+          const scheduleConfig = body.schedule_config || (currentReport.data as { schedule_config?: Record<string, unknown> } | null)?.schedule_config;
           
           if (frequency && scheduleConfig) {
             updateData.next_run_at = calculateNextRunAt(frequency, scheduleConfig).toISOString();

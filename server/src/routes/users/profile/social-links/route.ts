@@ -81,7 +81,9 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      links?: Array<{ platform: string; url: string }>;
+    };
     const { links } = body;
 
     if (!Array.isArray(links)) {

@@ -25,7 +25,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      password?: string;
+      deletion_reason?: string;
+    };
     const { password, deletion_reason } = body;
 
     const { data: existingDeletion } = await supabase

@@ -5,10 +5,11 @@
  * POST /api/appointments - Create new appointment
  */
 
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@shared/lib/database/supabase/server';
-import { requireAuth, withErrorHandling, successResponse } from '@shared/lib/api/server-route-utils';
-import { getBookings, createBooking } from '@shared/services';
+import { requireAuth, withErrorHandling } from '@shared/lib/api/route-utils';
+import { successResponse } from '@shared/lib/api/error-handler';
+import { getAppointments, createAppointment } from '@shared/services';
 import { awardPoints, updateUserStreak } from '@shared/services/gamification.service';
 import { sendBookingConfirmationEmail } from '@shared/lib/email/resend';
 import { getAffiliateUserIdForReferredUser } from '@shared/lib/utils/affiliate.server';
@@ -26,7 +27,7 @@ export const GET = withErrorHandling(async (_request: NextRequest) => {
   const user = await requireAuth(supabase);
 
   // ดึงรายการจอง
-  const appointments = await getBookings({ user_id: user.id });
+  const appointments = await getAppointments({ user_id: user.id });
 
   return successResponse(appointments);
 });
@@ -45,7 +46,20 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
   // ตรวจสอบ authentication
   const user = await requireAuth(supabase);
 
-    const body = await request.json();
+    const body = await request.json() as {
+      hospital_id?: string;
+      package_id?: string;
+      customer_name?: string;
+      customer_email?: string;
+      customer_phone?: string;
+      start_date?: string;
+      special_requests?: string;
+      payment_method?: string;
+      promotion_id?: string;
+      discount_amount?: number;
+      price_paid?: number;
+      payment_id?: string;
+    };
     const {
       hospital_id,
       package_id,
@@ -61,15 +75,23 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
       payment_id,
     } = body;
 
-    const appointment = await createBooking({
+    // Validate required fields
+    if (!hospital_id || !package_id || !customer_name || !customer_email || !customer_phone || !start_date) {
+      return NextResponse.json(
+        { error: 'Missing required fields: hospital_id, package_id, customer_name, customer_email, customer_phone, start_date' },
+        { status: 400 }
+      );
+    }
+
+    const appointment = await createAppointment({
       user_id: user.id,
-      hospital_id,
-      package_id,
+      hospital_id: hospital_id as string,
+      package_id: package_id as string,
       payment_id: payment_id || null,
-      customer_name,
-      customer_email,
-      customer_phone,
-      start_date,
+      customer_name: customer_name as string,
+      customer_email: customer_email as string,
+      customer_phone: customer_phone as string,
+      start_date: start_date as string,
       special_requests,
       payment_method,
       promotion_id: promotion_id || null,
@@ -196,8 +218,8 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
 
       if (hospital && appointment) {
         await sendBookingConfirmationEmail({
-          to: customer_email,
-          customerName: customer_name,
+          to: customer_email as string,
+          customerName: customer_name as string,
           bookingNumber: appointment.booking_number || '',
           hospitalName: hospital.hospital_name || hospital.hospital_name_english || 'โรงพยาบาล',
           packageName: appointment.package_name || '',

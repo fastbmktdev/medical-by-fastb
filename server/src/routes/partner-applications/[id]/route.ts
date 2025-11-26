@@ -60,7 +60,10 @@ export async function PATCH(
     }
 
     // อ่าน request body
-    const body = await request.json();
+    const body = await request.json() as {
+      reason?: string;
+      status?: string;
+    };
     const { reason } = body;
     let status = body.status;
 

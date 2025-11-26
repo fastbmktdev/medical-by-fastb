@@ -91,7 +91,24 @@ const createPromotionHandler = withAdminAuth(async (
 ) => {
   try {
     const supabase = await createClient();
-    const body = await request.json();
+    const body = await request.json() as {
+      title?: string;
+      titleEnglish?: string;
+      description?: string;
+      isActive?: boolean;
+      couponCode?: string;
+      discountType?: string;
+      discountValue?: number;
+      minPurchaseAmount?: number;
+      maxDiscountAmount?: number;
+      maxUses?: number;
+      priority?: number;
+      showInMarquee?: boolean;
+      startDate?: string;
+      endDate?: string;
+      linkUrl?: string;
+      linkText?: string;
+    };
     
     const {
       title,
@@ -209,7 +226,7 @@ const createPromotionHandler = withAdminAuth(async (
     }
     
     if (maxUses !== undefined && maxUses) {
-      insertData.max_uses = parseInt(maxUses);
+      insertData.max_uses = typeof maxUses === 'number' ? maxUses : parseInt(String(maxUses));
     }
     
     // Insert promotion

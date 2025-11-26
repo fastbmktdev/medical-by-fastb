@@ -73,7 +73,6 @@ button:focus {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-secondary);
   border-radius: 32px;
 }
 

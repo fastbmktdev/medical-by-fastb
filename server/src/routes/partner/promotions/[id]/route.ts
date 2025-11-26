@@ -85,7 +85,24 @@ export async function PATCH(
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      title?: string;
+      titleEnglish?: string;
+      description?: string;
+      isActive?: boolean;
+      priority?: number;
+      showInMarquee?: boolean;
+      startDate?: string;
+      endDate?: string;
+      linkUrl?: string;
+      linkText?: string;
+      discountType?: string;
+      discountValue?: number;
+      packageId?: string;
+      minPurchaseAmount?: number;
+      maxDiscountAmount?: number;
+      maxUses?: number;
+    };
     const {
       title,
       titleEnglish,

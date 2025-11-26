@@ -73,7 +73,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      goal_type?: string;
+      title?: string;
+      description?: string;
+      target_value?: number;
+      unit?: string;
+      target_date?: string;
+    };
     const { goal_type, title, description, target_value, unit, target_date } = body;
 
     if (!goal_type || !title) {

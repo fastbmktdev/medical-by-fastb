@@ -38,23 +38,23 @@ export default function AboutPage() {
           <div className="gap-6 grid sm:grid-cols-2 lg:grid-cols-3 mt-6">
             <div className="bg-white text-zinc-950 p-6 border border-gray-300  text-center">
               <TrophyIcon className="mx-auto w-10 h-10 text-amber-400" />
-              <h3 className="mt-4 font-semibold">แชมป์โลก 5 สมัย</h3>
+              <h3 className="mt-4 font-semibold">รางวัลสถานพยาบาลยอดเยี่ยม 5 ปีซ้อน</h3>
               <p className="mt-2 text-zinc-950/70 text-sm">
-                โรงพยาบาลของเราได้สร้างแชมป์โลกมาแล้วถึง 5 สมัย
+                โรงพยาบาลของเราได้รับรางวัลสถานพยาบาลยอดเยี่ยม 5 ปีซ้อน
               </p>
             </div>
             <div className="bg-white text-zinc-950 p-6 border border-gray-300  text-center">
               <StarIcon className="mx-auto w-10 h-10 text-sky-400" />
-              <h3 className="mt-4 font-semibold">โค้ชผู้เชี่ยวชาญ</h3>
+              <h3 className="mt-4 font-semibold">ทีมแพทย์ผู้เชี่ยวชาญ</h3>
               <p className="mt-2 text-zinc-950/70 text-sm">
-                ทีมโค้ชที่ได้รับการรับรองและมีประสบการณ์สูง
+                ทีมแพทย์และบุคลากรทางการแพทย์ที่ได้รับการรับรองและมีประสบการณ์สูง
               </p>
             </div>
             <div className="sm:col-span-2 lg:col-span-1 bg-white text-zinc-950 p-6 border border-gray-300  text-center">
               <ShieldCheckIcon className="mx-auto w-10 h-10 text-emerald-400" />
-              <h3 className="mt-4 font-semibold">สถานที่มาตรฐานสากล</h3>
+              <h3 className="mt-4 font-semibold">มาตรฐานโรงพยาบาลสากล</h3>
               <p className="mt-2 text-zinc-950/70 text-sm">
-                อุปกรณ์และสถานที่ฝึกซ้อมที่ทันสมัยและปลอดภัย
+                โรงพยาบาลพร้อมด้วยอุปกรณ์ทางการแพทย์ที่ทันสมัยและปลอดภัย
               </p>
             </div>
           </div>

@@ -109,7 +109,15 @@ export async function PATCH(
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      name?: string;
+      name_english?: string;
+      description?: string;
+      price?: number;
+      duration_months?: number;
+      features?: string[];
+      is_active?: boolean;
+    };
     const {
       name,
       name_english,
@@ -148,7 +156,7 @@ export async function PATCH(
     if (name !== undefined) updateData.name = name.trim();
     if (name_english !== undefined) updateData.name_english = name_english?.trim() || null;
     if (description !== undefined) updateData.description = description?.trim() || null;
-    if (price !== undefined) updateData.price = parseFloat(price);
+    if (price !== undefined) updateData.price = typeof price === 'number' ? price : parseFloat(String(price));
     if (duration_months !== undefined) updateData.duration_months = duration_months;
     if (features !== undefined) updateData.features = features;
     if (is_active !== undefined) updateData.is_active = is_active;

@@ -18,7 +18,10 @@ export const PATCH = withAdminAuth<{ id: string }>(async (
   try {
     const supabase = await createClient();
     const { id } = await context.params;
-    const body = await request.json();
+    const body = await request.json() as {
+      status?: string;
+      moderationNotes?: string;
+    };
     const { status, moderationNotes } = body;
 
     if (!status) {

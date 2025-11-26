@@ -71,7 +71,16 @@ export const POST = withAdminAuth(async (
   try {
     const supabase = await createClient();
     const { id } = await params;
-    const body = await request.json();
+    const body = await request.json() as {
+      type?: string;
+      name?: string;
+      value?: string;
+      priceAdjustment?: number;
+      stock?: number;
+      sku?: string;
+      isDefault?: boolean;
+      displayOrder?: number;
+    };
 
     // Validate required fields
     const { type, name, value, priceAdjustment = 0, stock = 0, sku, isDefault = false } = body;
@@ -114,8 +123,8 @@ export const POST = withAdminAuth(async (
         variant_type: type,
         variant_name: name,
         variant_value: value,
-        price_adjustment: parseFloat(priceAdjustment) || 0,
-        stock: parseInt(stock) || 0,
+        price_adjustment: priceAdjustment || 0,
+        stock: stock || 0,
         sku: sku || null,
         is_default: isDefault,
         display_order: body.displayOrder || 0,

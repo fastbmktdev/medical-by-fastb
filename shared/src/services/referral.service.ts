@@ -122,7 +122,7 @@ async function ensurePointsReversed(
 export async function awardReferralBookingPoints(options: ReferralBookingAwardOptions): Promise<void> {
   const supabase = options.supabase ?? (await getServiceClient());
   const nowIso = new Date().toISOString();
-
+  
   // Execute queries in parallel for better performance
   const [conversionResult, appointmentResult] = await Promise.all([
     supabase
@@ -137,7 +137,6 @@ export async function awardReferralBookingPoints(options: ReferralBookingAwardOp
       .eq('id', options.bookingId)
       .maybeSingle(),
   ]);
-
   const conversion = conversionResult.data;
   const appointment = appointmentResult.data;
 
@@ -188,7 +187,7 @@ export async function awardReferralBookingPoints(options: ReferralBookingAwardOp
 export async function revokeReferralBookingPoints(options: ReferralBookingRevokeOptions): Promise<void> {
   const supabase = options.supabase ?? (await getServiceClient());
   const nowIso = new Date().toISOString();
-
+  
   // Execute queries in parallel for better performance
   const [conversionResult, appointmentResult] = await Promise.all([
     supabase
@@ -203,7 +202,6 @@ export async function revokeReferralBookingPoints(options: ReferralBookingRevoke
       .eq('id', options.bookingId)
       .maybeSingle(),
   ]);
-
   const conversion = conversionResult.data;
   const appointment = appointmentResult.data;
 

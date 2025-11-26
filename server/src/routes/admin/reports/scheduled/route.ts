@@ -131,7 +131,21 @@ const createScheduledReportHandler = withAdminAuth(async (
 ) => {
   try {
     const supabase = await createClient();
-    const body = await request.json();
+    const body = await request.json() as {
+      custom_report_id?: string;
+      name?: string;
+      description?: string;
+      table_name?: string;
+      columns?: string[];
+      column_headers?: string[];
+      filters?: Record<string, unknown>;
+      format?: string;
+      frequency?: string;
+      schedule_config?: Record<string, unknown>;
+      recipients?: string[];
+      cc_recipients?: string[];
+      bcc_recipients?: string[];
+    };
 
     const {
       custom_report_id,

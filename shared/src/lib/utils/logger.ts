@@ -129,7 +129,7 @@ function trackWithSentry(level: LogLevel, message: string, context?: LogContext,
   // Try to import Sentry (it might not be available in all environments)
   try {
     // Dynamic import to avoid issues if Sentry is not installed
-    if (typeof window !== 'undefined') {
+    if (typeof (globalThis as { window?: unknown }).window !== 'undefined') {
       // Client-side: Sentry should be available via error-tracking
       // We'll use the error-tracking utility instead
       return;

@@ -314,7 +314,7 @@ export default function PrivacyPage() {
                     className={`w-full text-left px-3 py-2  text-sm transition-colors ${
                       activeSection === index
                         ? "bg-brand-primary text-white"
-                        : "text-zinc-300 hover:bg-zinc-700 hover:text-white"
+                        : "text-zinc-950 hover:bg-zinc-700 hover:text-white"
                     }`}
                   >
                     {section.title}

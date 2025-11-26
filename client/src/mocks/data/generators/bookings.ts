@@ -35,7 +35,7 @@ export function generateMockAppointment(
     booking_number: `BK${faker.string.alphanumeric(8).toUpperCase()}`,
     customer_name: faker.person.fullName(),
     customer_email: faker.internet.email(),
-    customer_phone: faker.phone.number('0##-###-####'),
+    customer_phone: faker.phone.number(),
     start_date: startDate.toISOString().split('T')[0],
     end_date: endDate ? endDate.toISOString().split('T')[0] : null,
     price_paid: pricePaid,

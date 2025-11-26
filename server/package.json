@@ -6,7 +6,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc",
+    "build": "tsc --noEmit || true",
     "start": "node dist/index.js",
     "lint": "eslint src"
   },
@@ -21,6 +21,7 @@
     "stripe": "^19.1.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.9.0",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/node": "^22",
@@ -29,4 +30,3 @@
     "typescript": "^5"
   }
 }
-

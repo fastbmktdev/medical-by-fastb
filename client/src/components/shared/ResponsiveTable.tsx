@@ -242,7 +242,7 @@ function ResponsiveTableComponent<T>({
 
 export const ResponsiveTable = memo(ResponsiveTableComponent) as <T>(
   props: ResponsiveTableProps<T>
-) => JSX.Element;
+) => React.ReactElement;
 
 export default ResponsiveTable;
 

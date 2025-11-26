@@ -20,7 +20,13 @@ export const POST = withAdminAuth<Record<string, never>>(async (
 ) => {
   try {
     const supabase = await createClient();
-    const body = await request.json();
+    const body = await request.json() as {
+      contentType?: string;
+      contentId?: string;
+      action?: string;
+      actionReason?: string;
+      flagId?: string;
+    };
     const { contentType, contentId, action, actionReason, flagId } = body;
 
     if (!contentType || !contentId || !action) {

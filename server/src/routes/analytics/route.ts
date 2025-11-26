@@ -80,7 +80,11 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    const body = await request.json();
+    const body = await request.json() as {
+      event?: string;
+      properties?: Record<string, unknown>;
+      userId?: string;
+    };
     const { event, properties, userId } = body;
     
     if (!event) {

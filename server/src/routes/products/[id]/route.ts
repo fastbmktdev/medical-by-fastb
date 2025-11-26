@@ -11,7 +11,7 @@ import { createClient } from '@shared/lib/database/supabase/server';
 import { withAdminAuth } from '@shared/lib/api/withAdminAuth';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
-import { getUserAndAdminStatus } from '@shared/lib/api/server-route-utils';
+import { getUserAndAdminStatus } from '@shared/lib/api/route-utils';
 
 /**
  * GET /api/products/[id]

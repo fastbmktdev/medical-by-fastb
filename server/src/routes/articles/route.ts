@@ -3,6 +3,22 @@ import { createClient } from '@shared/lib/database/supabase/server';
 import { withAdminAuth } from '@shared/lib/api/withAdminAuth';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
+// Helper function to check if user is admin
+async function checkIsAdmin(supabase: SupabaseClient, userId: string): Promise<boolean> {
+  try {
+    const { data } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', userId)
+      .maybeSingle();
+    
+    return data?.role === 'admin';
+  } catch (error) {
+    console.error('Error checking admin status:', error);
+    return false;
+  }
+}
+
 /**
  * GET /api/articles
  * ดูบทความทั้งหมด
@@ -18,8 +34,16 @@ export async function GET(request: NextRequest) {
     const supabase = await createClient();
     
     // Check if user is authenticated and is admin
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    const isAdmin = !authError && user ? await checkIsAdmin(supabase, user.id) : false;
+    let isAdmin = false;
+    try {
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      if (!authError && user) {
+        isAdmin = await checkIsAdmin(supabase, user.id);
+      }
+    } catch (authError) {
+      // If auth check fails, continue as non-admin user
+      console.warn('Auth check failed, continuing as non-admin:', authError);
+    }
 
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
@@ -70,37 +94,57 @@ export async function GET(request: NextRequest) {
     }
 
     // Get author names for articles
-    const authorIds = data?.map(a => a.author_id).filter(Boolean) || [];
-    const authors: Record<string, string> = {};
+    let authors: Record<string, string> = {};
+    try {
+      const authorIds = data?.map(a => a.author_id).filter(Boolean) || [];
+      
+      if (authorIds.length > 0) {
+        const { data: profiles, error: profilesError } = await supabase
+          .from('user_profiles')
+          .select('user_id, display_name, full_name')
+          .in('user_id', authorIds);
 
-    if (authorIds.length > 0) {
-      const { data: profiles } = await supabase
-        .from('user_profiles')
-        .select('user_id, display_name, full_name')
-        .in('user_id', authorIds);
-
-      profiles?.forEach(profile => {
-        authors[profile.user_id] = profile.display_name || profile.full_name || 'Unknown';
-      });
+        if (profilesError) {
+          console.warn('Error fetching author profiles:', profilesError);
+        } else {
+          profiles?.forEach(profile => {
+            authors[profile.user_id] = profile.display_name || profile.full_name || 'Unknown';
+          });
+        }
+      }
+    } catch (authorError) {
+      console.warn('Error processing author names:', authorError);
+      // Continue without author names if there's an error
     }
 
     // Add author names to articles
     const articlesWithAuthors = data?.map(article => ({
       ...article,
       author_name: article.author_name || authors[article.author_id] || 'Unknown',
-    }));
+    })) || [];
 
     return NextResponse.json({
       success: true,
-      data: articlesWithAuthors || [],
-      count: articlesWithAuthors?.length || 0,
+      data: articlesWithAuthors,
+      count: articlesWithAuthors.length,
+    }, {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
 
   } catch (error) {
     console.error('Get articles error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Internal server error';
     return NextResponse.json(
-      { success: false, error: 'Internal server error' },
-      { status: 500 }
+      { success: false, error: errorMessage },
+      { 
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
     );
   }
 }
@@ -127,7 +171,26 @@ const postArticleHandler = withAdminAuth(async (
 ) => {
   try {
     const supabase = await createClient();
-    const body = await request.json();
+    const body = await request.json() as {
+      slug?: string;
+      title?: string;
+      excerpt?: string;
+      content?: string;
+      category?: string;
+      image?: string;
+      tags?: string[];
+      is_new?: boolean;
+      date?: string;
+      meta_title?: string;
+      meta_description?: string;
+      meta_keywords?: string[];
+      og_image?: string;
+      og_title?: string;
+      og_description?: string;
+      twitter_card?: string;
+      canonical_url?: string;
+      scheduled_publish_at?: string;
+    };
     
     const {
       slug,
@@ -263,15 +326,4 @@ const postArticleHandler = withAdminAuth(async (
 });
 
 export { postArticleHandler as POST };
-
-// Helper function to check if user is admin
-async function checkIsAdmin(supabase: SupabaseClient, userId: string): Promise<boolean> {
-  const { data } = await supabase
-    .from('user_roles')
-    .select('role')
-    .eq('user_id', userId)
-    .maybeSingle();
-  
-  return data?.role === 'admin';
-}
 

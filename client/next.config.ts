@@ -72,6 +72,16 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
   },
   outputFileTracingRoot: __dirname,
+  // API rewrites to proxy requests to Express server
+  async rewrites() {
+    const apiServerUrl = process.env.API_SERVER_URL || 'http://localhost:3001';
+    return [
+      {
+        source: '/api/:path*',
+        destination: `${apiServerUrl}/api/:path*`,
+      },
+    ];
+  },
   // Performance optimizations
   experimental: {
     optimizePackageImports: [
@@ -87,8 +97,6 @@ const nextConfig: NextConfig = {
       exclude: ['error', 'warn'],
     },
   },
-  // Reduce bundle size
-  swcMinify: true,
   async headers() {
     return [
       {
@@ -104,6 +112,25 @@ const nextConfig: NextConfig = {
       ...config.resolve.alias,
       '@': path.resolve(__dirname, '../shared/src'),
     };
+
+    // Disable minification to avoid webpack errors
+    config.optimization = {
+      ...config.optimization,
+      minimize: false,
+    };
+
+    // Exclude server-only packages from client bundle
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        jsdom: false,
+        canvas: false,
+        net: false,
+        tls: false,
+        fs: false,
+        'child_process': false,
+      };
+    }
 
     config.ignoreWarnings = [
       {
@@ -139,7 +166,8 @@ const nextConfig: NextConfig = {
 const configWithIntl = withNextIntl(nextConfig);
 
 // Then wrap with Sentry configuration if DSN is provided
-const configWithSentry = process.env.NEXT_PUBLIC_SENTRY_DSN || process.env.SENTRY_DSN
+// Temporarily disable Sentry during build due to webpack compatibility issues
+const configWithSentry = false && (process.env.NEXT_PUBLIC_SENTRY_DSN || process.env.SENTRY_DSN)
   ? withSentryConfig(configWithIntl, {
       org: process.env.SENTRY_ORG,
       project: process.env.SENTRY_PROJECT,

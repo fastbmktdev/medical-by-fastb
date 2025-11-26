@@ -75,7 +75,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      customer_id?: string;
+      message?: string;
+      booking_id?: string;
+      conversation_id?: string;
+      subject?: string;
+      attachments?: unknown[];
+    };
     const { 
       customer_id, 
       message, 
@@ -186,12 +193,12 @@ export async function POST(request: NextRequest) {
 
     // สร้างข้อความใหม่
     const messageData: MessageInsert = {
-      conversation_id: finalConversationId,
+      conversation_id: finalConversationId as string,
       sender_id: user.id,
       sender_role: 'partner',
-      message_text: message.trim(),
-      message_type: attachments.length > 0 ? 'file' : 'text',
-      attachments: attachments.length > 0 ? attachments : undefined,
+      message_text: message?.trim() || '',
+      message_type: attachments && attachments.length > 0 ? 'file' : 'text',
+      attachments: attachments && attachments.length > 0 ? (attachments as Array<{ url: string; name: string; size: number; type: string }>) : undefined,
     };
 
     const { data: newMessage, error: messageError } = await supabase
@@ -419,7 +426,9 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      conversation_id?: string;
+    };
     const { conversation_id } = body;
 
     if (!conversation_id) {

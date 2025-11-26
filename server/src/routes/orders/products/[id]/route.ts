@@ -150,8 +150,6 @@ export const PUT = withAdminAuth(async (
   try {
     const supabase = await createClient();
     const { id } = await params;
-    const body = await request.json();
-
     // Check if order exists
     const { data: existingOrder, error: checkError } = await supabase
       .from('product_orders')
@@ -165,6 +163,19 @@ export const PUT = withAdminAuth(async (
         { status: 404 }
       );
     }
+
+    const body = await request.json() as {
+      shippingStatus?: string;
+      trackingNumber?: string;
+      shippingMethodId?: string;
+      shippingCost?: string | number;
+      carrierName?: string;
+      carrierPhone?: string;
+      carrierWebsite?: string;
+      shippingAddress?: string;
+      location?: string;
+      description?: string;
+    };
 
     // Build update object
     const updateData: Record<string, unknown> = {
@@ -184,7 +195,7 @@ export const PUT = withAdminAuth(async (
     }
     if (body.trackingNumber !== undefined) updateData.tracking_number = body.trackingNumber || null;
     if (body.shippingMethodId !== undefined) updateData.shipping_method_id = body.shippingMethodId || null;
-    if (body.shippingCost !== undefined) updateData.shipping_cost = parseFloat(body.shippingCost);
+    if (body.shippingCost !== undefined) updateData.shipping_cost = typeof body.shippingCost === 'number' ? body.shippingCost : parseFloat(String(body.shippingCost));
     if (body.carrierName !== undefined) updateData.carrier_name = body.carrierName || null;
     if (body.carrierPhone !== undefined) updateData.carrier_phone = body.carrierPhone || null;
     if (body.carrierWebsite !== undefined) updateData.carrier_website = body.carrierWebsite || null;

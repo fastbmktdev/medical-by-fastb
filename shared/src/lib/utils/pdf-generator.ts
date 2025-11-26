@@ -318,7 +318,7 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
   };
   const statusColor = statusColors[data.status] || [107, 114, 128];
   doc.setFillColor(...statusColor);
-  doc. - margin - 40, yPosition - 5, 40, 6, 2, 2, 'F');
+  doc.roundedRect(pageWidth - margin - 40, yPosition - 5, 40, 6, 2, 2, 'F');
   doc.setTextColor(255, 255, 255);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(9);

@@ -157,7 +157,7 @@ export default function ShopPage() {
                 placeholder="ค้นหาสินค้า..."
                 value={searchQuery}
                 onChange={handleSearch}
-                className="bg-white py-3 pr-4 pl-10 border border-gray-300  focus:outline-none focus:ring-2 focus:ring-purple-500 w-full placeholder-gray-400 text-zinc-950"
+                className="bg-white py-3 pr-4 pl-10 border border-gray-300 w-full placeholder-gray-400 text-zinc-950"
               />
               {isDebouncing && (
                 <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
@@ -172,7 +172,7 @@ export default function ShopPage() {
               <select
                 value={selectedCategory}
                 onChange={handleCategory}
-                className="bg-white py-3 pr-4 pl-10 border border-gray-300  focus:outline-none focus:ring-2 focus:ring-purple-500 w-full appearance-none cursor-pointer text-zinc-950"
+                className="bg-white py-3 pr-4 pl-10 border border-gray-300 w-full appearance-none cursor-pointer text-zinc-950"
               >
                 <option value="all">หมวดหมู่ทั้งหมด</option>
                 {categories.map((category) => (
@@ -209,7 +209,7 @@ export default function ShopPage() {
             <p className="text-red-500 text-xl mb-4">{error}</p>
             <button
               onClick={() => window.location.reload()}
-              className="bg-brand-primary hover:bg-purple-600 px-6 py-2  transition-colors"
+              className="bg-brand-primary hover:bg-[#8B5CF6] px-6 py-2  transition-colors"
             >
               ลองใหม่อีกครั้ง
             </button>

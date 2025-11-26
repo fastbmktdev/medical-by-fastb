@@ -51,7 +51,9 @@ export async function POST(
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      is_published?: boolean;
+    };
     const { is_published } = body;
 
     if (typeof is_published !== 'boolean') {

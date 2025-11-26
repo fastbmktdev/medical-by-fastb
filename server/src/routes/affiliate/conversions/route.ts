@@ -94,7 +94,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      affiliate_user_id?: string;
+      referred_user_id?: string;
+      conversion_type?: string;
+      conversion_value?: string | number;
+      reference_id?: string;
+      reference_type?: string;
+      affiliate_code?: string;
+      referral_source?: string;
+      metadata?: Record<string, unknown>;
+    };
     const {
       affiliate_user_id,
       referred_user_id,
@@ -122,7 +132,7 @@ export async function POST(request: NextRequest) {
       'subscription',
     ];
 
-    if (!validConversionTypes.includes(conversion_type)) {
+    if (!conversion_type || !validConversionTypes.includes(conversion_type as ConversionType)) {
       return NextResponse.json(
         { error: `Invalid conversion_type. Must be one of: ${validConversionTypes.join(', ')}` },
         { status: 400 }
@@ -130,7 +140,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate conversion_value
-    const value = parseFloat(conversion_value || '0');
+    const value = parseFloat(String(conversion_value || '0'));
     if (isNaN(value) || value < 0) {
       return NextResponse.json(
         { error: 'conversion_value must be a non-negative number' },
@@ -161,7 +171,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Calculate commission
-    const commissionRate = await getCommissionRate(conversion_type);
+    const commissionRate = await getCommissionRate(conversion_type as ConversionType);
     const commissionAmount = calculateCommissionAmount(value, commissionRate);
 
     // Create conversion record

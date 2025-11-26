@@ -221,31 +221,51 @@ export async function createAppointment(data: CreateBookingInput) {
 
   const supabase = await getServiceClient();
 
-  // Verify hospital and package in a single query
-  const { data: hospitalWithPackage, error: verificationError } = await supabase
-    .from('hospitals')
-    .select(`
-      id,
-      hospital_name,
-      status,
-      hospital_packages!inner(
+  // Run verification queries in parallel
+  const [hospitalResult, promotionResult] = await Promise.all([
+    supabase
+      .from('hospitals')
+      .select(`
         id,
-        name,
-        price,
-        package_type,
-        duration_months,
-        is_active
-      )
-    `)
-    .eq('id', data.hospital_id)
-    .eq('status', 'approved')
-    .eq('hospital_packages.id', data.package_id)
-    .eq('hospital_packages.is_active', true)
-    .maybeSingle();
+        hospital_name,
+        status,
+        hospital_packages!inner(
+          id,
+          name,
+          price,
+          package_type,
+          duration_months,
+          is_active
+        )
+      `)
+      .eq('id', data.hospital_id)
+      .eq('status', 'approved')
+      .eq('hospital_packages.id', data.package_id)
+      .eq('hospital_packages.is_active', true)
+      .maybeSingle(),
+    data.promotion_id
+      ? supabase
+          .from('promotions')
+          .select('id, max_uses, current_uses')
+          .eq('id', data.promotion_id)
+          .eq('hospital_id', data.hospital_id)
+          .maybeSingle()
+      : Promise.resolve({ data: null, error: null })
+  ]);
 
-  handleQueryError(verificationError, 'Failed to verify hospital and package');
+  const { data: hospitalWithPackage, error: verificationError } = hospitalResult;
+  handleQueryError(verificationError, 'Failed to verify hospital or package');
   if (!hospitalWithPackage || !hospitalWithPackage.hospital_packages?.length) {
     throw new ServiceNotFoundError('ไม่พบโรงพยาบาลหรือแพ็คเกจที่ต้องการ');
+  }
+
+  // Handle promotion usage if provided
+  const { data: promotion, error: promoError } = promotionResult;
+  handleQueryError(promoError, 'Failed to fetch promotion');
+  if (data.promotion_id && promotion) {
+    if (promotion.max_uses !== null && promotion.current_uses !== null && promotion.current_uses >= promotion.max_uses) {
+      throw new ServiceValidationError('โปรโมชั่นถูกใช้ครบแล้ว');
+    }
   }
 
   const pkg = hospitalWithPackage.hospital_packages[0];
@@ -260,24 +280,7 @@ export async function createAppointment(data: CreateBookingInput) {
     ? sanitizePrice(data.price_paid)
     : sanitizePrice((pkg.price || 0) - (sanitizedDiscountAmount ?? 0));
 
-  // Handle promotion usage if provided
-  if (data.promotion_id) {
-    const { data: promotion, error: promoError } = await supabase
-      .from('promotions')
-      .select('id, max_uses, current_uses')
-      .eq('id', data.promotion_id)
-      .eq('hospital_id', data.hospital_id)
-      .maybeSingle();
-
-    handleQueryError(promoError, 'Failed to fetch promotion');
-    if (!promotion) {
-      throw new ServiceNotFoundError('โปรโมชั่นไม่พบหรือไม่สามารถใช้ได้');
-    }
-    if (promotion.max_uses !== null && promotion.current_uses !== null) {
-      if (promotion.current_uses >= promotion.max_uses) {
-        throw new ServiceValidationError('โปรโมชั่นถูกใช้ครบแล้ว');
-      }
-    }
+  if (data.promotion_id && promotion) {
     // Increment current_uses atomically using RPC if possible, fallback to update
     const { error: incrementError } = await supabase.rpc('increment_promotion_uses', {
       promotion_id: data.promotion_id,

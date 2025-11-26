@@ -21,15 +21,13 @@ import { createClientForMiddleware } from '@shared/lib/database/supabase/server'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const {
-      email,
-      password,
-      full_name,
-      username,
-      phone,
-      role = 'authenticated',
-      avatar_url
-    } = body;
+    const email = (body as any).email as string;
+    const password = (body as any).password as string;
+    const full_name = (body as any).full_name as string | undefined;
+    const username = (body as any).username as string | undefined;
+    const phone = (body as any).phone as string | undefined;
+    const role = ((body as any).role as string) || 'authenticated';
+    const avatar_url = (body as any).avatar_url as string | undefined;
 
     // Validate required fields
     if (!email || !password) {
@@ -93,7 +91,7 @@ export async function POST(request: NextRequest) {
 
     // Check if user already exists by listing users and filtering by email
     const { data: { users } } = await supabase.auth.admin.listUsers();
-    const existingUser = users?.find(u => u.email === email);
+    const existingUser = users?.find((u: any) => u.email === email);
     if (existingUser) {
       return NextResponse.json(
         { 
@@ -242,7 +240,7 @@ export async function GET(request: NextRequest) {
 
     // Get user details by listing users and filtering by email
     const { data: { users }, error: userError } = await supabase.auth.admin.listUsers();
-    const userData = users?.find(u => u.email === email);
+    const userData = users?.find((u: any) => u.email === email);
     
     if (userError || !userData) {
       return NextResponse.json(

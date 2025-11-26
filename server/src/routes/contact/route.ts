@@ -69,7 +69,7 @@ export const POST = withErrorHandler(async (request: NextRequest) => {
   // Parse request body
   let body: ContactRequestBody;
   try {
-    body = await request.json();
+    body = await request.json() as ContactRequestBody;
   } catch {
     throw new ValidationError('รูปแบบข้อมูลไม่ถูกต้อง');
   }

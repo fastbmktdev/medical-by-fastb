@@ -48,6 +48,20 @@ export default function ArticleDetailPage({
       try {
         setIsLoading(true);
         const response = await fetch(`/api/articles/by-slug/${slug}`);
+        
+        // Check if response is ok
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          const text = await response.text();
+          console.error('Expected JSON but got:', text.substring(0, 100));
+          throw new Error('Invalid response format');
+        }
+        
         const result = await response.json();
 
         if (result.success && result.data) {
@@ -59,21 +73,32 @@ export default function ArticleDetailPage({
           setArticle(articleData as Article);
 
           // Fetch related articles
-          const relatedResponse = await fetch(
-            `/api/articles?category=${encodeURIComponent(result.data.category)}&published=true&limit=4`
-          );
-          const relatedResult = await relatedResponse.json();
+          try {
+            const relatedResponse = await fetch(
+              `/api/articles?category=${encodeURIComponent(result.data.category)}&published=true&limit=4`
+            );
+            
+            if (relatedResponse.ok) {
+              const relatedContentType = relatedResponse.headers.get('content-type');
+              if (relatedContentType && relatedContentType.includes('application/json')) {
+                const relatedResult = await relatedResponse.json();
 
-          if (relatedResult.success && relatedResult.data) {
-            const related = relatedResult.data
-              .filter((a: Article) => a.slug !== slug)
-              .slice(0, 3)
-              .map((a: Article) => ({
-                ...a,
-                author: a.author_name || 'Unknown',
-                isNew: a.is_new,
-              }));
-            setRelatedArticles(related);
+                if (relatedResult.success && relatedResult.data) {
+                  const related = relatedResult.data
+                    .filter((a: Article) => a.slug !== slug)
+                    .slice(0, 3)
+                    .map((a: Article) => ({
+                      ...a,
+                      author: a.author_name || 'Unknown',
+                      isNew: a.is_new,
+                    }));
+                  setRelatedArticles(related);
+                }
+              }
+            }
+          } catch (relatedError) {
+            console.warn('Error fetching related articles:', relatedError);
+            // Continue without related articles
           }
         } else {
           setNotFoundArticle(true);

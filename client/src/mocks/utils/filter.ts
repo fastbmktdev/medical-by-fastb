@@ -120,7 +120,7 @@ export function sortArray<T extends Record<string, unknown>>(
 
       if (aValue === bValue) continue;
 
-      const comparison = aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      const comparison = (aValue as number | string) < (bValue as number | string) ? -1 : (aValue as number | string) > (bValue as number | string) ? 1 : 0;
       return direction === 'desc' ? -comparison : comparison;
     }
     return 0;

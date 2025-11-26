@@ -18,7 +18,6 @@ function extractRequestContext(request: NextRequest): GlobalErrorContext {
     userAgent: request.headers.get('user-agent') || undefined,
     ip: request.headers.get('x-forwarded-for') || 
         request.headers.get('x-real-ip') || 
-        request.ip || 
         undefined,
     timestamp: new Date().toISOString(),
   };

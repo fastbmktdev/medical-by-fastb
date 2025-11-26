@@ -6,6 +6,7 @@ import { http, HttpResponse } from 'msw';
 import { mockDataStore } from '../../data/store';
 import { filterArray, sortArray, paginate, extractPaginationParams } from '../../utils';
 import { delay } from '../../utils/delay';
+import type { Payment } from '../../data/generators/payments';
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
 
@@ -20,15 +21,15 @@ export const getPaymentsHandler = http.get(
     const url = new URL(request.url);
     const searchParams = url.searchParams;
 
-    let payments = mockDataStore.getPayments();
+    let payments: Payment[] = mockDataStore.getPayments();
 
     // Apply filters
-    payments = filterArray(payments, searchParams);
+    payments = filterArray(payments as unknown as Array<Record<string, unknown>>, searchParams) as unknown as Payment[];
 
     // Apply sorting
     const orderParam = searchParams.get('order');
     if (orderParam) {
-      payments = sortArray(payments, orderParam);
+      payments = sortArray(payments as unknown as Array<Record<string, unknown>>, orderParam) as unknown as Payment[];
     }
 
     // Apply pagination

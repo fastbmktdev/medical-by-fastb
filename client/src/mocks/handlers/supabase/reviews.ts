@@ -6,6 +6,7 @@ import { http, HttpResponse } from 'msw';
 import { mockDataStore } from '../../data/store';
 import { filterArray, sortArray, paginate, extractPaginationParams } from '../../utils';
 import { delay } from '../../utils/delay';
+import type { HospitalReview } from '@shared/types/review.types';
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
 
@@ -20,15 +21,15 @@ export const getReviewsHandler = http.get(
     const url = new URL(request.url);
     const searchParams = url.searchParams;
 
-    let reviews = mockDataStore.getReviews();
+    let reviews: HospitalReview[] = mockDataStore.getReviews();
 
     // Apply filters
-    reviews = filterArray(reviews, searchParams);
+    reviews = filterArray(reviews as unknown as Array<Record<string, unknown>>, searchParams) as unknown as HospitalReview[];
 
     // Apply sorting
     const orderParam = searchParams.get('order');
     if (orderParam) {
-      reviews = sortArray(reviews, orderParam);
+      reviews = sortArray(reviews as unknown as Array<Record<string, unknown>>, orderParam) as unknown as HospitalReview[];
     }
 
     // Apply pagination

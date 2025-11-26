@@ -6,6 +6,7 @@ import { http, HttpResponse } from 'msw';
 import { mockDataStore } from '../../data/store';
 import { filterArray, sortArray, paginate, extractPaginationParams } from '../../utils';
 import { delay } from '../../utils/delay';
+import type { GalleryImage } from '@shared/types/gallery.types';
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
 
@@ -20,15 +21,15 @@ export const getGalleryHandler = http.get(
     const url = new URL(request.url);
     const searchParams = url.searchParams;
 
-    let galleryImages = mockDataStore.getGalleryImages();
+    let galleryImages: GalleryImage[] = mockDataStore.getGalleryImages();
 
     // Apply filters
-    galleryImages = filterArray(galleryImages, searchParams);
+    galleryImages = filterArray(galleryImages as unknown as Array<Record<string, unknown>>, searchParams) as unknown as GalleryImage[];
 
     // Apply sorting
     const orderParam = searchParams.get('order');
     if (orderParam) {
-      galleryImages = sortArray(galleryImages, orderParam);
+      galleryImages = sortArray(galleryImages as unknown as Array<Record<string, unknown>>, orderParam) as unknown as GalleryImage[];
     } else {
       // Default sort by display_order
       galleryImages = galleryImages.sort((a, b) => a.display_order - b.display_order);

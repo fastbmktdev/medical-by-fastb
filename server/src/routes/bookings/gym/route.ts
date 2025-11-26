@@ -18,7 +18,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      orderId?: string;
+      hospitalId?: string;
+      startDate?: string;
+      endDate?: string;
+      durationDays?: number;
+      packageType?: string;
+      packageName?: string;
+      unitPrice?: number;
+      totalPrice?: number;
+      notes?: string;
+      specialRequests?: string;
+    };
     const {
       orderId,
       hospitalId,

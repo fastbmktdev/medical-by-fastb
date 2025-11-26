@@ -14,7 +14,7 @@ import { LoadingView } from "./components/LoadingView";
 import { SuccessView } from "./components/SuccessView";
 import { ApplicationStatusView } from "./components/ApplicationStatusView";
 import { BasicInformationForm } from "./components/BasicInformationForm";
-import { hospitalDetailsForm as HospitalDetailsForm } from "./components/HospitalDetailsForm";
+import { HospitalDetailsForm } from "./components/HospitalDetailsForm";
 import { IdCardUpload } from "./components/IdCardUpload";
 import { TermsSection } from "./components/TermsSection";
 import { FormData } from "./types";

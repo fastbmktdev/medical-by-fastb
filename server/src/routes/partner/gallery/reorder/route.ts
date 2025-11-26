@@ -18,7 +18,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      hospital_id?: string;
+      image_orders?: Array<{ id: string; display_order: number }>;
+    };
     const { hospital_id, image_orders } = body;
 
     if (!hospital_id || !Array.isArray(image_orders)) {

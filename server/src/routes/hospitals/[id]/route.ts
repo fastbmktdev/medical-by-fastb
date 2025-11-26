@@ -60,7 +60,18 @@ const patchHospitalHandler = withAdminAuth<{ id: string }>(async (
 ) => {
   try {
     const { id } = await context.params;
-    const body = await request.json();
+    const body = await request.json() as {
+      hospital_name?: string;
+      hospital_name_english?: string;
+      contact_name?: string;
+      phone?: string;
+      email?: string;
+      website?: string;
+      location?: string;
+      hospital_details?: string;
+      services?: string[];
+      status?: string;
+    };
     const {
       hospital_name,
       hospital_name_english,
@@ -84,7 +95,7 @@ const patchHospitalHandler = withAdminAuth<{ id: string }>(async (
       location,
       hospital_details,
       services,
-      status,
+      status: status as 'pending' | 'approved' | 'rejected' | undefined,
     });
 
     return NextResponse.json({

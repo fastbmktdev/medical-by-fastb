@@ -73,7 +73,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      conversion_type?: string;
+      commission_rate?: number;
+      description?: string;
+      is_active?: boolean;
+    };
     const { conversion_type, commission_rate, description, is_active } = body;
 
     if (!conversion_type || commission_rate === undefined) {
@@ -150,7 +155,13 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      id?: string;
+      conversion_type?: string;
+      commission_rate?: number;
+      description?: string;
+      is_active?: boolean;
+    };
     const { id, conversion_type, commission_rate, description, is_active } = body;
 
     if (!id && !conversion_type) {

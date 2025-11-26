@@ -209,9 +209,9 @@ export default function GamificationDashboard({
         </Section>
       )}
 
-      {dashboard.upcoming_events.length > 0 && (
+      {dashboard.upcoming_challenges.length > 0 && (
         <Section title="กิจกรรมที่จะมาถึง" icon="📅">
-          <ChallengeList challenges={dashboard.upcoming_events} />
+          <ChallengeList challenges={dashboard.upcoming_challenges} />
         </Section>
       )}
 

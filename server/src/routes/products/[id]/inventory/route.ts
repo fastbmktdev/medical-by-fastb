@@ -20,7 +20,10 @@ export const PUT = withAdminAuth(async (
   try {
     const supabase = await createClient();
     const { id } = await params;
-    const body = await request.json();
+    const body = await request.json() as {
+      stock?: string | number;
+      action?: 'set' | 'add' | 'subtract';
+    };
 
     // Validate required fields
     if (body.stock === undefined) {
@@ -47,17 +50,18 @@ export const PUT = withAdminAuth(async (
     // Calculate new stock based on action
     const action = body.action || 'set'; // 'set', 'add', 'subtract'
     let newStock: number;
+    const stockValue = typeof body.stock === 'number' ? body.stock : parseInt(String(body.stock));
 
     switch (action) {
       case 'add':
-        newStock = (product.stock || 0) + parseInt(body.stock);
+        newStock = (product.stock || 0) + stockValue;
         break;
       case 'subtract':
-        newStock = Math.max(0, (product.stock || 0) - parseInt(body.stock));
+        newStock = Math.max(0, (product.stock || 0) - stockValue);
         break;
       case 'set':
       default:
-        newStock = parseInt(body.stock);
+        newStock = stockValue;
         break;
     }
 

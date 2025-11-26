@@ -53,7 +53,9 @@ export const POST = withAdminAuth<{ id: string }>(
     try {
       const supabase = await createClient();
       const { id } = await context.params;
-      const body = await request.json();
+      const body = await request.json() as {
+        change_summary?: string;
+      };
 
       // Get current article
       const { data: article, error: articleError } = await supabase

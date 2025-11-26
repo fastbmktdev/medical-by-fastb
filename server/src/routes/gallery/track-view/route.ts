@@ -9,7 +9,11 @@ import { createClient } from '@shared/lib/database/supabase/server';
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient();
-    const body = await request.json();
+    const body = await request.json() as {
+      image_id?: string;
+      hospital_id?: string;
+      session_id?: string;
+    };
     const { image_id, hospital_id, session_id } = body;
 
     if (!image_id || !hospital_id) {

@@ -16,7 +16,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      points?: number;
+      action_type?: string;
+      action_description?: string;
+      reference_id?: string;
+      reference_type?: string;
+    };
     const {
       points,
       action_type,

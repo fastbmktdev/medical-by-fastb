@@ -107,7 +107,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      item_type?: string;
+      item_id?: string;
+    };
     const { item_type, item_id } = body;
 
     if (!item_type || !item_id) {

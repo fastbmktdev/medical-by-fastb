@@ -93,7 +93,17 @@ async function checkIsAdmin(supabase: Awaited<ReturnType<typeof createClient>>, 
 export const POST = withAdminAuth(async (request: NextRequest) => {
   try {
     const supabase = await createClient();
-    const body = await request.json();
+    const body = await request.json() as {
+      nameThai?: string;
+      nameEnglish?: string;
+      basePrice?: number;
+      description?: string;
+      pricePerKg?: number;
+      estimatedDaysMin?: number;
+      estimatedDaysMax?: number;
+      isActive?: boolean;
+      displayOrder?: number;
+    };
 
     // Validate required fields
     const { nameThai, nameEnglish, basePrice } = body;
@@ -111,8 +121,8 @@ export const POST = withAdminAuth(async (request: NextRequest) => {
         name_thai: nameThai,
         name_english: nameEnglish,
         description: body.description || null,
-        base_price: parseFloat(basePrice),
-        price_per_kg: body.pricePerKg ? parseFloat(body.pricePerKg) : 0,
+        base_price: basePrice,
+        price_per_kg: body.pricePerKg || 0,
         estimated_days_min: body.estimatedDaysMin || 1,
         estimated_days_max: body.estimatedDaysMax || 7,
         is_active: body.isActive !== undefined ? body.isActive : true,

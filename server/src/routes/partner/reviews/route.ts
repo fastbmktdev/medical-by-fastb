@@ -156,7 +156,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      hospital_id?: string;
+      rating?: number;
+      title?: string;
+      comment?: string;
+      visit_date?: string;
+      recommend?: boolean;
+      booking_id?: string;
+    };
     const { hospital_id, rating, title, comment, visit_date, recommend, booking_id } = body;
 
     // Validate required fields

@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
     "target": "ES2018",
-    "lib": ["ES2018"],
+    "lib": ["ES2018", "DOM"],
     "module": "esnext",
     "moduleResolution": "bundler",
     "outDir": "./dist",
-    "strict": true,
+    "strict": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,

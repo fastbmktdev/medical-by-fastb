@@ -32,7 +32,7 @@ export function generateMockHospital(overrides?: Partial<hospital>): hospital {
     images: Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () =>
       faker.image.url()
     ),
-    phone: faker.phone.number('0##-###-####'),
+    phone: faker.phone.number(),
     email: faker.internet.email(),
     website: faker.internet.url(),
     socials: JSON.stringify({
@@ -44,7 +44,6 @@ export function generateMockHospital(overrides?: Partial<hospital>): hospital {
     map_url: `https://maps.google.com/?q=${faker.location.latitude()},${faker.location.longitude()}`,
     latitude: faker.location.latitude(),
     longitude: faker.location.longitude(),
-    google_place_id: faker.string.alphanumeric(27),
     services: faker.helpers.arrayElements(
       [
         'ตรวจสุขภาพ',

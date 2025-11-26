@@ -6,6 +6,7 @@ import { http, HttpResponse } from 'msw';
 import { mockDataStore } from '../../data/store';
 import { filterArray, sortArray, paginate, extractPaginationParams } from '../../utils';
 import { delay } from '../../utils/delay';
+import type { appointment } from '@shared/types/database.types';
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
 
@@ -20,15 +21,15 @@ export const getAppointmentsHandler = http.get(
     const url = new URL(request.url);
     const searchParams = url.searchParams;
 
-    let appointments = mockDataStore.getAppointments();
+    let appointments: appointment[] = mockDataStore.getAppointments();
 
     // Apply filters
-    appointments = filterArray(appointments, searchParams);
+    appointments = filterArray(appointments as unknown as Array<Record<string, unknown>>, searchParams) as unknown as appointment[];
 
     // Apply sorting
     const orderParam = searchParams.get('order');
     if (orderParam) {
-      appointments = sortArray(appointments, orderParam);
+      appointments = sortArray(appointments as unknown as Array<Record<string, unknown>>, orderParam) as unknown as appointment[];
     }
 
     // Apply pagination
@@ -47,7 +48,7 @@ export const getAppointmentsHandler = http.get(
             selected[trimmed] = appointment[trimmed as keyof typeof appointment];
           }
         });
-        return selected as typeof appointment;
+        return selected as unknown as appointment;
       });
     }
 

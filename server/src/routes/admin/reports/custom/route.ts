@@ -46,7 +46,17 @@ const createCustomReportHandler = withAdminAuth(async (
 ) => {
   try {
     const supabase = await createClient();
-    const body = await request.json();
+    const body = await request.json() as {
+      name?: string;
+      description?: string;
+      table_name?: string;
+      columns?: string[];
+      column_headers?: string[];
+      filters?: Record<string, unknown>;
+      format?: string;
+      include_summary?: boolean;
+      include_charts?: boolean;
+    };
 
     const {
       name,

@@ -19,7 +19,16 @@ export const PUT = withAdminAuth(async (
   try {
     const supabase = await createClient();
     const { id, variantId } = await params;
-    const body = await request.json();
+    const body = await request.json() as {
+      type?: string;
+      name?: string;
+      value?: string;
+      priceAdjustment?: string | number;
+      stock?: string | number;
+      sku?: string;
+      displayOrder?: string | number;
+      isDefault?: boolean;
+    };
 
     // Check if variant exists and belongs to product
     const { data: existingVariant, error: checkError } = await supabase
@@ -44,10 +53,10 @@ export const PUT = withAdminAuth(async (
     if (body.type !== undefined) updateData.variant_type = body.type;
     if (body.name !== undefined) updateData.variant_name = body.name;
     if (body.value !== undefined) updateData.variant_value = body.value;
-    if (body.priceAdjustment !== undefined) updateData.price_adjustment = parseFloat(body.priceAdjustment);
-    if (body.stock !== undefined) updateData.stock = parseInt(body.stock);
+    if (body.priceAdjustment !== undefined) updateData.price_adjustment = typeof body.priceAdjustment === 'number' ? body.priceAdjustment : parseFloat(String(body.priceAdjustment));
+    if (body.stock !== undefined) updateData.stock = typeof body.stock === 'number' ? body.stock : parseInt(String(body.stock));
     if (body.sku !== undefined) updateData.sku = body.sku || null;
-    if (body.displayOrder !== undefined) updateData.display_order = parseInt(body.displayOrder);
+    if (body.displayOrder !== undefined) updateData.display_order = typeof body.displayOrder === 'number' ? body.displayOrder : parseInt(String(body.displayOrder));
 
     // Handle isDefault
     if (body.isDefault !== undefined) {

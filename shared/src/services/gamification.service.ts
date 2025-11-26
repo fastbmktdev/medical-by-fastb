@@ -1025,7 +1025,7 @@ export async function getGamificationDashboard(
       recent_badges: recentBadges,
       active_challenges: activeChallenges,
       leaderboards: leaderboards,
-      upcoming_events: upcomingEvents,
+      upcoming_challenges: upcomingEvents,
     };
   } catch (error) {
     return null;

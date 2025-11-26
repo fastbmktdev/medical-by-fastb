@@ -74,7 +74,15 @@ export async function GET(request: NextRequest) {
 export const POST = withAdminAuth(async (request: NextRequest) => {
   try {
     const supabase = await createClient();
-    const body = await request.json();
+    const body = await request.json() as {
+      nameThai?: string;
+      nameEnglish?: string;
+      slug?: string;
+      description?: string;
+      image?: string;
+      displayOrder?: number;
+      isActive?: boolean;
+    };
 
     // Validate required fields
     const { nameThai, nameEnglish } = body;

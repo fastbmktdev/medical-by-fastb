@@ -170,10 +170,12 @@ export function withGlobalErrorHandler<T extends unknown[]>(
     } catch (error) {
       // Extract request context if available
       const request = args[0] as { url?: string; method?: string } | undefined;
+      const routeValue = request?.url || (context?.route as string | undefined);
+      const methodValue = request?.method || (context?.method as string | undefined);
       const errorContext: GlobalErrorContext = {
         ...context,
-        route: request?.url || context?.route,
-        method: request?.method || context?.method,
+        route: routeValue,
+        method: methodValue,
         timestamp: new Date().toISOString(),
       };
 

@@ -1,1 +1,0 @@
-export { HospitalsLoading as default } from "@/components/shared/layout";

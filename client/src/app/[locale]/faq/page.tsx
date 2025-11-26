@@ -172,7 +172,7 @@ export default function FAQPage() {
                     className={`w-full text-left px-4 py-3  transition-colors ${
                       activeCategory === category
                         ? "bg-brand-primary text-white"
-                        : "text-zinc-300 hover:bg-zinc-700 hover:text-white"
+                        : "text-zinc-950 hover:bg-zinc-700 hover:text-white"
                     }`}
                   >
                     {category}
@@ -196,7 +196,7 @@ export default function FAQPage() {
                     <div key={index} className="border border-zinc-700 ">
                       <button
                         onClick={() => toggleQuestion(questionId)}
-                        className="flex justify-between items-center hover:bg-zinc-700 p-6 w-full text-left transition-colors"
+                        className="flex justify-between items-center hover:bg-zinc-700 hover:text-white p-6 w-full text-left transition-colors cursor-pointer"
                       >
                         <h3 className="pr-4 font-semibold text-lg">
                           {faq.question}
@@ -211,7 +211,7 @@ export default function FAQPage() {
                       {isOpen && (
                         <div className="px-6 pb-6">
                           <div className="pt-4 border-zinc-700 border-t">
-                            <p className="text-zinc-300 leading-relaxed">
+                            <p className="text-zinc-950 leading-relaxed">
                               {faq.answer}
                             </p>
                           </div>
@@ -232,13 +232,13 @@ export default function FAQPage() {
               <div className="flex sm:flex-row flex-col justify-center gap-4">
                 <Link
                   href="/contact"
-                  className="bg-brand-primary hover:bg-red-600 px-6 py-3  font-semibold transition-colors"
+                  className="bg-brand-primary hover:bg-violet-700 px-6 py-3  font-semibold transition-colors"
                 >
                   ติดต่อทีมงาน
                 </Link>
                 <Link
                   href="mailto:support@medicalnext.com"
-                  className="bg-zinc-700 hover:bg-zinc-600 px-6 py-3  font-semibold transition-colors"
+                  className="bg-zinc-700 hover:bg-zinc-600 hover:text-white px-6 py-3  font-semibold transition-colors"
                 >
                   ส่งอีเมล
                 </Link>

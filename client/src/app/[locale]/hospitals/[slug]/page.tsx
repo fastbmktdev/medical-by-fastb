@@ -196,14 +196,14 @@ const ContactInfo = memo(function ContactInfo({ hospital }: { hospital: hospital
             <GlobeAltIcon className="shrink-0 mt-0.5 w-5 h-5 text-purple-500" />
             <div>
               <p className="mb-1 text-zinc-400 text-xs">โซเชียลมีเดีย</p>
-              <p className="text-zinc-300">{hospital.socials}</p>
+              <p className="text-zinc-950">{hospital.socials}</p>
             </div>
           </div>
         )}
         {hospital.contact_name && (
           <div className="pt-4 border-zinc-700 border-t">
-            <p className="mb-1 text-zinc-400 text-xs">ผู้ติดต่อ</p>
-            <p className="text-zinc-300">{hospital.contact_name}</p>
+            <p className="mb-1 text-zinc-950 text-xs">ผู้ติดต่อ</p>
+            <p className="text-zinc-950">{hospital.contact_name}</p>
           </div>
         )}
       </div>

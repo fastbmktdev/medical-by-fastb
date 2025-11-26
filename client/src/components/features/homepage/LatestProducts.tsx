@@ -6,6 +6,7 @@ import { ProductCard } from "@/components/shared";
 import { Loading } from "@/components/design-system/primitives/Loading";
 import { showErrorToast } from '@shared/lib/utils';
 import { getSupabaseErrorMessage } from '@shared/lib/utils/supabase-error-handler';
+import { logger } from '@shared/lib/utils/logger';
 
 interface Product {
   id: string;
@@ -29,16 +30,38 @@ export default function LatestProducts() {
 
   useEffect(() => {
     async function fetchFeaturedProducts() {
+      const endpoint = '/api/products?featured=true&active=true&limit=4';
+      
       try {
-        const response = await fetch('/api/products?featured=true&active=true&limit=4');
+        const response = await fetch(endpoint);
         
         if (!response.ok) {
-          // Handle HTTP errors (500, 404, etc.)
-          const errorMessage = getSupabaseErrorMessage(
-            new Error(`HTTP ${response.status}: ${response.statusText}`),
-            'ไม่สามารถโหลดข้อมูลสินค้าได้ กรุณาลองใหม่อีกครั้ง'
-          );
-          console.error(`Error fetching products: ${response.status} ${response.statusText}`);
+          // Handle HTTP errors with specific messages for different status codes
+          let errorMessage: string;
+          const errorContext = {
+            endpoint,
+            status: response.status,
+            statusText: response.statusText,
+            component: 'LatestProducts',
+          };
+
+          // Create Error object for proper error tracking
+          const httpError = new Error(`HTTP ${response.status}: ${response.statusText}`);
+
+          if (response.status === 404) {
+            errorMessage = 'ไม่พบ API endpoint สำหรับสินค้า';
+            logger.error('Products API endpoint not found (404)', errorContext, httpError);
+          } else if (response.status >= 500) {
+            errorMessage = 'เกิดข้อผิดพลาดจากเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้ง';
+            logger.error('Server error when fetching products', errorContext, httpError);
+          } else {
+            errorMessage = getSupabaseErrorMessage(
+              httpError,
+              'ไม่สามารถโหลดข้อมูลสินค้าได้ กรุณาลองใหม่อีกครั้ง'
+            );
+            logger.error('HTTP error when fetching products', errorContext, httpError);
+          }
+          
           showErrorToast(errorMessage);
           setProducts([]);
           return;
@@ -51,17 +74,25 @@ export default function LatestProducts() {
         } else {
           // Handle invalid response format
           const errorMessage = data.error || 'รูปแบบข้อมูลไม่ถูกต้อง';
-          console.warn('Invalid response format from products API:', data);
+          logger.warn('Invalid response format from products API', {
+            endpoint,
+            response: data,
+            component: 'LatestProducts',
+          });
           showErrorToast(errorMessage);
           setProducts([]);
         }
       } catch (err) {
         // Handle network errors (connection refused, timeout, etc.)
+        const error = err instanceof Error ? err : new Error(String(err));
         const errorMessage = getSupabaseErrorMessage(
-          err,
+          error,
           'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต'
         );
-        console.error("Error fetching featured products:", err);
+        logger.error('Network error when fetching featured products', {
+          endpoint,
+          component: 'LatestProducts',
+        }, error);
         showErrorToast(errorMessage);
         setProducts([]);
       } finally {

@@ -16,7 +16,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      payment_id?: string;
+      payment_method_id?: string;
+    };
     const { payment_id, payment_method_id } = body;
 
     // Validate required fields

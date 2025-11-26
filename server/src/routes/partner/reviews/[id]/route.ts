@@ -132,7 +132,10 @@ export async function PATCH(
 
     const { id } = await params;
     const reviewId = id;
-    const body = await request.json();
+    const body = await request.json() as {
+      status?: string;
+      moderation_reason?: string;
+    };
     const { status, moderation_reason } = body;
 
     // Get review

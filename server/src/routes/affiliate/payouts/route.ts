@@ -60,7 +60,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      period_start_date?: string;
+      period_end_date?: string;
+      payout_method?: string;
+      bank_account_name?: string;
+      bank_account_number?: string;
+      bank_name?: string;
+      bank_branch?: string;
+      promptpay_number?: string;
+      notes?: string;
+    };
     const {
       period_start_date,
       period_end_date,

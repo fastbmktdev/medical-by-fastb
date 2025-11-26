@@ -66,7 +66,10 @@ export async function PATCH(
     }
 
     const { id } = await params;
-    const body = await request.json();
+    const body = await request.json() as {
+      action?: string;
+      [key: string]: unknown;
+    };
     const { action, ...updates } = body;
 
     // Check if payout exists and belongs to user

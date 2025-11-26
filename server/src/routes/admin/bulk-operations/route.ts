@@ -18,7 +18,11 @@ export const POST = withAdminAuth<Record<string, never>>(async (
 ) => {
   try {
     const supabase = await createClient();
-    const body = await request.json();
+    const body = await request.json() as {
+      operation?: string;
+      table?: string;
+      ids?: unknown[];
+    };
     const { operation, table, ids } = body;
 
     if (!operation || !table || !ids || !Array.isArray(ids) || ids.length === 0) {
@@ -43,7 +47,7 @@ export const POST = withAdminAuth<Record<string, never>>(async (
       'promotions',
       'appointments',
     ] as const;
-    if (!validTables.includes(table)) {
+    if (!table || !validTables.includes(table as typeof validTables[number])) {
       return NextResponse.json(
         { success: false, error: 'Invalid table' },
         { status: 400 }

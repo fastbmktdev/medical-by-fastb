@@ -64,7 +64,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      action?: string;
+      challenge_id?: string;
+      user_challenge_id?: string;
+      progress?: number;
+    };
     const { action, challenge_id, user_challenge_id, progress } = body;
 
     let result;
@@ -92,7 +97,7 @@ export async function POST(request: NextRequest) {
         }
         result = await updateChallengeProgress({
           user_challenge_id,
-          progress,
+          progress: typeof progress === 'object' && progress !== null ? progress as Record<string, unknown> : {},
         });
         break;
 

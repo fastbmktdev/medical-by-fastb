@@ -155,7 +155,11 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    const { originalPath, watermarkedPath } = await request.json();
+    const body = await request.json() as {
+      originalPath?: string;
+      watermarkedPath?: string;
+    };
+    const { originalPath, watermarkedPath } = body;
 
     if (!originalPath || !watermarkedPath) {
       return NextResponse.json(

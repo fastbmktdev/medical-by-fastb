@@ -8,7 +8,10 @@ import { createClient } from '@shared/lib/database/supabase/server';
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient();
-    const body = await request.json();
+    const body = await request.json() as {
+      token?: string;
+      email?: string;
+    };
     const { token, email } = body;
 
     if (!token && !email) {
@@ -25,7 +28,7 @@ export async function POST(request: NextRequest) {
 
     if (token) {
       query = query.eq('unsubscribe_token', token);
-    } else {
+    } else if (email) {
       query = query.eq('email', email.toLowerCase());
     }
 

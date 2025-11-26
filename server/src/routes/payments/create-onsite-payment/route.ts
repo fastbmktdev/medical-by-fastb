@@ -15,7 +15,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      amount?: number;
+      paymentType?: string;
+      metadata?: Record<string, unknown>;
+    };
     const { amount, paymentType, metadata } = body;
 
     // Validate required fields
@@ -63,10 +67,13 @@ export async function POST(request: NextRequest) {
         total_amount: amount,
         currency: 'thb',
         status: 'pending',
-        customer_name: metadata.userName || '',
+        customer_name: (metadata?.userName as string) || '',
         customer_email: user.email || '',
-        metadata: {
+        metadata: metadata ? {
           ...metadata,
+          payment_method: 'onsite',
+          onsite_payment: true,
+        } : {
           payment_method: 'onsite',
           onsite_payment: true,
         },

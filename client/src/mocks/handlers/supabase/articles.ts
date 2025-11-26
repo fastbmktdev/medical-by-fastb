@@ -6,6 +6,7 @@ import { http, HttpResponse } from 'msw';
 import { mockDataStore } from '../../data/store';
 import { filterArray, sortArray, paginate, extractPaginationParams } from '../../utils';
 import { delay } from '../../utils/delay';
+import type { Article } from '@shared/types/app.types';
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
 
@@ -20,15 +21,15 @@ export const getArticlesHandler = http.get(
     const url = new URL(request.url);
     const searchParams = url.searchParams;
 
-    let articles = mockDataStore.getArticles();
+    let articles: Article[] = mockDataStore.getArticles();
 
     // Apply filters
-    articles = filterArray(articles, searchParams);
+    articles = filterArray(articles as unknown as Array<Record<string, unknown>>, searchParams) as unknown as Article[];
 
     // Apply sorting
     const orderParam = searchParams.get('order');
     if (orderParam) {
-      articles = sortArray(articles, orderParam);
+      articles = sortArray(articles as unknown as Array<Record<string, unknown>>, orderParam) as unknown as Article[];
     }
 
     // Apply pagination

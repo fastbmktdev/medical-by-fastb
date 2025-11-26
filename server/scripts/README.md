@@ -38,6 +38,7 @@ See [security/README.md](./security/README.md) for detailed documentation.
 
 - `create-user.js` - Create new user programmatically
 - `create-test-users.js` - Create multiple test users
+- `create-health-article.js` - Create health article about mental health
 - `database-utilities.js` - Database helper functions
 - `test-supabase-connection.js` - Test database connection
 - `test-resend-emails.js` - Test email functionality
@@ -79,6 +80,16 @@ node scripts/node/create-test-users.js
 
 # Create production admin (use SQL directly)
 psql -f scripts/sql/create-production-admin.sql
+```
+
+### Create Content
+```bash
+# Create health article about mental health (requires database)
+node server/scripts/node/create-health-article.js
+
+# Create static health articles (no database required)
+node server/scripts/node/create-health-articles-static.js [count]
+node server/scripts/node/create-health-articles-static.js 10  # Generate 10 articles
 ```
 
 ### Testing

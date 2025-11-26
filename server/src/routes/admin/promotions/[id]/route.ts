@@ -31,7 +31,24 @@ const updatePromotionHandler = withAdminAuth(async (
   try {
     const supabase = await createClient();
     const { id } = await params;
-    const body = await request.json();
+    const body = await request.json() as {
+      title?: string;
+      titleEnglish?: string;
+      description?: string;
+      isActive?: boolean;
+      priority?: number;
+      showInMarquee?: boolean;
+      startDate?: string;
+      endDate?: string;
+      linkUrl?: string;
+      linkText?: string;
+      couponCode?: string;
+      discountType?: string;
+      discountValue?: number;
+      minPurchaseAmount?: number;
+      maxDiscountAmount?: number;
+      maxUses?: number;
+    };
     
     // Check if promotion exists
     const { data: existingPromotion, error: checkError } = await supabase
@@ -186,7 +203,7 @@ const updatePromotionHandler = withAdminAuth(async (
     }
     
     if (maxUses !== undefined) {
-      updateData.max_uses = maxUses ? parseInt(maxUses) : null;
+      updateData.max_uses = maxUses ? (typeof maxUses === 'number' ? maxUses : parseInt(String(maxUses))) : null;
     }
     
     // Get current promotion to check if is_active is being changed to true

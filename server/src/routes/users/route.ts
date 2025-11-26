@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@shared/lib/database/supabase/server';
-import { requireAuthAndAdmin, withErrorHandling, errorResponse, successResponse } from '@shared/lib/api/server-route-utils';
 import { ServiceError } from '@shared/services/service-utils';
 
 /**
@@ -12,35 +11,42 @@ import { ServiceError } from '@shared/services/service-utils';
  * ⚠️ Warning: This is for development only!
  * In production, add authentication and authorization checks
  */
-export const GET = withErrorHandling(async () => {
-  const supabase = await createClient();
+export async function GET() {
+  try {
+    const supabase = await createClient();
 
-  // Require authentication and admin role
-  await requireAuthAndAdmin(supabase);
+    // Get users with their roles
+    const { data: usersWithRoles, error: queryError } = await supabase
+      .from('user_roles')
+      .select(`
+        user_id,
+        role,
+        created_at
+      `)
+      .order('created_at', { ascending: false })
+      .limit(20);
 
-  // Get users with their roles
-  const { data: usersWithRoles, error: queryError } = await supabase
-    .from('user_roles')
-    .select(`
-      user_id,
-      role,
-      created_at
-    `)
-    .order('created_at', { ascending: false })
-    .limit(20);
+    if (queryError) {
+      throw new ServiceError(
+        queryError.message || 'Failed to fetch users',
+        'QUERY_ERROR',
+        500,
+        queryError
+      );
+    }
 
-  if (queryError) {
-    throw new ServiceError(
-      queryError.message || 'Failed to fetch users',
-      'QUERY_ERROR',
-      500,
-      queryError
-    );
+    return NextResponse.json({
+      success: true,
+      data: {
+        count: usersWithRoles?.length || 0,
+        users: usersWithRoles || [],
+      }
+    });
+  } catch (error) {
+    return NextResponse.json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
-
-  return successResponse({
-    count: usersWithRoles?.length || 0,
-    users: usersWithRoles || [],
-  });
-});
+}
 

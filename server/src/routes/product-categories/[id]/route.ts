@@ -77,7 +77,15 @@ export const PUT = withAdminAuth(async (
   try {
     const supabase = await createClient();
     const { id } = await params;
-    const body = await request.json();
+    const body = await request.json() as {
+      nameThai?: string;
+      nameEnglish?: string;
+      description?: string;
+      image?: string;
+      displayOrder?: string | number;
+      isActive?: boolean;
+      slug?: string;
+    };
 
     // Check if category exists
     const { data: existingCategory, error: checkError } = await supabase
@@ -102,7 +110,7 @@ export const PUT = withAdminAuth(async (
     if (body.nameEnglish !== undefined) updateData.name_english = body.nameEnglish;
     if (body.description !== undefined) updateData.description = body.description || null;
     if (body.image !== undefined) updateData.image = body.image || null;
-    if (body.displayOrder !== undefined) updateData.display_order = parseInt(body.displayOrder);
+    if (body.displayOrder !== undefined) updateData.display_order = typeof body.displayOrder === 'number' ? body.displayOrder : parseInt(String(body.displayOrder));
     if (body.isActive !== undefined) updateData.is_active = body.isActive;
 
     // Update slug if name_english changed

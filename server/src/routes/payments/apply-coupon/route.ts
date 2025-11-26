@@ -25,7 +25,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      couponCode?: string;
+      amount?: number;
+      paymentType?: string;
+      productId?: string;
+      hospitalId?: string;
+      packageId?: string;
+    };
     const {
       couponCode,
       amount,
@@ -74,7 +81,7 @@ export async function POST(request: NextRequest) {
       couponCode: couponCode.trim(),
       userId: user.id,
       amount,
-      paymentType,
+      paymentType: paymentType as 'hospital_booking' | 'product' | 'ticket',
       productId,
       hospitalId,
       packageId,

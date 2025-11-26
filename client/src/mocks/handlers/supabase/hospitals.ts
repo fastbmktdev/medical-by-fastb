@@ -6,6 +6,7 @@ import { http, HttpResponse } from 'msw';
 import { mockDataStore } from '../../data/store';
 import { filterArray, sortArray, paginate, extractPaginationParams } from '../../utils';
 import { delay } from '../../utils/delay';
+import type { hospital } from '@shared/types/database.types';
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
 
@@ -21,15 +22,15 @@ export const getHospitalsHandler = http.get(
     const searchParams = url.searchParams;
 
     // Get all hospitals
-    let hospitals = mockDataStore.getHospitals();
+    let hospitals: hospital[] = mockDataStore.getHospitals();
 
     // Apply filters
-    hospitals = filterArray(hospitals, searchParams);
+    hospitals = filterArray(hospitals as unknown as Array<Record<string, unknown>>, searchParams) as unknown as hospital[];
 
     // Apply sorting
     const orderParam = searchParams.get('order');
     if (orderParam) {
-      hospitals = sortArray(hospitals, orderParam);
+      hospitals = sortArray(hospitals as unknown as Array<Record<string, unknown>>, orderParam) as unknown as hospital[];
     }
 
     // Apply pagination
@@ -48,7 +49,7 @@ export const getHospitalsHandler = http.get(
             selected[trimmed] = hospital[trimmed as keyof typeof hospital];
           }
         });
-        return selected as typeof hospital;
+        return selected as unknown as hospital;
       });
     }
 
@@ -118,7 +119,7 @@ export const updateHospitalHandler = http.patch(
     }
 
     // In a real implementation, you would update the hospital in the store
-    const updated = { ...hospital, ...body, updated_at: new Date().toISOString() };
+    const updated = { ...hospital, ...(body as Record<string, unknown>), updated_at: new Date().toISOString() };
     return HttpResponse.json(updated);
   }
 );

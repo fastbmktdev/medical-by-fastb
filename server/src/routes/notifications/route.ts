@@ -83,7 +83,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      type?: string;
+      title?: string;
+      message?: string;
+      link_url?: string;
+      metadata?: Record<string, unknown>;
+      target_user_id?: string;
+    };
     const { type, title, message, link_url, metadata, target_user_id } = body;
 
     if (!type || !title || !message) {

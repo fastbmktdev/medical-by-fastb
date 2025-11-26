@@ -64,7 +64,26 @@ export async function PUT(
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      slug?: string;
+      title?: string;
+      excerpt?: string;
+      content?: string;
+      category?: string;
+      image?: string;
+      tags?: string[];
+      is_new?: boolean;
+      date?: string;
+      meta_title?: string;
+      meta_description?: string;
+      meta_keywords?: string[];
+      og_image?: string;
+      og_title?: string;
+      og_description?: string;
+      twitter_card?: string;
+      canonical_url?: string;
+      scheduled_publish_at?: string;
+    };
     const {
       slug,
       title,

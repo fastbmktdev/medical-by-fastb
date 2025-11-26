@@ -116,7 +116,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      hospital_id?: string;
+      image_url?: string;
+      storage_path?: string;
+      title?: string;
+      description?: string;
+      alt_text?: string;
+      is_featured?: boolean;
+      file_size?: number;
+      width?: number;
+      height?: number;
+      mime_type?: string;
+    };
     const {
       hospital_id,
       image_url,

@@ -31,7 +31,10 @@ export async function POST(
     }
 
     const { id } = await params;
-    const body = await request.json();
+    const body = await request.json() as {
+      evidence?: Record<string, unknown>;
+      admin_notes?: string;
+    };
     const { evidence, admin_notes } = body;
 
     if (!evidence || typeof evidence !== 'object') {

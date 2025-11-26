@@ -29,7 +29,13 @@ export async function PATCH(
     }
 
     const { id } = await params;
-    const body = await request.json();
+    const body = await request.json() as {
+      action?: string;
+      transaction_id?: string;
+      payment_reference?: string;
+      rejection_reason?: string;
+      notes?: string;
+    };
     const { action, transaction_id, payment_reference, rejection_reason, notes } = body;
 
     // Get existing payout

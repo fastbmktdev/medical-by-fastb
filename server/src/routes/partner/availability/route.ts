@@ -8,6 +8,24 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@shared/lib/database/supabase/server';
 
+interface AvailabilityBody {
+  type?: 'regular' | 'special' | 'time_slot';
+  data?: {
+    day_of_week?: number;
+    is_open?: boolean;
+    open_time?: string;
+    close_time?: string;
+    max_capacity?: number;
+    notes?: string;
+    date?: string;
+    reason?: string;
+    start_time?: string;
+    end_time?: string;
+    is_available?: boolean;
+    price_multiplier?: number;
+  };
+}
+
 export async function GET(request: NextRequest) {
   try {
     const supabase = await createClient();
@@ -21,12 +39,22 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Check if user is partner
-    const { data: roleData } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', user.id)
-      .maybeSingle();
+    // Check if user is partner and get hospital
+    const [roleResult, hospitalResult] = await Promise.all([
+      supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .maybeSingle(),
+      supabase
+        .from('hospitals')
+        .select('id')
+        .eq('user_id', user.id)
+        .maybeSingle(),
+    ]);
+
+    const { data: roleData } = roleResult;
+    const { data: hospital, error: hospitalError } = hospitalResult;
 
     if (!roleData || roleData.role !== 'partner') {
       return NextResponse.json(
@@ -34,13 +62,6 @@ export async function GET(request: NextRequest) {
         { status: 403 }
       );
     }
-
-    // Get partner's hospital
-    const { data: hospital, error: hospitalError } = await supabase
-      .from('hospitals')
-      .select('id')
-      .eq('user_id', user.id)
-      .maybeSingle();
 
     if (hospitalError || !hospital) {
       return NextResponse.json(
@@ -52,49 +73,41 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const date = searchParams.get('date');
 
-    // Get regular availability
-    const { data: regularAvailability } = await supabase
-      .from('hospital_availability')
-      .select('*')
-      .eq('hospital_id', hospital.id)
-      .order('day_of_week');
-
-    // Get special availability if date is provided
-    let specialAvailability = null;
-    if (date) {
-      const { data: special, error: specialError } = await supabase
-        .from('hospital_special_availability')
+    const queries: any[] = [
+      supabase
+        .from('hospital_availability')
         .select('*')
         .eq('hospital_id', hospital.id)
-        .eq('date', date)
-        .maybeSingle();
+        .order('day_of_week')
+    ];
 
-      if (!specialError && special) {
-        specialAvailability = special;
-      }
-    }
-
-    // Get time slots if date is provided
-    let timeSlots = null;
     if (date) {
-      const { data: slots, error: slotsError } = await supabase
-        .from('hospital_time_slots')
-        .select('*')
-        .eq('hospital_id', hospital.id)
-        .eq('date', date)
-        .order('start_time');
-
-      if (!slotsError && slots) {
-        timeSlots = slots;
-      }
+      queries.push(
+        supabase
+          .from('hospital_special_availability')
+          .select('*')
+          .eq('hospital_id', hospital.id)
+          .eq('date', date)
+          .maybeSingle()
+      );
+      queries.push(
+        supabase
+          .from('hospital_time_slots')
+          .select('*')
+          .eq('hospital_id', hospital.id)
+          .eq('date', date)
+          .order('start_time')
+      );
     }
+
+    const [regularAvailabilityResult, specialAvailabilityResult, timeSlotsResult] = await Promise.all(queries as any);
 
     return NextResponse.json({
       success: true,
       data: {
-        regularAvailability: regularAvailability || [],
-        specialAvailability,
-        timeSlots: timeSlots || [],
+        regularAvailability: regularAvailabilityResult.data || [],
+        specialAvailability: specialAvailabilityResult?.data || null,
+        timeSlots: timeSlotsResult?.data || [],
       },
     });
     
@@ -105,6 +118,78 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+async function handleRegularAvailability(supabase: any, hospitalId: string, availabilityData: any) {
+  const { data, error } = await supabase
+    .from('hospital_availability')
+    .upsert({
+      hospital_id: hospitalId,
+      day_of_week: availabilityData.day_of_week,
+      is_open: availabilityData.is_open ?? true,
+      open_time: availabilityData.open_time || null,
+      close_time: availabilityData.close_time || null,
+      max_capacity: availabilityData.max_capacity || null,
+      notes: availabilityData.notes || null,
+    }, {
+      onConflict: 'hospital_id,day_of_week',
+    })
+    .select()
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+}
+
+async function handleSpecialAvailability(supabase: any, hospitalId: string, availabilityData: any) {
+  const { data, error } = await supabase
+    .from('hospital_special_availability')
+    .upsert({
+      hospital_id: hospitalId,
+      date: availabilityData.date,
+      is_open: availabilityData.is_open ?? false,
+      open_time: availabilityData.open_time || null,
+      close_time: availabilityData.close_time || null,
+      max_capacity: availabilityData.max_capacity || null,
+      reason: availabilityData.reason || null,
+      notes: availabilityData.notes || null,
+    }, {
+      onConflict: 'hospital_id,date',
+    })
+    .select()
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+}
+
+async function handleTimeSlotAvailability(supabase: any, hospitalId: string, availabilityData: any) {
+  const { data, error } = await supabase
+    .from('hospital_time_slots')
+    .upsert({
+      hospital_id: hospitalId,
+      date: availabilityData.date,
+      start_time: availabilityData.start_time,
+      end_time: availabilityData.end_time,
+      max_capacity: availabilityData.max_capacity || null,
+      is_available: availabilityData.is_available ?? true,
+      price_multiplier: availabilityData.price_multiplier || 1.0,
+      notes: availabilityData.notes || null,
+    })
+    .select()
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
 }
 
 export async function POST(request: NextRequest) {
@@ -120,12 +205,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if user is partner
-    const { data: roleData } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', user.id)
-      .maybeSingle();
+    // Check if user is partner and get hospital
+    const [roleResult, hospitalResult] = await Promise.all([
+      supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .maybeSingle(),
+      supabase
+        .from('hospitals')
+        .select('id')
+        .eq('user_id', user.id)
+        .maybeSingle(),
+    ]);
+
+    const { data: roleData } = roleResult;
+    const { data: hospital, error: hospitalError } = hospitalResult;
 
     if (!roleData || roleData.role !== 'partner') {
       return NextResponse.json(
@@ -134,13 +229,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get partner's hospital
-    const { data: hospital, error: hospitalError } = await supabase
-      .from('hospitals')
-      .select('id')
-      .eq('user_id', user.id)
-      .maybeSingle();
-
     if (hospitalError || !hospital) {
       return NextResponse.json(
         { success: false, error: 'hospital not found' },
@@ -148,83 +236,41 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
-    const { type, data: availabilityData } = body;
+    const body = await request.json() as AvailabilityBody;
+    const { type, data: availabilityData = {} } = body;
 
     if (type === 'regular') {
-      // Upsert regular availability
-      const { data, error } = await supabase
-        .from('hospital_availability')
-        .upsert({
-          hospital_id: hospital.id,
-          day_of_week: availabilityData.day_of_week,
-          is_open: availabilityData.is_open ?? true,
-          open_time: availabilityData.open_time || null,
-          close_time: availabilityData.close_time || null,
-          max_capacity: availabilityData.max_capacity || null,
-          notes: availabilityData.notes || null,
-        }, {
-          onConflict: 'hospital_id,day_of_week',
-        })
-        .select()
-        .single();
-
-      if (error) {
-        throw error;
+      if (!availabilityData) {
+        return NextResponse.json(
+          { success: false, error: 'Availability data is required for regular type' },
+          { status: 400 }
+        );
       }
-
+      const data = await handleRegularAvailability(supabase, hospital.id, availabilityData);
       return NextResponse.json({
         success: true,
         data,
       });
     } else if (type === 'special') {
-      // Upsert special availability
-      const { data, error } = await supabase
-        .from('hospital_special_availability')
-        .upsert({
-          hospital_id: hospital.id,
-          date: availabilityData.date,
-          is_open: availabilityData.is_open ?? false,
-          open_time: availabilityData.open_time || null,
-          close_time: availabilityData.close_time || null,
-          max_capacity: availabilityData.max_capacity || null,
-          reason: availabilityData.reason || null,
-          notes: availabilityData.notes || null,
-        }, {
-          onConflict: 'hospital_id,date',
-        })
-        .select()
-        .single();
-
-      if (error) {
-        throw error;
+      if (!availabilityData || Object.keys(availabilityData).length === 0) {
+        return NextResponse.json(
+          { success: false, error: 'Availability data is required for special type' },
+          { status: 400 }
+        );
       }
-
+      const data = await handleSpecialAvailability(supabase, hospital.id, availabilityData);
       return NextResponse.json({
         success: true,
         data,
       });
     } else if (type === 'time_slot') {
-      // Create or update time slot
-      const { data, error } = await supabase
-        .from('hospital_time_slots')
-        .upsert({
-          hospital_id: hospital.id,
-          date: availabilityData.date,
-          start_time: availabilityData.start_time,
-          end_time: availabilityData.end_time,
-          max_capacity: availabilityData.max_capacity || null,
-          is_available: availabilityData.is_available ?? true,
-          price_multiplier: availabilityData.price_multiplier || 1.0,
-          notes: availabilityData.notes || null,
-        })
-        .select()
-        .single();
-
-      if (error) {
-        throw error;
+      if (!availabilityData || Object.keys(availabilityData).length === 0) {
+        return NextResponse.json(
+          { success: false, error: 'Availability data is required for time_slot type' },
+          { status: 400 }
+        );
       }
-
+      const data = await handleTimeSlotAvailability(supabase, hospital.id, availabilityData);
       return NextResponse.json({
         success: true,
         data,
@@ -258,17 +304,34 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    // Check if user is partner
-    const { data: roleData } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', user.id)
-      .maybeSingle();
+    // Check if user is partner and get hospital
+    const [roleResult, hospitalResult] = await Promise.all([
+      supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .maybeSingle(),
+      supabase
+        .from('hospitals')
+        .select('id')
+        .eq('user_id', user.id)
+        .maybeSingle(),
+    ]);
+
+    const { data: roleData } = roleResult;
+    const { data: hospital, error: hospitalError } = hospitalResult;
 
     if (!roleData || roleData.role !== 'partner') {
       return NextResponse.json(
         { success: false, error: 'Forbidden' },
         { status: 403 }
+      );
+    }
+
+    if (hospitalError || !hospital) {
+      return NextResponse.json(
+        { success: false, error: 'hospital not found' },
+        { status: 404 }
       );
     }
 
@@ -300,7 +363,8 @@ export async function DELETE(request: NextRequest) {
     const { error } = await supabase
       .from(tableName)
       .delete()
-      .eq('id', id);
+      .eq('id', id)
+      .eq('hospital_id', hospital.id);
 
     if (error) {
       throw error;
@@ -319,4 +383,3 @@ export async function DELETE(request: NextRequest) {
     );
   }
 }
-

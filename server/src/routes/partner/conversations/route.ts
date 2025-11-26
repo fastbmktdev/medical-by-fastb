@@ -222,7 +222,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      customer_id?: string;
+      subject?: string;
+      booking_id?: string;
+      initial_message?: string;
+    };
     const { customer_id, subject, booking_id, initial_message } = body;
 
     if (!customer_id || !initial_message) {

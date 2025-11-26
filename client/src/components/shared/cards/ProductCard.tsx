@@ -125,7 +125,7 @@ function ProductCardComponent({
     <BaseCard className={className} data-testid={testId}>
       <Link
         href={`/shop/${product.slug}`}
-        className="block focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 "
+        className="block "
         aria-label={`${t("viewProduct")}: ${productName}`}
       >
         <div className="relative w-full aspect-square overflow-hidden ">
@@ -169,7 +169,7 @@ function ProductCardComponent({
         <h3 className="mb-2 font-semibold group-hover:text-purple-400 text-lg line-clamp-2 transition-colors">
           <Link
             href={`/shop/${product.slug}`}
-            className="focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-1 "
+            className=""
           >
             {productName}
           </Link>
@@ -217,12 +217,11 @@ function ProductCardComponent({
               aria-disabled={isOutOfStock || isAddingToCart}
               className={`
                 p-2 transition-all duration-200
-                focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2
                 disabled:cursor-not-allowed disabled:opacity-60
                 ${
                   isOutOfStock || isAddingToCart
                     ? "bg-zinc-700 text-zinc-500"
-                    : "bg-brand-primary hover:bg-purple-600 active:scale-95 text-white"
+                    : "bg-brand-primary hover:bg-[#8B5CF6] active:scale-95 text-white"
                 }
               `}
               data-testid={testId ? `${testId}-add-to-cart` : undefined}

@@ -23,7 +23,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      contentType?: string;
+      contentId?: string;
+      flagType?: string;
+      reason?: string;
+    };
     const { contentType, contentId, flagType, reason } = body;
 
     if (!contentType || !contentId || !flagType) {

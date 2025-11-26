@@ -170,7 +170,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
+    const body = await request.json() as {
+      table?: string;
+      format?: string;
+      filters?: Record<string, unknown>;
+    };
     const { table, format, filters } = body;
 
     if (!table || !format) {

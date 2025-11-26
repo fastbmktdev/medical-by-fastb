@@ -23,7 +23,13 @@ export async function PATCH(
 
     const params = await segmentData.params;
     const imageId = params.id;
-    const body = await request.json();
+    const body = await request.json() as {
+      title?: string;
+      description?: string;
+      alt_text?: string;
+      is_featured?: boolean;
+      display_order?: number;
+    };
     const { title, description, alt_text, is_featured, display_order } = body;
 
     // Get the image to verify ownership

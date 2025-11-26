@@ -80,7 +80,7 @@ function DoctorCardComponent({ doctor, viewMode }: DoctorCardProps) {
             </Link>
             <Link
               href={`/doctors/${doctor.slug}`}
-              className="sm:flex-initial flex-1 bg-brand-primary hover:bg-purple-600 px-4 py-2  font-semibold text-sm text-center transition-colors"
+              className="sm:flex-initial flex-1 bg-brand-primary hover:bg-[#8B5CF6] px-4 py-2  font-semibold text-sm text-center transition-colors"
             >
               จองนัดหมาย
             </Link>
@@ -146,7 +146,7 @@ function DoctorCardComponent({ doctor, viewMode }: DoctorCardProps) {
           </Link>
           <Link
             href={`/doctors/${doctor.slug}`}
-            className="flex-1 bg-brand-primary hover:bg-purple-600 py-2  font-semibold text-sm text-center transition-colors"
+            className="flex-1 bg-brand-primary hover:bg-[#8B5CF6] py-2  font-semibold text-sm text-center transition-colors"
           >
             จองนัดหมาย
           </Link>

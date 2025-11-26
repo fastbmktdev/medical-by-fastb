@@ -17,7 +17,7 @@ export const POST = withAdminAuth(async (
     const supabase = await createClient();
     const resolvedParams = await params as Promise<{ id: string }>;
     const { id: targetUserId } = await resolvedParams;
-    const body: ImpersonateRequest = await request.json();
+    const body = await request.json() as ImpersonateRequest;
     const { reason, metadata = {} } = body;
 
     // Use admin client to get user info
