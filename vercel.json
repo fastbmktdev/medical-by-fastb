@@ -1,0 +1,9 @@
+{
+  "buildCommand": "npm run build:shared && cd client && npm run build",
+  "outputDirectory": "client/.next",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "rootDirectory": "client",
+  "nodeVersion": "22.x"
+}
+

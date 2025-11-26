@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 // Temporarily disabled due to compatibility issues with Next.js 15.1.6
-// import { withSentryConfig } from "@sentry/nextjs";
+import { withSentryConfig } from "@sentry/nextjs";
 import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin('./src/i18n.ts');
@@ -128,16 +128,6 @@ const nextConfig: NextConfig = {
       };
     }
 
-    // Fix for Next.js 15.5.x WebpackError constructor bug
-    // Disable minification completely to avoid the error
-    // Trade-off: Larger bundle size but guaranteed to work on Vercel
-    if (!isDevelopment) {
-      config.optimization = {
-        ...config.optimization,
-        minimize: false,
-      };
-    }
-
     config.ignoreWarnings = [
     //   {
     //     module: /node_modules\/@prisma\/instrumentation/,
@@ -172,18 +162,17 @@ const nextConfig: NextConfig = {
 const configWithIntl = withNextIntl(nextConfig);
 
 // Then wrap with Sentry configuration if DSN is provided
-// Temporarily disable Sentry during build due to compatibility issues with Next.js 15.1.6
-// const configWithSentry = false && (process.env.NEXT_PUBLIC_SENTRY_DSN || process.env.SENTRY_DSN)
-//   ? withSentryConfig(configWithIntl, {
-//       org: process.env.SENTRY_ORG,
-//       project: process.env.SENTRY_PROJECT,
-//       silent: !isDevelopment,
-//       widenClientFileUpload: true,
-//       tunnelRoute: "/monitoring",
-//       disableLogger: true,
-//       automaticVercelMonitors: true,
-//     })
-//   : configWithIntl;
+const configWithSentry = (process.env.NEXT_PUBLIC_SENTRY_DSN || process.env.SENTRY_DSN)
+  ? withSentryConfig(configWithIntl, {
+      org: process.env.SENTRY_ORG,
+      project: process.env.SENTRY_PROJECT,
+      silent: !isDevelopment,
+      widenClientFileUpload: true,
+      tunnelRoute: "/monitoring",
+      disableLogger: true,
+      automaticVercelMonitors: true,
+    })
+  : configWithIntl;
 
-export default configWithIntl;
+export default configWithSentry;
 
