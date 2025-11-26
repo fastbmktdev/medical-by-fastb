@@ -6,7 +6,7 @@
 
 import { useCallback, useState } from 'react';
 import { exportToPDF, exportToCSV, type ExportColumn } from '@shared/lib/utils/export';
-import toast from 'react-hot-toast';
+
 
 export interface UseTableExportOptions<T = Record<string, unknown>> {
   /**
@@ -100,7 +100,7 @@ export function useTableExport<T = Record<string, unknown>>({
       setError(null);
 
       if (!data || data.length === 0) {
-        toast.error('ไม่มีข้อมูลสำหรับ export');
+        console.error('ไม่มีข้อมูลสำหรับ export');
         return;
       }
 
@@ -116,11 +116,11 @@ export function useTableExport<T = Record<string, unknown>>({
         includeRowNumbers: options.includeRowNumbers ?? true,
       });
 
-      toast.success('Export PDF สำเร็จ!');
+      console.log('Export PDF สำเร็จ!');
     } catch (err) {
       const message = err instanceof Error ? err.message : 'เกิดข้อผิดพลาดในการ export PDF';
       setError(message);
-      toast.error(message);
+      console.error(message);
       console.error('Export PDF error:', err);
     } finally {
       setIsExporting(false);
@@ -133,7 +133,7 @@ export function useTableExport<T = Record<string, unknown>>({
       setError(null);
 
       if (!data || data.length === 0) {
-        toast.error('ไม่มีข้อมูลสำหรับ export');
+        console.error('ไม่มีข้อมูลสำหรับ export');
         return;
       }
 
@@ -144,11 +144,11 @@ export function useTableExport<T = Record<string, unknown>>({
         includeTimestamp: options.includeTimestamp ?? true,
       });
 
-      toast.success('Export CSV สำเร็จ!');
+      console.log('Export CSV สำเร็จ!');
     } catch (err) {
       const message = err instanceof Error ? err.message : 'เกิดข้อผิดพลาดในการ export CSV';
       setError(message);
-      toast.error(message);
+      console.error(message);
       console.error('Export CSV error:', err);
     } finally {
       setIsExporting(false);

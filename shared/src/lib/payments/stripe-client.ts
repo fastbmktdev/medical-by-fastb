@@ -1,17 +1,7 @@
-import { loadStripe, Stripe } from '@stripe/stripe-js';
+// import { loadStripe, Stripe } from '@stripe/stripe-js';
 
-let stripePromise: Promise<Stripe | null>;
+let stripePromise: Promise<any | null>;
 
 export const getStripe = () => {
-  if (!stripePromise) {
-    const key = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
-
-    if (!key) {
-      console.error('Missing NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY environment variable');
-      return null;
-    }
-
-    stripePromise = loadStripe(key);
-  }
-  return stripePromise;
+  return null;
 };

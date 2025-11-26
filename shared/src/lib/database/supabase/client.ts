@@ -1,4 +1,4 @@
-import { createBrowserClient } from '@supabase/ssr'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 
 /**
  * Create a Supabase client for client-side operations
@@ -40,7 +40,7 @@ Using placeholder values. Supabase features will not work.`;
     
     // Return a client with placeholder values that won't crash
     // The client will fail gracefully when used
-    return createBrowserClient(
+    return createSupabaseClient(
       supabaseUrl || 'https://placeholder.supabase.co',
       supabaseAnonKey || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDUxOTI1MjAsImV4cCI6MTk2MDc2ODUyMH0.placeholder'
     );
@@ -78,13 +78,13 @@ Using placeholder values. Supabase features will not work.`;
 
   // Create client with validated credentials
   try {
-    const client = createBrowserClient(supabaseUrl, supabaseAnonKey);
+    const client = createSupabaseClient(supabaseUrl, supabaseAnonKey);
     
     // Verify client was created successfully
     if (!client) {
       console.warn('⚠️  Failed to create Supabase client: client is null');
       // Return a fallback client with placeholder values
-      return createBrowserClient(
+      return createSupabaseClient(
         'https://placeholder.supabase.co',
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDUxOTI1MjAsImV4cCI6MTk2MDc2ODUyMH0.placeholder'
       );
@@ -94,7 +94,7 @@ Using placeholder values. Supabase features will not work.`;
   } catch (clientError) {
     console.warn('⚠️  Failed to create Supabase client:', clientError);
     // Return a fallback client instead of throwing
-    return createBrowserClient(
+    return createSupabaseClient(
       'https://placeholder.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDUxOTI1MjAsImV4cCI6MTk2MDc2ODUyMH0.placeholder'
     );
