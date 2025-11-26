@@ -6,7 +6,6 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const withNextIntl = createNextIntlPlugin('./src/i18n.ts');
 
 const isDevelopment = process.env.NODE_ENV === "development";
-const isVercel = process.env.VERCEL === "1";
 
 function getContentSecurityPolicy(isDev: boolean): string {
   const connectSrc =
@@ -130,33 +129,13 @@ const nextConfig: NextConfig = {
     }
 
     // Fix for Next.js 15.5.x WebpackError constructor bug
-    // Use Terser plugin instead of Next.js built-in minifier to avoid the error
+    // Disable minification completely to avoid the error
+    // Trade-off: Larger bundle size but guaranteed to work on Vercel
     if (!isDevelopment) {
-      const TerserPlugin = require('terser-webpack-plugin');
-      config.optimization.minimizer = [
-        new TerserPlugin({
-          parallel: isVercel ? 2 : true, // Limit parallelism on Vercel to avoid memory issues
-          terserOptions: {
-            ecma: 2020, // Support modern JavaScript syntax (ES2020)
-            parse: {
-              ecma: 2020, // Parse modern syntax
-            },
-            compress: {
-              ecma: 2020, // Compress using ES2020 features
-              drop_console: false, // Keep console.error and console.warn
-              passes: isVercel ? 1 : 2, // Reduce passes on Vercel for faster builds
-            },
-            format: {
-              ecma: 2020, // Output ES2020 format
-              comments: false, // Remove comments
-            },
-            mangle: {
-              safari10: true, // Ensure Safari 10+ compatibility
-            },
-          },
-          extractComments: false, // Don't extract comments to separate files
-        }),
-      ];
+      config.optimization = {
+        ...config.optimization,
+        minimize: false,
+      };
     }
 
     config.ignoreWarnings = [
