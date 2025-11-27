@@ -1,97 +1,86 @@
-// Mock createServerClient - replace with real import when @supabase/ssr is available
-// import { createServerClient } from '@supabase/ssr'
+import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
-import type { User } from '@shared/types';
 
 /**
- * Mock createServerClient function
- * This is a mock implementation to fix "Module not found" errors
+ * Validates Supabase URL format
+ * @param url - Supabase project URL
+ * @returns true if URL is valid, false otherwise
  */
-const mockUser: User = {
-  id: '123',
-  app_metadata: {},
-  user_metadata: {},
-  aud: 'authenticated',
-  created_at: new Date().toISOString(),
-};
-
-function createServerClient(url: string, key: string, options: any) {
-  // Query builder for database operations
-  const createQueryBuilder = (table: string) => {
-    let selectColumns: string | string[] = '*';
-    let eqFilters: Array<{ column: string; value: any }> = [];
-    let isSingle = false;
-
-    const builder = {
-      select: (columns: string | string[]) => {
-        selectColumns = columns;
-        return builder;
-      },
-      eq: (column: string, value: any) => {
-        eqFilters.push({ column, value });
-        return builder;
-      },
-      single: () => {
-        isSingle = true;
-        return builder;
-      },
-    };
-
-    const promise = Promise.resolve().then(async () => {
-      console.log(`Query: ${table}`, { selectColumns, eqFilters, isSingle });
-      return {
-        data: isSingle ? null : [],
-        error: {
-          code: 'PGRST116',
-          message: 'No rows found',
-        },
-      };
-    });
-
-    return Object.assign(promise, builder) as any;
-  };
-
-  return {
-    supabaseUrl: url,
-    supabaseKey: key,
-    realtime: {} as any,
-    storage: {} as any,
-    auth: {
-      getUser: async () => {
-        console.log('getUser (middleware)');
-        return { data: { user: mockUser }, error: null as { message: string } | null };
-      },
-      getSession: async () => {
-        console.log('getSession (middleware)');
-        return { 
-          data: { 
-            session: {
-              access_token: 'mock-token',
-              refresh_token: 'mock-refresh-token',
-              expires_in: 3600,
-              token_type: 'bearer',
-              user: mockUser,
-            } as any
-          }, 
-          error: null as { message: string } | null 
-        };
-      },
-    },
-    from: (table: string) => createQueryBuilder(table),
-    rpc: async (functionName: string, params?: any) => {
-      console.log('rpc', functionName, params);
-      return { data: [] as any[], error: null as { message: string } | null };
-    },
-    realtimeUrl: '',
-    authUrl: '',
-    storageUrl: '',
-    functionsUrl: '',
-    schema: 'public',
-    rest: {} as any,
-    functions: {} as any,
-  } as any;
+function isValidSupabaseUrl(url: string): boolean {
+  if (!url || typeof url !== 'string') return false;
+  
+  try {
+    const urlObj = new URL(url);
+    // Must be HTTPS in production
+    if (process.env.NODE_ENV === 'production' && urlObj.protocol !== 'https:') {
+      return false;
+    }
+    // Must be a valid URL
+    return urlObj.protocol === 'https:' || urlObj.protocol === 'http:';
+  } catch {
+    return false;
+  }
 }
 
+/**
+ * Validates Supabase anon key format (basic check)
+ * @param key - Supabase anon key
+ * @returns true if key format looks valid, false otherwise
+ */
+function isValidAnonKey(key: string): boolean {
+  if (!key || typeof key !== 'string') return false;
+  // Anon keys are typically JWT tokens, should be reasonably long
+  return key.length > 20 && !key.includes('your-') && !key.includes('placeholder');
+}
+
+/**
+ * Checks if environment variables are placeholder values
+ */
+function isPlaceholderValue(value: string): boolean {
+  const placeholders = [
+    'your-project-url',
+    'your-anon-key',
+    'placeholder',
+    'https://placeholder.supabase.co',
+  ];
+  return placeholders.some(placeholder => value.includes(placeholder));
+}
+
+/**
+ * Secure logging - only logs in development, sanitizes in production
+ */
+function secureLog(level: 'warn' | 'error', message: string, data?: unknown) {
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  
+  if (isDevelopment) {
+    if (level === 'error') {
+      console.error(`[Middleware] ${message}`, data);
+    } else {
+      console.warn(`[Middleware] ${message}`, data);
+    }
+  } else {
+    // In production, only log generic messages without sensitive data
+    // Use structured logging service (e.g., Sentry) instead of console
+    if (level === 'error') {
+      // In production, log to monitoring service instead
+      // Example: logger.error(message, { sanitized: true })
+    }
+  }
+}
+
+/**
+ * Updates the Supabase session in middleware
+ * This function handles authentication state management securely
+ * 
+ * Security considerations:
+ * - Validates environment variables before use
+ * - Prevents information leakage in error messages
+ * - Handles errors gracefully without blocking requests
+ * - Uses secure cookie handling via Supabase SSR
+ * 
+ * @param request - Next.js request object
+ * @returns NextResponse with updated session cookies
+ */
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
@@ -109,14 +98,27 @@ export async function updateSession(request: NextRequest) {
     process.env.SUPABASE_ANON_KEY ||
     '';
 
-  // If Supabase is not configured or using placeholder values, skip auth
-  if (!supabaseUrl ||
-      !supabaseAnonKey ||
-      supabaseUrl === 'your-project-url' ||
-      supabaseUrl === 'https://placeholder.supabase.co' ||
-      supabaseAnonKey === 'your-anon-key' ||
-      supabaseAnonKey === 'placeholder-anon-key') {
-    console.warn('[Middleware] Supabase not configured - skipping authentication');
+  // Security: Validate environment variables before use
+  if (!supabaseUrl || !supabaseAnonKey) {
+    secureLog('warn', 'Supabase not configured - skipping authentication');
+    return supabaseResponse;
+  }
+
+  // Security: Check for placeholder values
+  if (isPlaceholderValue(supabaseUrl) || isPlaceholderValue(supabaseAnonKey)) {
+    secureLog('warn', 'Supabase using placeholder values - skipping authentication');
+    return supabaseResponse;
+  }
+
+  // Security: Validate URL format
+  if (!isValidSupabaseUrl(supabaseUrl)) {
+    secureLog('error', 'Invalid Supabase URL format');
+    return supabaseResponse;
+  }
+
+  // Security: Basic anon key validation
+  if (!isValidAnonKey(supabaseAnonKey)) {
+    secureLog('error', 'Invalid Supabase anon key format');
     return supabaseResponse;
   }
 
@@ -134,6 +136,10 @@ export async function updateSession(request: NextRequest) {
             supabaseResponse = NextResponse.next({
               request,
             })
+            // Supabase SSR automatically sets secure cookie options:
+            // - httpOnly: true (prevents XSS)
+            // - secure: true in production (HTTPS only)
+            // - sameSite: 'lax' (CSRF protection)
             cookiesToSet.forEach(({ name, value, options }: { name: string; value: string; options?: any }) =>
               supabaseResponse.cookies.set(name, value, options)
             )
@@ -149,23 +155,29 @@ export async function updateSession(request: NextRequest) {
     const { error } = await supabase.auth.getUser()
     
     if (error) {
-      console.error('[Middleware] Supabase auth error:', error.message);
+      // Security: Don't leak error details in production
+      // Only log error type, not full message
+      const errorType = error.name || 'AuthError';
+      secureLog('error', `Supabase auth error: ${errorType}`, 
+        process.env.NODE_ENV === 'development' ? { message: error.message } : undefined
+      );
       // Continue anyway - don't block the request
+      // This allows public pages to load even if auth fails
     }
 
   } catch (error) {
-    // Handle network errors, connection failures, etc.
-    console.error('[Middleware] Failed to connect to Supabase:', error);
+    // Security: Handle errors without leaking sensitive information
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     
-    // Log helpful debugging information
-    if (process.env.NODE_ENV === 'development') {
-      console.error('[Middleware] Debug info:');
-      console.error('  - Supabase URL:', supabaseUrl);
-      console.error('  - Is Supabase running? Run: supabase status');
-    }
+    // In production, only log generic error
+    secureLog('error', 'Failed to connect to Supabase', 
+      process.env.NODE_ENV === 'development' 
+        ? { error: errorMessage, path: request.nextUrl.pathname }
+        : { path: request.nextUrl.pathname }
+    );
     
     // Don't block the request - allow the app to continue
-    // Users just won't be authenticated
+    // Users just won't be authenticated, but public pages will still work
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're

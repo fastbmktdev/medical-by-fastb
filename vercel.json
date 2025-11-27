@@ -1,6 +1,9 @@
 {
   "buildCommand": "cd .. && npm run build:shared && cd client && npm run build",
   "outputDirectory": ".next",
-  "installCommand": "cd .. && npm install"
+  "installCommand": "cd .. && npm install",
+  "engines": {
+    "node": "24.x"
+  }
 }
 
