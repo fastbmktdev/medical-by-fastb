@@ -17,7 +17,7 @@ import { validatePasswordStrong } from '@shared/lib/utils/validation';
 import { useReferralCode } from "@/contexts";
 import { isValidReferralCodeFormat } from '@shared/lib/utils/affiliate';
 import { Loading } from "@/components/design-system/primitives/Loading";
-import { logger } from '@shared/lib/utils/logger';
+// Logger removed - use console directly in client components
 
 /**
  * Interface for signup form data
@@ -418,7 +418,7 @@ function SignupContent() {
           error.message.includes("confirmation email")
         ) {
           // Rate limit or email sending error - use Resend fallback
-          logger.warn("Email sending issue detected, using Resend fallback");
+          console.warn("Email sending issue detected, using Resend fallback");
           setRateLimitHit(true);
 
           // Send OTP via Resend

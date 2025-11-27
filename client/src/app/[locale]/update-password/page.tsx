@@ -16,7 +16,7 @@ import { AuthLayout } from "@/components/compositions/layouts";
 import { Button } from "@/components/shared";
 import { Loading } from "@/components/design-system/primitives/Loading";
 import { validatePasswordStrong } from '@shared/lib/utils/validation';
-import { logger } from '@shared/lib/utils/logger';
+// Logger removed - use console directly in client components
 
 /**
  * Interface for update password form data
@@ -79,7 +79,7 @@ function UpdatePasswordForm() {
 
         if (token && email) {
           // This is SMTP password reset flow
-          logger.info('SMTP password reset flow detected');
+          console.info('SMTP password reset flow detected');
           setIsCheckingAuth(false);
           return;
         }
@@ -95,7 +95,7 @@ function UpdatePasswordForm() {
           const { data: { user } } = await supabase.auth.getUser();
           if (user && user.app_metadata?.provider === 'email') {
             // This is likely a password reset session
-            logger.info('Password reset session detected');
+            console.info('Password reset session detected');
           }
         }
       } catch {

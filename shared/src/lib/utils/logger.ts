@@ -4,7 +4,13 @@
  * Environment-based logging utility that replaces console.log/error/warn
  * Supports both client and server environments
  * Integrates with Sentry for error tracking
+ * 
+ * NOTE: This file uses server-only dependencies (@sentry/nextjs)
+ * Import this only in server components or API routes.
+ * For client components, use console.log directly or create a client-only logger.
  */
+
+import 'server-only';
 
 type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 

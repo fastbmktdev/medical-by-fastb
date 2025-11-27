@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Textarea, Button } from '@heroui/react';
 import { PencilIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
-import { sanitizeText } from '@shared/lib/utils/sanitize';
+import { sanitizeText } from '@shared/lib/utils/sanitize.client';
 
 const MAX_BIO_LENGTH = 500;
 

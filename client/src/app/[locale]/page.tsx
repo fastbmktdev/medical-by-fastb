@@ -6,7 +6,6 @@ import {
   ServicesSection,
 } from "@/components/features/homepage";
 import { hospitals } from "@shared/lib/data";
-import { logger } from "@shared/lib/utils";
 import dynamic from "next/dynamic";
 
 // Lazy load components that are below the fold
@@ -53,8 +52,9 @@ export default async function HomePage({
   const { locale } = await params;
 
   // Only log in development to reduce overhead
+  // Use console.log instead of logger to avoid bundling server-only dependencies
   if (process.env.NODE_ENV === "development") {
-    logger.debug("HomePage rendered", { locale });
+    console.debug("HomePage rendered", { locale });
   }
 
   return (

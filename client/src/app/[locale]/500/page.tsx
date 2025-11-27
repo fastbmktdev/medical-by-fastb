@@ -10,7 +10,7 @@ import {
   EnvelopeIcon,
 } from "@heroicons/react/24/outline";
 import { Button } from "@/components/shared";
-import * as Sentry from "@sentry/nextjs";
+import * as Sentry from "@sentry/react";
 
 export default function ServerErrorPage() {
   const t = useTranslations("error.server");

@@ -6,7 +6,7 @@ import { ProductCard } from "@/components/shared";
 import { Loading } from "@/components/design-system/primitives/Loading";
 import { showErrorToast } from '@shared/lib/utils';
 import { getSupabaseErrorMessage } from '@shared/lib/utils/supabase-error-handler';
-import { logger } from '@shared/lib/utils/logger';
+// Logger removed - use console directly in client components
 
 interface Product {
   id: string;
@@ -50,16 +50,16 @@ export default function LatestProducts() {
 
           if (response.status === 404) {
             errorMessage = 'ไม่พบ API endpoint สำหรับสินค้า';
-            logger.error('Products API endpoint not found (404)', errorContext, httpError);
+            console.error('Products API endpoint not found (404)', errorContext, httpError);
           } else if (response.status >= 500) {
             errorMessage = 'เกิดข้อผิดพลาดจากเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้ง';
-            logger.error('Server error when fetching products', errorContext, httpError);
+            console.error('Server error when fetching products', errorContext, httpError);
           } else {
             errorMessage = getSupabaseErrorMessage(
               httpError,
               'ไม่สามารถโหลดข้อมูลสินค้าได้ กรุณาลองใหม่อีกครั้ง'
             );
-            logger.error('HTTP error when fetching products', errorContext, httpError);
+            console.error('HTTP error when fetching products', errorContext, httpError);
           }
           
           showErrorToast(errorMessage);
@@ -74,7 +74,7 @@ export default function LatestProducts() {
         } else {
           // Handle invalid response format
           const errorMessage = data.error || 'รูปแบบข้อมูลไม่ถูกต้อง';
-          logger.warn('Invalid response format from products API', {
+          console.warn('Invalid response format from products API', {
             endpoint,
             response: data,
             component: 'LatestProducts',
@@ -89,7 +89,7 @@ export default function LatestProducts() {
           error,
           'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต'
         );
-        logger.error('Network error when fetching featured products', {
+        console.error('Network error when fetching featured products', {
           endpoint,
           component: 'LatestProducts',
         }, error);

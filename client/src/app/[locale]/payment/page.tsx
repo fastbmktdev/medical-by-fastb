@@ -16,7 +16,7 @@ import {
   ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
 import { Loading } from '@/components/design-system/primitives/Loading';
-import { logger } from '@shared/lib/utils/logger';
+// Logger removed - use console directly in client components
 
 interface PaymentData {
   amount: number;
@@ -99,13 +99,13 @@ export default function PaymentPage() {
       .then(res => res.json())
       .then(statusData => {
         // You can set the fetched status data to state here if desired
-        logger.info("Fetched payment status", { statusData });
+        console.info("Fetched payment status", statusData);
         // Example: setPaymentStatus(statusData); (requires additional state)
       })
       .catch(err => {
-        logger.error("Failed to fetch payment status", { error: err }, err instanceof Error ? err : new Error(String(err)));
+        console.error("Failed to fetch payment status", err);
       });
-    logger.info("Payment successful", { paymentIntentId });
+    console.info("Payment successful", { paymentIntentId });
   };
 
   const handlePaymentError = (error: string) => {

@@ -1,13 +1,8 @@
 /**
- * XSS Sanitization Utility (Server-Side)
- * Uses DOMPurify (and isomorphic-dompurify for SSR) to prevent XSS attacks.
- * 
- * NOTE: This file uses server-only dependencies (jsdom, isomorphic-dompurify)
- * Import this only in server components or API routes.
- * For client components, use './sanitize.client' instead.
+ * Client-Side XSS Sanitization Utility
+ * Uses DOMPurify for browser environments only.
+ * This version does not include server-side dependencies (jsdom, isomorphic-dompurify).
  */
-
-import 'server-only';
 
 type DOMPurifyLike = { sanitize: (dirty: string, config?: unknown) => string };
 
@@ -25,71 +20,35 @@ interface DOMPurifyConfig {
   RETURN_TRUSTED_TYPE?: boolean;
 }
 
-// Singleton holders for DOMPurify instances
+// Singleton holder for DOMPurify instance
 let domPurifyClient: DOMPurifyLike | null = null;
-let domPurifyServer: DOMPurifyLike | null = null;
 
 /**
- * Gets the correct DOMPurify instance for the environment.
+ * Gets DOMPurify instance for client-side use.
+ * Only works in browser environment.
  */
 function getDOMPurify(): DOMPurifyLike {
-  if (typeof (globalThis as { window?: unknown }).window !== 'undefined') {
-    // Browser: use dompurify
-    if (!domPurifyClient) {
-      try {
-        // Use dynamic import to avoid bundling issues
-        // eslint-disable-next-line @typescript-eslint/no-require-imports
-        domPurifyClient = require('dompurify');
-      } catch (err) {
-        console.warn('dompurify not available, using fallback sanitization');
-        // Fallback: basic sanitization
-        domPurifyClient = {
-          sanitize: (dirty: string) => dirty.replace(/<[^>]*>/g, '')
-        };
-      }
-    }
-    return domPurifyClient!;
-  } else {
-    // Server: isomorphic-dompurify + jsdom
-    // Use lazy loading to prevent client-side bundling
-    if (!domPurifyServer) {
-      try {
-        // Dynamic import to prevent webpack from bundling server-only dependencies
-        // This is evaluated at runtime, not at build time
-        const createDOMPurify = (() => {
-          try {
-            // eslint-disable-next-line @typescript-eslint/no-require-imports
-            return require('isomorphic-dompurify').default;
-          } catch {
-            return null;
-          }
-        })();
-        
-        const JSDOM = (() => {
-          try {
-            // eslint-disable-next-line @typescript-eslint/no-require-imports
-            return require('jsdom').JSDOM;
-          } catch {
-            return null;
-          }
-        })();
-        
-        if (createDOMPurify && JSDOM) {
-          const window = new JSDOM('').window as unknown as Window & typeof globalThis;
-          domPurifyServer = createDOMPurify(window);
-        } else {
-          throw new Error('Server dependencies not available');
-        }
-      } catch (err) {
-        console.warn('isomorphic-dompurify not available, using fallback sanitization');
-        // Fallback: basic sanitization
-        domPurifyServer = {
-          sanitize: (dirty: string) => dirty.replace(/<[^>]*>/g, '')
-        };
-      }
-    }
-    return domPurifyServer!;
+  if (typeof window === 'undefined') {
+    // Server-side: return fallback
+    return {
+      sanitize: (dirty: string) => dirty.replace(/<[^>]*>/g, '')
+    };
   }
+
+  // Browser: use dompurify
+  if (!domPurifyClient) {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      domPurifyClient = require('dompurify');
+    } catch (err) {
+      console.warn('dompurify not available, using fallback sanitization');
+      // Fallback: basic sanitization
+      domPurifyClient = {
+        sanitize: (dirty: string) => dirty.replace(/<[^>]*>/g, '')
+      };
+    }
+  }
+  return domPurifyClient!;
 }
 
 /**
@@ -121,6 +80,7 @@ const PURIFY_CONFIG: DOMPurifyConfig = {
 
 /**
  * Sanitizes an HTML string, allowing only safe HTML tags and attributes.
+ * Client-side version - uses DOMPurify only.
  */
 export function sanitizeHTML(
   dirty: string | null | undefined,
@@ -173,7 +133,6 @@ export function sanitizeAttribute(dirty: string | null | undefined): string {
 
 /**
  * Sanitizes a URL, blocking javascript:, data:, vbscript:, and file: protocols, etc.
- * Allows http, https, mailto, tel, and optionally relative URLs.
  */
 export function sanitizeURL(
   url: string | null | undefined,
@@ -235,3 +194,4 @@ export function containsDangerousHTML(content: string | null | undefined): boole
 
   return dangerPatterns.some(pattern => pattern.test(content));
 }
+

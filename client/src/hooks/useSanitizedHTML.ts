@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { sanitizeHTML } from '@shared/lib/utils/sanitize';
+import { sanitizeHTML } from '@shared/lib/utils/sanitize.client';
 
 interface UseSanitizedHTMLOptions {
   /**

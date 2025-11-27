@@ -106,7 +106,73 @@ const nextConfig: NextConfig = {
         fs: false,
         'child_process': false,
         'isomorphic-dompurify': false,
+        'supports-color': false,
+        'debug': false,
+        'http-proxy-agent': false,
+        'https-proxy-agent': false,
+        '@sentry/node': false,
+        '@sentry/node-core': false,
       };
+      
+      // Mark server-only packages as externals
+      config.externals = config.externals || [];
+      if (typeof config.externals === 'function') {
+        const originalExternals = config.externals;
+        config.externals = [
+          originalExternals,
+          ({ request }: { request: string }) => {
+            if (request === 'supports-color' || 
+                request === 'debug' || 
+                request === '@sentry/node' ||
+                request === '@sentry/node-core') {
+              return 'commonjs ' + request;
+            }
+          }
+        ];
+      } else if (Array.isArray(config.externals)) {
+        config.externals.push({
+          'supports-color': 'commonjs supports-color',
+          'debug': 'commonjs debug',
+          '@sentry/node': 'commonjs @sentry/node',
+          '@sentry/node-core': 'commonjs @sentry/node-core',
+        });
+      }
+      
+      // Replace server-only modules with empty modules in client bundle
+      config.plugins = config.plugins || [];
+      config.plugins.push(
+        new webpack.NormalModuleReplacementPlugin(
+          /^jsdom$/,
+          path.resolve(__dirname, './src/lib/empty-module.js')
+        )
+      );
+      config.plugins.push(
+        new webpack.NormalModuleReplacementPlugin(
+          /^isomorphic-dompurify$/,
+          path.resolve(__dirname, './src/lib/empty-module.js')
+        )
+      );
+      
+      // Replace supports-color and related Node.js modules with empty modules
+      // This prevents bundling issues when server-only code is imported
+      const emptyModulePath = path.resolve(__dirname, './src/lib/empty-module.js');
+      const nodeModulesToReplace = [
+        'supports-color',
+        'debug',
+        'http-proxy-agent',
+        'https-proxy-agent',
+        '@sentry/node',
+        '@sentry/node-core',
+      ];
+      
+      nodeModulesToReplace.forEach(moduleName => {
+        config.plugins.push(
+          new webpack.NormalModuleReplacementPlugin(
+            new RegExp(`^${moduleName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`),
+            emptyModulePath
+          )
+        );
+      });
     }
 
     config.ignoreWarnings = [

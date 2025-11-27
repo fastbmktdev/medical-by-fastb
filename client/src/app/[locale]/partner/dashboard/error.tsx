@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import * as Sentry from "@sentry/nextjs";
+import * as Sentry from "@sentry/react";
 import {
   ExclamationTriangleIcon,
   ArrowPathIcon,

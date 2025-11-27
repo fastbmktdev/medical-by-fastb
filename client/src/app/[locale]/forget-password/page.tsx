@@ -11,7 +11,7 @@ import {
 import { AuthLayout } from "@/components/compositions/layouts";
 import { Button, AuthLoadingFallback } from "@/components/shared";
 import { AuthFormField, AuthFormError, AuthFormInfo } from "@/components/features/auth";
-import { logger } from '@shared/lib/utils/logger';
+// Logger removed - use console directly in client components
 import { VALIDATION_PATTERNS } from '@shared/lib/constants/validation';
 
 interface ForgetPasswordFormData {
@@ -144,7 +144,7 @@ function ForgetPasswordPageContent() {
       });
       return false;
     } catch (error) {
-      logger.error("SMTP fallback error:", { error });
+      console.error("SMTP fallback error:", error);
       setErrors({ general: tErrors("sendEmailFailed") });
       return false;
     }
@@ -200,7 +200,7 @@ function ForgetPasswordPageContent() {
           message.includes("429");
 
         if (shouldUseFallback) {
-          logger.warn("Using SMTP fallback for password reset");
+          console.warn("Using SMTP fallback for password reset");
           await trySmtpFallback(formData.email.trim());
           return;
         }
@@ -211,7 +211,7 @@ function ForgetPasswordPageContent() {
 
       setIsSuccess(true);
     } catch (err: unknown) {
-      logger.error("Password reset error:", { error: err  });
+      console.error("Password reset error:", err);
       setErrors({ general: tErrors("unknownError") });
     } finally {
       setIsLoading(false);

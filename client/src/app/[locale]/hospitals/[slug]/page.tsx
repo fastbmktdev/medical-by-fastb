@@ -19,6 +19,7 @@ import { notFound } from "next/navigation";
 import { HospitalMap } from "@/components/shared/maps/HospitalMap";
 import { Loading } from "@/components/design-system/primitives/Loading";
 import { HospitalGallery } from "@/components/features/hospital";
+import { useSanitizedHTML } from "@/hooks/useSanitizedHTML";
 
 const Breadcrumb = memo(function Breadcrumb({ hospitalName }: { hospitalName: string }) {
   return (
@@ -75,18 +76,23 @@ const HospitalHeader = memo(function HospitalHeader({ hospital }: { hospital: ho
   );
 });
 
+const HospitalDetailsContent = memo(function HospitalDetailsContent({ details }: { details: string }) {
+  const sanitizedHTML = useSanitizedHTML(details);
+  
+  return (
+    <div 
+      className="text-zinc-300 leading-relaxed prose prose-invert max-w-none"
+      dangerouslySetInnerHTML={{ __html: sanitizedHTML }}
+    />
+  );
+});
+
 const AboutSection = memo(function AboutSection({ details }: { details?: string | null }) {
   return (
     <div className="bg-zinc-100 p-6 border border-zinc-700 ">
       <h2 className="mb-4 font-bold text-2xl">เกี่ยวกับโรงพยาบาล</h2>
       {details ? (
-        <div 
-          className="text-zinc-300 leading-relaxed prose prose-invert max-w-none"
-          dangerouslySetInnerHTML={{ 
-            // eslint-disable-next-line @typescript-eslint/no-require-imports
-            __html: require('@shared/lib/utils/sanitize').sanitizeHTML(details) 
-          }}
-        />
+        <HospitalDetailsContent details={details} />
       ) : (
         <p className="text-zinc-300 leading-relaxed">ไม่มีรายละเอียดเพิ่มเติม</p>
       )}

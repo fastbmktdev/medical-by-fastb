@@ -35,14 +35,17 @@ export {
 } from './file-validation';
 
 // XSS Sanitization utilities
-export {
-  sanitizeHTML,
-  sanitizeText,
-  sanitizeAttribute,
-  sanitizeURL,
-  getSanitizedHTMLProps,
-  containsDangerousHTML
-} from './sanitize';
+// Note: Import directly from './sanitize' or './sanitize.client' to avoid bundling issues
+// Server-side: import { sanitizeHTML } from '@shared/lib/utils/sanitize'
+// Client-side: import { sanitizeHTML } from '@shared/lib/utils/sanitize.client'
+// export {
+//   sanitizeHTML,
+//   sanitizeText,
+//   sanitizeAttribute,
+//   sanitizeURL,
+//   getSanitizedHTMLProps,
+//   containsDangerousHTML
+// } from './sanitize';
 
 // QR Code utilities
 export {
@@ -66,8 +69,10 @@ export {
 } from './number-utils';
 
 // Logger utilities
-export {
-  logger,
-  createScopedLogger,
-  type Logger,
-} from './logger';
+// Note: Import directly from './logger' to avoid bundling server-only dependencies
+// import { logger } from '@shared/lib/utils/logger'
+// export {
+//   logger,
+//   createScopedLogger,
+//   type Logger,
+// } from './logger';
