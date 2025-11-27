@@ -90,16 +90,13 @@ export const createClient = () => {
         return { data: { user: mockUser }, error: null };
       },
       getSession: async () => {
-        console.log('getSession');
+        // Only log in development and if Supabase is not configured
+        if (process.env.NODE_ENV === 'development' && !process.env.NEXT_PUBLIC_SUPABASE_URL) {
+          console.log('getSession (mock)');
+        }
         return { 
           data: { 
-            session: {
-              access_token: 'mock-token',
-              refresh_token: 'mock-refresh-token',
-              expires_in: 3600,
-              token_type: 'bearer',
-              user: mockUser,
-            } as any
+            session: null as any // Return null session for mock client
           }, 
           error: null as { message: string } | null 
         };
@@ -113,9 +110,20 @@ export const createClient = () => {
         return { data: {}, error: null as { message: string } | null };
       },
       onAuthStateChange: (callback: any) => {
-        console.log('onAuthStateChange');
-        callback('authenticated', { user: mockUser });
-        return { data: { subscription: { unsubscribe: () => {} } } };
+        // Only log in development and if Supabase is not configured
+        if (process.env.NODE_ENV === 'development' && !process.env.NEXT_PUBLIC_SUPABASE_URL) {
+          console.log('onAuthStateChange (mock)');
+        }
+        // Don't call callback immediately - this causes infinite loops
+        // Return a subscription that does nothing (mock client)
+        // Real Supabase client will handle this properly
+        return { 
+          data: { 
+            subscription: { 
+              unsubscribe: () => {} 
+            } 
+          } 
+        };
       },
       signInWithOAuth: async (options: any) => {
         console.log('signInWithOAuth', options);

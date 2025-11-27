@@ -76,12 +76,12 @@ export async function GET(request: NextRequest) {
       if (data.session && data.user) {
         const userId = data.user.id;
         
-        // For signup/email confirmation, ensure user has role and profile
+        // For signup/email confirmation/OAuth, ensure user has role and profile
         // Note: Supabase email confirmation links may not have type parameter
-        // So we check if user was just created (no role exists yet)
-        const isEmailConfirmation = type === 'signup' || !type || type === '';
+        // OAuth users may also not have role if trigger didn't fire
+        const isNewUser = type === 'signup' || type === 'oauth' || !type || type === '';
         
-        if (isEmailConfirmation) {
+        if (isNewUser) {
           try {
             const adminSupabase = createAdminClient();
             
@@ -92,7 +92,7 @@ export async function GET(request: NextRequest) {
               .eq('user_id', userId)
               .maybeSingle();
             
-            // If no role exists, create it (this is a new user from email confirmation)
+            // If no role exists, create it (this is a new user from email confirmation or OAuth)
             if (!existingRole) {
               // Create user role
               await adminSupabase.from('user_roles').insert({
@@ -112,8 +112,9 @@ export async function GET(request: NextRequest) {
                 await adminSupabase.from('profiles').insert({
                   user_id: userId,
                   username: data.user.user_metadata.username || data.user.email?.split('@')[0] || `user_${userId.slice(0, 8)}`,
-                  full_name: data.user.user_metadata.full_name || data.user.email?.split('@')[0] || 'User',
+                  full_name: data.user.user_metadata.full_name || data.user.user_metadata.full_name || data.user.email?.split('@')[0] || 'User',
                   phone: data.user.user_metadata.phone || null,
+                  avatar_url: data.user.user_metadata.avatar_url || data.user.user_metadata.picture || null,
                 });
               }
               
@@ -152,7 +153,7 @@ export async function GET(request: NextRequest) {
         if (type === 'recovery') {
           // Password reset - redirect to update password page
           redirectUrl = `${localePrefix}/update-password`;
-        } else if (type === 'signup' || isEmailConfirmation) {
+        } else if (type === 'signup' || !type || type === '') {
           // Email confirmation - redirect to dashboard
           redirectUrl = `${localePrefix}/dashboard`;
         } else if (type === 'magiclink') {
@@ -167,7 +168,7 @@ export async function GET(request: NextRequest) {
         const redirect = new URL(redirectUrl, request.url);
         
         // Add success message for email confirmation
-        if (isEmailConfirmation) {
+        if (type === 'signup' || !type || type === '') {
           redirect.searchParams.set('message', 'email_confirmed');
         }
         

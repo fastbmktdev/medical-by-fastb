@@ -19,7 +19,7 @@ function getContentSecurityPolicy(isDev: boolean): string {
     "style-src 'self' 'unsafe-inline';",
     "img-src 'self' data: blob: https:;",
     "font-src 'self';",
-    "frame-src 'self' https://js.stripe.com https://hooks.stripe.com;",
+    "frame-src 'self' https://js.stripe.com https://hooks.stripe.com https://vercel.live;",
     connectSrc,
     "frame-ancestors 'self';",
   ]
@@ -57,12 +57,6 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  eslint: {
-    ignoreDuringBuilds: process.env.IGNORE_ESLINT_BUILD_ERRORS === 'true' && process.env.NODE_ENV === 'development',
-  },
-  typescript: {
-    ignoreBuildErrors: false,
-  },
   images: {
     remotePatterns: [
       {
@@ -71,17 +65,6 @@ const nextConfig: NextConfig = {
       },
     ],
     formats: ['image/avif', 'image/webp'],
-  },
-  outputFileTracingRoot: __dirname,
-  // API rewrites to proxy requests to Express server
-  async rewrites() {
-    const apiServerUrl = process.env.API_SERVER_URL || 'http://localhost:3001';
-    return [
-      {
-        source: '/api/:path*',
-        destination: `${apiServerUrl}/api/:path*`,
-      },
-    ];
   },
   // Performance optimizations
   experimental: {
@@ -175,4 +158,3 @@ const configWithSentry = (process.env.NEXT_PUBLIC_SENTRY_DSN || process.env.SENT
   : configWithIntl;
 
 export default configWithSentry;
-
