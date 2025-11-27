@@ -1,6 +1,4 @@
 import type { NextConfig } from "next";
-// Temporarily disabled due to compatibility issues with Next.js 15.1.6
-import { withSentryConfig } from "@sentry/nextjs";
 import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin('./src/i18n.ts');
@@ -9,7 +7,7 @@ const isDevelopment = process.env.NODE_ENV === "development";
 
 function getContentSecurityPolicy(isDev: boolean): string {
   const connectSrc =
-    "connect-src 'self' *.supabase.co *.stripe.com https://vercel.live *.sentry.io *.ingest.sentry.io https://www.google-analytics.com https://www.googletagmanager.com" +
+    "connect-src 'self' *.supabase.co *.stripe.com https://vercel.live https://www.google-analytics.com https://www.googletagmanager.com" +
     (isDev ? " http://127.0.0.1:8000 http://127.0.0.1:54321 http://localhost:*" : "") +
     ";";
 
@@ -144,17 +142,4 @@ const nextConfig: NextConfig = {
 // Apply next-intl plugin first
 const configWithIntl = withNextIntl(nextConfig);
 
-// Then wrap with Sentry configuration if DSN is provided
-const configWithSentry = (process.env.NEXT_PUBLIC_SENTRY_DSN || process.env.SENTRY_DSN)
-  ? withSentryConfig(configWithIntl, {
-      org: process.env.SENTRY_ORG,
-      project: process.env.SENTRY_PROJECT,
-      silent: !isDevelopment,
-      widenClientFileUpload: true,
-      tunnelRoute: "/monitoring",
-      disableLogger: true,
-      automaticVercelMonitors: true,
-    })
-  : configWithIntl;
-
-export default configWithSentry;
+export default configWithIntl;

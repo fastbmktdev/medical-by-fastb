@@ -60,10 +60,9 @@ function secureLog(level: 'warn' | 'error', message: string, data?: unknown) {
     }
   } else {
     // In production, only log generic messages without sensitive data
-    // Use structured logging service (e.g., Sentry) instead of console
     if (level === 'error') {
       // In production, log to monitoring service instead
-      // Example: logger.error(message, { sanitized: true })
+      // Example: logger.error(message, { sanitized: true });
     }
   }
 }
@@ -195,4 +194,3 @@ export async function updateSession(request: NextRequest) {
 
   return supabaseResponse
 }
-
