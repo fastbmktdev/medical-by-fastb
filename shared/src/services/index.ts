@@ -51,10 +51,11 @@ export {
 } from './promotion.service';
 
 export { 
-  signUp, 
-  signIn, 
   signOut, 
-  getCurrentUser 
+  getCurrentUser,
+  signInWithGoogle,
+  signInWithFacebook,
+  onAuthStateChange
 } from './auth.service';
 
 // For less common functions, import directly from specific service files

@@ -1,10 +1,10 @@
 /**
  * Authentication and Authorization Utilities (Server-Side)
- * 
+ *
  * Use these functions in Server Components and API Routes only
  */
 
-import { createClient as createServerClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from '@shared/lib/database/supabase/server';
 import { User } from '@supabase/supabase-js';
 
 export type UserRole = 'authenticated' | 'partner' | 'admin';

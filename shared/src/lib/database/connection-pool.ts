@@ -10,7 +10,7 @@
  * are primarily for documentation and potential future optimizations.
  */
 
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from './supabase/server';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 /**
@@ -23,7 +23,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
  */
 export async function getRequestClient(): Promise<SupabaseClient> {
   // Always create a new client per request for proper session handling
-  return await createClient();
+  return await createServerClient();
 }
 
 /**
@@ -33,7 +33,7 @@ export async function getRequestClient(): Promise<SupabaseClient> {
 export async function withClient<T>(
   fn: (client: SupabaseClient) => Promise<T>
 ): Promise<T> {
-  const client = await createClient();
+  const client = await createServerClient();
   try {
     return await fn(client);
   } finally {
@@ -49,7 +49,7 @@ export async function withClient<T>(
 export async function batchWithClient<T>(
   operations: Array<(client: SupabaseClient) => Promise<T>>
 ): Promise<T[]> {
-  const client = await createClient();
+  const client = await createServerClient();
   try {
     return await Promise.all(operations.map(op => op(client)));
   } finally {

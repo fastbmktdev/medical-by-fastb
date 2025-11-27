@@ -1,8 +1,22 @@
-// Database Utilities Barrel Export
-export { createClient } from './supabase/client';
-export { createClient as createServerClient } from './supabase/server';
+/**
+ * Database Module - Barrel Export (Client-Side Safe)
+ *
+ * This barrel export ONLY includes client-side safe exports.
+ * Server-side utilities are separated to prevent bundling issues.
+ *
+ * For server-side code, import from:
+ * - '@shared/lib/database/supabase/server'
+ * - '@shared/lib/database/supabase/middleware'
+ */
 
-// Direct PostgreSQL connection (optional - requires DATABASE_URL)
-// Use this for advanced queries or direct SQL operations
-export { default as sql } from './db';
-export { updateSession } from './supabase/middleware';
+// Browser/Client-side Supabase client
+export { createBrowserClient, createClient } from './supabase/client';
+
+// NOTE: Server-side exports are intentionally excluded from this barrel file
+// to prevent Next.js from bundling server-only code (next/headers) into client bundles.
+//
+// For server-side code, use direct imports:
+// import { createServerClient } from '@shared/lib/database/supabase/server';
+// import { createAdminClient } from '@shared/lib/database/supabase/server';
+// import { createClientForMiddleware } from '@shared/lib/database/supabase/server';
+// import { updateSession } from '@shared/lib/database/supabase/middleware';

@@ -62,12 +62,12 @@ function BookingCalendarView() {
       .order('start_date', { ascending: true });
 
     if (bookingsData) {
-      setBookings(
-        bookingsData.map((appointment: { start_date: string; [key: string]: any }) => ({
-          ...appointment,
-          date: appointment.start_date,
-        }))
-      );
+      // Map appointments to CalendarBooking with proper typing
+      const calendarBookings: CalendarBooking[] = bookingsData.map((appointment: appointment) => ({
+        ...appointment,
+        date: appointment.start_date,
+      }));
+      setBookings(calendarBookings);
     }
   }, [currentMonth, supabase]);
 

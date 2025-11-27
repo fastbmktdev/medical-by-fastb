@@ -48,7 +48,7 @@ export function GoogleAnalytics() {
 
   if (!gaId) {
     if (process.env.NODE_ENV === 'development') {
-      console.warn("Google Analytics: NEXT_PUBLIC_GA_MEASUREMENT_ID is not set");
+    console.warn("Google Analytics: NEXT_PUBLIC_GA_MEASUREMENT_ID is not set");
     }
     return null;
   }

@@ -31,6 +31,14 @@ enable_signup = true
 # เปิดการยืนยันอีเมลสำหรับทดสอบ email confirmation
 enable_confirmations = true
 
+[realtime]
+# Enable Realtime for local development
+enabled = true
+
+[analytics]
+# Analytics service port (change if port conflict)
+port = 54328
+
 # [auth.security]
 # Enable manual identity linking (beta)
 # Allows users to link multiple OAuth accounts to the same user account

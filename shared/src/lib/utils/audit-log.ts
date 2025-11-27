@@ -1,9 +1,9 @@
 import type { NextRequest } from 'next/server';
 import type { User } from '@supabase/supabase-js';
 import type { AuditLog } from '@shared/types/database.types';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from '@shared/lib/database/supabase/server';
 
-type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
+type SupabaseServerClient = Awaited<ReturnType<typeof createServerClient>>;
 
 type AuditActionType = AuditLog['action_type'];
 type AuditResourceType = AuditLog['resource_type'];

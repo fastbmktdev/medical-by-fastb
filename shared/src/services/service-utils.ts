@@ -1,16 +1,19 @@
 /**
  * Service Utilities
- * 
+ *
  * Shared utilities for service layer to reduce code duplication
  * and improve consistency across services.
  */
 
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from '@shared/lib/database/supabase/server';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 /**
  * Get Supabase client for service operations
  * Can accept an existing client to support transactions or reuse
+ * 
+ * @param existingClient - Optional existing client to reuse (for transactions)
+ * @returns A Supabase client instance
  */
 export async function getServiceClient(
   existingClient?: SupabaseClient
@@ -18,7 +21,7 @@ export async function getServiceClient(
   if (existingClient) {
     return existingClient;
   }
-  return await createClient();
+  return await createServerClient();
 }
 
 /**

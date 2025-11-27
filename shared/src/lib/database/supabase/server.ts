@@ -1,319 +1,145 @@
-// Mock createServerClient - replace with real import when @supabase/ssr is available
-// import { createServerClient } from '@supabase/ssr'
-import { cookies } from 'next/headers'
-import { NextResponse, NextRequest } from 'next/server'
-import type { User } from '@shared/types';
+import { createServerClient as createSupabaseServerClient, type CookieOptions } from '@supabase/ssr';
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
+import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
 
 /**
- * Mock createServerClient function
- * This is a mock implementation to fix "Module not found" errors
+ * Create a Supabase client for use on the server (Server Components, Route Handlers, API Routes).
+ * 
+ * This client manages authentication cookies and sessions through Next.js cookies API.
+ * It should be used in server-side code where you need user authentication context.
+ * 
+ * @returns A Promise resolving to a Supabase client instance configured for server use
+ * 
+ * @example
+ * ```ts
+ * import { createServerClient } from '@shared/lib/database';
+ * 
+ * const supabase = await createServerClient();
+ * const { data: { user } } = await supabase.auth.getUser();
+ * ```
  */
-const mockUser: User = {
-  id: '123',
-  app_metadata: {},
-  user_metadata: {},
-  aud: 'authenticated',
-  created_at: new Date().toISOString(),
-};
+export async function createServerClient() {
+  const cookieStore = await cookies();
 
-function createServerClient(url: string, key: string, options: any) {
-  // Query builder for database operations
-  const createQueryBuilder = (table: string) => {
-    let selectColumns: string | string[] = '*';
-    let eqFilters: Array<{ column: string; value: any }> = [];
-    let isSingle = false;
-    let maybeSingle = false;
-
-    const builder = {
-      select: (columns: string | string[]) => {
-        selectColumns = columns;
-        return builder;
-      },
-      eq: (column: string, value: any) => {
-        eqFilters.push({ column, value });
-        return builder;
-      },
-      single: () => {
-        isSingle = true;
-        return builder;
-      },
-      maybeSingle: () => {
-        maybeSingle = true;
-        return builder;
-      },
-      insert: (data: any) => {
-        return builder;
-      },
-    };
-
-    // Create a Promise that resolves with the query result
-    const promise = Promise.resolve().then(async () => {
-      console.log(`Query: ${table}`, { selectColumns, eqFilters, isSingle, maybeSingle });
-      
-      // Mock implementation - returns empty data for now
-      return {
-        data: isSingle || maybeSingle ? null : [],
-        error: {
-          code: 'PGRST116',
-          message: 'No rows found',
-        },
-      };
-    });
-
-    // Attach builder methods to the promise
-    return Object.assign(promise, builder) as any;
-  };
-
-  return {
-    supabaseUrl: url,
-    supabaseKey: key,
-    realtime: {} as any,
-    storage: {} as any,
-    auth: {
-      signUp: async (credentials: any) => {
-        console.log('signUp', credentials);
-        return { data: { user: mockUser }, error: null };
-      },
-      signInWithPassword: async (credentials: any) => {
-        console.log('signInWithPassword', credentials);
-        return { 
-          data: { 
-            user: mockUser, 
-            session: { 
-              access_token: 'mock-token',
-              refresh_token: 'mock-refresh-token',
-              expires_in: 3600,
-              token_type: 'bearer',
-              user: mockUser,
-            } 
-          }, 
-          error: null as { message: string; status?: number | null } | null 
-        };
-      },
-      signOut: async () => {
-        console.log('signOut');
-        return { error: null };
-      },
-      getUser: async () => {
-        console.log('getUser');
-        return { data: { user: mockUser }, error: null as { message: string } | null };
-      },
-      getSession: async () => {
-        // Only log in development and if Supabase is not configured
-        if (process.env.NODE_ENV === 'development' && !process.env.SUPABASE_URL && !process.env.NEXT_PUBLIC_SUPABASE_URL) {
-          console.log('getSession (mock)');
-        }
-        return { 
-          data: { 
-            session: null as any // Return null session for mock client
-          }, 
-          error: null as { message: string } | null 
-        };
-      },
-      updateUser: async (options: any) => {
-        console.log('updateUser', options);
-        return { data: { user: mockUser }, error: null };
-      },
-      resetPasswordForEmail: async (email: string, options?: any) => {
-        console.log('resetPasswordForEmail', email, options);
-        return { data: {}, error: null as { message: string } | null };
-      },
-      onAuthStateChange: (callback: any) => {
-        // Only log in development and if Supabase is not configured
-        if (process.env.NODE_ENV === 'development' && !process.env.SUPABASE_URL && !process.env.NEXT_PUBLIC_SUPABASE_URL) {
-          console.log('onAuthStateChange (mock)');
-        }
-        // Don't call callback immediately - this causes infinite loops
-        // Return a subscription that does nothing (mock client)
-        // Real Supabase client will handle this properly
-        return { 
-          data: { 
-            subscription: { 
-              unsubscribe: () => {} 
-            } 
-          } 
-        };
-      },
-      signInWithOAuth: async (options: any) => {
-        console.log('signInWithOAuth', options);
-        return { data: {}, error: null };
-      },
-      linkIdentity: async (options: any) => {
-        console.log('linkIdentity', options);
-        return { data: {}, error: null };
-      },
-      unlinkIdentity: async (identity: any) => {
-        console.log('unlinkIdentity', identity);
-        return { data: {}, error: null };
-      },
-      getUserIdentities: async () => {
-        console.log('getUserIdentities');
-        return {
-          data: {
-            identities: [
-              { provider: 'google', identity_id: '123' },
-              { provider: 'email', identity_id: '456' },
-            ],
-          },
-          error: null,
-        };
-      },
-    },
-    from: (table: string) => createQueryBuilder(table),
-    rpc: async (functionName: string, params?: any) => {
-      console.log('rpc', functionName, params);
-      return { data: [] as any[], error: null as { message: string } | null };
-    },
-    realtimeUrl: '',
-    authUrl: '',
-    storageUrl: '',
-    functionsUrl: '',
-    schema: 'public',
-    rest: {} as any,
-    functions: {} as any,
-  } as any;
-}
-
-/**
- * Create a Supabase client for server-side operations
- *
- * Environment variables required:
- * - SUPABASE_URL: Your Supabase project URL (server-side only, not exposed to browser)
- * - SUPABASE_ANON_KEY: Your Supabase anonymous key (server-side only, not exposed to browser)
- *
- * Note: Server-side uses regular env vars (without NEXT_PUBLIC_ prefix) for security
- *
- * @returns Promise<Supabase client instance>
- * @throws Error if environment variables are not set
- */
-export async function createClient() {
-  const cookieStore = await cookies()
-
-  // Server-side uses regular env vars (without NEXT_PUBLIC_ prefix)
-  // These are NOT exposed to the browser for security
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
-
-  // Validate environment variables
-  if (!supabaseUrl || !supabaseAnonKey) {
-    const missingVars = [];
-    if (!supabaseUrl) missingVars.push('SUPABASE_URL');
-    if (!supabaseAnonKey) missingVars.push('SUPABASE_ANON_KEY');
-    
-    const errorMessage = `Missing Supabase environment variables: ${missingVars.join(', ')}. 
-    
-For local development: Please ensure these are set in your .env.local file and restart your dev server.
-
-For production: These variables must be set as environment variables in your deployment platform (Vercel, etc.).
-
-Current values:
-- SUPABASE_URL: ${supabaseUrl ? 'Set' : 'Missing'}
-- SUPABASE_ANON_KEY: ${supabaseAnonKey ? 'Set' : 'Missing'}`;
-    
-    console.error('❌ Supabase Server Client Error:', errorMessage);
-    throw new Error(errorMessage);
-  }
-
-  return createServerClient(
-    supabaseUrl,
-    supabaseAnonKey,
+  return createSupabaseServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        getAll() {
-          return cookieStore.getAll()
-        },
-        setAll(cookiesToSet: Array<{ name: string; value: string; options?: any }>) {
+        get: (name: string) => cookieStore.get(name)?.value,
+        set: (name: string, value: string, options: CookieOptions) => {
           try {
-            cookiesToSet.forEach(({ name, value, options }: { name: string; value: string; options?: any }) =>
-              cookieStore.set(name, value, options)
-            )
+            cookieStore.set({ name, value, ...options });
           } catch {
-            // The `setAll` method was called from a Server Component.
-            // This can be ignored if you have middleware refreshing
-            // user sessions.
+            // In server component, this may throw; safe to ignore.
+          }
+        },
+        remove: (name: string, options: CookieOptions) => {
+          try {
+            cookieStore.set({ name, value: '', ...options });
+          } catch {
+            // In server component, this may throw; safe to ignore.
           }
         },
       },
     }
-  )
-}
-
-/**
- * Create a Supabase client for middleware operations
- * This function is specifically for middleware and returns both client and response
- *
- * @param request NextRequest object
- * @returns Object containing supabase client and response
- */
-export function createClientForMiddleware(request: NextRequest) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (!supabaseUrl || !supabaseKey) {
-    throw new Error('Missing Supabase environment variables');
-  }
-
-  // Create an unmodified response
-  let supabaseResponse = NextResponse.next({
-    request: {
-      headers: request.headers,
-    },
-  });
-
-  const supabase = createServerClient(
-    supabaseUrl,
-    supabaseKey,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll()
-        },
-        setAll(cookiesToSet: Array<{ name: string; value: string; options?: any }>) {
-          cookiesToSet.forEach(({ name, value }: { name: string; value: string }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({
-            request,
-          })
-          cookiesToSet.forEach(({ name, value, options }: { name: string; value: string; options?: any }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
-        },
-      },
-    },
   );
-
-  return { supabase, response: supabaseResponse };
 }
 
 /**
- * Create a Supabase admin client with service role key
- * This client has admin privileges and can bypass RLS policies
+ * Create a Supabase client using the service role key (admin privileges).
  * 
- * Environment variables required:
- * - SUPABASE_URL or NEXT_PUBLIC_SUPABASE_URL: Your Supabase project URL
- * - SUPABASE_SERVICE_ROLE_KEY: Your Supabase service role key (keep secret!)
+ * ⚠️ WARNING: This client has full admin access to your database.
+ * Only use this in secure server-side code. Never expose this in client-side code.
  * 
- * @returns Supabase client instance with admin privileges
- * @throws Error if environment variables are not set
+ * Use cases:
+ * - Admin operations that require bypassing RLS (Row Level Security)
+ * - System-level operations (cron jobs, migrations, etc.)
+ * - Operations that need to act on behalf of any user
+ * 
+ * @returns A Supabase client with admin privileges
+ * @throws {Error} If required environment variables are not set
+ * 
+ * @example
+ * ```ts
+ * import { createAdminClient } from '@shared/lib/database';
+ * 
+ * const adminClient = createAdminClient();
+ * // Can bypass RLS and perform admin operations
+ * ```
  */
 export function createAdminClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+  const supabaseUrl =
+    process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || !supabaseServiceKey) {
-    throw new Error('Missing Supabase admin credentials. Required: SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY');
+    throw new Error(
+      'Missing Supabase admin credentials. Required: SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY'
+    );
   }
 
-  const supabase = createServerClient(
-    supabaseUrl,
-    supabaseServiceKey,
-    {
-      cookies: {
-        getAll() { return []; },
-        setAll(_cookiesToSet: Array<{ name: string; value: string; options?: any }>) {},
-      },
-    }
-  );
-
-  return supabase;
+  return createSupabaseClient(supabaseUrl, supabaseServiceKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  });
 }
 
+/**
+ * Create a Supabase client for use in Next.js middleware.
+ * 
+ * This is a specialized client for middleware that handles cookie management
+ * differently than regular server clients. It returns both the client and
+ * a NextResponse object for proper cookie handling.
+ * 
+ * @param request - The Next.js request object
+ * @returns An object containing the Supabase client and NextResponse for cookie management
+ * 
+ * @example
+ * ```ts
+ * import { createClientForMiddleware } from '@shared/lib/database';
+ * 
+ * export async function middleware(request: NextRequest) {
+ *   const { supabase, response } = createClientForMiddleware(request);
+ *   const { data: { user } } = await supabase.auth.getUser();
+ *   return response;
+ * }
+ * ```
+ */
+export function createClientForMiddleware(request: NextRequest) {
+  const supabaseUrl =
+    process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    process.env.SUPABASE_URL ||
+    '';
+  const supabaseAnonKey =
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    process.env.SUPABASE_ANON_KEY ||
+    '';
+
+  const supabaseResponse = NextResponse.next({ request });
+
+  const supabase = createSupabaseServerClient(supabaseUrl, supabaseAnonKey, {
+    cookies: {
+      getAll: () => request.cookies.getAll(),
+      setAll: (
+        cookiesToSet: Array<{
+          name: string;
+          value: string;
+          options?: any;
+        }>
+      ) => {
+        cookiesToSet.forEach(({ name, value }) =>
+          request.cookies.set(name, value)
+        );
+        cookiesToSet.forEach(({ name, value, options }) =>
+          supabaseResponse.cookies.set(name, value, options)
+        );
+      },
+    },
+  });
+
+  return { supabase, response: supabaseResponse };
+}

@@ -37,54 +37,6 @@ function getCurrentLocale(): string {
 }
 
 /**
- * ลงทะเบียนผู้ใช้ใหม่
- */
-export async function signUp(credentials: SignUpCredentials) {
-  if (typeof window === 'undefined') {
-    throw new Error('Sign up is only available in browser environment');
-  }
-
-  const supabase = createClient();
-  const locale = getCurrentLocale();
-  
-  // Include locale in callback URL so redirect preserves locale
-  const callbackUrl = new URL(`${(window as unknown as BrowserWindow).location.origin}/api/auth/callback`);
-  callbackUrl.searchParams.set('next', `/${locale}/dashboard`);
-  
-  const { data, error } = await supabase.auth.signUp({
-    email: credentials.email,
-    password: credentials.password,
-    options: {
-      emailRedirectTo: callbackUrl.toString(),
-    },
-  });
-
-  if (error) {
-    throw new Error((error as { message?: string }).message || 'Sign up failed');
-  }
-
-  return data;
-}
-
-/**
- * เข้าสู่ระบบ
- */
-export async function signIn(credentials: SignInCredentials) {
-  const supabase = createClient();
-  
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: credentials.email,
-    password: credentials.password,
-  });
-
-  if (error) {
-    throw new Error((error as { message?: string }).message || 'Sign in failed');
-  }
-
-  return data;
-}
-
-/**
  * ออกจากระบบ
  */
 export async function signOut() {
@@ -315,4 +267,3 @@ export async function getConnectedAccounts() {
 
   return oauthIdentities;
 }
-

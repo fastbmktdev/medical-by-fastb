@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from '@shared/lib/database/supabase/server';
 
 // Force dynamic rendering for sitemap (uses database queries)
 export const dynamic = 'force-dynamic';
@@ -16,7 +16,7 @@ export const revalidate = 3600; // Revalidate every hour
 export async function GET(request: NextRequest) {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.medicalhospital.com';
-    const supabase = await createClient();
+    const supabase = await createServerClient();
 
     const urls: string[] = [];
 

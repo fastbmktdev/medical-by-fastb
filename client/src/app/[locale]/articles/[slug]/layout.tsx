@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from '@shared/lib/database/supabase/server';
 
 /**
  * Generate metadata for article pages
@@ -13,7 +13,7 @@ export async function generateMetadata({
   const { slug } = await params;
   
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     
     // Fetch article data
     const { data: article, error } = await supabase

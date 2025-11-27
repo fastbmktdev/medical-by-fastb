@@ -4,7 +4,7 @@
  * Use these functions in Client Components only
  */
 
-import { createClient as createBrowserClient } from '@shared/lib/database/supabase/client';
+import { createBrowserClient } from '@shared/lib/database';
 
 export type UserRole = 'authenticated' | 'partner' | 'admin';
 

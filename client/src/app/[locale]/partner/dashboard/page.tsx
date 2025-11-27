@@ -162,15 +162,15 @@ function PartnerDashboardContent() {
           setRecentBookings(bookingsData);
 
           // Use appointments with payment_status=paid as transactions
-          const paidBookings = bookingsData
-            .filter((b: { payment_status: string; booking_number: string; created_at: string; package_name: string; customer_name: string; price_paid: number | null; status: string }) => b.payment_status === "paid")
-            .map((b: { payment_status: string; booking_number: string; created_at: string; package_name: string; customer_name: string; price_paid: number | null; status: string }) => ({
+          const paidBookings: TransactionSummary[] = bookingsData
+            .filter((b: appointment) => b.payment_status === "paid")
+            .map((b: appointment) => ({
               id: b.booking_number,
               date: b.created_at,
               type: "รายได้",
               description: `การจอง ${b.package_name} - ${b.customer_name}`,
               amount: Number(b.price_paid || 0),
-              status: b.status,
+              status: b.status, // b.status is already typed as 'pending' | 'confirmed' | 'cancelled' | 'completed'
             }));
 
           setRecentTransactions(paidBookings.slice(0, 5));

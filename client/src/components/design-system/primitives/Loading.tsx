@@ -43,8 +43,8 @@ const SIZE_MAP: Record<ComponentSize, Record<string, string>> = {
 };
 
 const COLOR_MAP: Record<string, string> = {
-  primary: "text-red-500 border-red-500",
-  secondary: "text-gray-500 border-gray-500",
+  primary: "text-violet-600 border-violet-600",
+  secondary: "text-medical-teal-500 border-medical-teal-500",
   neutral: "text-gray-400 border-gray-400",
 };
 
