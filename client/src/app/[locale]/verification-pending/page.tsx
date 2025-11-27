@@ -66,7 +66,7 @@ function VerificationPendingContent() {
             <Button
               fullWidth
               size="lg"
-              className="bg-linear-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 mb-4"
+              className="bg-violet-700 hover:bg-violet-800"
             >
               ไปที่หน้าเข้าสู่ระบบ
             </Button>
@@ -77,7 +77,7 @@ function VerificationPendingContent() {
               variant="ghost"
               fullWidth
               size="lg"
-              className="text-zinc-300 hover:text-white"
+              className="text-zinc-950 hover:text-zinc-700"
             >
               กลับหน้าหลัก
             </Button>

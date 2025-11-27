@@ -386,7 +386,7 @@ export default function Header() {
             ) : (
               <Link
                 href="/login"
-                className="hidden md:inline-flex items-center gap-2 bg-brand-primary hover:bg-[#8B5CF6] px-4  h-10 font-medium text-sm transition-colors"
+                className="hidden md:inline-flex items-center gap-2 bg-violet-700 hover:bg-violet-800 px-4  h-10 font-medium text-sm transition-colors"
               >
                 <UserCircleIcon className="w-5 h-5" />
                 เข้าสู่ระบบ
