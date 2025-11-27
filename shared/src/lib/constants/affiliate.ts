@@ -62,8 +62,8 @@ export async function getCommissionRate(
 
   try {
     // Import dynamically to avoid circular dependencies
-    const { createClient } = await import('@shared/lib/database/supabase/server');
-    const supabase = (supabaseClient ?? await createClient()) as SupabaseClient;
+    const { createServerClient } = await import('@shared/lib/database/supabase/server');
+    const supabase = (supabaseClient ?? await createServerClient()) as SupabaseClient;
 
     const { data, error } = await supabase
       .from('affiliate_commission_rates')

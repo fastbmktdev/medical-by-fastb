@@ -1,8 +1,8 @@
-import { createClient } from "@shared/lib/database/supabase/server";
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { extractUserIdFromReferralCode } from "./affiliate";
 
 async function getServerSupabaseClient() {
-  return createClient();
+  return createServerClient();
 }
 
 export async function getAffiliateUserIdFromCode(

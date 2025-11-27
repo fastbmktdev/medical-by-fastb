@@ -10,7 +10,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import type { SupabaseClient, User } from '@supabase/supabase-js';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from '@shared/lib/database/supabase/server';
 import { errorResponse, UnauthorizedError, ForbiddenError } from './error-handler';
 
 // ============================================================================
@@ -34,7 +34,7 @@ export function isUUID(str: string): boolean {
  * Uses user_roles table (consistent with existing routes)
  */
 export async function checkIsAdmin(
-  supabase: SupabaseClient | Awaited<ReturnType<typeof createClient>>,
+  supabase: SupabaseClient | Awaited<ReturnType<typeof createServerClient>>,
   userId: string
 ): Promise<boolean> {
   const { data } = await supabase
@@ -132,7 +132,7 @@ export async function getUserAndAdminStatus(supabase: SupabaseClient): Promise<{
  * Optimized to not block the main response
  */
 export function incrementViewCount(
-  supabase: Awaited<ReturnType<typeof createClient>>,
+  supabase: Awaited<ReturnType<typeof createServerClient>>,
   table: string,
   id: string | number,
   currentCount: number = 0
@@ -154,7 +154,7 @@ export function incrementViewCount(
  * Supports both UUID and slug lookup
  */
 export function buildSlugOrIdQuery<T>(
-  supabase: Awaited<ReturnType<typeof createClient>>,
+  supabase: Awaited<ReturnType<typeof createServerClient>>,
   table: string,
   identifier: string
 ) {

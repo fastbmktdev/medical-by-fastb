@@ -10,32 +10,35 @@
 // ============================================================================
 // Database & Supabase Clients
 // ============================================================================
+// Browser/client-side client
 export {
-  // Browser/client-side client
   createBrowserClient,
   createClient, // Deprecated alias for backward compatibility
-  
-  // Server-side clients
+} from './database';
+
+// Server-side clients (imported directly to avoid bundling issues)
+export {
   createServerClient,
   createAdminClient,
   createClientForMiddleware,
-  
-  // Middleware utilities
-  updateSession,
-  
-  // Direct SQL connection
-  sql,
-  
-  // Connection pool utilities
-  getRequestClient,
-} from './database';
+} from './database/supabase/server';
+
+// Middleware utilities
+export { updateSession } from './database/supabase/middleware';
+
+// Direct SQL connection
+export { default as sql } from './database/db';
+
+// Connection pool utilities
+export { getRequestClient } from './database/connection-pool';
 
 // ============================================================================
 // Authentication Utilities
 // ============================================================================
+// Client-side auth utilities (default exports)
+// Note: Server-side auth utilities should be imported directly from './auth/server'
+// to avoid conflicts with client-side exports
 export * from './auth/client';
-export * from './auth/server';
-export * from './auth';
 
 // ============================================================================
 // API & Route Utilities
@@ -46,10 +49,6 @@ export * from './api';
 // Constants
 // ============================================================================
 export * from './constants';
-export * from './constants/affiliate';
-export * from './constants/files';
-export * from './constants/forms';
-export * from './constants/validation';
 
 // ============================================================================
 // Email Services

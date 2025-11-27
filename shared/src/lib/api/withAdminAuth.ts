@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from '@shared/lib/database/supabase/server';
 import { User } from '@supabase/supabase-js';
 import { errorResponse, UnauthorizedError, ForbiddenError } from './error-handler';
 
@@ -12,7 +12,7 @@ type AuthenticatedApiHandler<T> = (
 export function withAdminAuth<T>(handler: AuthenticatedApiHandler<T>) {
   return async (request: NextRequest, context: { params: Promise<T> }) => {
     try {
-      const supabase = await createClient();
+      const supabase = await createServerClient();
 
       const { data: { user }, error: authError } = await supabase.auth.getUser();
 

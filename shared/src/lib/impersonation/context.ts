@@ -3,7 +3,7 @@
  * Utilities for managing and checking impersonation state
  */
 
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from '@shared/lib/database/supabase/server';
 import type { ImpersonationContext } from '@shared/types/impersonation.types';
 
 /**
@@ -11,7 +11,7 @@ import type { ImpersonationContext } from '@shared/types/impersonation.types';
  * Checks if admin is currently impersonating a user
  */
 export async function getImpersonationContext(): Promise<ImpersonationContext> {
-  const supabase = await createClient();
+  const supabase = await createServerClient();
   
   const { data: { user } } = await supabase.auth.getUser();
   

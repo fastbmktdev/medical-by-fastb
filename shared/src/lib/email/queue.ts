@@ -5,7 +5,7 @@
  * processing queue, and handling retries
  */
 
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from '@shared/lib/database/supabase/server';
 
 export type EmailStatus = 'pending' | 'processing' | 'sent' | 'failed' | 'cancelled';
 export type EmailPriority = 'low' | 'normal' | 'high' | 'urgent';
@@ -74,7 +74,7 @@ export interface AddEmailToQueueParams {
  */
 export async function addEmailToQueue(params: AddEmailToQueueParams): Promise<{ success: boolean; id?: string; error?: string }> {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     
     const {
       to,
@@ -198,7 +198,7 @@ export async function addEmailToQueue(params: AddEmailToQueueParams): Promise<{ 
  */
 export async function getPendingEmails(limit: number = 10): Promise<EmailQueueItem[]> {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     
     const { data, error } = await supabase
       .from('email_queue')
@@ -237,7 +237,7 @@ export async function updateEmailQueueStatus(
   }
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     
     const updateData: Record<string, unknown> = {
       status,
@@ -308,7 +308,7 @@ export async function getQueueStats(): Promise<{
   sent: number;
 }> {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     
     const [pendingResult, processingResult, failedResult, sentResult] = await Promise.all([
       supabase.from('email_queue').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
