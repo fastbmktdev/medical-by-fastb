@@ -178,7 +178,14 @@ function ForgetPasswordPageContent() {
         throw new Error("Supabase client is not initialized");
       }
 
-      const redirectUrl = `${window.location.origin}/api/auth/callback?type=recovery&next=/update-password`;
+      // Get base URL for password reset redirect
+      // Priority: NEXT_PUBLIC_APP_URL > window.location.origin
+      const baseUrl = 
+        (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_APP_URL) 
+          ? process.env.NEXT_PUBLIC_APP_URL 
+          : (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000');
+
+      const redirectUrl = `${baseUrl}/api/auth/callback?type=recovery&next=/update-password`;
       
       const { error } = await supabase.auth.resetPasswordForEmail(
         formData.email.trim(),

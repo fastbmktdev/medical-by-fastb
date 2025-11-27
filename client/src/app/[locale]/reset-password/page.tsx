@@ -111,11 +111,18 @@ export default function ResetPasswordPage() {
     setErrors({});
 
     try {
+      // Get base URL for password reset redirect
+      // Priority: NEXT_PUBLIC_APP_URL > window.location.origin
+      const baseUrl = 
+        (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_APP_URL) 
+          ? process.env.NEXT_PUBLIC_APP_URL 
+          : (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000');
+
       // Send password reset email
       const { error } = await supabase.auth.resetPasswordForEmail(
         formData.email,
         {
-          redirectTo: `${window.location.origin}/api/auth/callback?type=recovery&next=/update-password`,
+          redirectTo: `${baseUrl}/api/auth/callback?type=recovery&next=/update-password`,
         }
       );
 

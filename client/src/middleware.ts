@@ -48,6 +48,18 @@ export async function middleware(request: NextRequest) {
   try {
     const host = request.headers.get('host') ?? '';
     const path = request.nextUrl.pathname;
+    const code = request.nextUrl.searchParams.get('code');
+
+    // Handle root path with code parameter (email verification from Supabase)
+    // Supabase sends verification links to root path with ?code= parameter
+    // We need to redirect to /api/auth/callback to handle it properly
+    if (path === '/' && code) {
+      const apiCallbackUrl = new URL('/api/auth/callback', request.url);
+      request.nextUrl.searchParams.forEach((value, key) => {
+        apiCallbackUrl.searchParams.set(key, value);
+      });
+      return NextResponse.redirect(apiCallbackUrl);
+    }
 
     // Handle locale-aware auth callback redirection
     if (AUTH_LOCALE_REGEX.test(path)) {

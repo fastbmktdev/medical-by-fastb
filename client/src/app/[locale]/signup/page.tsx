@@ -361,6 +361,14 @@ function SignupContent() {
         return;
       }
 
+      // Get base URL for email redirect
+      // Priority: NEXT_PUBLIC_APP_URL > window.location.origin
+      // This ensures production uses the correct URL instead of localhost
+      const baseUrl = 
+        (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_APP_URL) 
+          ? process.env.NEXT_PUBLIC_APP_URL 
+          : (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000');
+
       // Attempt to sign up with Supabase
       const { data, error } = await supabase.auth.signUp({
         email: formData.email,
@@ -372,7 +380,8 @@ function SignupContent() {
             phone: formData.phone,
           },
           // Email confirmation URL - use /api/auth/callback to avoid i18n middleware
-          emailRedirectTo: `${window.location.origin}/api/auth/callback`,
+          // Use baseUrl from environment variable to ensure production URL is used
+          emailRedirectTo: `${baseUrl}/api/auth/callback`,
         },
       });
 
