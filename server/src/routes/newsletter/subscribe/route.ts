@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { addEmailToQueue } from '@shared/lib/email/queue';
 import { generateUnsubscribeToken } from '@shared/lib/utils/crypto';
 
@@ -9,7 +9,7 @@ import { generateUnsubscribeToken } from '@shared/lib/utils/crypto';
  */
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { data: { user } } = await supabase.auth.getUser();
     
     const body = await request.json() as {

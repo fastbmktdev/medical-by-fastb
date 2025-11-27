@@ -6,7 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { requireAuth, withErrorHandling } from '@shared/lib/api/route-utils';
 import { successResponse } from '@shared/lib/api/error-handler';
 import { getAppointments, createAppointment } from '@shared/services';
@@ -21,7 +21,7 @@ import { ServiceError } from '@shared/services/service-utils';
  * ดึงรายการจองของผู้ใช้
  */
 export const GET = withErrorHandling(async (_request: NextRequest) => {
-  const supabase = await createClient();
+  const supabase = await createServerClient();
   
   // ตรวจสอบ authentication
   const user = await requireAuth(supabase);
@@ -41,7 +41,7 @@ export const GET = withErrorHandling(async (_request: NextRequest) => {
  * 2. POST /api/appointments/hospital (สร้างการจองหลังจาก payment intent สำเร็จ)
  */
 export const POST = withErrorHandling(async (request: NextRequest) => {
-  const supabase = await createClient();
+  const supabase = await createServerClient();
 
   // ตรวจสอบ authentication
   const user = await requireAuth(supabase);

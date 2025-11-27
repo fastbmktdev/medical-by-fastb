@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 
 /**
  * POST /api/content/flag
@@ -13,7 +13,7 @@ import { createClient } from '@shared/lib/database/supabase/server';
  */
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {

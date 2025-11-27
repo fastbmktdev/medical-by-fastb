@@ -7,10 +7,10 @@
  */
 
 import { NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { NextRequest } from 'next/server';
 
-async function checkPackageOwnership(supabase: Awaited<ReturnType<typeof createClient>>, packageId: string, userId: string) {
+async function checkPackageOwnership(supabase: Awaited<ReturnType<typeof createServerClient>>, packageId: string, userId: string) {
   // ดึงแพ็คเกจและตรวจสอบว่าเป็นของ user หรือไม่
   const { data: pkg, error } = await supabase
     .from('hospital_packages')
@@ -40,7 +40,7 @@ export async function GET(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { id } = await context.params;
     
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -87,7 +87,7 @@ export async function PATCH(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { id } = await context.params;
     
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -200,7 +200,7 @@ export async function DELETE(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { id } = await context.params;
     
     const { data: { user }, error: authError } = await supabase.auth.getUser();

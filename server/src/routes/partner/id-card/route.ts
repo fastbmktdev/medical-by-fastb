@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { sanitizeFilename } from '@shared/lib/utils/file-validation';
 
 /**
@@ -9,7 +9,7 @@ import { sanitizeFilename } from '@shared/lib/utils/file-validation';
  */
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
 
     // Get authenticated user
     const {
@@ -140,7 +140,7 @@ export async function POST(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
 
     // Get authenticated user
     const {

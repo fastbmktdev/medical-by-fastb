@@ -5,9 +5,9 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 
-async function checkIsAdmin(supabase: Awaited<ReturnType<typeof createClient>>, userId: string): Promise<boolean> {
+async function checkIsAdmin(supabase: Awaited<ReturnType<typeof createServerClient>>, userId: string): Promise<boolean> {
   const { data } = await supabase
     .from('user_profiles')
     .select('role')
@@ -27,7 +27,7 @@ async function checkIsAdmin(supabase: Awaited<ReturnType<typeof createClient>>, 
  */
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
     if (authError || !user) {

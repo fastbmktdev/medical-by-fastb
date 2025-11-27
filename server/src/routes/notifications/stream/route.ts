@@ -7,14 +7,14 @@
  */
 
 import { NextRequest } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import type { RealtimeChannel } from '@supabase/supabase-js';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 export async function GET(request: NextRequest) {
-  const supabase = await createClient();
+  const supabase = await createServerClient();
   
   // Authenticate user
   const { data: { user }, error: authError } = await supabase.auth.getUser();

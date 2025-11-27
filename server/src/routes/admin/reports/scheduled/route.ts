@@ -5,7 +5,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { withAdminAuth } from '@shared/lib/api/withAdminAuth';
 
 // Helper function to calculate next_run_at based on frequency and schedule_config
@@ -100,7 +100,7 @@ const getScheduledReportsHandler = withAdminAuth(async (
   _user
 ) => {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     
     const { data: scheduledReports, error } = await supabase
       .from('scheduled_reports')
@@ -130,7 +130,7 @@ const createScheduledReportHandler = withAdminAuth(async (
   user
 ) => {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const body = await request.json() as {
       custom_report_id?: string;
       name?: string;

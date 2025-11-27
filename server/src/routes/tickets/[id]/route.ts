@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 
 /**
  * GET /api/tickets/[id]
@@ -10,7 +10,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { id } = await params;
 
     // Check if user is authenticated
@@ -101,7 +101,7 @@ export async function GET(
 }
 
 // Helper function to check if user is admin
-async function checkIsAdmin(supabase: Awaited<ReturnType<typeof createClient>>, userId: string): Promise<boolean> {
+async function checkIsAdmin(supabase: Awaited<ReturnType<typeof createServerClient>>, userId: string): Promise<boolean> {
   const { data } = await supabase
     .from('user_roles')
     .select('role')

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { withAdminAuth } from '@shared/lib/api/withAdminAuth';
 
 /**
@@ -16,7 +16,7 @@ export const PATCH = withAdminAuth<{ id: string }>(async (
   user
 ) => {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { id } = await context.params;
     const body = await request.json() as {
       status?: string;
@@ -110,7 +110,7 @@ export const DELETE = withAdminAuth<{ id: string }>(async (
   _user
 ) => {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { id } = await context.params;
 
     const { error } = await supabase

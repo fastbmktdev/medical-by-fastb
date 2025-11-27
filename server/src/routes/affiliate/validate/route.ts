@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 
 export async function GET(request: NextRequest) {
   try {
@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
     const userIdSuffix = referralCode.slice(2); // Remove 'MT' prefix
     
     // Find user by ID suffix
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { data: users, error } = await supabase
       .from('profiles')
       .select('id, full_name, email')
@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
     const userIdSuffix = code.slice(2); // Remove 'MT' prefix
     
     // Find user by ID suffix
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { data: users, error } = await supabase
       .from('profiles')
       .select('id, full_name, email')

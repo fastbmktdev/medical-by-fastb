@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient, createAdminClient } from '@shared/lib/database/supabase/server';
+import { createServerClient, createAdminClient } from '@shared/lib/database/supabase/server';
 import { validateFile, sanitizeFilename } from '@shared/lib/utils/file-validation';
 import { logAuditEvent } from '@shared/lib/utils';
 
@@ -34,7 +34,7 @@ const extractStoragePath = (url: string | null | undefined) => {
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     
     // Get authenticated user
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -289,7 +289,7 @@ export async function POST(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     
     // Get authenticated user
     const { data: { user }, error: authError } = await supabase.auth.getUser();

@@ -275,9 +275,9 @@ async function processEmailQueue(): Promise<{ success: boolean; processed: numbe
  */
 async function sendBookingReminders(): Promise<{ success: boolean; sent: number; error?: string }> {
   try {
-    const { createClient } = await import('@shared/lib/database/supabase/server');
+    const { createServerClient } = await import('@shared/lib/database/supabase/server');
     const { EmailService } = await import('@shared/lib/email/service');
-    const supabase = await createClient();
+    const supabase = await createServerClient();
 
     const now = new Date();
     const tomorrow = new Date(now);
@@ -390,8 +390,8 @@ async function sendBookingReminders(): Promise<{ success: boolean; sent: number;
  */
 async function publishScheduledArticles(): Promise<{ success: boolean; published: number; error?: string }> {
   try {
-    const { createClient } = await import('@shared/lib/database/supabase/server');
-    const supabase = await createClient();
+    const { createServerClient } = await import('@shared/lib/database/supabase/server');
+    const supabase = await createServerClient();
 
     const now = new Date();
     
@@ -460,8 +460,8 @@ async function publishScheduledArticles(): Promise<{ success: boolean; published
  */
 async function generateScheduledReports(): Promise<{ success: boolean; generated: number; error?: string }> {
   try {
-    const { createClient } = await import('@shared/lib/database/supabase/server');
-    const supabase = await createClient();
+    const { createServerClient } = await import('@shared/lib/database/supabase/server');
+    const supabase = await createServerClient();
 
     const now = new Date();
     

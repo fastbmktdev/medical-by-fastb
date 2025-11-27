@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import type { User } from '@supabase/supabase-js';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { getCommissionRate, calculateCommissionAmount } from '@shared/lib/constants/affiliate';
 import { awardPoints } from '@shared/services/gamification.service';
 import { isValidReferralCodeFormat } from '@shared/lib/utils/affiliate';
@@ -77,7 +77,7 @@ const calculateStats = (conversions: Conversion[], profiles: Record<string, Prof
 };
 
 export async function GET(request: NextRequest) {
-  const supabase = await createClient();
+  const supabase = await createServerClient();
   let currentUser: User | null = null;
 
   try {
@@ -215,7 +215,7 @@ const REFERRAL_POINTS = 200;
  * Creates an affiliate conversion record when a user signs up with a referral code
  */
 export async function POST(request: NextRequest) {
-  const supabase = await createClient();
+  const supabase = await createServerClient();
   let currentUser: User | null = null;
 
   try {

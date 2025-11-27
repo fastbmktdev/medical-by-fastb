@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 
 /**
  * POST /api/articles/[id]-admin/publish
@@ -14,7 +14,7 @@ export async function POST(
   _context: { params: Promise<Record<string, string>> }
 ): Promise<NextResponse> {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     // Extract id from URL path since Next.js 15 doesn't recognize [id] in [id]-admin structure
     const url = new URL(request.url);
     const pathParts = url.pathname.split('/');

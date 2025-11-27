@@ -6,7 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 
 interface AvailabilityBody {
   type?: 'regular' | 'special' | 'time_slot';
@@ -28,7 +28,7 @@ interface AvailabilityBody {
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     
@@ -194,7 +194,7 @@ async function handleTimeSlotAvailability(supabase: any, hospitalId: string, ava
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     
@@ -293,7 +293,7 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     

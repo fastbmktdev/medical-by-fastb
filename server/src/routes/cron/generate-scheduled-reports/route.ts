@@ -13,7 +13,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { Resend } from 'resend';
@@ -356,7 +356,7 @@ async function handleGenerateScheduledReports(request: NextRequest) {
       );
     }
 
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const now = new Date();
 
     // Find scheduled reports that are due

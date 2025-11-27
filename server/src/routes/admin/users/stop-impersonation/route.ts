@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { withAdminAuth } from '@shared/lib/api/withAdminAuth';
 import { logAuditEvent } from '@shared/lib/utils/audit-log';
 import type { StopImpersonationResponse } from '@shared/types/impersonation.types';
@@ -14,7 +14,7 @@ export const POST = withAdminAuth(async (
   adminUser
 ) => {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
 
     // Get active impersonation for this admin
     const { data: activeImpersonation, error: impersonationError } = await supabase

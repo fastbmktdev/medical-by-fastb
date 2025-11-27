@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { withAdminAuth } from '@shared/lib/api/withAdminAuth';
 import { validateFile } from '@shared/lib/utils/file-validation';
 
@@ -12,7 +12,7 @@ export const POST = withAdminAuth(async (
   request: NextRequest,
 ) => {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const formData = await request.formData();
     const file = formData.get('file') as File;
 

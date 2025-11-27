@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 
 /**
  * POST /api/newsletter/unsubscribe
@@ -7,7 +7,7 @@ import { createClient } from '@shared/lib/database/supabase/server';
  */
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const body = await request.json() as {
       token?: string;
       email?: string;

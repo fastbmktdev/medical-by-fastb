@@ -13,7 +13,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { EmailService } from '@shared/lib/email/service';
 
 /**
@@ -95,7 +95,7 @@ async function handleBookingReminders(request: NextRequest) {
       );
     }
 
-    const supabase = await createClient();
+    const supabase = await createServerClient();
 
     // Calculate tomorrow's date: appointments starting in 1 day (CURRENT_DATE + INTERVAL '1 day')
     const now = new Date();

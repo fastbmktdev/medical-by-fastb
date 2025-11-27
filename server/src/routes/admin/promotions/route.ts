@@ -5,7 +5,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { withAdminAuth } from '@shared/lib/api/withAdminAuth';
 
 /**
@@ -21,7 +21,7 @@ const getPromotionsHandler = withAdminAuth(async (
   _user
 ) => {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { searchParams } = new URL(request.url);
     
     // Get filters
@@ -90,7 +90,7 @@ const createPromotionHandler = withAdminAuth(async (
   user
 ) => {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const body = await request.json() as {
       title?: string;
       titleEnglish?: string;

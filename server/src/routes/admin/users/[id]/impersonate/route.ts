@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient, createAdminClient } from '@shared/lib/database/supabase/server';
+import { createServerClient, createAdminClient } from '@shared/lib/database/supabase/server';
 import { withAdminAuth } from '@shared/lib/api/withAdminAuth';
 import { logAuditEvent } from '@shared/lib/utils/audit-log';
 import type { ImpersonateRequest, ImpersonateResponse } from '@shared/types/impersonation.types';
@@ -14,7 +14,7 @@ export const POST = withAdminAuth(async (
   adminUser
 ) => {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const resolvedParams = await params as Promise<{ id: string }>;
     const { id: targetUserId } = await resolvedParams;
     const body = await request.json() as ImpersonateRequest;

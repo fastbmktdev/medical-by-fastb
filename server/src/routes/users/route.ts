@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { ServiceError } from '@shared/services/service-utils';
 
 /**
@@ -13,7 +13,7 @@ import { ServiceError } from '@shared/services/service-utils';
  */
 export async function GET() {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
 
     // Get users with their roles
     const { data: usersWithRoles, error: queryError } = await supabase

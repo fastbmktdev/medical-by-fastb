@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 // Helper function to check if user is admin
@@ -29,7 +29,7 @@ export async function GET(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { slug } = await params;
 
     // Check if user is admin

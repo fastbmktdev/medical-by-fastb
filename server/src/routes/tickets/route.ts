@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 
 /**
  * GET /api/tickets
@@ -9,7 +9,7 @@ import { createClient } from '@shared/lib/database/supabase/server';
  */
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
 
     // Check if user is authenticated
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -89,7 +89,7 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
 
     // Check if user is authenticated
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -187,7 +187,7 @@ export async function POST(request: NextRequest) {
 }
 
 // Helper function to generate appointment reference
-async function generateBookingReference(supabase: Awaited<ReturnType<typeof createClient>>): Promise<string> {
+async function generateBookingReference(supabase: Awaited<ReturnType<typeof createServerClient>>): Promise<string> {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let reference = '';
   

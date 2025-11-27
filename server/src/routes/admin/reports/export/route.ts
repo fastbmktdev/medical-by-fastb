@@ -6,7 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -144,7 +144,7 @@ const TABLE_CONFIGS: Record<string, {
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
 
     // Check if user is admin
     const { data: { user }, error: authError } = await supabase.auth.getUser();

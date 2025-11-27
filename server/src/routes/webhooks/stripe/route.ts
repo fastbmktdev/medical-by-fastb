@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import { stripe } from '@shared/lib/payments';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { sendPaymentReceiptEmail, sendPaymentFailedEmail } from '@shared/lib/email/resend';
 import { awardReferralBookingPoints, revokeReferralBookingPoints } from '@shared/services/referral.service';
 import Stripe from 'stripe';
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  const supabase = await createClient();
+  const supabase = await createServerClient();
 
   try {
     switch (event.type) {
@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
 }
 
 async function handlePaymentSuccess(
-  supabase: Awaited<ReturnType<typeof createClient>>,
+  supabase: Awaited<ReturnType<typeof createServerClient>>,
   paymentIntent: Stripe.PaymentIntent
 ) {
   // Payment succeeded - process the payment
@@ -348,7 +348,7 @@ async function handlePaymentSuccess(
 }
 
 async function handlePaymentFailed(
-  supabase: Awaited<ReturnType<typeof createClient>>,
+  supabase: Awaited<ReturnType<typeof createServerClient>>,
   paymentIntent: Stripe.PaymentIntent
 ) {
   console.log('Payment failed:', paymentIntent.id);
@@ -447,7 +447,7 @@ async function handlePaymentFailed(
 }
 
 async function handlePaymentCanceled(
-  supabase: Awaited<ReturnType<typeof createClient>>,
+  supabase: Awaited<ReturnType<typeof createServerClient>>,
   paymentIntent: Stripe.PaymentIntent
 ) {
   console.log('Payment canceled:', paymentIntent.id);
@@ -479,7 +479,7 @@ async function handlePaymentCanceled(
   }
 }
 
-async function handleRefund(supabase: Awaited<ReturnType<typeof createClient>>, charge: Stripe.Charge) {
+async function handleRefund(supabase: Awaited<ReturnType<typeof createServerClient>>, charge: Stripe.Charge) {
   console.log('Charge refunded:', charge.id);
 
   if (!charge.payment_intent) return;
@@ -567,7 +567,7 @@ async function handleRefund(supabase: Awaited<ReturnType<typeof createClient>>, 
 // ============================================================================
 
 async function handleDispute(
-  supabase: Awaited<ReturnType<typeof createClient>>,
+  supabase: Awaited<ReturnType<typeof createServerClient>>,
   dispute: Stripe.Dispute
 ) {
   console.log('Dispute event:', dispute.id, dispute.status);

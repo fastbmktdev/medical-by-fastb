@@ -6,7 +6,7 @@
  */
 
 import { NextRequest } from "next/server";
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { withAdminAuth } from '@shared/lib/api/withAdminAuth';
 import {
   ValidationError,
@@ -114,7 +114,7 @@ const parseIntegerField = (
  * Helper function to check if user is admin
  */
 async function checkIsAdmin(
-  supabase: Awaited<ReturnType<typeof createClient>>,
+  supabase: Awaited<ReturnType<typeof createServerClient>>,
   userId: string
 ): Promise<boolean> {
   const { data } = await supabase
@@ -138,7 +138,7 @@ async function checkIsAdmin(
  * - offset: offset for pagination
  */
 export const GET = withErrorHandler(async (request: NextRequest) => {
-  const supabase = await createClient();
+  const supabase = await createServerClient();
 
   // Check if user is authenticated and is admin
   const {
@@ -284,7 +284,7 @@ export const GET = withErrorHandler(async (request: NextRequest) => {
  */
 export const POST = withAdminAuth(
   withErrorHandler(async (request: NextRequest) => {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     let body: ProductPayload;
 
     try {

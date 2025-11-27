@@ -5,7 +5,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { withAdminAuth } from '@shared/lib/api/withAdminAuth';
 
 /**
@@ -16,7 +16,7 @@ import { withAdminAuth } from '@shared/lib/api/withAdminAuth';
  */
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { searchParams } = new URL(request.url);
     const activeParam = searchParams.get('active');
 
@@ -73,7 +73,7 @@ export async function GET(request: NextRequest) {
  */
 export const POST = withAdminAuth(async (request: NextRequest) => {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const body = await request.json() as {
       nameThai?: string;
       nameEnglish?: string;

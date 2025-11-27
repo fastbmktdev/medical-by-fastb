@@ -6,7 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { withAdminAuth } from '@shared/lib/api/withAdminAuth';
 
 // Helper function to calculate next_run_at (reuse from route.ts if needed)
@@ -64,7 +64,7 @@ const getScheduledReportHandler = withAdminAuth(async (
   _user
 ) => {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { id } = await params;
 
       const { data: scheduledReport, error } = await supabase
@@ -104,7 +104,7 @@ const updateScheduledReportHandler = withAdminAuth(async (
   _user
 ) => {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { id } = await params;
     const body = await request.json() as {
       name?: string;
@@ -184,7 +184,7 @@ const deleteScheduledReportHandler = withAdminAuth(async (
   _user
 ) => {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { id } = await params;
 
       // Soft delete by setting status to 'deleted' and deleted_at

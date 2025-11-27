@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { withAdminAuth } from '@shared/lib/api/withAdminAuth';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
@@ -31,7 +31,7 @@ async function checkIsAdmin(supabase: SupabaseClient, userId: string): Promise<b
  */
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     
     // Check if user is authenticated and is admin
     let isAdmin = false;
@@ -170,7 +170,7 @@ const postArticleHandler = withAdminAuth(async (
   user
 ) => {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const body = await request.json() as {
       slug?: string;
       title?: string;

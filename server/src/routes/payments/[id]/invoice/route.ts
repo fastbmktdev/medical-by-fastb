@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { generateInvoicePDF, type InvoiceData } from '@shared/lib/utils/pdf-generator';
 import { getPaymentById } from '@shared/services/payment.service';
 
@@ -7,7 +7,7 @@ import { getPaymentById } from '@shared/services/payment.service';
  * Helper function to check if user is admin
  */
 async function checkIsAdmin(
-  supabase: Awaited<ReturnType<typeof createClient>>,
+  supabase: Awaited<ReturnType<typeof createServerClient>>,
   userId: string
 ): Promise<boolean> {
   const { data } = await supabase
@@ -28,7 +28,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { id } = await params;
 
     // Check if user is authenticated

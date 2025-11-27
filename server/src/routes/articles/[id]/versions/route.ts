@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { withAdminAuth } from '@shared/lib/api/withAdminAuth';
 
 /**
@@ -13,7 +13,7 @@ export const GET = withAdminAuth<{ id: string }>(
     _user
   ) => {
     try {
-      const supabase = await createClient();
+      const supabase = await createServerClient();
       const { id } = await context.params;
 
       const { data: versions, error } = await supabase
@@ -51,7 +51,7 @@ export const POST = withAdminAuth<{ id: string }>(
     user
   ) => {
     try {
-      const supabase = await createClient();
+      const supabase = await createServerClient();
       const { id } = await context.params;
       const body = await request.json() as {
         change_summary?: string;

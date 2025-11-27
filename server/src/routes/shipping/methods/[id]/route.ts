@@ -5,7 +5,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { withAdminAuth } from '@shared/lib/api/withAdminAuth';
 
 /**
@@ -17,7 +17,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { id } = await params;
 
     const { data: method, error } = await supabase
@@ -77,7 +77,7 @@ export const PUT = withAdminAuth(async (
   { params }: { params: Promise<{ id: string }> }
 ) => {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { id } = await params;
     const body = await request.json();
 
@@ -160,7 +160,7 @@ export const DELETE = withAdminAuth(async (
   { params }: { params: Promise<{ id: string }> }
 ) => {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { id } = await params;
 
     // Check if method exists

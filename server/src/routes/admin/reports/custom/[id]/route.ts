@@ -6,7 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { withAdminAuth } from '@shared/lib/api/withAdminAuth';
 
 const getCustomReportHandler = withAdminAuth(async (
@@ -15,7 +15,7 @@ const getCustomReportHandler = withAdminAuth(async (
   _user
 ) => {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { id } = await params;
 
     const { data: customReport, error } = await supabase
@@ -55,7 +55,7 @@ const updateCustomReportHandler = withAdminAuth(async (
   _user
 ) => {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { id } = await params;
     const body = await request.json() as {
       name?: string;
@@ -118,7 +118,7 @@ const deleteCustomReportHandler = withAdminAuth(async (
   _user
 ) => {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { id } = await params;
 
     const { error } = await supabase

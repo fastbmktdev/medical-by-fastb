@@ -9,7 +9,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 
 interface MessageInsert {
   conversation_id: string;
@@ -35,7 +35,7 @@ interface MessageInsert {
  */
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     
     // ตรวจสอบ authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -289,7 +289,7 @@ export async function POST(request: NextRequest) {
  */
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     
     // ตรวจสอบ authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -402,7 +402,7 @@ export async function GET(request: NextRequest) {
  */
 export async function PATCH(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     

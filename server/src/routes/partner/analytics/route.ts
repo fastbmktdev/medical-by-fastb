@@ -9,12 +9,12 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { fetchPlaceReviews } from '@shared/lib/utils/googlePlaces';
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     
     // ตรวจสอบ authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();

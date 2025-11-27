@@ -6,7 +6,7 @@
  */
 
 import { NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { NextRequest } from 'next/server';
 
 /**
@@ -15,7 +15,7 @@ import { NextRequest } from 'next/server';
  */
 export async function GET(_request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     
     // ตรวจสอบ authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -94,7 +94,7 @@ export async function GET(_request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     
     // ตรวจสอบ authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();

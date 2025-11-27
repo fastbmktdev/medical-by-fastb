@@ -5,7 +5,7 @@
  */
 
 import { NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { NextRequest } from 'next/server';
 
 /**
@@ -17,7 +17,7 @@ export async function GET(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { id } = await context.params;
 
     // ตรวจสอบว่าโรงพยาบาลมีอยู่และ approved

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 
 interface RouteContext {
   params: Promise<{
@@ -17,7 +17,7 @@ export async function PATCH(
   context: RouteContext
 ) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { id } = await context.params;
 
     // ตรวจสอบ authentication
@@ -188,7 +188,7 @@ export async function GET(
   context: RouteContext
 ) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const { id } = await context.params;
 
     // ตรวจสอบ authentication

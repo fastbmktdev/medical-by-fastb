@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@shared/lib/database/supabase/server';
+import { createServerClient } from "@shared/lib/database/supabase/server";
 import { withAdminAuth } from '@shared/lib/api/withAdminAuth';
 
 type BulkBookingAction = 'confirm' | 'complete' | 'cancel';
@@ -21,7 +21,7 @@ export const POST = withAdminAuth<Record<string, never>>(async (
   _context: { params: Promise<Record<string, never>> },
 ) => {
   try {
-    const supabase = await createClient();
+    const supabase = await createServerClient();
     const body = (await request.json()) as BulkBookingRequestBody;
 
     const { action, bookingIds } = body;
