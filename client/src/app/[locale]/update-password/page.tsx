@@ -89,7 +89,7 @@ function UpdatePasswordForm() {
 
         if (!session) {
           // User is not authenticated, redirect to login
-          router.push(`/login?redirect=/update-password`);
+          router.push('/login?redirect=/update-password');
         } else {
           // Check if this is a password reset session
           const { data: { user } } = await supabase.auth.getUser();
@@ -100,14 +100,14 @@ function UpdatePasswordForm() {
         }
       } catch {
         // Error occurred during authentication check
-        router.push(`/${locale}/login?redirect=/${locale}/update-password`);
+        router.push('/login?redirect=/update-password');
       } finally {
         setIsCheckingAuth(false);
       }
     };
 
     checkAuthentication();
-  }, [supabase, router, searchParams, locale]);
+  }, [supabase, router, searchParams]);
 
   /**
    * Get password strength indicator

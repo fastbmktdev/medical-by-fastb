@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useRouter } from 'next/navigation';
-import { useLocale } from 'next-intl';
+import { useRouter } from '@/navigation';
 import { Elements } from '@stripe/react-stripe-js';
 import { getStripe } from '@shared/lib/payments';
 import PaymentMethods from '@/components/features/payments/PaymentMethods';
@@ -28,7 +27,6 @@ interface PaymentData {
 export default function PaymentPage() {
   const { user, isLoading: authLoading } = useAuth();
   const router = useRouter();
-  const locale = useLocale();
   const [activeTab, setActiveTab] = useState<'process' | 'history' | 'status'>('process');
   const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
@@ -38,9 +36,9 @@ export default function PaymentPage() {
   // Redirect if not authenticated
   useEffect(() => {
     if (!user) {
-      router.push(`/${locale}/login`);
+      router.push('/login');
     }
-  }, [user, router, locale]);
+  }, [user, router]);
 
   // Load payment data from URL params or session storage
   useEffect(() => {

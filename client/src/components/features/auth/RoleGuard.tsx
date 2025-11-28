@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useLocale } from 'next-intl';
+import { useRouter } from '@/navigation';
 import { createClient } from '@shared/lib/database/supabase/client';
 import { UserRole, getUserRole, getDashboardPath } from '@shared/lib/auth';
 import { User } from '@supabase/supabase-js';
@@ -36,7 +35,6 @@ export function RoleGuard({
   redirectTo 
 }: RoleGuardProps) {
   const router = useRouter();
-  const locale = useLocale();
   const supabase = createClient();
   
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -55,7 +53,7 @@ export function RoleGuard({
         if (authError || !user) {
           // Not logged in, redirect to login
           const currentPath = window.location.pathname;
-          router.push(`/${locale}/login?redirect=${encodeURIComponent(currentPath)}`);
+          router.push(`/login?redirect=${encodeURIComponent(currentPath)}`);
           return;
         }
 
@@ -92,7 +90,7 @@ export function RoleGuard({
         if (!userRole) {
           console.error('[RoleGuard] Could not get user role after retries');
           // Don't logout - let the user see an error message or redirect to login
-          router.push(`/${locale}/login?error=role_not_found`);
+          router.push('/login?error=role_not_found');
           return;
         }
         
@@ -102,7 +100,7 @@ export function RoleGuard({
         if (userRole !== allowedRole) {
           // User doesn't have the required role - redirect to their own dashboard
           const redirectPath = redirectTo || getDashboardPath(userRole);
-          router.push(`/${locale}${redirectPath}`);
+          router.push(redirectPath);
           return;
         }
 
@@ -110,7 +108,7 @@ export function RoleGuard({
         setIsAuthorized(true);
       } catch (error) {
         console.error('Role check error:', error);
-        router.push(`/${locale}/login`);
+        router.push('/login');
       } finally {
         setIsLoading(false);
       }

@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
-import { useLocale } from "next-intl";
+import { useRouter } from "@/navigation";
 import { User } from "@supabase/supabase-js";
 import { createClient } from '@shared/lib/database/supabase/client';
 import { ApplicationStatus, HospitalData } from "../types";
@@ -10,7 +9,6 @@ import { ApplicationStatus, HospitalData } from "../types";
  */
 export const usePartnerApplication = () => {
   const router = useRouter();
-  const locale = useLocale();
   const supabase = createClient();
   
   const [user, setUser] = useState<User | null>(null);
@@ -27,11 +25,11 @@ export const usePartnerApplication = () => {
       
       if (sessionError || !session) {
         // User is not logged in, redirect to login page
-        router.push(`/${locale}/login?redirect=/${locale}/partner/apply`);
+        router.push('/login?redirect=/partner/apply');
         return;
       }
 
-      const currentUser = session.user;
+      const currentUser = session.user; 
       setUser(currentUser);
 
       // Check if user already has a hospital application
@@ -53,11 +51,11 @@ export const usePartnerApplication = () => {
       }
 
     } catch {
-      router.push(`/${locale}/login?redirect=/${locale}/partner/apply`);
+      router.push('/login?redirect=/partner/apply');
     } finally {
       setIsLoading(false);
     }
-  }, [locale, router, supabase]);
+  }, [router, supabase]);
 
   useEffect(() => {
     checkAuthAndRole();

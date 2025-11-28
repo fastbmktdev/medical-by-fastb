@@ -114,8 +114,8 @@ export default function SidebarContent({
               className={cn(
                 'flex items-center gap-3 px-4 py-2  transition-all',
                 isActive
-                  ? 'bg-brand-primary text-white font-semibold shadow-lg shadow-brand-primary/40'
-                  : 'text-default-400 hover:bg-brand-primary/10 hover:text-white'
+                  ? 'bg-violet-700 text-white font-semibold shadow-lg shadow-violet-700/40'
+                  : 'text-default-400 hover:bg-violet-700/10 hover:text-white'
               )}
             >
               <Icon className="w-5 h-5" />
@@ -147,7 +147,7 @@ export default function SidebarContent({
           variant="flat"
           color="danger"
           startContent={<ArrowRightStartOnRectangleIcon className="w-5 h-5" />}
-          className="w-full font-medium  bg-red-600 hover:bg-red-700"
+          className="w-full font-medium  bg-red-600 hover:bg-red-700 text-white"
         >
           ออกจากระบบ
         </Button>

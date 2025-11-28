@@ -6,6 +6,7 @@ import { Link } from "@/navigation";
 import { AuthLayout } from "@/components/compositions/layouts";
 import { Button } from "@/components/shared";
 import { EnvelopeIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
+import { useLocale } from "next-intl";
 
 /**
  * Content component that uses useSearchParams
@@ -62,7 +63,7 @@ function VerificationPendingContent() {
 
         {/* Action Buttons */}
         <div className="space-y-3 pt-2">
-          <Link href="/login">
+          <Link href={`/${useLocale()}/login`}>
             <Button
               fullWidth
               size="lg"
@@ -72,7 +73,7 @@ function VerificationPendingContent() {
             </Button>
           </Link>
 
-          <Link href="/">
+          <Link href={`/${useLocale()}/`}>
             <Button
               variant="ghost"
               fullWidth
