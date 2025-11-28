@@ -24,7 +24,11 @@ function isApiRoute(path: string) {
 }
 
 function isApiExemptFromProtection(path: string) {
-  return path.startsWith('/api/webhooks/') || path.startsWith('/api/cron/');
+  return (
+    path.startsWith('/api/webhooks/') ||
+    path.startsWith('/api/cron/') ||
+    path === '/api/auth/callback'
+  );
 }
 
 function shouldSkipI18n(path: string) {
@@ -55,19 +59,42 @@ export async function middleware(request: NextRequest) {
     // We need to redirect to /api/auth/callback to handle it properly
     if (path === '/' && code) {
       const apiCallbackUrl = new URL('/api/auth/callback', request.url);
+      // Copy all existing query parameters
       request.nextUrl.searchParams.forEach((value, key) => {
         apiCallbackUrl.searchParams.set(key, value);
       });
-      return NextResponse.redirect(apiCallbackUrl);
+      
+      // Preserve locale from cookie if available, otherwise use default
+      const locale = request.cookies.get('NEXT_LOCALE')?.value || DEFAULT_LOCALE;
+      const response = NextResponse.redirect(apiCallbackUrl);
+      response.cookies.set('NEXT_LOCALE', locale, {
+        path: '/',
+        maxAge: 600, // 10 minutes
+        sameSite: 'lax',
+      });
+      return response;
     }
 
     // Handle locale-aware auth callback redirection
     if (AUTH_LOCALE_REGEX.test(path)) {
       const apiCallbackUrl = new URL('/api/auth/callback', request.url);
+      // Extract locale from path (e.g., /th/auth/callback -> th)
+      const localeMatch = path.match(/^\/(th|en|jp)\//);
+      const locale = localeMatch ? localeMatch[1] : DEFAULT_LOCALE;
+      
+      // Copy all existing query parameters
       request.nextUrl.searchParams.forEach((value, key) => {
         apiCallbackUrl.searchParams.set(key, value);
       });
-      return NextResponse.redirect(apiCallbackUrl);
+      
+      // Set locale cookie for the callback route to pick up
+      const response = NextResponse.redirect(apiCallbackUrl);
+      response.cookies.set('NEXT_LOCALE', locale, {
+        path: '/',
+        maxAge: 600, // 10 minutes
+        sameSite: 'lax',
+      });
+      return response;
     }
 
     // Redirect specific hosts to the coming soon page if necessary
