@@ -213,7 +213,7 @@ export default function ResetPasswordPage() {
         )}
 
         {/* Info Message */}
-        <div className="bg-zinc-700 p-4 border border-zinc-600 ">
+        <div className="bg-zinc-100 p-4 border border-zinc-600 ">
           <p className="text-zinc-300 text-sm">
             {t('infoMessage')}
           </p>
@@ -234,7 +234,7 @@ export default function ResetPasswordPage() {
               name="email"
               value={formData.email}
               onChange={handleInputChange}
-                  className={`w-full bg-zinc-700 border ${
+                  className={`w-full bg-zinc-100 border ${
                     errors.email ? "border-red-500" : "border-zinc-600"
                   }  px-4 py-2.5 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent font-mono text-sm`}
               placeholder={t('emailPlaceholder')}

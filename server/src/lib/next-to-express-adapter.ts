@@ -6,6 +6,7 @@
 
 import { Request, Response, NextFunction } from 'express';
 import { NextRequest, NextResponse } from 'next/server';
+import busboy from 'busboy';
 
 /**
  * Convert Express Request to NextRequest-like object
@@ -64,7 +65,61 @@ function createNextRequest(req: Request): NextRequest {
       return typeof req.body === 'string' ? req.body : JSON.stringify(req.body);
     },
     formData: async () => {
-      throw new Error('formData not supported in Express adapter');
+      // Check if request has multipart/form-data content type
+      const contentType = req.headers['content-type'];
+      if (!contentType || !contentType.includes('multipart/form-data')) {
+        throw new Error('Request is not multipart/form-data');
+      }
+
+      // Parse multipart/form-data using busboy
+      return new Promise<FormData>((resolve, reject) => {
+        const formData = new FormData();
+        const bb = busboy({ headers: req.headers as any });
+
+        bb.on('file', (name, file, info) => {
+          const { filename, encoding, mimeType } = info;
+          const chunks: Buffer[] = [];
+
+          file.on('data', (chunk: Buffer) => {
+            chunks.push(chunk);
+          });
+
+          file.on('end', () => {
+            const buffer = Buffer.concat(chunks);
+            // Create a File object from the buffer
+            const blob = new Blob([buffer], { type: mimeType || 'application/octet-stream' });
+            const fileObj = new File([blob], filename || 'file', {
+              type: mimeType || 'application/octet-stream',
+            });
+            formData.append(name, fileObj);
+          });
+        });
+
+        bb.on('field', (name, value) => {
+          formData.append(name, value);
+        });
+
+        bb.on('finish', () => {
+          resolve(formData);
+        });
+
+        bb.on('error', (err) => {
+          reject(err);
+        });
+
+        // Try to pipe the request to busboy
+        // Note: If Express middleware has already consumed the body, this won't work
+        // In that case, we need to ensure multipart requests skip body parsing middleware
+        if (req.readable && !req.readableEnded) {
+          // Request stream is still available
+          req.pipe(bb);
+        } else if (Buffer.isBuffer(req.body)) {
+          // Body is already a buffer (shouldn't happen for multipart, but handle it)
+          bb.end(req.body);
+        } else {
+          reject(new Error('Request body already consumed. Ensure multipart requests skip body parsing middleware.'));
+        }
+      });
     },
     nextUrl: new URL(url),
     body: req.body,

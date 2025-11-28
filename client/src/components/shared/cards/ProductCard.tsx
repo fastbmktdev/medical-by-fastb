@@ -220,7 +220,7 @@ function ProductCardComponent({
                 disabled:cursor-not-allowed disabled:opacity-60
                 ${
                   isOutOfStock || isAddingToCart
-                    ? "bg-zinc-700 text-zinc-500"
+                    ? "bg-zinc-100 text-zinc-500"
                     : "bg-brand-primary hover:bg-[#8B5CF6] active:scale-95 text-white"
                 }
               `}

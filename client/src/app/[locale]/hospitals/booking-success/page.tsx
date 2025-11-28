@@ -256,7 +256,7 @@ function BookingSuccessContent() {
 
         {/* appointment Details */}
         {appointment && (
-          <div className="bg-zinc-700/50 mb-6 p-6 border border-zinc-600 ">
+          <div className="bg-zinc-100/50 mb-6 p-6 border border-zinc-600 ">
             <h2 className="mb-4 font-semibold text-lg">รายละเอียดการจอง</h2>
             <div className="space-y-3">
               <div className="flex justify-between">
@@ -340,13 +340,13 @@ function BookingSuccessContent() {
         <div className="flex sm:flex-row flex-col gap-3">
           <Link
             href="/dashboard/appointments"
-            className="flex-1 bg-brand-primary hover:bg-red-600 px-6 py-3  font-semibold text-center transition-colors"
+            className="flex-1 bg-violet-700 hover:bg-violet-600 px-6 py-3  font-semibold text-center transition-colors"
           >
             ดูการจองของฉัน
           </Link>
           <Link
             href="/hospitals"
-            className="flex-1 bg-zinc-700 hover:bg-zinc-600 px-6 py-3 border border-zinc-600  font-semibold text-center transition-colors"
+            className="flex-1 bg-zinc-100 hover:bg-zinc-600 px-6 py-3 border border-zinc-600  font-semibold text-center transition-colors"
           >
             กลับไปหน้าโรงพยาบาล
           </Link>

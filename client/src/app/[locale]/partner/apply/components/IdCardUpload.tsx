@@ -28,7 +28,9 @@ export const IdCardUpload = ({
 }: IdCardUploadProps) => {
   const [isUploading, setIsUploading] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(currentWatermarkedUrl || null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(
+    currentWatermarkedUrl || null
+  );
   const [uploadProgress, setUploadProgress] = useState<string>("");
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,7 +38,8 @@ export const IdCardUpload = ({
     if (!file) return;
 
     // Dynamic import to ensure browser-only code is only loaded client-side
-    const { validateIdCardImage, addWatermarkToImage } = await import('@shared/lib/utils/image-watermark');
+    const { validateIdCardImage, addWatermarkToImage } =
+      await import("@shared/lib/utils/image-watermark");
 
     // Validate file
     const validation = validateIdCardImage(file);
@@ -59,17 +62,39 @@ export const IdCardUpload = ({
 
       // Create FormData and upload both files
       const formData = new FormData();
-      formData.append('file', file);
-      formData.append('watermarkedFile', watermarkedFile);
+      formData.append("file", file);
+      formData.append("watermarkedFile", watermarkedFile);
 
-      const response = await fetch('/api/partner/id-card', {
-        method: 'POST',
+      const response = await fetch("/api/partner/id-card", {
+        method: "POST",
         body: formData,
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'การอัปโหลดล้มเหลว');
+        // Check if response is JSON before trying to parse
+        const contentType = response.headers.get("content-type");
+        if (contentType?.includes("application/json")) {
+          try {
+            const error = await response.json();
+            throw new Error(error.error || "การอัปโหลดล้มเหลว");
+          } catch (parseError) {
+            throw new Error(
+              `การอัปโหลดล้มเหลว (${response.status} ${response.statusText})`
+            );
+          }
+        } else {
+          // Response is not JSON (likely HTML error page)
+          const text = await response.text();
+          throw new Error(
+            `การอัปโหลดล้มเหลว (${response.status} ${response.statusText})`
+          );
+        }
+      }
+
+      // Check if response is JSON before parsing
+      const contentType = response.headers.get("content-type");
+      if (!contentType?.includes("application/json")) {
+        throw new Error("ได้รับข้อมูลที่ไม่ถูกต้องจากเซิร์ฟเวอร์");
       }
 
       const result = await response.json();
@@ -77,14 +102,14 @@ export const IdCardUpload = ({
       if (result.success && result.data) {
         setPreviewUrl(result.data.watermarkedUrl);
         onUploadComplete(result.data);
-        toast.success('อัปโหลดบัตรประชาชนสำเร็จ');
+        toast.success("อัปโหลดบัตรประชาชนสำเร็จ");
       } else {
-        throw new Error('ไม่สามารถอัปโหลดได้');
+        throw new Error("ไม่สามารถอัปโหลดได้");
       }
-
     } catch (error) {
-      console.error('Upload error:', error);
-      const errorMessage = error instanceof Error ? error.message : 'เกิดข้อผิดพลาดในการอัปโหลด';
+      console.error("Upload error:", error);
+      const errorMessage =
+        error instanceof Error ? error.message : "เกิดข้อผิดพลาดในการอัปโหลด";
       onUploadError(errorMessage);
       toast.error(errorMessage);
     } finally {
@@ -107,17 +132,20 @@ export const IdCardUpload = ({
   return (
     <div className="bg-zinc-100 shadow-xl p-6 md:p-8 ">
       <h2 className="flex items-center gap-3 mb-6 font-semibold text-white text-2xl">
-        <IdentificationIcon className="w-7 h-7 text-purple-500" />
+        <IdentificationIcon className="w-7 h-7 text-violet-700" />
         บัตรประชาชน (จำเป็น)
       </h2>
 
       {/* Information Box */}
       <div className="mb-6 p-4 border border-purple-500/30 bg-purple-500/10 ">
-        <p className="text-purple-300 text-sm font-medium mb-2">
+        <p className="text-violet-700 text-sm font-medium mb-2">
           🔒 ข้อมูลความปลอดภัย:
         </p>
-        <ul className="text-purple-200/80 text-sm space-y-1 ml-4 list-disc">
-          <li>บัตรประชาชนจะถูก<strong className="text-purple-200">ใส่ลายน้ำ</strong>โดยอัตโนมัติ</li>
+        <ul className="text-violet-700 text-sm space-y-1 ml-4 list-disc">
+          <li>
+            บัตรประชาชนจะถูก
+            <strong className="text-violet-700">ใส่ลายน้ำ</strong>โดยอัตโนมัติ
+          </li>
           <li>เก็บต้นฉบับไว้ในระบบอย่างปลอดภัย (เข้าถึงได้เฉพาะผู้ดูแลระบบ)</li>
           <li>ภาพที่แสดงให้เห็นจะมีลายน้ำเสมอเพื่อความปลอดภัย</li>
           <li>รองรับไฟล์: JPG, PNG (ไม่เกิน 10MB)</li>
@@ -127,8 +155,8 @@ export const IdCardUpload = ({
       {/* Upload Area */}
       {!previewUrl ? (
         <div>
-          <label className="flex flex-col items-center gap-3 bg-zinc-700 hover:bg-zinc-600 p-8 border border-zinc-600 border-dashed  transition-colors cursor-pointer">
-            <IdentificationIcon className="w-16 h-16 text-purple-400" />
+          <label className="flex flex-col items-center gap-3 bg-zinc-100 hover:bg-zinc-600 p-8 border border-zinc-600 border-dashed  transition-colors cursor-pointer">
+            <IdentificationIcon className="w-16 h-16 text-violet-700" />
             <span className="text-zinc-300 text-base font-medium">
               คลิกเพื่ออัปโหลดบัตรประชาชน
             </span>
@@ -168,7 +196,7 @@ export const IdCardUpload = ({
                 <p className="text-zinc-400 text-sm mb-3">
                   บัตรประชาชนของคุณถูกอัปโหลดและใส่ลายน้ำเรียบร้อยแล้ว
                 </p>
-                
+
                 {/* Status message instead of image preview */}
                 <div className="mt-3 p-4 bg-zinc-900/50 border border-green-500/30 ">
                   <div className="flex items-center gap-2">
@@ -200,7 +228,8 @@ export const IdCardUpload = ({
           {/* Info message */}
           <div className="p-3 border border-green-500/30 bg-green-500/10 ">
             <p className="text-green-300 text-sm">
-              ✓ บัตรประชาชนของคุณถูกเก็บไว้อย่างปลอดภัยแล้ว ภาพที่แสดงมีลายน้ำเพื่อป้องกันการนำไปใช้ในทางที่ผิด
+              ✓ บัตรประชาชนของคุณถูกเก็บไว้อย่างปลอดภัยแล้ว
+              ภาพที่แสดงมีลายน้ำเพื่อป้องกันการนำไปใช้ในทางที่ผิด
             </p>
           </div>
         </div>
@@ -210,10 +239,11 @@ export const IdCardUpload = ({
       <div className="mt-6 p-3 border border-yellow-500/30 bg-yellow-500/10 ">
         <div className="flex items-start gap-2">
           <ExclamationTriangleIcon className="shrink-0 w-5 h-5 text-yellow-400 mt-0.5" />
-          <div>
-            <p className="text-yellow-300 text-sm font-medium">หมายเหตุ:</p>
-            <p className="text-yellow-200/80 text-sm mt-1">
-              กรุณาแน่ใจว่าบัตรประชาชนชัดเจน อ่านง่าย และข้อมูลตรงกับที่กรอกในแบบฟอร์ม
+          <div className="text-yellow-400">
+            <p className="text-sm font-medium">หมายเหตุ:</p>
+            <p className="text-sm mt-1">
+              กรุณาแน่ใจว่าบัตรประชาชนชัดเจน อ่านง่าย
+              และข้อมูลตรงกับที่กรอกในแบบฟอร์ม
               การให้ข้อมูลเท็จอาจส่งผลให้คำขอถูกปฏิเสธ
             </p>
           </div>
@@ -222,4 +252,3 @@ export const IdCardUpload = ({
     </div>
   );
 };
-

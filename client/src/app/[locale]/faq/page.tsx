@@ -172,7 +172,7 @@ export default function FAQPage() {
                     className={`w-full text-left px-4 py-3  transition-colors ${
                       activeCategory === category
                         ? "bg-brand-primary text-white"
-                        : "text-zinc-950 hover:bg-zinc-700 hover:text-white"
+                        : "text-zinc-950 hover:bg-zinc-100 hover:text-white"
                     }`}
                   >
                     {category}
@@ -196,7 +196,7 @@ export default function FAQPage() {
                     <div key={index} className="border border-zinc-700 ">
                       <button
                         onClick={() => toggleQuestion(questionId)}
-                        className="flex justify-between items-center hover:bg-zinc-700 hover:text-white p-6 w-full text-left transition-colors cursor-pointer"
+                        className="flex justify-between items-center hover:bg-zinc-100 hover:text-white p-6 w-full text-left transition-colors cursor-pointer"
                       >
                         <h3 className="pr-4 font-semibold text-lg">
                           {faq.question}
@@ -238,7 +238,7 @@ export default function FAQPage() {
                 </Link>
                 <Link
                   href="mailto:support@medicalnext.com"
-                  className="bg-zinc-700 hover:bg-zinc-600 hover:text-white px-6 py-3  font-semibold transition-colors"
+                  className="bg-zinc-100 hover:bg-zinc-600 hover:text-white px-6 py-3  font-semibold transition-colors"
                 >
                   ส่งอีเมล
                 </Link>

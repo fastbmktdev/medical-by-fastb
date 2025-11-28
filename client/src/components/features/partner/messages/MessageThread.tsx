@@ -127,10 +127,10 @@ export function MessageThread({
         {/* Header Skeleton */}
         <div className="bg-zinc-800 border-b border-zinc-700 p-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-zinc-700  animate-pulse" />
+            <div className="w-10 h-10 bg-zinc-100  animate-pulse" />
             <div className="flex-1 space-y-2">
-              <div className="h-4 bg-zinc-700  w-1/4 animate-pulse" />
-              <div className="h-3 bg-zinc-700  w-1/6 animate-pulse" />
+              <div className="h-4 bg-zinc-100  w-1/4 animate-pulse" />
+              <div className="h-3 bg-zinc-100  w-1/6 animate-pulse" />
             </div>
           </div>
         </div>
@@ -139,11 +139,11 @@ export function MessageThread({
         <div className="flex-1 p-4 space-y-4">
           {Array.from({ length: 3 }).map((_, i) => (
             <div key={`skeleton-${i}`} className="flex gap-3">
-              <div className="w-8 h-8 bg-zinc-700  animate-pulse" />
+              <div className="w-8 h-8 bg-zinc-100  animate-pulse" />
               <div className="flex-1">
                 <div className="bg-zinc-800  p-3 max-w-md space-y-2">
-                  <div className="h-3 bg-zinc-700  w-full animate-pulse" />
-                  <div className="h-3 bg-zinc-700  w-3/4 animate-pulse" />
+                  <div className="h-3 bg-zinc-100  w-full animate-pulse" />
+                  <div className="h-3 bg-zinc-100  w-3/4 animate-pulse" />
                 </div>
               </div>
             </div>
@@ -304,7 +304,7 @@ export function MessageThread({
           <button
             onClick={handleSend}
             disabled={!newMessage.trim() || isSending}
-            className="shrink-0 w-11 h-11 flex items-center justify-center bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-700 disabled:cursor-not-allowed text-white  transition-colors"
+            className="shrink-0 w-11 h-11 flex items-center justify-center bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-100 disabled:cursor-not-allowed text-white  transition-colors"
             aria-label="ส่งข้อความ"
           >
             {isSending ? (
@@ -317,11 +317,11 @@ export function MessageThread({
 
         <p className="text-xs text-zinc-500 mt-2">
           กด{" "}
-          <kbd className="px-1 py-0.5 bg-zinc-700  text-[10px]">
+          <kbd className="px-1 py-0.5 bg-zinc-100  text-[10px]">
             Enter
           </kbd>{" "}
           เพื่อส่ง,{" "}
-          <kbd className="px-1 py-0.5 bg-zinc-700  text-[10px]">
+          <kbd className="px-1 py-0.5 bg-zinc-100  text-[10px]">
             Shift+Enter
           </kbd>{" "}
           เพื่อขึ้นบรรทัดใหม่

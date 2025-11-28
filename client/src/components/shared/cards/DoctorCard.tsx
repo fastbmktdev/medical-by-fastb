@@ -74,7 +74,7 @@ function DoctorCardComponent({ doctor, viewMode }: DoctorCardProps) {
           <div className="flex gap-2 w-full sm:w-auto">
             <Link
               href={`/doctors/${doctor.slug}`}
-              className="sm:flex-initial flex-1 bg-zinc-700 hover:bg-zinc-600 px-4 py-2  font-semibold text-sm text-center transition-colors"
+              className="sm:flex-initial flex-1 bg-zinc-100 hover:bg-zinc-600 px-4 py-2  font-semibold text-sm text-center transition-colors"
             >
               ดูรายละเอียด
             </Link>
@@ -140,7 +140,7 @@ function DoctorCardComponent({ doctor, viewMode }: DoctorCardProps) {
         <div className="flex gap-2">
           <Link
             href={`/doctors/${doctor.slug}`}
-            className="flex-1 bg-zinc-700 hover:bg-zinc-600 py-2  font-semibold text-sm text-center transition-colors"
+            className="flex-1 bg-zinc-100 hover:bg-zinc-600 py-2  font-semibold text-sm text-center transition-colors"
           >
             ดูรายละเอียด
           </Link>

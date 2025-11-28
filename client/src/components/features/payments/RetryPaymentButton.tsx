@@ -116,7 +116,7 @@ function RetryPaymentForm({
             {savedPaymentMethods.map((method) => (
               <label
                 key={method.id}
-                className="flex items-center space-x-3 p-3 bg-zinc-700  cursor-pointer hover:bg-zinc-600 transition-colors"
+                className="flex items-center space-x-3 p-3 bg-zinc-100  cursor-pointer hover:bg-zinc-600 transition-colors"
               >
                 <input
                   type="radio"
@@ -149,7 +149,7 @@ function RetryPaymentForm({
           <label className="block text-sm font-medium text-zinc-300 mb-2">
             ข้อมูลบัตรเครดิต
           </label>
-          <div className="bg-zinc-700  p-4">
+          <div className="bg-zinc-100  p-4">
             <PaymentElement />
           </div>
         </div>

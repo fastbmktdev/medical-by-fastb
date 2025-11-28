@@ -109,8 +109,8 @@ export function HospitalGallery({ hospitalId, hospitalName }: HospitalGalleryPro
     return (
       <div className="flex justify-center items-center bg-linear-to-br from-zinc-800 to-zinc-950  animate-pulse h-96">
         <div className="flex flex-col items-center gap-3">
-          <div className="bg-zinc-700  w-16 h-16"></div>
-          <div className="bg-zinc-700  w-32 h-4"></div>
+          <div className="bg-zinc-100  w-16 h-16"></div>
+          <div className="bg-zinc-100  w-32 h-4"></div>
         </div>
       </div>
     );

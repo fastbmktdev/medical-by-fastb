@@ -213,7 +213,7 @@ export default function TermsPage() {
                     className={`w-full text-left px-3 py-2  text-sm transition-colors ${
                       activeSection === index
                         ? "bg-brand-primary text-white"
-                        : "text-zinc-950 hover:bg-zinc-700 hover:text-white"
+                        : "text-zinc-950 hover:bg-zinc-100 hover:text-white"
                     }`}
                   >
                     {section.title}
@@ -241,7 +241,7 @@ export default function TermsPage() {
               <button
                 onClick={() => setActiveSection(Math.max(0, activeSection - 1))}
                 disabled={activeSection === 0}
-                className="bg-zinc-700 hover:bg-zinc-600 disabled:bg-zinc-100 px-6 py-2  font-medium disabled:text-zinc-500 transition-colors disabled:cursor-not-allowed"
+                className="bg-zinc-100 hover:bg-zinc-600 disabled:bg-zinc-100 px-6 py-2  font-medium disabled:text-zinc-500 transition-colors disabled:cursor-not-allowed"
               >
                 ← ก่อนหน้า
               </button>
@@ -251,7 +251,7 @@ export default function TermsPage() {
               <button
                 onClick={() => setActiveSection(Math.min(termsData.length - 1, activeSection + 1))}
                 disabled={activeSection === termsData.length - 1}
-                className="bg-zinc-700 hover:bg-zinc-600 disabled:bg-zinc-100 px-6 py-2  font-medium disabled:text-zinc-500 transition-colors disabled:cursor-not-allowed"
+                className="bg-zinc-100 hover:bg-zinc-600 disabled:bg-zinc-100 px-6 py-2  font-medium disabled:text-zinc-500 transition-colors disabled:cursor-not-allowed"
               >
                 ถัดไป →
               </button>
@@ -274,7 +274,7 @@ export default function TermsPage() {
             </Link>
             <Link
               href="/privacy"
-              className="bg-zinc-700 hover:bg-zinc-600 px-6 py-3  font-semibold transition-colors"
+              className="bg-zinc-100 hover:bg-zinc-600 px-6 py-3  font-semibold transition-colors"
             >
               นโยบายความเป็นส่วนตัว
             </Link>

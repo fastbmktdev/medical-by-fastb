@@ -158,7 +158,7 @@ export function ComposeMessage({
                           key={customer.id}
                           type="button"
                           onClick={() => setSelectedCustomer(customer)}
-                          className="w-full text-left p-3  hover:bg-zinc-700 transition-colors"
+                          className="w-full text-left p-3  hover:bg-zinc-100 transition-colors"
                         >
                           <div className="flex items-center gap-3">
                             {customer.avatar_url ? (
@@ -310,7 +310,7 @@ export function ComposeMessage({
             <button
               type="submit"
               disabled={isSending}
-              className="px-6 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-700 disabled:cursor-not-allowed text-white  transition-colors flex items-center gap-2"
+              className="px-6 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-100 disabled:cursor-not-allowed text-white  transition-colors flex items-center gap-2"
             >
               {isSending ? (
                 <>

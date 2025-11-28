@@ -184,7 +184,7 @@ function RecentBookingsSection({
           ดูทั้งหมด
         </Button>
       </div>
-      <Card className="bg-zinc-900 backdrop-blur-sm border border-zinc-700 ">
+      <Card className="bg-zinc-100 backdrop-blur-sm border border-zinc-700 p-[0.5rem_1rem_1rem]">
         <CardBody className="p-0">
           <ResponsiveTable
             columns={[

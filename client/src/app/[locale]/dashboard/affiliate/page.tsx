@@ -373,7 +373,7 @@ export default function AffiliateDashboardPage() {
                     <input
                       value={value}
                       readOnly
-                      className="flex-1 bg-zinc-700/50 border border-zinc-600  px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-red-500/50"
+                      className="flex-1 bg-zinc-100/50 border border-zinc-600  px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-red-500/50"
                     />
                     <Tooltip content="คัดลอก">
                       <Button
@@ -388,7 +388,7 @@ export default function AffiliateDashboardPage() {
                   </div>
                 </div>
               ))}
-              <Divider className="my-6 bg-zinc-700/50" />
+              <Divider className="my-6 bg-zinc-100/50" />
               <div>
                 <p className="text-zinc-300 text-sm mb-4 flex items-center gap-2">
                   <ShareIcon className="w-4 h-4" />
@@ -487,8 +487,8 @@ export default function AffiliateDashboardPage() {
                   </div>
                 );
               })}
-              <Divider className="my-4 bg-zinc-700/50" />
-              <div className="flex justify-between items-center p-3 bg-zinc-700/30 ">
+              <Divider className="my-4 bg-zinc-100/50" />
+              <div className="flex justify-between items-center p-3 bg-zinc-100/30 ">
                 <span className="text-zinc-300 flex items-center gap-2">
                   <SparklesIcon className="w-4 h-4" />
                   ช่องทางแนะนำหลัก
@@ -544,7 +544,7 @@ export default function AffiliateDashboardPage() {
                   aria-label="Referral history"
                   classNames={{
                     wrapper: "bg-transparent",
-                    th: "bg-zinc-700/50 text-zinc-300 border-b border-zinc-600",
+                    th: "bg-zinc-100/50 text-zinc-300 border-b border-zinc-600",
                     td: "border-b border-zinc-700/50 text-zinc-300",
                   }}
                 >
@@ -561,7 +561,7 @@ export default function AffiliateDashboardPage() {
                     {referralHistory.map((referral) => (
                       <TableRow
                         key={referral.id}
-                        className="hover:bg-zinc-700/30 transition-colors"
+                        className="hover:bg-zinc-100/30 transition-colors"
                       >
                         <TableCell>
                           {new Date(referral.created_at).toLocaleDateString(
@@ -631,7 +631,7 @@ export default function AffiliateDashboardPage() {
               </div>
             ) : (
               <div className="text-center py-16">
-                <div className="w-24 h-24 bg-zinc-700/50  flex items-center justify-center mx-auto mb-6">
+                <div className="w-24 h-24 bg-zinc-100/50  flex items-center justify-center mx-auto mb-6">
                   <UserPlusIcon className="w-12 h-12 text-zinc-500" />
                 </div>
                 <p className="text-zinc-300 text-lg font-medium mb-2">

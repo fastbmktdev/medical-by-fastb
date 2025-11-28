@@ -345,7 +345,7 @@ export default function ProductDetailPage({
                   <button
                     onClick={() => handleQuantityChange(quantity - 1)}
                     disabled={quantity <= 1}
-                    className="bg-zinc-700 hover:bg-zinc-600 disabled:opacity-50 px-4 py-2  font-semibold transition-colors disabled:cursor-not-allowed"
+                    className="bg-zinc-100 hover:bg-zinc-600 disabled:opacity-50 px-4 py-2  font-semibold transition-colors disabled:cursor-not-allowed"
                   >
                     -
                   </button>
@@ -362,7 +362,7 @@ export default function ProductDetailPage({
                   <button
                     onClick={() => handleQuantityChange(quantity + 1)}
                     disabled={quantity >= availableStock}
-                    className="bg-zinc-700 hover:bg-zinc-600 disabled:opacity-50 px-4 py-2  font-semibold transition-colors disabled:cursor-not-allowed"
+                    className="bg-zinc-100 hover:bg-zinc-600 disabled:opacity-50 px-4 py-2  font-semibold transition-colors disabled:cursor-not-allowed"
                   >
                     +
                   </button>
@@ -381,7 +381,7 @@ export default function ProductDetailPage({
               disabled={isOutOfStock}
               className={`w-full flex items-center justify-center gap-2 px-6 py-4  font-semibold text-lg transition-colors ${
                 isOutOfStock
-                  ? "bg-zinc-700 text-zinc-500 cursor-not-allowed"
+                  ? "bg-zinc-100 text-zinc-500 cursor-not-allowed"
                   : "bg-brand-primary hover:bg-red-600 text-white"
               }`}
               aria-label="เพิ่มสินค้าลงตะกร้า"

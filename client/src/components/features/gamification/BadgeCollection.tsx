@@ -74,7 +74,7 @@ export default function BadgeCollection({ badges, showAll = true, className = ''
             className={`px-3 py-1  text-sm font-medium transition-colors ${
               filter === 'all' 
                 ? 'bg-blue-600 text-white' 
-                : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700 border border-zinc-700'
+                : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-100 border border-zinc-700'
             }`}
           >
             ทั้งหมด
@@ -84,7 +84,7 @@ export default function BadgeCollection({ badges, showAll = true, className = ''
             className={`px-3 py-1  text-sm font-medium transition-colors ${
               filter === 'earned' 
                 ? 'bg-green-600 text-white' 
-                : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700 border border-zinc-700'
+                : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-100 border border-zinc-700'
             }`}
           >
             ได้รับแล้ว
@@ -94,7 +94,7 @@ export default function BadgeCollection({ badges, showAll = true, className = ''
             className={`px-3 py-1  text-sm font-medium transition-colors ${
               filter === 'available' 
                 ? 'bg-orange-600 text-white' 
-                : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700 border border-zinc-700'
+                : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-100 border border-zinc-700'
             }`}
           >
             ยังไม่ได้รับ

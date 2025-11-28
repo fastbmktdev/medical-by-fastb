@@ -97,7 +97,7 @@ export default function LeaderboardWidget({ leaderboard, className = '' }: Leade
                     className="w-8 h-8  object-cover"
                   />
                 ) : (
-                  <div className="w-8 h-8 bg-zinc-700  flex items-center justify-center">
+                  <div className="w-8 h-8 bg-zinc-100  flex items-center justify-center">
                     <span className="text-zinc-300 text-sm">
                       {entry.user?.username?.charAt(0).toUpperCase() || '?'}
                     </span>

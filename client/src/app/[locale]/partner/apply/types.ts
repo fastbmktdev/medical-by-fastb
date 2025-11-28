@@ -44,13 +44,10 @@ export interface HospitalData {
 export type ApplicationStatus = "pending" | "approved" | "denied" | "none";
 
 export const SERVICE_OPTIONS = [
-  "การแพทย์",
-  "ฟิตเนส",
-  "เทรนนิ่งเด็ก",
-  "Private Class",
-  "คลาสกลุ่ม",
-  "เทรนนิ่งมืออาชีพ",
-  "คอร์สลดน้ำหนัก",
-  "โยคะ/พิลาทิส"
+  "บริการแกนหลัก (Core Medical Services)",
+  "บริการศัลยกรรม (Surgical Services)",
+  "บริการเฉพาะทาง (Specialist Services)",
+  "บริการเสริมสุขภาพ (Wellness & Support Services)",
+  "บริการเสริมอื่นๆ (Ancillary Services)"
 ] as const;
 

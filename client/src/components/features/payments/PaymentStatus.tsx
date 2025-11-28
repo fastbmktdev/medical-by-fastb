@@ -39,7 +39,7 @@ export default function PaymentStatus() {
           
           {/* Payment Cards Skeleton */}
           {Array.from({ length: 3 }).map((_, i) => (
-            <div key={`skeleton-${i}`} className="bg-zinc-700  p-6 border border-zinc-600">
+            <div key={`skeleton-${i}`} className="bg-zinc-100  p-6 border border-zinc-600">
               <div className="flex items-start justify-between">
                 <div className="flex items-start gap-4 flex-1">
                   <Skeleton className="w-12 h-12" variant="circle" />
@@ -87,7 +87,7 @@ export default function PaymentStatus() {
         <button
           onClick={handleRefresh}
           disabled={refreshing}
-          className="flex items-center gap-2 bg-zinc-700 hover:bg-zinc-600 disabled:opacity-50 px-4 py-2  font-medium transition-colors disabled:cursor-not-allowed"
+          className="flex items-center gap-2 bg-zinc-100 hover:bg-zinc-600 disabled:opacity-50 px-4 py-2  font-medium transition-colors disabled:cursor-not-allowed"
           aria-label="รีเฟรชสถานะการชำระเงิน"
         >
           {refreshing ? <LoadingSpinner size="xs" /> : <ArrowPathIcon className="w-4 h-4" />}
@@ -108,7 +108,7 @@ export default function PaymentStatus() {
           {payments.map((payment) => (
             <div
               key={payment.id}
-              className="bg-zinc-700  p-6 border border-zinc-600"
+              className="bg-zinc-100  p-6 border border-zinc-600"
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-start gap-4">

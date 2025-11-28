@@ -205,7 +205,7 @@ export default function PaymentHistory() {
               {selectedPayment.metadata && Object.keys(selectedPayment.metadata).length > 0 && (
                 <div>
                   <label className="text-zinc-400 text-sm">ข้อมูลเพิ่มเติม</label>
-                  <div className="bg-zinc-700  p-4 mt-2">
+                  <div className="bg-zinc-100  p-4 mt-2">
                     <pre className="text-zinc-300 text-sm whitespace-pre-wrap">
                       {JSON.stringify(selectedPayment.metadata, null, 2)}
                     </pre>

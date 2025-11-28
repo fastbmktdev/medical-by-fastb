@@ -27,7 +27,7 @@ find client/src -type f \( -name "*.tsx" -o -name "*.ts" \) | while read -r file
     -e 's/bg-zinc-800\/50 backdrop-blur-sm/bg-white text-zinc-950/g' \
     -e 's/bg-zinc-800\/50/bg-white\/50 text-zinc-950/g' \
     -e 's/bg-zinc-800/bg-white text-zinc-950/g' \
-    -e 's/bg-zinc-700/bg-white text-zinc-950/g' \
+    -e 's/bg-zinc-100/bg-white text-zinc-950/g' \
     -e 's/bg-zinc-600/bg-gray-400/g' \
     -e 's/text-zinc-300/text-zinc-950/g' \
     -e 's/text-zinc-400/text-gray-600/g' \

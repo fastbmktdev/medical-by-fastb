@@ -220,7 +220,7 @@ function MobileUserMenu({
   return user ? (
     <div className="space-y-2">
       {/* User Info */}
-      <div className="bg-gray-50 px-4 py-3  border border-gray-200">
+      <div className="bg-gray-50 px-4 py-3 border border-gray-200 rounded-lg">
         <p className="font-medium text-sm truncate text-zinc-950">
           {user.user_metadata?.full_name || "ผู้ใช้งาน"}
         </p>
@@ -238,7 +238,7 @@ function MobileUserMenu({
       {userRole && (
         <Link
           href={getDashboardPath(userRole)}
-          className="flex items-center gap-2 bg-white hover:bg-gray-100 px-4 py-2  font-medium text-sm transition-colors text-zinc-950 border border-gray-200"
+          className="flex items-center gap-2 bg-white hover:bg-gray-100 px-4 py-2 font-medium text-sm transition-colors text-zinc-950 border border-gray-200 rounded-lg"
           onClick={onClose}
         >
           {userRole === "admin" && <ShieldCheckIcon className="w-5 h-5" />}
@@ -254,7 +254,7 @@ function MobileUserMenu({
       {userRole === "authenticated" && !applicationStatus && (
         <Link
           href="/partner/apply"
-          className="flex items-center gap-2 bg-white hover:bg-gray-100 px-4 py-2  font-medium text-sm transition-colors text-zinc-950 border border-gray-200"
+          className="flex items-center gap-2 bg-white hover:bg-gray-100 px-4 py-2 font-medium text-sm transition-colors text-zinc-950 border border-gray-200 rounded-lg"
           onClick={onClose}
         >
           <BuildingStorefrontIcon className="w-5 h-5" />
@@ -264,7 +264,7 @@ function MobileUserMenu({
 
       {/* Pending Status */}
       {userRole === "authenticated" && applicationStatus === "pending" && (
-        <div className="bg-yellow-500/20 px-4 py-3 border border-yellow-500/30 ">
+        <div className="bg-yellow-500/20 px-4 py-3 border border-yellow-500/30 rounded-lg">
           <p className="font-medium text-sm">📋 รอการอนุมัติ Partner</p>
           <p className="mt-1 text-yellow-400 text-xs">
             ทีมงานกำลังตรวจสอบข้อมูล
@@ -276,7 +276,7 @@ function MobileUserMenu({
       <button
         onClick={handleLogout}
         disabled={isLoggingOut}
-        className="flex justify-center items-center gap-2 bg-brand-primary hover:bg-[#8B5CF6] disabled:bg-purple-400 px-4 py-2  w-full font-medium text-sm transition-colors"
+        className="flex justify-center items-center gap-2 bg-brand-primary hover:bg-[#8B5CF6] disabled:bg-purple-400 px-4 py-2 w-full font-medium text-sm transition-colors rounded-lg"
         aria-label="ออกจากระบบ"
       >
         <ArrowRightStartOnRectangleIcon className="w-5 h-5" />
@@ -286,7 +286,7 @@ function MobileUserMenu({
   ) : (
     <Link
       href="/login"
-      className="flex justify-center items-center gap-2 bg-white hover:bg-gray-100 px-4 py-2  font-medium text-sm transition-colors text-zinc-950 border border-gray-200"
+      className="flex justify-center items-center gap-2 bg-white hover:bg-gray-100 px-4 py-2 font-medium text-sm transition-colors text-zinc-950 border border-gray-200 rounded-lg"
       onClick={onClose}
     >
       <UserCircleIcon className="w-5 h-5" />
@@ -355,7 +355,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="top-0 z-5000 fixed bg-white/75 supports-backdrop-filter:bg-white/60 backdrop-blur border-white/10 border-b w-screen h-16 text-zinc-950">
+    <header className="top-0 z-5000 fixed bg-white/75 supports-backdrop-filter:bg-white/60 backdrop-blur border-gray-200 border-b w-screen h-16 text-zinc-950">
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo & Nav */}
@@ -386,7 +386,7 @@ export default function Header() {
             ) : (
               <Link
                 href="/login"
-                className="text-white hidden md:inline-flex items-center gap-2 bg-violet-700 hover:bg-violet-800 px-4  h-10 font-medium text-sm transition-colors"
+                className="text-white hidden md:inline-flex items-center gap-2 bg-brand-primary hover:bg-violet-800 px-4 h-10 font-medium text-sm transition-colors"
               >
                 <UserCircleIcon className="w-5 h-5" />
                 เข้าสู่ระบบ
@@ -434,7 +434,7 @@ export default function Header() {
               onNavClick={() => setIsMobileMenuOpen(false)}
             />
             {/* Mobile User & Lang */}
-            <div className="pt-4 border-white/10 border-t">
+            <div className="pt-4 border-gray-200 border-t space-y-4">
               <MobileUserMenu
                 user={user}
                 userRole={userRole}
@@ -443,8 +443,8 @@ export default function Header() {
                 isLoggingOut={isLoggingOut}
                 onClose={() => setIsMobileMenuOpen(false)}
               />
+              <LanguageSwitcher />
             </div>
-            <LanguageSwitcher />
           </div>
         </div>
       )}

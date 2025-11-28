@@ -164,7 +164,7 @@ const FavoriteStats = ({
                 </div>
                 <div>
                   <p className="mb-1 text-default-400 text-sm">{label}</p>
-                  <p className="font-bold text-2xl text-white">
+                  <p className="font-bold text-2xl text-violet-700">
                     {isLoadingFavorites ? "..." : count}
                   </p>
                 </div>
@@ -178,17 +178,17 @@ const FavoriteStats = ({
 };
 
 const NoHospitalFavorites = () => (
-  <Card className="bg-zinc-900 backdrop-blur-sm border border-zinc-700 ">
+  <Card className="bg-zinc-100 backdrop-blur-sm border border-zinc-700 ">
     <CardBody className="py-16 text-center">
       <HeartIcon className="mx-auto mb-4 w-16 h-16 text-default-300" />
-      <h3 className="mb-2 font-semibold text-xl text-white">ยังไม่มีรายการโปรด</h3>
+      <h3 className="mb-2 font-semibold text-xl text-zinc-950">ยังไม่มีรายการโปรด</h3>
       <p className="mb-6 text-default-400">
         เริ่มเพิ่มโรงพยาบาลที่คุณชื่นชอบเพื่อเข้าถึงได้ง่ายขึ้น
       </p>
       <Button
         as={Link}
         href="/hospitals"
-        className="bg-red-600 text-white hover:bg-red-800  w-fit mx-auto"
+        className="bg-violet-700 text-white hover:bg-violet-800  w-fit mx-auto"
         startContent={<MapPinIcon className="w-5 h-5" />}
       >
         ค้นหาโรงพยาบาล
@@ -245,6 +245,21 @@ const FavoritesContent = () => {
     setIsLoadingFavorites(true);
     try {
       const response = await fetch("/api/favorites");
+      
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        console.error('Error loading favorites: Received non-JSON response', {
+          status: response.status,
+          contentType,
+          preview: text.substring(0, 200)
+        });
+        setFavorites([]);
+        toast.error("ไม่สามารถโหลดรายการโปรดได้ (Server error)");
+        return;
+      }
+
       const result = await response.json();
 
       if (result.success) {
@@ -256,6 +271,7 @@ const FavoritesContent = () => {
       const errorMsg =
         error instanceof Error ? error.message : String(error);
       console.error("Error loading favorites:", errorMsg);
+      setFavorites([]);
       toast.error("ไม่สามารถโหลดรายการโปรดได้");
     } finally {
       setIsLoadingFavorites(false);
@@ -283,6 +299,20 @@ const FavoritesContent = () => {
           `/api/favorites?item_type=hospital&item_id=${hospitalId}`,
           { method: "DELETE" }
         );
+        
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          const text = await response.text();
+          console.error('Error removing favorite: Received non-JSON response', {
+            status: response.status,
+            contentType,
+            preview: text.substring(0, 200)
+          });
+          toast.error("เกิดข้อผิดพลาดในการลบรายการโปรด (Server error)");
+          return;
+        }
+
         const result = await response.json();
 
         if (result.success) {
@@ -343,7 +373,7 @@ const FavoritesContent = () => {
         allCount={favorites.length}
       />
       <section>
-        <h2 className="mb-6 font-bold text-2xl">โรงพยาบาลโปรด</h2>
+        <h2 className="mb-6 font-bold text-2xl text-zinc-950">โรงพยาบาลโปรด</h2>
         <HospitalFavoritesSection
           isLoadingFavorites={isLoadingFavorites}
           hospitalFavorites={hospitalFavorites}

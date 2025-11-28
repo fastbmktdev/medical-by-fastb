@@ -194,14 +194,14 @@ export default function ArticleDetailPage({
           {/* Action Buttons */}
           <div className="flex items-center gap-3 ml-auto">
             <button 
-              className="flex items-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-700  transition-colors text-zinc-300 text-sm" 
+              className="flex items-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-100  transition-colors text-zinc-300 text-sm" 
               aria-label="แชร์บทความ"
             >
               <ShareIcon className="w-4 h-4" />
               แชร์
             </button>
             <button 
-              className="flex items-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-700  transition-colors text-zinc-300 text-sm" 
+              className="flex items-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-100  transition-colors text-zinc-300 text-sm" 
               aria-label="บันทึกบทความ"
             >
               <BookmarkIcon className="w-4 h-4" />
@@ -256,7 +256,7 @@ export default function ArticleDetailPage({
                 {article.tags.map((tag, index) => (
                   <span
                     key={index}
-                    className="bg-zinc-800 hover:bg-zinc-700 px-4 py-2  font-medium text-zinc-300 text-sm transition-colors cursor-pointer"
+                    className="bg-zinc-800 hover:bg-zinc-100 px-4 py-2  font-medium text-zinc-300 text-sm transition-colors cursor-pointer"
                   >
                     #{tag}
                   </span>
@@ -279,7 +279,7 @@ export default function ArticleDetailPage({
                 <Link
                   key={related.id}
                   href={`/articles/${related.slug}`}
-                  className="group bg-zinc-800 hover:bg-zinc-700 border border-zinc-700  overflow-hidden transition-all"
+                  className="group bg-zinc-800 hover:bg-zinc-100 border border-zinc-700  overflow-hidden transition-all"
                 >
                   <div className="relative w-full h-32">
                     <Image

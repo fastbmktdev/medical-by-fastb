@@ -239,7 +239,7 @@ function PaymentFailureContent() {
             
             <button
               onClick={handleGoHome}
-              className="flex items-center justify-center gap-2 bg-zinc-700 hover:bg-zinc-600 px-6 py-3  font-semibold transition-colors"
+              className="flex items-center justify-center gap-2 bg-zinc-100 hover:bg-zinc-600 px-6 py-3  font-semibold transition-colors"
               aria-label="กลับไปหน้าหลัก"
             >
               <HomeIcon className="w-5 h-5" />
@@ -248,7 +248,7 @@ function PaymentFailureContent() {
             
             <button
               onClick={handleContactSupport}
-              className="flex items-center justify-center gap-2 bg-zinc-700 hover:bg-zinc-600 px-6 py-3  font-semibold transition-colors"
+              className="flex items-center justify-center gap-2 bg-zinc-100 hover:bg-zinc-600 px-6 py-3  font-semibold transition-colors"
               aria-label="ติดต่อฝ่ายสนับสนุนลูกค้า"
             >
               <PhoneIcon className="w-5 h-5" />

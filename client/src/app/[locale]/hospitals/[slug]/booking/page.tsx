@@ -446,7 +446,7 @@ export default function BookingPage({
                           ? "bg-green-600"
                           : isCurrent
                           ? "bg-brand-primary"
-                          : "bg-zinc-700"
+                          : "bg-zinc-100"
                       }`}
                     >
                       {isCompleted ? (
@@ -466,7 +466,7 @@ export default function BookingPage({
                   {index < STEPS.length - 1 && (
                     <div
                       className={`flex-1 h-0.5 mx-2 ${
-                        isCompleted ? "bg-green-600" : "bg-zinc-700"
+                        isCompleted ? "bg-green-600" : "bg-zinc-100"
                       }`}
                     />
                   )}
@@ -509,7 +509,7 @@ export default function BookingPage({
                         <button
                           key={pkg.id}
                           onClick={() => selectPackage(pkg)}
-                          className={`text-left bg-zinc-700 hover:bg-zinc-600 p-6 border  transition-all ${
+                          className={`text-left bg-zinc-100 hover:bg-zinc-600 p-6 border  transition-all ${
                             formData.selectedPackage?.id === pkg.id
                               ? "border-red-500 ring-2 ring-red-500/50"
                               : "border-zinc-600"
@@ -628,7 +628,7 @@ export default function BookingPage({
                         <div className="space-y-3">
                           <button
                             onClick={() => selectPromotion(null)}
-                            className={`w-full text-left bg-zinc-800 hover:bg-zinc-700 p-4 border  transition-all ${
+                            className={`w-full text-left bg-zinc-800 hover:bg-zinc-100 p-4 border  transition-all ${
                               formData.selectedPromotion === null
                                 ? "border-green-500 ring-2 ring-green-500/50"
                                 : "border-zinc-600"
@@ -651,7 +651,7 @@ export default function BookingPage({
                               <button
                                 key={promo.id}
                                 onClick={() => selectPromotion(promo)}
-                                className={`w-full text-left bg-zinc-800 hover:bg-zinc-700 p-4 border  transition-all ${
+                                className={`w-full text-left bg-zinc-800 hover:bg-zinc-100 p-4 border  transition-all ${
                                   formData.selectedPromotion?.id === promo.id
                                     ? "border-green-500 ring-2 ring-green-500/50"
                                     : "border-zinc-600"
@@ -704,7 +704,7 @@ export default function BookingPage({
               
               {/* Selected Package Summary */}
               {formData.selectedPackage && selectedPackageDiscount && (
-                <div className="bg-zinc-700/50 p-4 ">
+                <div className="bg-zinc-100/50 p-4 ">
                   <p className="mb-2 font-semibold text-white">แพ็คเกจที่เลือก:</p>
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
@@ -749,7 +749,7 @@ export default function BookingPage({
                   type="text"
                   value={formData.fullName}
                   onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
-                  className={`bg-zinc-700 px-4 py-3 border  w-full placeholder-zinc-500 focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:outline-none ${
+                  className={`bg-zinc-100 px-4 py-3 border  w-full placeholder-zinc-500 focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:outline-none ${
                     errors.fullName ? "border-red-500" : "border-zinc-600"
                   }`}
                   placeholder="เช่น: สมชาย ใจดี"
@@ -767,7 +767,7 @@ export default function BookingPage({
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                  className={`bg-zinc-700 px-4 py-3 border  w-full placeholder-zinc-500 focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:outline-none ${
+                  className={`bg-zinc-100 px-4 py-3 border  w-full placeholder-zinc-500 focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:outline-none ${
                     errors.email ? "border-red-500" : "border-zinc-600"
                   }`}
                   placeholder="example@email.com"
@@ -785,7 +785,7 @@ export default function BookingPage({
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                  className={`bg-zinc-700 px-4 py-3 border  w-full placeholder-zinc-500 focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:outline-none ${
+                  className={`bg-zinc-100 px-4 py-3 border  w-full placeholder-zinc-500 focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:outline-none ${
                     errors.phone ? "border-red-500" : "border-zinc-600"
                   }`}
                   placeholder="0812345678"
@@ -803,7 +803,7 @@ export default function BookingPage({
                   type="date"
                   value={formData.startDate}
                   onChange={(e) => setFormData(prev => ({ ...prev, startDate: e.target.value }))}
-                  className={`bg-zinc-700 px-4 py-3 border  w-full focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:outline-none ${
+                  className={`bg-zinc-100 px-4 py-3 border  w-full focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:outline-none ${
                     errors.startDate ? "border-red-500" : "border-zinc-600"
                   }`}
                   min={getTomorrowDate()}
@@ -825,7 +825,7 @@ export default function BookingPage({
                 <textarea
                   value={formData.specialRequests}
                   onChange={(e) => setFormData(prev => ({ ...prev, specialRequests: e.target.value }))}
-                  className="bg-zinc-700 px-4 py-3 border border-zinc-600 focus:border-red-500  focus:outline-none focus:ring-2 focus:ring-red-500 w-full placeholder-zinc-500"
+                  className="bg-zinc-100 px-4 py-3 border border-zinc-600 focus:border-red-500  focus:outline-none focus:ring-2 focus:ring-red-500 w-full placeholder-zinc-500"
                   rows={4}
                   placeholder="มีความต้องการพิเศษอะไรเพิ่มเติมไหม?"
                 />
@@ -838,7 +838,7 @@ export default function BookingPage({
             <div className="space-y-6">
               <h2 className="font-semibold text-xl">ยืนยันและชำระเงิน</h2>
 
-              <div className="bg-zinc-700/50 p-6 ">
+              <div className="bg-zinc-100/50 p-6 ">
                 <h3 className="mb-4 font-semibold text-white">สรุปการจอง</h3>
                 <div className="space-y-2 text-zinc-300 text-sm">
                   <div className="flex justify-between">

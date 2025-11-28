@@ -27,7 +27,7 @@ export const HospitalDetailsForm: React.FC<HospitalDetailsFormProps> = ({
 }) => {
   return (
     <div className="bg-zinc-100 shadow-xl p-6 md:p-8 ">
-      <h2 className="flex items-center gap-3 mb-6 font-semibold text-white text-2xl">
+      <h2 className="flex items-center gap-3 mb-6 font-semibold text-zinc-950 text-2xl">
         <DocumentTextIcon className="w-7 h-7 text-blue-500" />
         ข้อมูลโรงพยาบาลเบื้องต้น
       </h2>
@@ -37,11 +37,11 @@ export const HospitalDetailsForm: React.FC<HospitalDetailsFormProps> = ({
         <div>
           <label
             htmlFor="description"
-            className="block mb-2 font-medium text-zinc-300 text-sm"
+            className="block mb-2 font-medium text-zinc-950 text-sm"
           >
             รายละเอียดโรงพยาบาล
           </label>
-          <p className="mb-3 text-zinc-500 text-xs">
+          <p className="mb-3 text-zinc-950 text-xs">
             ประเภทคอร์ส, จำนวนห้องตรวจ, ความจุคน, จุดเด่น, อุปกรณ์, เวลาเปิด-ปิด ฯลฯ
           </p>
           <textarea
@@ -51,7 +51,7 @@ export const HospitalDetailsForm: React.FC<HospitalDetailsFormProps> = ({
             onChange={onInputChange}
             onBlur={onBlur}
             rows={6}
-            className="bg-zinc-700 px-4 py-3 border border-zinc-600 focus:border-transparent  focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white resize-none placeholder-zinc-500"
+            className="bg-zinc-100 px-4 py-3 border border-zinc-600 focus:border-transparent  focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white resize-none placeholder-zinc-500"
             placeholder="เช่น: โรงพยาบาลการแพทย์ขนาดใหญ่ มีเวที 2 เวที รองรับได้ 50 คน เปิดทุกวัน 06:00-22:00 มีแพทย์มืออาชีพ 10 คน..."
           />
         </div>
@@ -68,7 +68,7 @@ export const HospitalDetailsForm: React.FC<HospitalDetailsFormProps> = ({
                 className={`flex items-center gap-3 p-3  border cursor-pointer transition-all ${
                   formData.services.includes(service)
                     ? "bg-brand-primary/20 border-red-500 text-white"
-                    : "bg-zinc-700 border-zinc-600 text-zinc-300 hover:border-zinc-500"
+                    : "bg-zinc-100 border-zinc-600 text-zinc-300 hover:border-zinc-500"
                 }`}
               >
                 <input
@@ -100,7 +100,7 @@ export const HospitalDetailsForm: React.FC<HospitalDetailsFormProps> = ({
             </ul>
           </div>
           
-          <label className="flex flex-col items-center gap-3 bg-zinc-700 hover:bg-zinc-600 p-6 border border-zinc-600 border-dashed  transition-colors cursor-pointer">
+          <label className="flex flex-col items-center gap-3 bg-zinc-100 hover:bg-zinc-600 p-6 border border-zinc-600 border-dashed  transition-colors cursor-pointer">
             <PhotoIcon className="w-12 h-12 text-zinc-400" />
             <span className="text-zinc-300 text-sm">
               คลิกเพื่อเลือกไฟล์ หรือลากไฟล์มาวาง
@@ -142,7 +142,7 @@ export const HospitalDetailsForm: React.FC<HospitalDetailsFormProps> = ({
                         ? 'bg-red-900/30 border border-red-500'
                         : isLargeFile
                         ? 'bg-yellow-900/20 border border-yellow-500/50'
-                        : 'bg-zinc-700'
+                        : 'bg-zinc-100'
                     }`}
                   >
                     <div className="flex items-center gap-3">

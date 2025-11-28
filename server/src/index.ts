@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import { loadRoutes } from './lib/route-loader';
 
@@ -18,12 +19,32 @@ app.use(cors({
   credentials: true,
 }));
 
+// Cookie parser - must be before other middleware that need cookies
+app.use(cookieParser());
+
 // Raw body parser for webhook routes (must be before json parser)
 app.use('/api/webhooks', express.raw({ type: 'application/json' }));
 
 // JSON and URL-encoded body parsers for other routes
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Skip body parsing for multipart/form-data (handled by route adapters)
+app.use((req, res, next) => {
+  const contentType = req.headers['content-type'] || '';
+  if (contentType.includes('multipart/form-data')) {
+    // Skip body parsing for multipart requests - let the adapter handle it
+    return next();
+  }
+  // For other content types, use standard parsers
+  express.json()(req, res, next);
+});
+
+app.use((req, res, next) => {
+  const contentType = req.headers['content-type'] || '';
+  if (contentType.includes('multipart/form-data')) {
+    // Skip URL-encoded parsing for multipart requests
+    return next();
+  }
+  express.urlencoded({ extended: true })(req, res, next);
+});
 
 // Health check
 app.get('/health', (req, res) => {

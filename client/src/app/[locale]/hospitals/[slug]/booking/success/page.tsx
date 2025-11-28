@@ -189,7 +189,7 @@ function BookingSuccessContent() {
 
           {/* Package Info */}
           <div className="gap-6 grid sm:grid-cols-2 mb-6">
-            <div className="bg-zinc-700/50 p-4 ">
+            <div className="bg-zinc-100/50 p-4 ">
               <p className="mb-2 text-zinc-400 text-xs uppercase tracking-wide">แพ็คเกจ</p>
               <p className="font-semibold text-white">{appointment.package_name}</p>
               {appointment.duration_months && (
@@ -199,7 +199,7 @@ function BookingSuccessContent() {
               )}
             </div>
 
-            <div className="bg-zinc-700/50 p-4 ">
+            <div className="bg-zinc-100/50 p-4 ">
               <p className="mb-2 text-zinc-400 text-xs uppercase tracking-wide">ราคา</p>
               <p className="font-bold text-red-500 text-2xl">
                 ฿{appointment.price_paid.toLocaleString()}
@@ -298,7 +298,7 @@ function BookingSuccessContent() {
           </Link>
           <Link
             href="/"
-            className="flex justify-center items-center gap-2 bg-zinc-700 hover:bg-zinc-600 px-6 py-4  font-semibold transition-colors"
+            className="flex justify-center items-center gap-2 bg-zinc-100 hover:bg-zinc-600 px-6 py-4  font-semibold transition-colors"
           >
             <HomeIcon className="w-5 h-5" />
             กลับหน้าหลัก

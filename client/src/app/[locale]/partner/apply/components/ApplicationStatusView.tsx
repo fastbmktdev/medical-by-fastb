@@ -181,7 +181,7 @@ export const ApplicationStatusView = ({
                 <span className="text-white text-sm w-28 shrink-0 font-medium">
                   เบอร์โทร
                 </span>
-                <span className="font-mono font-semibold text-white text-lg bg-zinc-700/50 px-3 py-1 ">
+                <span className="font-mono font-semibold text-white text-lg bg-zinc-100/50 px-3 py-1 ">
                   {existingHospital.phone}
                 </span>
               </div>
@@ -189,7 +189,7 @@ export const ApplicationStatusView = ({
                 <span className="text-white text-sm w-28 shrink-0 font-medium">
                   อีเมล
                 </span>
-                <span className="font-mono font-semibold text-white text-lg bg-zinc-700/50 px-3 py-1 ">
+                <span className="font-mono font-semibold text-white text-lg bg-zinc-100/50 px-3 py-1 ">
                   {existingHospital.email}
                 </span>
               </div>

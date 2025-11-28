@@ -192,7 +192,7 @@ export default function PaymentMethods({
                 onClick={() => method.available && handleMethodSelect(method.id)}
                 className={`p-6  border cursor-pointer transition-all ${
                   method.available
-                    ? 'border-zinc-600 hover:border-red-500 bg-zinc-700 hover:bg-zinc-600'
+                    ? 'border-zinc-600 hover:border-red-500 bg-zinc-100 hover:bg-zinc-600'
                     : 'border-zinc-700 bg-zinc-800 opacity-50 cursor-not-allowed'
                 }`}
               >
@@ -238,7 +238,7 @@ export default function PaymentMethods({
           </div>
 
           {selectedMethod === 'stripe' && (
-            <div className="bg-zinc-700  p-6">
+            <div className="bg-zinc-100  p-6">
               <div className="flex items-center gap-3 mb-4">
                 <CreditCardIcon className="w-6 h-6 text-red-500" />
                 <h4 className="font-semibold text-white">บัตรเครดิต/เดบิต</h4>
@@ -252,7 +252,7 @@ export default function PaymentMethods({
           )}
 
           {selectedMethod === 'bank_transfer' && (
-            <div className="bg-zinc-700  p-6">
+            <div className="bg-zinc-100  p-6">
               <div className="flex items-center gap-3 mb-4">
                 <BanknotesIcon className="w-6 h-6 text-red-500" />
                 <h4 className="font-semibold text-white">โอนเงินผ่านธนาคาร</h4>
@@ -292,7 +292,7 @@ export default function PaymentMethods({
           )}
 
           {selectedMethod === 'promptpay' && (
-            <div className="bg-zinc-700  p-6">
+            <div className="bg-zinc-100  p-6">
               <div className="flex items-center gap-3 mb-4">
                 <QrCodeIcon className="w-6 h-6 text-red-500" />
                 <h4 className="font-semibold text-white">พร้อมเพย์</h4>
@@ -324,7 +324,7 @@ export default function PaymentMethods({
           )}
 
           {selectedMethod === 'onsite' && (
-            <div className="bg-zinc-700  p-6">
+            <div className="bg-zinc-100  p-6">
               <div className="flex items-center gap-3 mb-4">
                 <DevicePhoneMobileIcon className="w-6 h-6 text-red-500" />
                 <h4 className="font-semibold text-white">ชำระเงินที่โรงพยาบาล</h4>

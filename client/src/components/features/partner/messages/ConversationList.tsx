@@ -88,10 +88,10 @@ export function ConversationList({
             className="bg-zinc-800  p-4 animate-pulse"
           >
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 bg-zinc-700 " />
+              <div className="w-10 h-10 bg-zinc-100 " />
               <div className="flex-1 space-y-2">
-                <div className="h-4 bg-zinc-700  w-1/3" />
-                <div className="h-3 bg-zinc-700  w-2/3" />
+                <div className="h-4 bg-zinc-100  w-1/3" />
+                <div className="h-3 bg-zinc-100  w-2/3" />
               </div>
             </div>
           </div>
@@ -121,7 +121,7 @@ export function ConversationList({
           className={`px-3 py-1.5 text-sm  transition-colors ${
             filter === "active"
               ? "bg-blue-600 text-white"
-              : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
+              : "bg-zinc-800 text-zinc-400 hover:bg-zinc-100"
           }`}
         >
           ทั้งหมด
@@ -131,7 +131,7 @@ export function ConversationList({
           className={`px-3 py-1.5 text-sm  transition-colors ${
             filter === "archived"
               ? "bg-blue-600 text-white"
-              : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
+              : "bg-zinc-800 text-zinc-400 hover:bg-zinc-100"
           }`}
         >
           เก็บถาวร

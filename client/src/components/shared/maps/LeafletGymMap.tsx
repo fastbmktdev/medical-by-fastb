@@ -67,7 +67,7 @@ export const LeafletHospitalMap = memo(function LeafletHospitalMap({
             href={mapUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-zinc-700 hover:bg-zinc-600 px-4 py-2  transition-colors"
+            className="inline-flex items-center gap-2 bg-zinc-100 hover:bg-zinc-600 px-4 py-2  transition-colors"
           >
             เปิดใน Google Maps
           </Link>

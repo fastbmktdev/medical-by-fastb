@@ -6,7 +6,7 @@ import { BellIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
 
 const switchClassNames = {
-  base: 'group flex w-full items-center justify-between gap-4  border border-zinc-800/60 bg-zinc-900/60 px-4 py-3 transition hover:border-zinc-700 hover:bg-zinc-900/80',
+  base: 'group flex w-full items-center justify-between gap-4  border border-zinc-800/60 bg-zinc-100/60 px-4 py-3 transition hover:border-zinc-700 hover:bg-zinc-900/80',
   wrapper: 'flex h-7 w-12 shrink-0 items-center  border border-transparent bg-zinc-800 transition-all group-data-[selected=true]:bg-emerald-500',
   thumb: 'pointer-events-none h-5 w-5 shrink-0 translate-x-1  bg-white shadow-md transition-transform duration-200 group-data-[selected=true]:translate-x-6',
   label: 'flex flex-col text-left text-sm leading-tight',

@@ -45,12 +45,55 @@ export default function GamificationDashboard({
     try {
       setLoading(true);
       const response = await fetch("/api/gamification/dashboard");
+      
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        console.error('Error fetching dashboard: Received non-JSON response', {
+          status: response.status,
+          contentType,
+          preview: text.substring(0, 200)
+        });
+        setError('ไม่สามารถโหลดข้อมูล dashboard ได้ (Server error)');
+        setDashboard(null);
+        return;
+      }
+
       const result = await response.json();
-      if (!response.ok)
-        throw new Error(result.error || "Failed to fetch dashboard");
+      
+      if (!response.ok) {
+        // Handle different error status codes
+        let errorMessage = result.error || "ไม่สามารถโหลดข้อมูล dashboard ได้";
+        
+        if (response.status === 401) {
+          errorMessage = "กรุณาเข้าสู่ระบบเพื่อดูข้อมูล dashboard";
+        } else if (response.status === 500) {
+          errorMessage = result.message 
+            ? `เกิดข้อผิดพลาด: ${result.message}`
+            : "เกิดข้อผิดพลาดในระบบ กรุณาลองใหม่อีกครั้ง";
+        }
+        
+        console.error("Error fetching dashboard:", {
+          status: response.status,
+          error: result.error,
+          message: result.message,
+          stack: result.stack
+        });
+        
+        throw new Error(errorMessage);
+      }
+      
       setDashboard(result.data);
+      setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unknown error");
+      const errorMsg = err instanceof Error ? err.message : "ไม่สามารถโหลดข้อมูล dashboard ได้";
+      console.error("Error fetching dashboard:", {
+        error: err,
+        message: errorMsg
+      });
+      setError(errorMsg);
+      setDashboard(null);
     } finally {
       setLoading(false);
     }

@@ -41,6 +41,20 @@ export function useGamification(): UseGamificationReturn {
   const fetchStats = useCallback(async () => {
     try {
       const response = await fetch('/api/gamification/stats');
+      
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        console.error('Error fetching stats: Received non-JSON response', {
+          status: response.status,
+          contentType,
+          preview: text.substring(0, 200)
+        });
+        setStats(null);
+        return;
+      }
+
       const result = await response.json();
 
       if (!response.ok) {
@@ -51,6 +65,7 @@ export function useGamification(): UseGamificationReturn {
     } catch (err) {
       console.error('Error fetching stats:', err);
       setError(err instanceof Error ? err.message : 'Unknown error');
+      setStats(null);
     }
   }, []);
 
@@ -58,15 +73,30 @@ export function useGamification(): UseGamificationReturn {
   const fetchBadges = useCallback(async () => {
     try {
       const response = await fetch('/api/gamification/badges?type=earned');
+      
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        console.error('Error fetching badges: Received non-JSON response', {
+          status: response.status,
+          contentType,
+          preview: text.substring(0, 200)
+        });
+        setBadges([]);
+        return;
+      }
+
       const result = await response.json();
 
       if (!response.ok) {
         throw new Error(result.error || 'Failed to fetch badges');
       }
 
-      setBadges(result.data);
+      setBadges(result.data || []);
     } catch (err) {
       console.error('Error fetching badges:', err);
+      setBadges([]);
     }
   }, []);
 
@@ -74,15 +104,30 @@ export function useGamification(): UseGamificationReturn {
   const fetchChallenges = useCallback(async () => {
     try {
       const response = await fetch('/api/gamification/challenges?type=user_progress');
+      
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        console.error('Error fetching challenges: Received non-JSON response', {
+          status: response.status,
+          contentType,
+          preview: text.substring(0, 200)
+        });
+        setChallenges([]);
+        return;
+      }
+
       const result = await response.json();
 
       if (!response.ok) {
         throw new Error(result.error || 'Failed to fetch challenges');
       }
 
-      setChallenges(result.data);
+      setChallenges(result.data || []);
     } catch (err) {
       console.error('Error fetching challenges:', err);
+      setChallenges([]);
     }
   }, []);
 
@@ -90,6 +135,20 @@ export function useGamification(): UseGamificationReturn {
   const fetchLeaderboards = useCallback(async () => {
     try {
       const response = await fetch('/api/gamification/leaderboards');
+      
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        console.error('Error fetching leaderboards: Received non-JSON response', {
+          status: response.status,
+          contentType,
+          preview: text.substring(0, 200)
+        });
+        setLeaderboards([]);
+        return;
+      }
+
       const result = await response.json();
 
       if (!response.ok) {
@@ -97,16 +156,25 @@ export function useGamification(): UseGamificationReturn {
       }
 
       // Get top 3 leaderboards with data
-      const leaderboardPromises = result.data.slice(0, 3).map(async (lb: { id: string }) => {
-        const lbResponse = await fetch(`/api/gamification/leaderboards?id=${lb.id}`);
-        const lbResult = await lbResponse.json();
-        return lbResult.data;
+      const leaderboardPromises = (result.data || []).slice(0, 3).map(async (lb: { id: string }) => {
+        try {
+          const lbResponse = await fetch(`/api/gamification/leaderboards?id=${lb.id}`);
+          const lbContentType = lbResponse.headers.get('content-type');
+          if (!lbContentType || !lbContentType.includes('application/json')) {
+            return null;
+          }
+          const lbResult = await lbResponse.json();
+          return lbResult.data;
+        } catch {
+          return null;
+        }
       });
 
       const leaderboardData = await Promise.all(leaderboardPromises);
       setLeaderboards(leaderboardData.filter(Boolean));
     } catch (err) {
       console.error('Error fetching leaderboards:', err);
+      setLeaderboards([]);
     }
   }, []);
 
@@ -132,6 +200,13 @@ export function useGamification(): UseGamificationReturn {
           reference_type: referenceType,
         }),
       });
+
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        throw new Error(`Server returned non-JSON response: ${response.status} ${text.substring(0, 100)}`);
+      }
 
       const result = await response.json();
 
@@ -166,6 +241,13 @@ export function useGamification(): UseGamificationReturn {
         }),
       });
 
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        throw new Error(`Server returned non-JSON response: ${response.status} ${text.substring(0, 100)}`);
+      }
+
       const result = await response.json();
 
       if (!response.ok) {
@@ -197,6 +279,13 @@ export function useGamification(): UseGamificationReturn {
           challenge_id: challengeId,
         }),
       });
+
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        throw new Error(`Server returned non-JSON response: ${response.status} ${text.substring(0, 100)}`);
+      }
 
       const result = await response.json();
 

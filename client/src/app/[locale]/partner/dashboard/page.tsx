@@ -1485,7 +1485,7 @@ function PartnerDashboardContent() {
                     {formData.features.map((feature, idx) => (
                       <div
                         key={idx}
-                        className="flex justify-between items-center bg-zinc-700/50 px-3 py-2 "
+                        className="flex justify-between items-center bg-zinc-100/50 px-3 py-2 "
                       >
                         <span className=" text-sm">{feature}</span>
                         <Button

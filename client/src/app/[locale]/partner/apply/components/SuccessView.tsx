@@ -21,7 +21,7 @@ export const SuccessView = () => {
           <p className="mb-8 text-zinc-400 text-lg">
             กรุณารอแอดมินตรวจสอบและติดต่อกลับภายใน 3-5 วันทำการ
           </p>
-          <div className="bg-zinc-700 mb-8 p-4 ">
+          <div className="bg-zinc-100 mb-8 p-4 ">
             <p className="text-zinc-300 text-sm">
               <strong>สถานะ:</strong> <span className="text-yellow-400">รอการตรวจสอบ</span>
             </p>

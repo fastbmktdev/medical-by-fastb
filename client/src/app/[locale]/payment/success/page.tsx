@@ -200,7 +200,7 @@ function PaymentSuccessContent() {
             
             <button
               onClick={handleViewOrders}
-              className="flex items-center justify-center gap-2 bg-zinc-700 hover:bg-zinc-600 px-6 py-3  font-semibold transition-colors"
+              className="flex items-center justify-center gap-2 bg-zinc-100 hover:bg-zinc-600 px-6 py-3  font-semibold transition-colors"
               aria-label="ดูรายการสั่งซื้อของฉัน"
             >
               <DocumentTextIcon className="w-5 h-5" />
@@ -209,7 +209,7 @@ function PaymentSuccessContent() {
             
             <button
               onClick={handleViewPayments}
-              className="flex items-center justify-center gap-2 bg-zinc-700 hover:bg-zinc-600 px-6 py-3  font-semibold transition-colors"
+              className="flex items-center justify-center gap-2 bg-zinc-100 hover:bg-zinc-600 px-6 py-3  font-semibold transition-colors"
               aria-label="ดูประวัติการชำระเงินทั้งหมด"
             >
               <ArrowRightIcon className="w-5 h-5" />

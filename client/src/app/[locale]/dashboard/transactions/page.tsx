@@ -261,11 +261,11 @@ function TransactionsContent() {
             color: netColorClass,
           },
         ].map(({ label, value, icon: Icon, color }) => (
-          <Card key={label} className="bg-zinc-900 backdrop-blur-sm border-none ">
+          <Card key={label} className="bg-zinc-100/60 backdrop-blur-sm border-none ">
             <CardBody className="flex flex-row items-center justify-between border border-zinc-700 ">
               <div>
                 <p className="text-sm text-default-500">{label}</p>
-                <p className="mt-1 text-2xl font-semibold text-white">{value}</p>
+                <p className="mt-1 text-2xl font-semibold text-violet-700">{value}</p>
               </div>
               <span className={color}>
                 <Icon className="w-8 h-8" />
@@ -297,7 +297,7 @@ function TransactionsContent() {
               classNames={{
                 base: "w-full",
                 tabList:
-                  "bg-zinc-900/60 border border-zinc-700  p-1 gap-1 overflow-x-auto !p-0.5",
+                  "bg-zinc-100/60 border border-zinc-700 text-zinc-950 p-1 gap-1 overflow-x-auto !p-0.5",
                 tab: "px-4 py-2 text-sm  text-default-400 transition-all data-[hover-unselected=true]:bg-zinc-800/60 data-[selected=true]:bg-red-600 data-[selected=true]:text-white",
                 tabContent:
                   "font-normal group-data-[selected=true]:font-medium group-data-[selected=true]:text-white",
@@ -314,9 +314,9 @@ function TransactionsContent() {
               aria-label="Transactions table"
               classNames={{
                 wrapper:
-                  "bg-zinc-900/60 border border-zinc-700  gap-1 overflow-x-auto text-sm mt-4",
+                  "bg-zinc-100/60 border border-zinc-700 text-zinc-950 gap-1 overflow-x-auto text-sm mt-4",
                 thead: "bg-transparent",
-                th: "bg-transparent text-white border-b border-zinc-700 p-0 font-medium",
+                th: "bg-transparent text-zinc-950 border-b border-zinc-700 p-0 font-medium",
               }}
             >
               <TableHeader>

@@ -119,7 +119,7 @@ const LocationSection = memo(function LocationSection({
           href={mapUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 bg-zinc-700 hover:bg-zinc-600 px-4 py-2  transition-colors"
+          className="inline-flex items-center gap-2 bg-zinc-100 hover:bg-zinc-600 px-4 py-2  transition-colors"
         >
           <GlobeAltIcon className="w-5 h-5" />
           <span>เปิดใน Google Maps</span>
@@ -138,7 +138,7 @@ const ServicesSection = memo(function ServicesSection({ services }: { services: 
         {services.map((service, idx) => (
           <span
             key={service + idx}
-            className="bg-zinc-700 px-3 py-1  text-zinc-300 text-sm"
+            className="bg-zinc-100 px-3 py-1  text-zinc-300 text-sm"
           >
             {service}
           </span>

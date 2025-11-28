@@ -106,7 +106,7 @@ function AddPaymentMethodForm({
         <label className="block text-sm font-medium text-zinc-300 mb-2">
           ข้อมูลบัตรเครดิต
         </label>
-        <div className="bg-zinc-700  p-4">
+        <div className="bg-zinc-100  p-4">
           <PaymentElement />
         </div>
       </div>
@@ -321,7 +321,7 @@ export default function SavedPaymentMethods({
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
-                  <div className="bg-zinc-700  p-3">
+                  <div className="bg-zinc-100  p-3">
                     {getCardBrandIcon(method.brand)}
                   </div>
                   <div>

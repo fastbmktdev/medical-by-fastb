@@ -223,7 +223,7 @@ export default function LeaderboardPage() {
                                 className="w-10 h-10  object-cover"
                               />
                             ) : (
-                              <div className="w-10 h-10 bg-zinc-700  flex items-center justify-center">
+                              <div className="w-10 h-10 bg-zinc-100  flex items-center justify-center">
                                 <span className="text-zinc-300 text-sm">
                                   {entry.user?.username?.charAt(0).toUpperCase() || '?'}
                                 </span>
@@ -266,7 +266,7 @@ export default function LeaderboardPage() {
               <button
                 onClick={() => setPage((prev) => Math.max(1, prev - 1))}
                 disabled={page === 1}
-                className="px-4 py-2 bg-zinc-800 text-white  hover:bg-zinc-700 disabled:opacity-40 disabled:cursor-not-allowed"
+                className="px-4 py-2 bg-zinc-800 text-white  hover:bg-zinc-100 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 ก่อนหน้า
               </button>
@@ -276,7 +276,7 @@ export default function LeaderboardPage() {
               <button
                 onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
                 disabled={page === totalPages}
-                className="px-4 py-2 bg-zinc-800 text-white  hover:bg-zinc-700 disabled:opacity-40 disabled:cursor-not-allowed"
+                className="px-4 py-2 bg-zinc-800 text-white  hover:bg-zinc-100 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 ถัดไป
               </button>
