@@ -219,7 +219,7 @@ function PartnerPerformanceContent() {
                 <div className="flex justify-between items-start">
                   <div>
                     <p className="text-blue-100 text-sm">Total appointments</p>
-                    <p className="text-3xl font-bold">{metrics.overview.totalBookings}</p>
+                    <p className="text-3xl font-semibold">{metrics.overview.totalBookings}</p>
                   </div>
                   <CalendarIcon className="w-8 h-8 text-blue-200" />
                 </div>
@@ -235,7 +235,7 @@ function PartnerPerformanceContent() {
                 <div className="flex justify-between items-start">
                   <div>
                     <p className="text-green-100 text-sm">Total Revenue</p>
-                    <p className="text-3xl font-bold">
+                    <p className="text-3xl font-semibold">
                       ฿{metrics.overview.totalRevenue.toLocaleString()}
                     </p>
                   </div>
@@ -254,7 +254,7 @@ function PartnerPerformanceContent() {
                 <div className="flex justify-between items-start">
                   <div>
                     <p className="text-purple-100 text-sm">Customers</p>
-                    <p className="text-3xl font-bold">{metrics.overview.uniqueCustomers}</p>
+                    <p className="text-3xl font-semibold">{metrics.overview.uniqueCustomers}</p>
                   </div>
                   <UsersIcon className="w-8 h-8 text-purple-200" />
                 </div>
@@ -271,7 +271,7 @@ function PartnerPerformanceContent() {
                 <div className="flex justify-between items-start">
                   <div>
                     <p className="text-orange-100 text-sm">Conversion Rate</p>
-                    <p className="text-3xl font-bold">{metrics.overview.conversionRate.toFixed(1)}%</p>
+                    <p className="text-3xl font-semibold">{metrics.overview.conversionRate.toFixed(1)}%</p>
                   </div>
                   <ChartBarIcon className="w-8 h-8 text-orange-200" />
                 </div>
@@ -342,7 +342,7 @@ function PartnerPerformanceContent() {
               <div className="grid grid-cols-5 gap-4">
                 {metrics.peakHours.map((peak, index) => (
                   <div key={index} className="text-center">
-                    <p className="text-2xl font-bold text-primary">{peak.hour}:00</p>
+                    <p className="text-2xl font-semibold text-primary">{peak.hour}:00</p>
                     <p className="text-sm text-default-500">{peak.appointments} appointments</p>
                   </div>
                 ))}

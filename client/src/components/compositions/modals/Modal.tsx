@@ -100,7 +100,7 @@ const ModalComponent = memo(function Modal({
             {title && (
               <h2
                 id={`${testId}-title`}
-                className="text-xl font-bold text-white"
+                className="text-xl font-semibold text-white"
               >
                 {title}
               </h2>

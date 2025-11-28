@@ -55,7 +55,7 @@ export default function ServicesSection() {
     <section className="py-16 bg-white">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <div className="text-center mb-12">
-          <h2 className="mb-4 font-bold text-3xl md:text-4xl text-gray-900">
+          <h2 className="mb-4 font-semibold text-3xl md:text-4xl text-gray-900">
             บริการของเรา
           </h2>
           <p className="text-gray-600 text-lg">
@@ -75,7 +75,7 @@ export default function ServicesSection() {
                 <div className={`${service.iconBg} w-14 h-14  flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
                   <Icon className={`w-7 h-7 ${service.iconColor}`} />
                 </div>
-                <h3 className="font-bold text-xl text-gray-900 mb-2 group-hover:text-brand-primary transition-colors">
+                <h3 className="font-semibold text-xl text-gray-900 mb-2 group-hover:text-brand-primary transition-colors">
                   {service.title}
                 </h3>
                 <p className="text-gray-600">

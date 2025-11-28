@@ -108,7 +108,7 @@ export default function LatestProducts() {
       <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Header */}
         <div className="mb-12 text-center">
-          <h2 className="mb-4 font-bold text-3xl md:text-4xl text-gray-900">
+          <h2 className="mb-4 font-semibold text-3xl md:text-4xl text-gray-900">
             สินค้าและบริการ
           </h2>
           <p className="text-gray-600 text-lg">

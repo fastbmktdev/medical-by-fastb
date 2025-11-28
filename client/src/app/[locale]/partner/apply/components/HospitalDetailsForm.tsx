@@ -58,7 +58,7 @@ export const HospitalDetailsForm: React.FC<HospitalDetailsFormProps> = ({
 
         {/* Services */}
         <div>
-          <label className="block mb-3 font-medium text-zinc-300 text-sm">
+          <label className="block mb-3 font-medium text-zinc-950 text-sm">
             ประเภทบริการที่โรงพยาบาลมี
           </label>
           <div className="gap-3 grid grid-cols-2 md:grid-cols-3">
@@ -68,7 +68,7 @@ export const HospitalDetailsForm: React.FC<HospitalDetailsFormProps> = ({
                 className={`flex items-center gap-3 p-3  border cursor-pointer transition-all ${
                   formData.services.includes(service)
                     ? "bg-brand-primary/20 border-red-500 text-white"
-                    : "bg-zinc-100 border-zinc-600 text-zinc-300 hover:border-zinc-500"
+                    : "bg-zinc-100 border-zinc-600 text-zinc-950 hover:border-zinc-500"
                 }`}
               >
                 <input
@@ -85,16 +85,16 @@ export const HospitalDetailsForm: React.FC<HospitalDetailsFormProps> = ({
 
         {/* Image Upload */}
         <div>
-          <label className="block mb-2 font-medium text-zinc-300 text-sm">
+          <label className="block mb-2 font-medium text-zinc-950 text-sm">
             อัปโหลดรูปภาพโรงพยาบาล / โลโก้ <span className="text-zinc-500 font-normal">(ไม่บังคับ)</span>
           </label>
           <div className="mb-3 p-3 border border-blue-500/30 bg-blue-500/10 ">
-            <p className="text-blue-300 text-xs font-medium mb-1">
+            <p className="text-zinc-950 text-xs font-medium mb-1">
               📸 ข้อกำหนดไฟล์:
             </p>
-            <ul className="text-blue-200/80 text-xs space-y-0.5 ml-4 list-disc">
+            <ul className="text-zinc-950 text-xs space-y-0.5 ml-4 list-disc">
               <li>ประเภทไฟล์: JPG, PNG, WebP</li>
-              <li>ขนาดไฟล์: <strong className="text-blue-200">ไม่เกิน 5MB ต่อไฟล์</strong></li>
+              <li>ขนาดไฟล์: <strong className="text-blue-600">ไม่เกิน 5MB ต่อไฟล์</strong></li>
               <li>ความละเอียดแนะนำ: 800x600 px ขึ้นไป</li>
               <li>จำนวน: ไม่จำกัด (แนะนำ 3-5 รูป)</li>
             </ul>
@@ -102,7 +102,7 @@ export const HospitalDetailsForm: React.FC<HospitalDetailsFormProps> = ({
           
           <label className="flex flex-col items-center gap-3 bg-zinc-100 hover:bg-zinc-600 p-6 border border-zinc-600 border-dashed  transition-colors cursor-pointer">
             <PhotoIcon className="w-12 h-12 text-zinc-400" />
-            <span className="text-zinc-300 text-sm">
+            <span className="text-zinc-950 text-sm">
               คลิกเพื่อเลือกไฟล์ หรือลากไฟล์มาวาง
             </span>
             <input
@@ -150,7 +150,7 @@ export const HospitalDetailsForm: React.FC<HospitalDetailsFormProps> = ({
                         isTooLarge ? 'text-red-400' : 'text-blue-400'
                       }`} />
                       <span className={`max-w-[200px] font-mono text-sm truncate ${
-                        isTooLarge ? 'text-red-300' : 'text-white'
+                        isTooLarge ? 'text-red-300' : 'text-zinc-950'
                       }`}>
                         {file.name}
                       </span>

@@ -108,7 +108,7 @@ export function ComposeMessage({
       <div className="bg-zinc-900  shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col border border-zinc-700">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-zinc-700">
-          <h2 className="text-xl font-bold text-white">ส่งข้อความใหม่</h2>
+          <h2 className="text-xl font-semibold text-white">ส่งข้อความใหม่</h2>
           <button
             onClick={onClose}
             className="text-zinc-400 hover:text-white transition-colors"
@@ -123,7 +123,7 @@ export function ComposeMessage({
           <div className="p-6 space-y-6">
             {/* Customer Selection */}
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-2">
+              <label className="block text-sm font-medium text-zinc-400 mb-2">
                 เลือกลูกค้า <span className="text-red-500">*</span>
               </label>
 
@@ -235,7 +235,7 @@ export function ComposeMessage({
             <div>
               <label
                 htmlFor="subject"
-                className="block text-sm font-medium text-zinc-300 mb-2"
+                className="block text-sm font-medium text-zinc-400 mb-2"
               >
                 หัวข้อ <span className="text-red-500">*</span>
               </label>
@@ -264,7 +264,7 @@ export function ComposeMessage({
             <div>
               <label
                 htmlFor="message"
-                className="block text-sm font-medium text-zinc-300 mb-2"
+                className="block text-sm font-medium text-zinc-400 mb-2"
               >
                 ข้อความ <span className="text-red-500">*</span>
               </label>

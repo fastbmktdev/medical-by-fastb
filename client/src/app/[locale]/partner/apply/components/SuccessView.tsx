@@ -12,17 +12,17 @@ export const SuccessView = () => {
           <div className="flex justify-center mb-6">
             <CheckCircleIcon className="w-24 h-24 text-green-500" />
           </div>
-          <h1 className="mb-4 font-bold text-white text-3xl md:text-4xl">
+          <h1 className="mb-4 font-semibold text-white text-3xl md:text-4xl">
             สมัครสำเร็จ!
           </h1>
-          <p className="mb-4 text-zinc-300 text-xl leading-relaxed">
+          <p className="mb-4 text-zinc-400 text-xl leading-relaxed">
             ขอบคุณที่สนใจเข้าร่วมเป็น Partner hospital
           </p>
           <p className="mb-8 text-zinc-400 text-lg">
             กรุณารอแอดมินตรวจสอบและติดต่อกลับภายใน 3-5 วันทำการ
           </p>
           <div className="bg-zinc-100 mb-8 p-4 ">
-            <p className="text-zinc-300 text-sm">
+            <p className="text-zinc-400 text-sm">
               <strong>สถานะ:</strong> <span className="text-yellow-400">รอการตรวจสอบ</span>
             </p>
           </div>

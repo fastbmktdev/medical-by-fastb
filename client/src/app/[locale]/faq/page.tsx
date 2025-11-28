@@ -185,7 +185,7 @@ export default function FAQPage() {
           {/* FAQ Content */}
           <div className="lg:w-3/4">
             <div className="bg-zinc-100 p-8 ">
-              <h2 className="mb-6 font-bold text-2xl">{activeCategory}</h2>
+              <h2 className="mb-6 font-semibold text-2xl">{activeCategory}</h2>
               
               <div className="space-y-4">
                 {selectedCategoryData?.questions.map((faq, index) => {

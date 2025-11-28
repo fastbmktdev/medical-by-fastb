@@ -103,7 +103,7 @@ function AddPaymentMethodForm({
       )}
 
       <div>
-        <label className="block text-sm font-medium text-zinc-300 mb-2">
+        <label className="block text-sm font-medium text-zinc-400 mb-2">
           ข้อมูลบัตรเครดิต
         </label>
         <div className="bg-zinc-100  p-4">

@@ -164,7 +164,7 @@ function PartnerTransactionsContent() {
                 </p>
               )}
               <p className="mb-2 text-white/80 text-sm">ยอดคงเหลือ</p>
-              <p className="font-mono font-bold text-3xl">฿{Number(totalBalance || 0).toLocaleString()}</p>
+              <p className="font-mono font-semibold text-3xl">฿{Number(totalBalance || 0).toLocaleString()}</p>
               <Button size="sm" className="bg-white/20 backdrop-blur-sm mt-4 text-white">
                 ถอนเงิน
               </Button>
@@ -173,13 +173,13 @@ function PartnerTransactionsContent() {
           <Card className="bg-default-100/50 backdrop-blur-sm border-none">
             <CardBody>
               <p className="mb-2 text-default-400 text-sm">รายได้เดือนนี้</p>
-              <p className="font-mono font-bold text-success text-2xl">+฿{Number(monthlyIncome || 0).toLocaleString()}</p>
+              <p className="font-mono font-semibold text-success text-2xl">+฿{Number(monthlyIncome || 0).toLocaleString()}</p>
             </CardBody>
           </Card>
           <Card className="bg-default-100/50 backdrop-blur-sm border-none">
             <CardBody>
               <p className="mb-2 text-default-400 text-sm">ถอนเงินแล้ว</p>
-              <p className="font-mono font-bold text-warning text-2xl">฿0</p>
+              <p className="font-mono font-semibold text-warning text-2xl">฿0</p>
               {hospital?.location && (
                 <p className="mt-2 text-default-500 text-xs">
                   สถานที่: {hospital.location}
@@ -194,7 +194,7 @@ function PartnerTransactionsContent() {
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardBody>
             <div className="flex justify-between items-center mb-6">
-              <h2 className="font-bold text-xl">ประวัติธุรกรรม</h2>
+              <h2 className="font-semibold text-xl">ประวัติธุรกรรม</h2>
               <Button
                 size="sm"
                 color="secondary"
@@ -235,7 +235,7 @@ function PartnerTransactionsContent() {
                       </Chip>
                     </TableCell>
                     <TableCell className="text-default-400">{txn.description}</TableCell>
-                    <TableCell className="font-mono font-bold text-success">
+                    <TableCell className="font-mono font-semibold text-success">
                       +฿{Number(txn.amount || 0).toLocaleString()}
                     </TableCell>
                     <TableCell>

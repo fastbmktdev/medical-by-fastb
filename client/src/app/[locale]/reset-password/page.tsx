@@ -173,7 +173,7 @@ export default function ResetPasswordPage() {
           <div className="flex justify-center mb-6">
             <CheckCircleIcon className="w-24 h-24 text-green-500" />
           </div>
-          <p className="mb-2 text-zinc-300 text-lg">
+          <p className="mb-2 text-zinc-400 text-lg">
             {t('success.message')}
           </p>
           <p className="mb-6 font-mono text-white">{formData.email}</p>
@@ -214,7 +214,7 @@ export default function ResetPasswordPage() {
 
         {/* Info Message */}
         <div className="bg-zinc-100 p-4 border border-zinc-600 ">
-          <p className="text-zinc-300 text-sm">
+          <p className="text-zinc-400 text-sm">
             {t('infoMessage')}
           </p>
         </div>
@@ -223,7 +223,7 @@ export default function ResetPasswordPage() {
         <div>
           <label
             htmlFor="email"
-            className="block mb-2 font-medium text-zinc-300 text-sm"
+            className="block mb-2 font-medium text-zinc-400 text-sm"
           >
             {t('emailLabel')}
           </label>

@@ -168,7 +168,7 @@ export default function ArticleDetailPage({
         </div>
 
         {/* Title */}
-        <h1 className="mb-6 font-bold text-4xl md:text-5xl leading-tight">
+        <h1 className="mb-6 font-semibold text-4xl md:text-5xl leading-tight">
           {article.title}
         </h1>
 
@@ -194,14 +194,14 @@ export default function ArticleDetailPage({
           {/* Action Buttons */}
           <div className="flex items-center gap-3 ml-auto">
             <button 
-              className="flex items-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-100  transition-colors text-zinc-300 text-sm" 
+              className="flex items-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-100  transition-colors text-zinc-400 text-sm" 
               aria-label="แชร์บทความ"
             >
               <ShareIcon className="w-4 h-4" />
               แชร์
             </button>
             <button 
-              className="flex items-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-100  transition-colors text-zinc-300 text-sm" 
+              className="flex items-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-100  transition-colors text-zinc-400 text-sm" 
               aria-label="บันทึกบทความ"
             >
               <BookmarkIcon className="w-4 h-4" />
@@ -223,7 +223,7 @@ export default function ArticleDetailPage({
           <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
           <div className="absolute bottom-4 left-4 right-4">
             <div className="bg-black/50 backdrop-blur-sm  p-4">
-              <h2 className=" font-bold text-xl mb-2">
+              <h2 className=" font-semibold text-xl mb-2">
                 {article.title}
               </h2>
               <p className="text-zinc-200 text-sm line-clamp-2">
@@ -235,13 +235,13 @@ export default function ArticleDetailPage({
 
         {/* Excerpt */}
         <div className="bg-zinc-900 mb-8 p-6 border-zinc-800 border-l-4 border-l-red-600 ">
-          <p className="text-zinc-300 text-lg leading-relaxed">
+          <p className="text-zinc-400 text-lg leading-relaxed">
             {article.excerpt}
           </p>
         </div>
 
         {/* Content */}
-        <div className="space-y-6 text-zinc-300 text-lg leading-relaxed">
+        <div className="space-y-6 text-zinc-400 text-lg leading-relaxed">
           {article.content.split("\n\n").map((paragraph, index) => (
             <p key={index}>{paragraph}</p>
           ))}
@@ -256,7 +256,7 @@ export default function ArticleDetailPage({
                 {article.tags.map((tag, index) => (
                   <span
                     key={index}
-                    className="bg-zinc-800 hover:bg-zinc-100 px-4 py-2  font-medium text-zinc-300 text-sm transition-colors cursor-pointer"
+                    className="bg-zinc-800 hover:bg-zinc-100 px-4 py-2  font-medium text-zinc-400 text-sm transition-colors cursor-pointer"
                   >
                     #{tag}
                   </span>
@@ -271,7 +271,7 @@ export default function ArticleDetailPage({
       {relatedArticles.length > 0 && (
         <div className="bg-zinc-900 mt-12 py-12 border-zinc-800 border-t">
           <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-            <h2 className="mb-8 font-bold text-2xl">
+            <h2 className="mb-8 font-semibold text-2xl">
               บทความที่เกี่ยวข้อง
             </h2>
             <div className="gap-6 grid grid-cols-1 md:grid-cols-3">

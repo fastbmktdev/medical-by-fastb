@@ -43,14 +43,14 @@ const PageLoadingFallbackComponent = ({
   const loadingMessage = message || t("loading");
 
   const bgClass = variant === "dark" 
-    ? "bg-zinc-100 text-zinc-300" 
+    ? "bg-zinc-100 text-zinc-400" 
     : "bg-white text-zinc-950";
 
   return (
     <div className={`flex justify-center items-center min-h-screen ${bgClass} ${className || ''}`}>
       <div className="text-center space-y-4">
         <Loading centered size="xl" color={variant === "dark" ? "primary" : "primary"} />
-        <p className={variant === "dark" ? "text-zinc-300 text-lg" : "text-zinc-950 text-lg"}>
+        <p className={variant === "dark" ? "text-zinc-400 text-lg" : "text-zinc-950 text-lg"}>
           {loadingMessage}
         </p>
       </div>

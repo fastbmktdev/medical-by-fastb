@@ -71,7 +71,7 @@ export function PrivacySettingsPanel() {
           <ShieldCheckIcon className="w-5 h-5 text-blue-400" />
         </div>
         <div>
-          <h3 className="font-bold text-xl text-white">การตั้งค่าความเป็นส่วนตัว</h3>
+          <h3 className="font-semibold text-xl text-white">การตั้งค่าความเป็นส่วนตัว</h3>
           <p className="text-zinc-400 text-sm">ควบคุมข้อมูลที่ผู้ใช้คนอื่นสามารถเห็นได้</p>
         </div>
       </CardHeader>

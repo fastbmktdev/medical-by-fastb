@@ -217,7 +217,7 @@ function BookingCalendarView() {
               >
                 <ArrowLeftIcon className="w-5 h-5" />
               </Button>
-              <h2 className="text-xl font-bold">
+              <h2 className="text-xl font-semibold">
                 {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear() + 543}
               </h2>
               <Button

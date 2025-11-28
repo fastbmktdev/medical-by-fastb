@@ -48,7 +48,7 @@ export default function PaymentErrorDisplay({
           </p>
           {error.suggestion && (
             <div className="bg-zinc-100/50 mb-3 p-3 ">
-              <p className="text-zinc-300 text-xs">
+              <p className="text-zinc-400 text-xs">
                 💡 <strong>คำแนะนำ:</strong> {error.suggestion}
               </p>
             </div>

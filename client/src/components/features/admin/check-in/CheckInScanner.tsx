@@ -47,7 +47,7 @@ export function CheckInScanner() {
   return (
     <div className="space-y-6">
       <div className="bg-zinc-900  p-6">
-        <h2 className="mb-4 font-bold text-xl">ระบบเช็คอินตั๋ว</h2>
+        <h2 className="mb-4 font-semibold text-xl">ระบบเช็คอินตั๋ว</h2>
         
         <div className="space-y-4">
           {/* Manual Input */}

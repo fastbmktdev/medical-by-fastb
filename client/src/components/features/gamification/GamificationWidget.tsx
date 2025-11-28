@@ -77,7 +77,7 @@ export default function GamificationWidget({ className = '' }: GamificationWidge
 
       {/* Points Display */}
       <div className="mb-3">
-        <div className="flex justify-between text-sm text-zinc-300 mb-1">
+        <div className="flex justify-between text-sm text-zinc-400 mb-1">
           <span>คะแนนรวม</span>
           <span>{(stats.total_points || 0).toLocaleString()}</span>
         </div>
@@ -98,17 +98,17 @@ export default function GamificationWidget({ className = '' }: GamificationWidge
       {/* Stats Grid */}
       <div className="grid grid-cols-3 gap-2 text-center text-sm">
         <div className="bg-zinc-100/50 border border-zinc-800/50  p-2">
-          <div className="text-lg font-bold text-green-400">{stats.badges_earned}</div>
+          <div className="text-lg font-semibold text-green-400">{stats.badges_earned}</div>
           <div className="text-zinc-400">เหรียญ</div>
         </div>
         
         <div className="bg-zinc-100/50 border border-zinc-800/50  p-2">
-          <div className="text-lg font-bold text-purple-400">{stats.active_challenges.length}</div>
+          <div className="text-lg font-semibold text-purple-400">{stats.active_challenges.length}</div>
           <div className="text-zinc-400">ความท้าทาย</div>
         </div>
         
         <div className="bg-zinc-100/50 border border-zinc-800/50  p-2">
-          <div className="text-lg font-bold text-orange-400">{stats.current_streaks.length}</div>
+          <div className="text-lg font-semibold text-orange-400">{stats.current_streaks.length}</div>
           <div className="text-zinc-400">สตรีค</div>
         </div>
       </div>

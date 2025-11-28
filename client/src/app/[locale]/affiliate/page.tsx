@@ -179,7 +179,7 @@ export default function AffiliatePage() {
             <div className="inline-flex items-center justify-center w-20 h-20 bg-linear-to-br from-red-500 to-orange-500  mb-6 shadow-lg shadow-red-500/30">
               <SparklesIcon className="w-10 h-10 text-white" />
             </div>
-            <h1 className="text-5xl font-bold mb-4 bg-linear-to-r from-black via-zinc-700 to-zinc-500 bg-clip-text text-transparent">
+            <h1 className="text-5xl font-semibold mb-4 bg-linear-to-r from-black via-zinc-700 to-zinc-500 bg-clip-text text-transparent">
               Affiliate Program
             </h1>
             <p className="text-zinc-700 text-xl mb-8">
@@ -233,7 +233,7 @@ export default function AffiliatePage() {
         <div className="mb-2 transform group-hover:scale-110 transition-transform duration-300">
           {icon}
         </div>
-        <p className="text-xl font-bold mb-1 text-zinc-950">{value}</p>
+        <p className="text-xl font-semibold mb-1 text-zinc-950">{value}</p>
         <p className="text-zinc-600 text-xs font-medium">{label}</p>
         {description && (
           <p className="text-zinc-500 text-[10px] mt-1">{description}</p>
@@ -259,7 +259,7 @@ export default function AffiliatePage() {
                   <div className="inline-flex items-center justify-center w-16 h-16 bg-linear-to-br from-red-500 to-orange-500  mb-4 shadow-lg shadow-red-500/30">
                     <GiftIcon className="w-8 h-8 text-white" />
                   </div>
-                  <h1 className="text-2xl font-bold mb-3 bg-linear-to-r from-black via-zinc-700 to-zinc-500 bg-clip-text text-transparent">
+                  <h1 className="text-2xl font-semibold mb-3 bg-linear-to-r from-black via-zinc-700 to-zinc-500 bg-clip-text text-transparent">
                     Affiliate Program
                   </h1>
                   <p className="text-zinc-800 text-sm mb-4 leading-relaxed">
@@ -503,7 +503,7 @@ export default function AffiliatePage() {
                           className="text-center p-3 bg-zinc-100 "
                         >
                           <div
-                            className={`w-8 h-8 ${color}  flex items-center justify-center text-white font-bold text-sm mx-auto mb-2 shadow-lg`}
+                            className={`w-8 h-8 ${color}  flex items-center justify-center text-white font-semibold text-sm mx-auto mb-2 shadow-lg`}
                           >
                             {step}
                           </div>
@@ -595,7 +595,7 @@ export default function AffiliatePage() {
                                   </TableCell>
                                   <TableCell>
                                     <div className="flex items-center gap-1.5">
-                                      <div className="w-6 h-6 bg-linear-to-br from-blue-500 to-blue-600  flex items-center justify-center text-white text-[10px] font-bold">
+                                      <div className="w-6 h-6 bg-linear-to-br from-blue-500 to-blue-600  flex items-center justify-center text-white text-[10px] font-semibold">
                                         {referral.referred_user_email
                                           .charAt(0)
                                           .toUpperCase()}
@@ -626,7 +626,7 @@ export default function AffiliatePage() {
                       ) : (
                         <div className="text-center py-8 px-4">
                           <div className="w-12 h-12 bg-zinc-100  flex items-center justify-center mx-auto mb-3">
-                            <UserPlusIcon className="w-6 h-6 text-zinc-300" />
+                            <UserPlusIcon className="w-6 h-6 text-zinc-400" />
                           </div>
                           <p className="text-zinc-600 text-sm font-medium mb-1">
                             ยังไม่มีประวัติ
@@ -661,7 +661,7 @@ export default function AffiliatePage() {
                             <span className="text-zinc-600 text-xs">
                               ผู้แนะนำทั้งหมด
                             </span>
-                            <span className="text-zinc-950 font-bold">
+                            <span className="text-zinc-950 font-semibold">
                               {stats.totalReferrals} คน
                             </span>
                           </div>
@@ -670,7 +670,7 @@ export default function AffiliatePage() {
                             <span className="text-zinc-600 text-xs">
                               แต้มสะสม
                             </span>
-                            <span className="text-yellow-500 font-bold">
+                            <span className="text-yellow-500 font-semibold">
                               {stats.totalEarnings.toLocaleString("th-TH")} แต้ม
                             </span>
                           </div>
@@ -679,7 +679,7 @@ export default function AffiliatePage() {
                             <span className="text-zinc-600 text-xs">
                               เดือนนี้
                             </span>
-                            <span className="text-blue-500 font-bold">
+                            <span className="text-blue-500 font-semibold">
                               {stats.currentMonthReferrals} คน
                             </span>
                           </div>

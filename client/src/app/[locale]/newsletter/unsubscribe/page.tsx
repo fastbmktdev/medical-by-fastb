@@ -63,7 +63,7 @@ function UnsubscribeContent() {
           {status === 'success' && (
             <>
               <CheckCircleIcon className="w-16 h-16 text-green-500 mx-auto" />
-              <h1 className="text-2xl font-bold text-white">ยกเลิกการสมัครสมาชิกสำเร็จ</h1>
+              <h1 className="text-2xl font-semibold text-white">ยกเลิกการสมัครสมาชิกสำเร็จ</h1>
               <p className="text-zinc-400">{message}</p>
               <Button
                 color="primary"
@@ -78,7 +78,7 @@ function UnsubscribeContent() {
           {status === 'error' && (
             <>
               <XCircleIcon className="w-16 h-16 text-red-500 mx-auto" />
-              <h1 className="text-2xl font-bold text-white">เกิดข้อผิดพลาด</h1>
+              <h1 className="text-2xl font-semibold text-white">เกิดข้อผิดพลาด</h1>
               <p className="text-zinc-400">{message}</p>
               <Button
                 variant="light"

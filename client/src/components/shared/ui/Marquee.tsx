@@ -81,7 +81,7 @@ function MarqueeComponent() {
     <div className="relative bg-linear-to-r from-violet-700 to-violet-900 text-zinc-100 py-3 w-full overflow-hidden">
       <div className="flex gap-8 whitespace-nowrap animate-marquee">
         {displayPromotions.map((promo, i) => (
-          <span key={`${promo.id}-${i}`} className="font-bold text-lg tracking-wider">
+          <span key={`${promo.id}-${i}`} className="font-semibold text-lg tracking-wider">
             {promo.link_url ? (
               <Link
                 href={promo.link_url}

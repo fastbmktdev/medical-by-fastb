@@ -123,7 +123,7 @@ function PaymentFailureContent() {
             <div className="w-20 h-20 bg-brand-primary  flex items-center justify-center mx-auto mb-6">
               <XCircleIcon className="w-12 h-12 text-white" />
             </div>
-            <h1 className="text-3xl font-bold mb-2">การชำระเงินล้มเหลว</h1>
+            <h1 className="text-3xl font-semibold mb-2">การชำระเงินล้มเหลว</h1>
             <p className="text-zinc-400 text-lg">
               ขออภัยในความไม่สะดวก
             </p>
@@ -177,11 +177,11 @@ function PaymentFailureContent() {
                   <h3 className="font-semibold text-red-400 mb-2">
                     {getErrorTitle(paymentData.error)}
                   </h3>
-                  <p className="text-zinc-300 mb-3">
+                  <p className="text-zinc-400 mb-3">
                     {paymentData.error}
                   </p>
                   <div className="bg-zinc-800/50 p-3 ">
-                    <p className="text-zinc-300 text-sm">
+                    <p className="text-zinc-400 text-sm">
                       💡 <strong>คำแนะนำ:</strong> {getErrorSuggestion(paymentData.error)}
                     </p>
                   </div>

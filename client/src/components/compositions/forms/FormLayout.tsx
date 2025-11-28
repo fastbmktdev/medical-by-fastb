@@ -30,7 +30,7 @@ export function FormLayout({
       {(title || description) && (
         <div className="text-center mb-8">
           {title && (
-            <h1 className="text-2xl font-bold mb-2">
+            <h1 className="text-2xl font-semibold mb-2">
               {title}
             </h1>
           )}

@@ -279,7 +279,7 @@ function TransactionsContent() {
         <Card className="backdrop-blur-sm border-none ">
           <CardBody className="p-0">
             <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 mb-6">
-              <h2 className="font-bold text-xl text-white">ประวัติธุรกรรม</h2>
+              <h2 className="font-semibold text-xl text-white">ประวัติธุรกรรม</h2>
               <Button
                 color="primary"
                 variant="flat"
@@ -342,7 +342,7 @@ function TransactionsContent() {
                     <TableCell>{getTypeChip(transaction.type)}</TableCell>
                     <TableCell className="text-default-400">{transaction.description}</TableCell>
                     <TableCell
-                      className={`font-mono font-bold ${
+                      className={`font-mono font-semibold ${
                         transaction.amount > 0 ? 'text-success' : 'text-danger'
                       }`}
                     >

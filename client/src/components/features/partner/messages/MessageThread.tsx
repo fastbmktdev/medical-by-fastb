@@ -111,7 +111,7 @@ export function MessageThread({
     return (
       <div className="flex flex-col items-center justify-center h-full bg-zinc-900 text-center p-8">
         <DocumentTextIcon className="w-16 h-16 text-zinc-600 mb-4" />
-        <h3 className="text-lg font-semibold text-zinc-300 mb-2">
+        <h3 className="text-lg font-semibold text-zinc-400 mb-2">
           เลือกการสนทนา
         </h3>
         <p className="text-sm text-zinc-500">

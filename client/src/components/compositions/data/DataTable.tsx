@@ -192,7 +192,7 @@ function DataTableImpl<T = Record<string, unknown>>({
                   <td
                     key={column.key}
                     className={`
-                      px-6 py-4 text-sm text-zinc-300
+                      px-6 py-4 text-sm text-zinc-400
                       transition-colors duration-200
                       group-hover:text-zinc-100
                       ${column.align === 'center' ? 'text-center' : ''}

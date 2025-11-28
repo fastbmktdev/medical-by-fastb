@@ -180,7 +180,7 @@ function AdminCategoriesContent() {
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-zinc-400 text-sm">หมวดหมู่ทั้งหมด</p>
-                  <p className="font-bold text-2xl">{stats.total}</p>
+                  <p className="font-semibold text-2xl">{stats.total}</p>
                 </div>
                 <TagIcon className="w-8 h-8 text-blue-500" />
               </div>
@@ -191,7 +191,7 @@ function AdminCategoriesContent() {
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-zinc-400 text-sm">เปิดใช้งาน</p>
-                  <p className="font-bold text-2xl text-green-500">
+                  <p className="font-semibold text-2xl text-green-500">
                     {stats.active}
                   </p>
                 </div>
@@ -204,7 +204,7 @@ function AdminCategoriesContent() {
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-zinc-400 text-sm">ปิดใช้งาน</p>
-                  <p className="font-bold text-2xl text-red-500">
+                  <p className="font-semibold text-2xl text-red-500">
                     {stats.inactive}
                   </p>
                 </div>

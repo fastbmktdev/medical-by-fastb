@@ -127,7 +127,7 @@ export function ConnectedAccountsPanel() {
     <Card className="bg-zinc-100/50 backdrop-blur-sm border border-zinc-700">
       <CardHeader className="border-zinc-700 border-b">
         <div>
-          <h3 className="font-bold text-xl">บัญชีที่เชื่อมต่อ</h3>
+          <h3 className="font-semibold text-xl">บัญชีที่เชื่อมต่อ</h3>
           <p className="text-zinc-400 text-sm">
             จัดการบัญชีโซเชียลที่เชื่อมต่อกับบัญชีของคุณ
           </p>
@@ -138,7 +138,7 @@ export function ConnectedAccountsPanel() {
         <div className="flex justify-between items-center p-4 bg-zinc-900/50 border border-zinc-700 ">
           <div className="flex items-center gap-4">
             <div className="shrink-0 w-10 h-10 bg-linear-to-br from-red-500 to-yellow-500  flex items-center justify-center">
-              <span className="text-white font-bold text-lg">G</span>
+              <span className="text-white font-semibold text-lg">G</span>
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -204,7 +204,7 @@ export function ConnectedAccountsPanel() {
         <div className="flex justify-between items-center p-4 bg-zinc-900/50 border border-zinc-700 ">
           <div className="flex items-center gap-4">
             <div className="shrink-0 w-10 h-10 bg-linear-to-br from-blue-600 to-blue-800  flex items-center justify-center">
-              <span className="text-white font-bold text-lg">f</span>
+              <span className="text-white font-semibold text-lg">f</span>
             </div>
             <div>
               <div className="flex items-center gap-2">

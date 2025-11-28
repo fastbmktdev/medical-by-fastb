@@ -43,7 +43,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
     const passwordToggleIcon = isPasswordType && showPasswordToggle ? (
       <button
         type="button"
-        className="p-1 text-zinc-400 hover:text-zinc-300 focus:outline-none focus:text-zinc-300 transition-colors"
+        className="p-1 text-zinc-400 hover:text-zinc-400 focus:outline-none focus:text-zinc-400 transition-colors"
         onClick={() => setShowPassword(!showPassword)}
         aria-label={showPassword ? "Hide password" : "Show password"}
         tabIndex={-1}

@@ -163,7 +163,7 @@ export default function GamificationDashboard({
           </svg>
         </div>
         <h3 className="text-lg font-medium text-white mb-2">เกิดข้อผิดพลาด</h3>
-        <p className="text-zinc-300 mb-4">{error}</p>
+        <p className="text-zinc-400 mb-4">{error}</p>
         <button
           onClick={fetchDashboard}
           className="bg-blue-600 px-4 py-2  hover:bg-blue-700 transition-colors"
@@ -178,7 +178,7 @@ export default function GamificationDashboard({
   if (!dashboard) {
     return (
       <div className={`text-center p-8 ${className}`}>
-        <p className="text-zinc-300">ไม่พบข้อมูล Gamification</p>
+        <p className="text-zinc-400">ไม่พบข้อมูล Gamification</p>
       </div>
     );
   }
@@ -208,7 +208,7 @@ export default function GamificationDashboard({
       </div>
       {/* Header */}
       <div className="bg-linear-to-r from-blue-900/80 to-purple-900/80  p-6 text-white border border-blue-700/30 backdrop-blur-sm">
-        <h1 className="text-2xl font-bold mb-2">🏆 ระบบ Gamification</h1>
+        <h1 className="text-2xl font-semibold mb-2">🏆 ระบบ Gamification</h1>
         <p className="text-blue-200">
           สะสมคะแนน รับเหรียญ และแข่งขันกับเพื่อนๆ
         </p>

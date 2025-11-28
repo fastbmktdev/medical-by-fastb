@@ -94,7 +94,7 @@ function PaymentSuccessContent() {
             <div className="w-20 h-20 bg-green-600  flex items-center justify-center mx-auto mb-6">
               <CheckCircleIcon className="w-12 h-12 text-white" />
             </div>
-            <h1 className="text-3xl font-bold mb-2">การชำระเงินสำเร็จ!</h1>
+            <h1 className="text-3xl font-semibold mb-2">การชำระเงินสำเร็จ!</h1>
             <p className="text-zinc-400 text-lg">
               ขอบคุณสำหรับการชำระเงินของคุณ
             </p>

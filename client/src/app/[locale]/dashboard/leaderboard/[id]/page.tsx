@@ -74,7 +74,7 @@ export default function LeaderboardPage() {
   const getRankColor = (rank: number) => {
     switch (rank) {
       case 1: return 'bg-yellow-900/50 text-yellow-300 border border-yellow-700';
-      case 2: return 'bg-zinc-800 text-zinc-300 border border-zinc-700';
+      case 2: return 'bg-zinc-800 text-zinc-400 border border-zinc-700';
       case 3: return 'bg-orange-900/50 text-orange-300 border border-orange-700';
       default: return 'bg-blue-900/50 text-blue-300 border border-blue-700';
     }
@@ -113,7 +113,7 @@ export default function LeaderboardPage() {
       <div className="min-h-screen bg-zinc-100 flex items-center justify-center">
         <div className="text-center">
           <div className="text-4xl mb-4">😕</div>
-          <h1 className="text-2xl font-bold text-white mb-2">ไม่พบข้อมูล</h1>
+          <h1 className="text-2xl font-semibold text-white mb-2">ไม่พบข้อมูล</h1>
           <p className="text-zinc-400 mb-4">{error || 'ไม่พบข้อมูลตารางคะแนน'}</p>
           <Link
             href="/dashboard/gamification"
@@ -145,7 +145,7 @@ export default function LeaderboardPage() {
               {getLeaderboardIcon(leaderboardData.leaderboard.leaderboard_type)}
             </span>
             <div>
-              <h1 className="text-3xl font-bold text-white">
+              <h1 className="text-3xl font-semibold text-white">
                 {leaderboardData.leaderboard.name}
               </h1>
               {leaderboardData.leaderboard.description && (
@@ -163,7 +163,7 @@ export default function LeaderboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <div className="text-sm text-zinc-400 mb-1">อันดับของคุณ</div>
-                <div className="text-3xl font-bold text-blue-400">
+                <div className="text-3xl font-semibold text-blue-400">
                   #{leaderboardData.user_rank}
                 </div>
                 {leaderboardData.user_score !== undefined && (
@@ -182,9 +182,9 @@ export default function LeaderboardPage() {
             <table className="w-full">
               <thead className="bg-zinc-900/50">
                 <tr>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-zinc-300">อันดับ</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-zinc-300">ผู้ใช้</th>
-                  <th className="px-6 py-4 text-right text-sm font-semibold text-zinc-300">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-zinc-400">อันดับ</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-zinc-400">ผู้ใช้</th>
+                  <th className="px-6 py-4 text-right text-sm font-semibold text-zinc-400">
                     {getScoreLabel(leaderboardData.leaderboard.leaderboard_type)}
                   </th>
                 </tr>
@@ -208,7 +208,7 @@ export default function LeaderboardPage() {
                         }`}
                       >
                         <td className="px-6 py-4">
-                          <div className={`w-10 h-10  flex items-center justify-center text-sm font-bold ${getRankColor(entry.rank)}`}>
+                          <div className={`w-10 h-10  flex items-center justify-center text-sm font-semibold ${getRankColor(entry.rank)}`}>
                             {getRankIcon(entry.rank)}
                           </div>
                         </td>
@@ -224,7 +224,7 @@ export default function LeaderboardPage() {
                               />
                             ) : (
                               <div className="w-10 h-10 bg-zinc-100  flex items-center justify-center">
-                                <span className="text-zinc-300 text-sm">
+                                <span className="text-zinc-400 text-sm">
                                   {entry.user?.username?.charAt(0).toUpperCase() || '?'}
                                 </span>
                               </div>
@@ -243,7 +243,7 @@ export default function LeaderboardPage() {
                           </div>
                         </td>
                         <td className="px-6 py-4 text-right">
-                          <div className="font-bold text-white">
+                          <div className="font-semibold text-white">
                             {entry.score.toLocaleString()}
                           </div>
                         </td>
@@ -270,7 +270,7 @@ export default function LeaderboardPage() {
               >
                 ก่อนหน้า
               </button>
-              <span className="px-3 py-2 text-sm text-zinc-300 border border-zinc-700 ">
+              <span className="px-3 py-2 text-sm text-zinc-400 border border-zinc-700 ">
                 {page}/{totalPages}
               </span>
               <button

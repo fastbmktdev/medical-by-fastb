@@ -152,13 +152,13 @@ function AdminUsersContent() {
           <Card className="bg-default-100/50 backdrop-blur-sm border-none">
             <CardBody>
               <p className="mb-2 text-default-400 text-sm">ผู้ใช้ทั้งหมด</p>
-              <p className="font-bold text-3xl">{users.length}</p>
+              <p className="font-semibold text-3xl">{users.length}</p>
             </CardBody>
           </Card>
           <Card className="bg-default-100/50 backdrop-blur-sm border-none">
             <CardBody>
               <p className="mb-2 text-default-400 text-sm">ผู้ดูแลระบบ</p>
-              <p className="font-bold text-danger text-3xl">
+              <p className="font-semibold text-danger text-3xl">
                 {users.filter(u => u.role === 'admin').length}
               </p>
             </CardBody>
@@ -166,7 +166,7 @@ function AdminUsersContent() {
           <Card className="bg-default-100/50 backdrop-blur-sm border-none">
             <CardBody>
               <p className="mb-2 text-default-400 text-sm">พาร์ทเนอร์</p>
-              <p className="font-bold text-secondary text-3xl">
+              <p className="font-semibold text-secondary text-3xl">
                 {users.filter(u => u.role === 'partner').length}
               </p>
             </CardBody>
@@ -174,7 +174,7 @@ function AdminUsersContent() {
           <Card className="bg-default-100/50 backdrop-blur-sm border-none">
             <CardBody>
               <p className="mb-2 text-default-400 text-sm">ผู้ใช้ทั่วไป</p>
-              <p className="font-bold text-primary text-3xl">
+              <p className="font-semibold text-primary text-3xl">
                 {users.filter(u => u.role === 'authenticated').length}
               </p>
             </CardBody>
@@ -187,7 +187,7 @@ function AdminUsersContent() {
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardBody>
             <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 mb-6">
-              <h2 className="font-bold text-xl">รายชื่อผู้ใช้</h2>
+              <h2 className="font-semibold text-xl">รายชื่อผู้ใช้</h2>
               <Input
                 placeholder="ค้นหาผู้ใช้..."
                 startContent={<MagnifyingGlassIcon className="w-4 h-4 text-default-400" />}

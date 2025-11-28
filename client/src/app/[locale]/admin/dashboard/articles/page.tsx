@@ -180,7 +180,7 @@ function AdminArticlesContent() {
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-zinc-400 text-sm">บทความทั้งหมด</p>
-                  <p className="font-bold text-2xl">{stats.total}</p>
+                  <p className="font-semibold text-2xl">{stats.total}</p>
                 </div>
                 <NewspaperIcon className="w-8 h-8 text-blue-500" />
               </div>
@@ -191,7 +191,7 @@ function AdminArticlesContent() {
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-zinc-400 text-sm">เผยแพร่แล้ว</p>
-                  <p className="font-bold text-2xl text-green-500">{stats.published}</p>
+                  <p className="font-semibold text-2xl text-green-500">{stats.published}</p>
                 </div>
                 <DocumentTextIcon className="w-8 h-8 text-green-500" />
               </div>
@@ -202,7 +202,7 @@ function AdminArticlesContent() {
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-zinc-400 text-sm">ฉบับร่าง</p>
-                  <p className="font-bold text-2xl text-yellow-500">{stats.draft}</p>
+                  <p className="font-semibold text-2xl text-yellow-500">{stats.draft}</p>
                 </div>
                 <DocumentTextIcon className="w-8 h-8 text-yellow-500" />
               </div>
@@ -213,7 +213,7 @@ function AdminArticlesContent() {
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-zinc-400 text-sm">กำหนดเวลา</p>
-                  <p className="font-bold text-2xl text-purple-500">{stats.scheduled}</p>
+                  <p className="font-semibold text-2xl text-purple-500">{stats.scheduled}</p>
                 </div>
                 <ClockIcon className="w-8 h-8 text-purple-500" />
               </div>

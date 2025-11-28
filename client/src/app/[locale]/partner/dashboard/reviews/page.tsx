@@ -284,7 +284,7 @@ function ReviewsPageContent() {
                 <p className="text-sm text-default-600">{t('stats.totalReviews')}</p>
                 <ChatBubbleLeftRightIcon className="h-5 w-5 text-default-400" />
               </div>
-              <p className="text-3xl font-bold text-default-900">{stats.total}</p>
+              <p className="text-3xl font-semibold text-default-900">{stats.total}</p>
             </CardBody>
           </Card>
 
@@ -294,7 +294,7 @@ function ReviewsPageContent() {
                 <p className="text-sm text-default-600">{t('stats.averageRating')}</p>
                 <StarIcon className="h-5 w-5 text-default-400" />
               </div>
-              <p className="text-3xl font-bold text-default-900">
+              <p className="text-3xl font-semibold text-default-900">
                 {stats.average_rating.toFixed(1)}
               </p>
               <p className="text-xs text-default-500">out of 5.0</p>
@@ -307,7 +307,7 @@ function ReviewsPageContent() {
                 <p className="text-sm text-default-600">{t('stats.pendingReviews')}</p>
                 <ClockIcon className="h-5 w-5 text-default-400" />
               </div>
-              <p className="text-3xl font-bold text-default-900">{stats.pending}</p>
+              <p className="text-3xl font-semibold text-default-900">{stats.pending}</p>
             </CardBody>
           </Card>
 
@@ -317,7 +317,7 @@ function ReviewsPageContent() {
                 <p className="text-sm text-default-600">{t('stats.needsResponse')}</p>
                 <ChatBubbleLeftRightIcon className="h-5 w-5 text-default-400" />
               </div>
-              <p className="text-3xl font-bold text-default-900">
+              <p className="text-3xl font-semibold text-default-900">
                 {stats.without_response}
               </p>
             </CardBody>

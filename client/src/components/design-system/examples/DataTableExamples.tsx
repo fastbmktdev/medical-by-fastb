@@ -167,7 +167,7 @@ export const DataTableExamples: React.FC = () => {
   return (
     <div className="p-6 space-y-8 bg-background-primary min-h-screen">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">
+        <h1 className="text-3xl font-semibold mb-8">
           DataTable Component Examples
         </h1>
 

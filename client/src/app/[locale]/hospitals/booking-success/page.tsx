@@ -176,7 +176,7 @@ function BookingSuccessContent() {
       <div className="flex justify-center items-center bg-zinc-100 min-h-screen">
         <div className="text-center">
           <div className="inline-block mb-4 border-4 border-red-600 border-t-transparent  w-16 h-16 animate-spin"></div>
-          <p className="text-zinc-300 text-lg">กำลังตรวจสอบการชำระเงิน...</p>
+          <p className="text-zinc-400 text-lg">กำลังตรวจสอบการชำระเงิน...</p>
         </div>
       </div>
     );
@@ -191,7 +191,7 @@ function BookingSuccessContent() {
             <div className="inline-flex justify-center items-center bg-brand-primary mb-4  w-20 h-20">
               <XCircleIcon className="w-12 h-12 text-white" />
             </div>
-            <h1 className="mb-2 font-bold text-3xl">
+            <h1 className="mb-2 font-semibold text-3xl">
               การชำระเงินไม่สำเร็จ
             </h1>
             <p className="text-zinc-400 text-lg">
@@ -220,7 +220,7 @@ function BookingSuccessContent() {
             <div className="inline-flex justify-center items-center bg-yellow-600 mb-4  w-20 h-20">
               <ClockIcon className="w-12 h-12 text-white" />
             </div>
-            <h1 className="mb-2 font-bold text-3xl">
+            <h1 className="mb-2 font-semibold text-3xl">
               กำลังตรวจสอบการชำระเงิน
             </h1>
             <p className="text-zinc-400 text-lg">
@@ -246,7 +246,7 @@ function BookingSuccessContent() {
           <div className="inline-flex justify-center items-center bg-green-600 mb-4  w-20 h-20">
             <CheckCircleIcon className="w-12 h-12 text-white" />
           </div>
-          <h1 className="mb-2 font-bold text-3xl md:text-4xl">
+          <h1 className="mb-2 font-semibold text-3xl md:text-4xl">
             จองสำเร็จ!
           </h1>
           <p className="text-zinc-400 text-lg">
@@ -307,7 +307,7 @@ function BookingSuccessContent() {
               </div>
               <div className="flex justify-between items-center pt-3 border-zinc-600 border-t">
                 <span className="font-semibold text-lg">ยอดรวม:</span>
-                <span className="font-bold text-green-400 text-2xl">
+                <span className="font-semibold text-green-400 text-2xl">
                   ฿{Number(appointment.price_paid).toLocaleString()}
                 </span>
               </div>
@@ -328,7 +328,7 @@ function BookingSuccessContent() {
             <ExclamationTriangleIcon className="w-5 h-5" />
             ขั้นตอนถัดไป
           </h3>
-          <ul className="space-y-2 text-zinc-300 text-sm list-disc list-inside">
+          <ul className="space-y-2 text-zinc-400 text-sm list-disc list-inside">
             <li>เราได้ส่งอีเมลยืนยันการจองไปที่ <strong className="text-white">{appointment?.customer_email}</strong> แล้ว</li>
             <li>{`คุณสามารถดูรายละเอียดการจองได้ที่หน้า "การจองของฉัน"`}</li>
             <li>กรุณานำหมายเลขการจอง <strong className="font-mono text-white">{appointment?.booking_number}</strong> มาแสดงเมื่อเช็คอิน</li>

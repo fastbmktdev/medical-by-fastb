@@ -220,14 +220,14 @@ function AdminDashboardContent() {
 
       {/* Quick Stats */}
       <section className="mb-8">
-        <h2 className="mb-6 font-bold text-2xl">สถิติโดยรวม</h2>
+        <h2 className="mb-6 font-semibold text-2xl">สถิติโดยรวม</h2>
         <div className="gap-4 grid grid-cols-1 md:grid-cols-4">
           <Card className="bg-default-100/50 backdrop-blur-sm border-none">
             <CardBody>
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-default-400 text-sm">สินค้าทั้งหมด</p>
-                  <p className="font-bold text-2xl">{stats.totalProducts}</p>
+                  <p className="font-semibold text-2xl">{stats.totalProducts}</p>
                   <p className="text-success text-xs mt-1">เปิดใช้งาน {stats.activeProducts}</p>
                 </div>
                 <CubeIcon className="w-8 h-8 text-warning" />
@@ -239,7 +239,7 @@ function AdminDashboardContent() {
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-default-400 text-sm">โปรโมชั่นทั้งหมด</p>
-                  <p className="font-bold text-2xl">{stats.totalPromotions}</p>
+                  <p className="font-semibold text-2xl">{stats.totalPromotions}</p>
                   <p className="text-success text-xs mt-1">เปิดใช้งาน {stats.activePromotions}</p>
                 </div>
                 <MegaphoneIcon className="w-8 h-8 text-secondary" />
@@ -251,7 +251,7 @@ function AdminDashboardContent() {
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-default-400 text-sm">ผู้ใช้ทั้งหมด</p>
-                  <p className="font-bold text-2xl">{stats.totalUsers}</p>
+                  <p className="font-semibold text-2xl">{stats.totalUsers}</p>
                 </div>
                 <UsersIcon className="w-8 h-8 text-primary" />
               </div>
@@ -262,7 +262,7 @@ function AdminDashboardContent() {
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-default-400 text-sm">โรงพยาบาลทั้งหมด</p>
-                  <p className="font-bold text-2xl">{stats.totalHospitals}</p>
+                  <p className="font-semibold text-2xl">{stats.totalHospitals}</p>
                   <p className="text-success text-xs mt-1">อนุมัติแล้ว {stats.approvedHospitals}</p>
                 </div>
                 <BuildingStorefrontIcon className="w-8 h-8 text-success" />
@@ -274,7 +274,7 @@ function AdminDashboardContent() {
 
       {/* Admin Tools */}
       <section className="mb-8">
-        <h2 className="mb-6 font-bold text-2xl">เครื่องมือผู้ดูแล</h2>
+        <h2 className="mb-6 font-semibold text-2xl">เครื่องมือผู้ดูแล</h2>
         <div className="gap-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {adminTools.map((tool, index) => {
             const Icon = tool.icon;
@@ -311,13 +311,13 @@ function AdminDashboardContent() {
 
       {/* System Info */}
       <section>
-        <h2 className="mb-6 font-bold text-2xl">ข้อมูลระบบ</h2>
+        <h2 className="mb-6 font-semibold text-2xl">ข้อมูลระบบ</h2>
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardBody>
             <div className="gap-8 grid grid-cols-1 md:grid-cols-3">
               <div className="text-center">
                 <p className="mb-2 text-default-400 text-sm">เวอร์ชัน</p>
-                <p className="font-mono font-bold text-2xl">v1.0.0</p>
+                <p className="font-mono font-semibold text-2xl">v1.0.0</p>
               </div>
               <div className="text-center">
                 <p className="mb-2 text-default-400 text-sm">สถานะระบบ</p>

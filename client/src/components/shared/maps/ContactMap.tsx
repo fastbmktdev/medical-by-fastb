@@ -31,9 +31,9 @@ export const ContactMap = memo(function ContactMap({
 
   return (
     <div className="bg-zinc-100 p-8  border border-zinc-800">
-      <h2 className="mb-6 font-bold text-2xl text-center">แผนที่สำนักงาน</h2>
+      <h2 className="mb-6 font-semibold text-2xl text-center">แผนที่สำนักงาน</h2>
       <div className="mb-4 text-center">
-        <p className="text-zinc-300">{finalAddress}</p>
+        <p className="text-zinc-400">{finalAddress}</p>
       </div>
       
       <LeafletMap

@@ -79,7 +79,7 @@ export function NotificationPreferencesPanel() {
           <BellIcon className="w-5 h-5 text-blue-400" />
         </div>
         <div>
-          <h3 className="font-bold text-xl text-white">การตั้งค่าการแจ้งเตือน</h3>
+          <h3 className="font-semibold text-xl text-white">การตั้งค่าการแจ้งเตือน</h3>
           <p className="text-zinc-400 text-sm">ควบคุมการแจ้งเตือนที่คุณต้องการรับ</p>
         </div>
       </CardHeader>

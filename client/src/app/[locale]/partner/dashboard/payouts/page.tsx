@@ -334,7 +334,7 @@ function PartnerPayoutsContent() {
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardBody className="py-16 text-center">
             <BuildingStorefrontIcon className="mx-auto mb-6 w-20 h-20 text-default-300" />
-            <h2 className="mb-4 font-bold text-2xl">ยังไม่มีข้อมูลโรงพยาบาล</h2>
+            <h2 className="mb-4 font-semibold text-2xl">ยังไม่มีข้อมูลโรงพยาบาล</h2>
             <p className="mx-auto mb-8 max-w-md text-default-400 text-xl">
               เริ่มต้นสมัครเป็นพาร์ทเนอร์กับเราเพื่อเข้าถึงฐานลูกค้าที่กว้างขึ้น
             </p>
@@ -344,7 +344,7 @@ function PartnerPayoutsContent() {
               color="secondary"
               size="lg"
               startContent={<BuildingStorefrontIcon className="w-6 h-6" />}
-              className="font-bold"
+              className="font-semibold"
             >
               สมัครเป็นพาร์ทเนอร์
             </Button>
@@ -371,27 +371,27 @@ function PartnerPayoutsContent() {
           <Card className="bg-linear-to-br from-success-500 to-success-700 border-none">
             <CardBody>
               <p className="mb-2 text-white/80 text-sm">จ่ายเงินสำเร็จ</p>
-              <p className="font-bold text-white text-2xl">{stats.totalCompleted}</p>
+              <p className="font-semibold text-white text-2xl">{stats.totalCompleted}</p>
               <p className="font-mono text-white/90 text-sm">฿{stats.totalAmount.toLocaleString()}</p>
             </CardBody>
           </Card>
           <Card className="bg-linear-to-br from-warning-500 to-warning-600 border-none">
             <CardBody>
               <p className="mb-2 text-white/80 text-sm">รอดำเนินการ</p>
-              <p className="font-bold text-white text-2xl">{stats.totalPending}</p>
+              <p className="font-semibold text-white text-2xl">{stats.totalPending}</p>
               <p className="font-mono text-white/90 text-sm">฿{stats.pendingAmount.toLocaleString()}</p>
             </CardBody>
           </Card>
           <Card className="bg-linear-to-br from-default-500 to-default-600 border-none">
             <CardBody>
               <p className="mb-2 text-white/80 text-sm">กำลังดำเนินการ</p>
-              <p className="font-bold text-white text-2xl">{stats.totalProcessing}</p>
+              <p className="font-semibold text-white text-2xl">{stats.totalProcessing}</p>
             </CardBody>
           </Card>
           <Card className="bg-default-100/50 backdrop-blur-sm border-none">
             <CardBody>
               <p className="mb-2 text-default-400 text-sm">ยอดรวมทั้งหมด</p>
-              <p className="font-mono font-bold text-success text-2xl">
+              <p className="font-mono font-semibold text-success text-2xl">
                 ฿{(stats.totalAmount + stats.pendingAmount).toLocaleString()}
               </p>
             </CardBody>
@@ -462,7 +462,7 @@ function PartnerPayoutsContent() {
                     <TableCell className="text-default-400">
                       {payout.commission_rate}% (฿{Number(payout.platform_fee || 0).toLocaleString()})
                     </TableCell>
-                    <TableCell className="font-mono font-bold text-success">
+                    <TableCell className="font-mono font-semibold text-success">
                       ฿{Number(payout.net_amount || 0).toLocaleString()}
                     </TableCell>
                     <TableCell className="text-default-400">
@@ -632,7 +632,7 @@ function PartnerPayoutsContent() {
                 <div className="gap-4 grid grid-cols-2">
                   <div>
                     <p className="mb-1 text-zinc-400 text-sm">รหัสการจ่ายเงิน</p>
-                    <p className="font-mono font-bold text-white">{selectedPayout.payout_number}</p>
+                    <p className="font-mono font-semibold text-white">{selectedPayout.payout_number}</p>
                   </div>
                   <div>
                     <p className="mb-1 text-zinc-400 text-sm">สถานะ</p>
@@ -652,7 +652,7 @@ function PartnerPayoutsContent() {
                 <div className="bg-zinc-800/50 p-4  space-y-2">
                   <div className="flex justify-between">
                     <span className="text-zinc-400">รายได้รวม</span>
-                    <span className="font-mono font-bold text-white">฿{Number(selectedPayout.total_revenue || 0).toLocaleString()}</span>
+                    <span className="font-mono font-semibold text-white">฿{Number(selectedPayout.total_revenue || 0).toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-zinc-400">ค่าคอมมิชชั่น ({selectedPayout.commission_rate}%)</span>
@@ -660,7 +660,7 @@ function PartnerPayoutsContent() {
                   </div>
                   <div className="flex justify-between pt-2 border-t border-zinc-700">
                     <span className="font-semibold text-white">ยอดจ่ายสุทธิ</span>
-                    <span className="font-mono font-bold text-success text-xl">฿{Number(selectedPayout.net_amount || 0).toLocaleString()}</span>
+                    <span className="font-mono font-semibold text-success text-xl">฿{Number(selectedPayout.net_amount || 0).toLocaleString()}</span>
                   </div>
                 </div>
 

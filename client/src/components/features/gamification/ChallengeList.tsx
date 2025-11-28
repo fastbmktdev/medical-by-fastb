@@ -109,7 +109,7 @@ export default function ChallengeList({ challenges, className = '' }: ChallengeL
               )}
             </div>
 
-            <p className="text-zinc-300 text-sm mb-3">
+            <p className="text-zinc-400 text-sm mb-3">
               {challengeData.description}
             </p>
 

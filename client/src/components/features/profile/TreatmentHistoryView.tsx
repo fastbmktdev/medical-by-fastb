@@ -58,19 +58,19 @@ export function TreatmentHistoryView() {
           <Card className="bg-zinc-100/50 border border-zinc-700">
             <CardBody>
               <p className="text-zinc-400 text-sm">จำนวนครั้งทั้งหมด</p>
-              <p className="text-2xl font-bold text-white">{stats.total_bookings}</p>
+              <p className="text-2xl font-semibold text-white">{stats.total_bookings}</p>
             </CardBody>
           </Card>
           <Card className="bg-zinc-100/50 border border-zinc-700">
             <CardBody>
               <p className="text-zinc-400 text-sm">โรงพยาบาลที่ไป</p>
-              <p className="text-2xl font-bold text-white">{stats.unique_hospitals}</p>
+              <p className="text-2xl font-semibold text-white">{stats.unique_hospitals}</p>
             </CardBody>
           </Card>
           <Card className="bg-zinc-100/50 border border-zinc-700">
             <CardBody>
               <p className="text-zinc-400 text-sm">ยอดรวมที่ใช้</p>
-              <p className="text-2xl font-bold text-white">
+              <p className="text-2xl font-semibold text-white">
                 ฿{(stats.total_spent || 0).toLocaleString()}
               </p>
             </CardBody>

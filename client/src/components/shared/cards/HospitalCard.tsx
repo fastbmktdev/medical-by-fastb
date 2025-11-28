@@ -48,7 +48,7 @@ function HospitalCardComponent({ hospital }: HospitalCardProps) {
 
       <div className="p-6">
         {/* Hospital Name */}
-        <h3 className="mb-2 font-bold group-hover:text-purple-600 text-xl text-gray-900 transition-colors">
+        <h3 className="mb-2 font-semibold group-hover:text-purple-600 text-xl text-gray-900 transition-colors">
           {hospital.hospital_name}
         </h3>
         {hospital.hospital_name_english && (

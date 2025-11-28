@@ -62,7 +62,7 @@ function AdminSettingsContent() {
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader className="flex items-center gap-3">
             <GlobeAltIcon className="w-6 h-6 text-danger" />
-            <h3 className="font-bold text-xl">ตั้งค่าทั่วไป</h3>
+            <h3 className="font-semibold text-xl">ตั้งค่าทั่วไป</h3>
           </CardHeader>
           <CardBody className="gap-4">
             <Input
@@ -97,7 +97,7 @@ function AdminSettingsContent() {
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader className="flex items-center gap-3">
             <Cog6ToothIcon className="w-6 h-6 text-danger" />
-            <h3 className="font-bold text-xl">ตั้งค่าระบบ</h3>
+            <h3 className="font-semibold text-xl">ตั้งค่าระบบ</h3>
           </CardHeader>
           <CardBody className="gap-4">
             <div className="flex justify-between items-center">
@@ -129,7 +129,7 @@ function AdminSettingsContent() {
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader className="flex items-center gap-3">
             <BellIcon className="w-6 h-6 text-danger" />
-            <h3 className="font-bold text-xl">การแจ้งเตือน</h3>
+            <h3 className="font-semibold text-xl">การแจ้งเตือน</h3>
           </CardHeader>
           <CardBody className="gap-4">
             <div className="flex justify-between items-center">
@@ -160,7 +160,7 @@ function AdminSettingsContent() {
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader className="flex items-center gap-3">
             <CurrencyDollarIcon className="w-6 h-6 text-danger" />
-            <h3 className="font-bold text-xl">การชำระเงิน</h3>
+            <h3 className="font-semibold text-xl">การชำระเงิน</h3>
           </CardHeader>
           <CardBody className="gap-4">
             <Input
@@ -188,7 +188,7 @@ function AdminSettingsContent() {
         <Card className="lg:col-span-2 bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader className="flex items-center gap-3">
             <ShieldCheckIcon className="w-6 h-6 text-danger" />
-            <h3 className="font-bold text-xl">ความปลอดภัย</h3>
+            <h3 className="font-semibold text-xl">ความปลอดภัย</h3>
           </CardHeader>
           <CardBody className="gap-4">
             <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4">

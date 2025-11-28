@@ -48,7 +48,7 @@ export function GamificationProgressBar({
   return (
     <div className={className}>
       {(label || showPercentage) && (
-        <div className="flex justify-between text-sm text-zinc-300 mb-1">
+        <div className="flex justify-between text-sm text-zinc-400 mb-1">
           {label && <span>{label}</span>}
           {showPercentage && <span>{Math.round(clampedProgress)}%</span>}
         </div>

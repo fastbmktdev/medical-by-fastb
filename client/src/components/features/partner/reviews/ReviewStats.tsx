@@ -78,7 +78,7 @@ export function ReviewStats({ data, isLoading = false }: ReviewStatsProps) {
                 <stat.icon className="h-5 w-5 text-default-400" />
               </div>
               <div className="flex items-baseline gap-1">
-                <p className="text-3xl font-bold text-default-900">{stat.value}</p>
+                <p className="text-3xl font-semibold text-default-900">{stat.value}</p>
                 {stat.subtitle && (
                   <p className="text-xs text-default-500">{stat.subtitle}</p>
                 )}
@@ -138,13 +138,13 @@ export function ReviewStats({ data, isLoading = false }: ReviewStatsProps) {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-default-600">{t('last7Days')}</span>
-                <span className="text-2xl font-bold text-primary-600">
+                <span className="text-2xl font-semibold text-primary-600">
                   {data.recent_reviews.last_7_days || 0}
                 </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm text-default-600">{t('last30Days')}</span>
-                <span className="text-2xl font-bold text-secondary-600">
+                <span className="text-2xl font-semibold text-secondary-600">
                   {data.recent_reviews.last_30_days || 0}
                 </span>
               </div>

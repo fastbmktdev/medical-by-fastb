@@ -151,7 +151,7 @@ export function HospitalGallery({ hospitalId, hospitalName }: HospitalGalleryPro
             <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/80 to-transparent p-4">
               <p className="font-semibold text-white">{image.title}</p>
               {image.description && (
-                <p className="mt-1 text-sm text-zinc-300">
+                <p className="mt-1 text-sm text-zinc-400">
                   {image.description}
                 </p>
               )}
@@ -187,7 +187,7 @@ export function HospitalGallery({ hospitalId, hospitalName }: HospitalGalleryPro
                 <div className="bg-zinc-900 p-4">
                   <p className="font-semibold text-white">{image.title}</p>
                   {image.description && (
-                    <p className="mt-1 text-sm text-zinc-300">
+                    <p className="mt-1 text-sm text-zinc-400">
                       {image.description}
                     </p>
                   )}
@@ -234,7 +234,7 @@ export function HospitalGallery({ hospitalId, hospitalName }: HospitalGalleryPro
                 {featuredImage.title}
               </p>
               {featuredImage.description && (
-                <p className="mt-1 text-sm text-zinc-300">
+                <p className="mt-1 text-sm text-zinc-400">
                   {featuredImage.description}
                 </p>
               )}
@@ -271,7 +271,7 @@ export function HospitalGallery({ hospitalId, hospitalName }: HospitalGalleryPro
                   />
                   {isLast && (
                     <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 group-hover:bg-black/70 transition-colors">
-                      <p className="font-bold text-3xl text-white">
+                      <p className="font-semibold text-3xl text-white">
                         +{remainingCount}
                       </p>
                       <p className="text-sm text-zinc-200">รูปเพิ่มเติม</p>
@@ -357,7 +357,7 @@ export function HospitalGallery({ hospitalId, hospitalName }: HospitalGalleryPro
                     </h3>
                   )}
                   {images[selectedIndex].description && (
-                    <p className="mt-2 text-zinc-300">
+                    <p className="mt-2 text-zinc-400">
                       {images[selectedIndex].description}
                     </p>
                   )}

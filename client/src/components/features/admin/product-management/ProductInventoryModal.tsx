@@ -118,7 +118,7 @@ export default function ProductInventoryModal({
         {/* Current Stock */}
         <div className="bg-zinc-900 p-4 ">
           <p className="text-zinc-400 text-sm mb-1">สต็อกปัจจุบัน</p>
-          <p className="font-bold text-2xl">
+          <p className="font-semibold text-2xl">
             {product.stock.toLocaleString()} ชิ้น
           </p>
         </div>
@@ -164,7 +164,7 @@ export default function ProductInventoryModal({
         {newStock !== null && (
           <div className="bg-blue-500/10 p-4 border-blue-500 border ">
             <p className="text-zinc-400 text-sm mb-1">สต็อกหลังการอัปเดต</p>
-            <p className="font-bold text-xl text-blue-400">
+            <p className="font-semibold text-xl text-blue-400">
               {newStock.toLocaleString()} ชิ้น
             </p>
             {action === 'subtract' && newStock < 10 && newStock > 0 && (

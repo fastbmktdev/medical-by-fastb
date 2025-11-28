@@ -300,7 +300,7 @@ function AdminModerationContent() {
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-zinc-400 text-sm">รอตรวจสอบ</p>
-                  <p className="font-bold text-2xl text-yellow-500">{stats.pending}</p>
+                  <p className="font-semibold text-2xl text-yellow-500">{stats.pending}</p>
                 </div>
                 <ExclamationTriangleIcon className="w-8 h-8 text-yellow-500" />
               </div>
@@ -311,7 +311,7 @@ function AdminModerationContent() {
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-zinc-400 text-sm">กำลังตรวจสอบ</p>
-                  <p className="font-bold text-2xl text-blue-500">{stats.reviewed}</p>
+                  <p className="font-semibold text-2xl text-blue-500">{stats.reviewed}</p>
                 </div>
                 <EyeIcon className="w-8 h-8 text-blue-500" />
               </div>
@@ -322,7 +322,7 @@ function AdminModerationContent() {
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-zinc-400 text-sm">แก้ไขแล้ว</p>
-                  <p className="font-bold text-2xl text-green-500">{stats.resolved}</p>
+                  <p className="font-semibold text-2xl text-green-500">{stats.resolved}</p>
                 </div>
                 <CheckCircleIcon className="w-8 h-8 text-green-500" />
               </div>
@@ -333,7 +333,7 @@ function AdminModerationContent() {
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-zinc-400 text-sm">ทั้งหมด</p>
-                  <p className="font-bold text-2xl">{stats.total}</p>
+                  <p className="font-semibold text-2xl">{stats.total}</p>
                 </div>
                 <FlagIcon className="w-8 h-8 text-red-500" />
               </div>

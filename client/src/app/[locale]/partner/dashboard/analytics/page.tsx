@@ -208,7 +208,7 @@ function PartnerAnalyticsContent() {
                 </div>
               </div>
               <div>
-                <h3 className="font-bold text-2xl">
+                <h3 className="font-semibold text-2xl">
                   {analyticsData?.totalCustomers || 0}
                 </h3>
                 <p className="text-default-400 text-sm">ลูกค้าทั้งหมด</p>
@@ -224,7 +224,7 @@ function PartnerAnalyticsContent() {
                 </div>
               </div>
               <div>
-                <h3 className="font-bold text-2xl">
+                <h3 className="font-semibold text-2xl">
                   {analyticsData?.appointments.monthly || 0}
                 </h3>
                 <p className="text-default-400 text-sm">การจองเดือนนี้</p>
@@ -245,7 +245,7 @@ function PartnerAnalyticsContent() {
                 </div>
               </div>
               <div>
-                <h3 className="font-bold text-2xl">
+                <h3 className="font-semibold text-2xl">
                   {analyticsData?.rating.average 
                     ? analyticsData.rating.average.toFixed(1)
                     : 'N/A'}
@@ -272,7 +272,7 @@ function PartnerAnalyticsContent() {
                 </div>
               </div>
               <div>
-                <h3 className="font-bold text-2xl">
+                <h3 className="font-semibold text-2xl">
                   {analyticsData?.areaRanking.rank || 'N/A'}
                 </h3>
                 <p className="text-default-400 text-sm">อันดับในพื้นที่</p>
@@ -294,7 +294,7 @@ function PartnerAnalyticsContent() {
             <div className="flex justify-between items-center">
               <div>
                 <p className="mb-2 text-white/80 text-sm">รายได้เดือนนี้</p>
-                <p className="font-mono font-bold text-white text-3xl">
+                <p className="font-mono font-semibold text-white text-3xl">
                   ฿{Number(analyticsData?.revenue.monthly || 0).toLocaleString()}
                 </p>
                 {analyticsData && (
@@ -316,7 +316,7 @@ function PartnerAnalyticsContent() {
         {/* Revenue Chart */}
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader className="flex justify-between items-center">
-            <h3 className="font-bold text-xl">กราฟรายได้</h3>
+            <h3 className="font-semibold text-xl">กราฟรายได้</h3>
             <Tabs
               selectedKey={chartType}
               onSelectionChange={(key) => setChartType(key as 'month' | 'week')}
@@ -356,13 +356,13 @@ function PartnerAnalyticsContent() {
                 <div className="flex justify-center gap-4 pt-4 border-t border-default-200">
                   <div className="text-center">
                     <p className="text-default-400 text-xs">ยอดรวม</p>
-                    <p className="font-mono font-bold text-success">
+                    <p className="font-mono font-semibold text-success">
                       ฿{chartData.reduce((sum, item) => sum + item.value, 0).toLocaleString()}
                     </p>
                   </div>
                   <div className="text-center">
                     <p className="text-default-400 text-xs">เฉลี่ย</p>
-                    <p className="font-mono font-bold text-default-600">
+                    <p className="font-mono font-semibold text-default-600">
                       ฿{Math.round(chartData.reduce((sum, item) => sum + item.value, 0) / chartData.length || 0).toLocaleString()}
                     </p>
                   </div>
@@ -380,7 +380,7 @@ function PartnerAnalyticsContent() {
         {/* Popular Services */}
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader>
-            <h3 className="font-bold text-xl">บริการยอดนิยม</h3>
+            <h3 className="font-semibold text-xl">บริการยอดนิยม</h3>
           </CardHeader>
           <CardBody>
             {analyticsData && analyticsData.popularServices.length > 0 ? (
@@ -392,7 +392,7 @@ function PartnerAnalyticsContent() {
                   >
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="flex justify-center items-center bg-secondary w-6 h-6  text-white text-xs font-bold">
+                        <span className="flex justify-center items-center bg-secondary w-6 h-6  text-white text-xs font-semibold">
                           {index + 1}
                         </span>
                         <h4 className="font-semibold text-white">{service.package_name}</h4>

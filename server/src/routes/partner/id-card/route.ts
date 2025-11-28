@@ -18,13 +18,30 @@ export async function POST(request: NextRequest) {
     } = await supabase.auth.getUser();
 
     if (authError || !user) {
+      console.error('ID card upload auth error:', authError);
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
       );
     }
 
-    const formData = await request.formData();
+    let formData: FormData;
+    try {
+      formData = await request.formData();
+    } catch (formDataError) {
+      console.error('Failed to parse formData:', formDataError);
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: 'Failed to parse form data',
+          details: process.env.NODE_ENV === 'development' 
+            ? (formDataError instanceof Error ? formDataError.message : String(formDataError))
+            : undefined
+        },
+        { status: 400 }
+      );
+    }
+
     const originalFile = formData.get('file') as File | null;
     const watermarkedFile = formData.get('watermarkedFile') as File | null;
 

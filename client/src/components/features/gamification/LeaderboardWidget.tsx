@@ -23,7 +23,7 @@ export default function LeaderboardWidget({ leaderboard, className = '' }: Leade
   const getRankColor = (rank: number) => {
     switch (rank) {
       case 1: return 'bg-yellow-900/50 text-yellow-300 border border-yellow-700';
-      case 2: return 'bg-zinc-800 text-zinc-300 border border-zinc-700';
+      case 2: return 'bg-zinc-800 text-zinc-400 border border-zinc-700';
       case 3: return 'bg-orange-900/50 text-orange-300 border border-orange-700';
       default: return 'bg-blue-900/50 text-blue-300 border border-blue-700';
     }
@@ -61,7 +61,7 @@ export default function LeaderboardWidget({ leaderboard, className = '' }: Leade
         {leaderboard.user_rank && (
           <div className="text-right">
             <div className="text-sm text-zinc-400">อันดับของคุณ</div>
-            <div className="text-2xl font-bold text-blue-400">
+            <div className="text-2xl font-semibold text-blue-400">
               #{leaderboard.user_rank}
             </div>
             {leaderboard.user_score && (
@@ -83,7 +83,7 @@ export default function LeaderboardWidget({ leaderboard, className = '' }: Leade
             }`}
           >
             <div className="flex items-center space-x-3">
-              <div className={`w-8 h-8  flex items-center justify-center text-sm font-bold ${getRankColor(entry.rank)}`}>
+              <div className={`w-8 h-8  flex items-center justify-center text-sm font-semibold ${getRankColor(entry.rank)}`}>
                 {getRankIcon(entry.rank)}
               </div>
               
@@ -98,7 +98,7 @@ export default function LeaderboardWidget({ leaderboard, className = '' }: Leade
                   />
                 ) : (
                   <div className="w-8 h-8 bg-zinc-100  flex items-center justify-center">
-                    <span className="text-zinc-300 text-sm">
+                    <span className="text-zinc-400 text-sm">
                       {entry.user?.username?.charAt(0).toUpperCase() || '?'}
                     </span>
                   </div>
@@ -116,7 +116,7 @@ export default function LeaderboardWidget({ leaderboard, className = '' }: Leade
             </div>
             
             <div className="text-right">
-              <div className="font-bold text-white">
+              <div className="font-semibold text-white">
                 {entry.score.toLocaleString()}
               </div>
               <div className="text-sm text-zinc-500">

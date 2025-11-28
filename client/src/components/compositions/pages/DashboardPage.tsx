@@ -32,7 +32,7 @@ export function DashboardPage({
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-semibold text-white">
             {title}
           </h1>
           {description && (

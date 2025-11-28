@@ -96,7 +96,7 @@ export default function PaymentHistory() {
           </div>
           <div className="text-right">
             <p className="text-zinc-400 text-sm">จำนวนรายการ</p>
-            <p className=" text-2xl font-bold">{payments.length}</p>
+            <p className=" text-2xl font-semibold">{payments.length}</p>
           </div>
         </div>
       </div>
@@ -137,7 +137,7 @@ export default function PaymentHistory() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-2xl font-bold text-white">
+                  <p className="text-2xl font-semibold text-white">
                     {formatAmount(payment.amount)}
                   </p>
                   <div className="mt-2 flex items-center justify-end space-x-2">
@@ -192,7 +192,7 @@ export default function PaymentHistory() {
                 </div>
                 <div>
                   <label className="text-zinc-400 text-sm">จำนวนเงิน</label>
-                  <p className=" text-xl font-bold">
+                  <p className=" text-xl font-semibold">
                     {formatAmount(selectedPayment.amount)}
                   </p>
                 </div>
@@ -206,7 +206,7 @@ export default function PaymentHistory() {
                 <div>
                   <label className="text-zinc-400 text-sm">ข้อมูลเพิ่มเติม</label>
                   <div className="bg-zinc-100  p-4 mt-2">
-                    <pre className="text-zinc-300 text-sm whitespace-pre-wrap">
+                    <pre className="text-zinc-400 text-sm whitespace-pre-wrap">
                       {JSON.stringify(selectedPayment.metadata, null, 2)}
                     </pre>
                   </div>

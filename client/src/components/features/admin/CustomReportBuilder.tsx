@@ -245,7 +245,7 @@ export function CustomReportBuilder({ onSave }: CustomReportBuilderProps) {
         <CardHeader className="flex justify-between items-center">
           <div className="flex items-center gap-3">
             <DocumentTextIcon className="w-6 h-6" />
-            <h3 className="font-bold text-xl">รายงานกำหนดเอง</h3>
+            <h3 className="font-semibold text-xl">รายงานกำหนดเอง</h3>
           </div>
           <Button
             color="primary"

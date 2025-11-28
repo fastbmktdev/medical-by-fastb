@@ -23,7 +23,7 @@ export default function LevelDisplay({ userStats, className = '' }: LevelDisplay
           {levelDisplay.levelIcon} ระดับของคุณ
         </h2>
         <div className="text-right">
-          <div className="text-2xl font-bold text-blue-400">{levelDisplay.formattedPoints}</div>
+          <div className="text-2xl font-semibold text-blue-400">{levelDisplay.formattedPoints}</div>
           <div className="text-sm text-zinc-400">คะแนนรวม</div>
         </div>
       </div>
@@ -45,22 +45,22 @@ export default function LevelDisplay({ userStats, className = '' }: LevelDisplay
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
         <div className="bg-blue-950/50  p-3 border border-blue-700/30">
-          <div className="text-2xl font-bold text-blue-400">{userStats.current_level}</div>
+          <div className="text-2xl font-semibold text-blue-400">{userStats.current_level}</div>
           <div className="text-sm text-zinc-400">ระดับปัจจุบัน</div>
         </div>
         
         <div className="bg-green-950/50  p-3 border border-green-700/30">
-          <div className="text-2xl font-bold text-green-400">{userStats.badges_earned}</div>
+          <div className="text-2xl font-semibold text-green-400">{userStats.badges_earned}</div>
           <div className="text-sm text-zinc-400">เหรียญที่ได้รับ</div>
         </div>
         
         <div className="bg-purple-950/50  p-3 border border-purple-700/30">
-          <div className="text-2xl font-bold text-purple-400">{userStats.active_challenges.length}</div>
+          <div className="text-2xl font-semibold text-purple-400">{userStats.active_challenges.length}</div>
           <div className="text-sm text-zinc-400">ความท้าทาย</div>
         </div>
         
         <div className="bg-orange-950/50  p-3 border border-orange-700/30">
-          <div className="text-2xl font-bold text-orange-400">{userStats.current_streaks.length}</div>
+          <div className="text-2xl font-semibold text-orange-400">{userStats.current_streaks.length}</div>
           <div className="text-sm text-zinc-400">สตรีค</div>
         </div>
       </div>

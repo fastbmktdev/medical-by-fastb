@@ -343,7 +343,7 @@ export default function HospitalBookingPage() {
         <div className="bg-white shadow-lg p-6  w-full max-w-md">
           <div className="text-center">
             <div className="mb-4 text-red-600 text-5xl">⚠️</div>
-            <h1 className="mb-2 font-bold text-gray-900 text-2xl">
+            <h1 className="mb-2 font-semibold text-gray-900 text-2xl">
               เกิดข้อผิดพลาด
             </h1>
             <p className="mb-6 text-gray-600">{error}</p>
@@ -411,7 +411,7 @@ export default function HospitalBookingPage() {
           {/* hospital Info Header */}
           {hospitalData && (
             <div className="mb-6 pb-6 border-gray-200 border-b">
-              <h1 className="font-bold text-gray-900 text-2xl">
+              <h1 className="font-semibold text-gray-900 text-2xl">
                 {typeof hospitalData.hospital_name === 'string' ? hospitalData.hospital_name : 'Unknown hospital'}
               </h1>
               <p className="text-gray-600">{typeof hospitalData.location === 'string' ? hospitalData.location : ''}</p>
@@ -474,10 +474,10 @@ export default function HospitalBookingPage() {
                     }`}
                   >
                     <div className="text-center">
-                      <h3 className="font-bold text-gray-900 text-lg">
+                      <h3 className="font-semibold text-gray-900 text-lg">
                         {pkg.name}
                       </h3>
-                      <div className="my-4 font-bold text-blue-600 text-3xl">
+                      <div className="my-4 font-semibold text-blue-600 text-3xl">
                         ฿{pkg.price.toLocaleString()}
                       </div>
                       <p className="text-gray-600 text-sm">{pkg.description}</p>
@@ -583,7 +583,7 @@ export default function HospitalBookingPage() {
                 </div>
                 <div className="flex justify-between pt-2 border-gray-200 border-t">
                   <span className="font-semibold text-gray-900">ยอดรวม:</span>
-                  <span className="font-bold text-blue-600 text-lg">
+                  <span className="font-semibold text-blue-600 text-lg">
                     ฿{selectedPackage?.price.toLocaleString('th-TH', { minimumFractionDigits: 2 })}
                   </span>
                 </div>

@@ -28,7 +28,7 @@ export const LeafletHospitalMap = memo(function LeafletHospitalMap({
   if (!hasCoords && !mapUrl) {
     return (
       <div className="bg-zinc-100 p-6 border border-zinc-700 ">
-        <h2 className="mb-4 font-bold text-2xl">แผนที่</h2>
+        <h2 className="mb-4 font-semibold text-2xl">แผนที่</h2>
         <div className="flex justify-center items-center h-64">
           <p className="text-zinc-500 text-sm">ยังไม่มีข้อมูลตำแหน่ง</p>
         </div>
@@ -43,7 +43,7 @@ export const LeafletHospitalMap = memo(function LeafletHospitalMap({
 
   return (
     <div className="bg-zinc-100 p-6 border border-zinc-700 ">
-      <h2 className="mb-4 font-bold text-2xl">แผนที่</h2>
+      <h2 className="mb-4 font-semibold text-2xl">แผนที่</h2>
       {hasCoords && useLeaflet ? (
         <LeafletMap
           latitude={latitude}

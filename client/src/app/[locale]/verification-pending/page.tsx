@@ -44,11 +44,11 @@ function VerificationPendingContent() {
 
         {/* Message */}
         <div className="text-center space-y-4">
-          <h2 className="text-2xl font-bold text-white">ลงทะเบียนสำเร็จ!</h2>
+          <h2 className="text-2xl font-semibold text-white">ลงทะเบียนสำเร็จ!</h2>
 
           {email && (
             <div className="bg-zinc-800/50 border border-zinc-700  p-4">
-              <p className="text-zinc-300 text-sm mb-2">
+              <p className="text-zinc-400 text-sm mb-2">
                 เราได้ส่งอีเมลยืนยันไปที่:
               </p>
               <p className="text-white font-semibold break-all">{email}</p>

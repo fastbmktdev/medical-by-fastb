@@ -41,7 +41,7 @@ export default function TermsModal({
         <div className="top-0 z-10 sticky bg-linear-to-br from-red-900 to-red-700 px-6 py-5 border-red-600 border-b">
           <div className="flex justify-between items-center">
             <div>
-              <h2 className="flex items-center gap-3 font-bold text-2xl">
+              <h2 className="flex items-center gap-3 font-semibold text-2xl">
                 <CheckCircleIcon className="w-8 h-8" />
                 ยืนยันการส่งใบสมัคร
               </h2>
@@ -63,11 +63,11 @@ export default function TermsModal({
         <div className="px-6 py-6 max-h-[calc(90vh-220px)] overflow-y-auto">
           {/* General Terms Section */}
           <div className="bg-zinc-100 mb-8 p-6 border border-zinc-700 ">
-            <h3 className="mb-4 pb-3 border-zinc-700 border-b font-bold text-xl">
+            <h3 className="mb-4 pb-3 border-zinc-700 border-b font-semibold text-xl">
               เงื่อนไขบริการทั่วไป
             </h3>
 
-            <div className="space-y-6 text-zinc-300">
+            <div className="space-y-6 text-zinc-400">
               <div>
                 <h4 className="mb-3 font-semibold text-red-400 text-lg">
                   การให้สิทธิใช้ภาพลักษณ์เพื่อการตลาดและการประชาสัมพันธ์
@@ -81,7 +81,7 @@ export default function TermsModal({
                     <h5 className="mb-2 font-semibold text-white">
                       1. การยินยอม
                     </h5>
-                    <p className="text-zinc-300 text-sm leading-relaxed">
+                    <p className="text-zinc-400 text-sm leading-relaxed">
                       ผู้ใช้บริการ{" "}
                       <span className="font-medium text-yellow-400">
                         ให้ความยินยอมโดยชัดแจ้งและสมัครใจ
@@ -105,7 +105,7 @@ export default function TermsModal({
                     <h5 className="mb-2 font-semibold text-white">
                       2. วัตถุประสงค์และขอบเขต
                     </h5>
-                    <p className="text-zinc-300 text-sm leading-relaxed">
+                    <p className="text-zinc-400 text-sm leading-relaxed">
                       medicalhospital.com มีสิทธิ{" "}
                       <span className="font-medium text-yellow-400">
                         โดยเด็ดขาดและเป็นสิทธิ์ขาดแต่เพียงผู้เดียว
@@ -130,7 +130,7 @@ export default function TermsModal({
                     <h5 className="mb-2 font-semibold text-white">
                       3. การสละสิทธิ
                     </h5>
-                    <p className="text-zinc-300 text-sm leading-relaxed">
+                    <p className="text-zinc-400 text-sm leading-relaxed">
                       ผู้ใช้บริการตกลงว่าการยินยอมนี้เป็นการให้สิทธิ{" "}
                       <span className="font-medium text-yellow-400">
                         โดยไม่มีค่าตอบแทน
@@ -150,7 +150,7 @@ export default function TermsModal({
                     <h5 className="mb-2 font-semibold text-white">
                       4. การคงอยู่ของสิทธิ
                     </h5>
-                    <p className="text-zinc-300 text-sm leading-relaxed">
+                    <p className="text-zinc-400 text-sm leading-relaxed">
                       สิทธิในการใช้สื่อตามมาตรานี้ จะ
                       <span className="font-medium text-yellow-400">
                         มีผลต่อเนื่องและไม่มีกำหนดเวลา
@@ -186,11 +186,11 @@ export default function TermsModal({
                   ตัวอย่างการใช้งานสื่อ
                 </h4>
                 <div className="bg-zinc-100/50 p-4 ">
-                  <p className="mb-3 text-zinc-300 text-sm leading-relaxed">
+                  <p className="mb-3 text-zinc-400 text-sm leading-relaxed">
                     เมื่อคุณยอมรับเงื่อนไขนี้ medicalhospital.com สามารถนำภาพ
                     วิดีโอ และข้อมูลของคุณไปใช้ใน:
                   </p>
-                  <ul className="space-y-2 text-zinc-300 text-sm">
+                  <ul className="space-y-2 text-zinc-400 text-sm">
                     <li className="flex items-start gap-2">
                       <span className="mt-1 text-green-400">✓</span>
                       <span>
@@ -236,7 +236,7 @@ export default function TermsModal({
                 </h4>
                 <div className="space-y-3">
                   <div className="bg-linear-to-r from-yellow-900/20 to-orange-900/20 p-4 border border-yellow-700/50 ">
-                    <p className="text-zinc-300 text-sm leading-relaxed">
+                    <p className="text-zinc-400 text-sm leading-relaxed">
                       <span className="font-semibold text-yellow-300">→</span>{" "}
                       การยินยอมนี้{" "}
                       <span className="font-medium text-white">
@@ -250,7 +250,7 @@ export default function TermsModal({
                     </p>
                   </div>
                   <div className="bg-linear-to-r from-blue-900/20 to-cyan-900/20 p-4 border border-blue-700/50 ">
-                    <p className="text-zinc-300 text-sm leading-relaxed">
+                    <p className="text-zinc-400 text-sm leading-relaxed">
                       <span className="font-semibold text-blue-300">→</span>{" "}
                       สิทธิที่ได้รับ{" "}
                       <span className="font-medium text-white">
@@ -260,7 +260,7 @@ export default function TermsModal({
                     </p>
                   </div>
                   <div className="bg-linear-to-r from-purple-900/20 to-pink-900/20 p-4 border border-purple-700/50 ">
-                    <p className="text-zinc-300 text-sm leading-relaxed">
+                    <p className="text-zinc-400 text-sm leading-relaxed">
                       <span className="font-semibold text-purple-300">→</span>{" "}
                       เราจะใช้ภาพและข้อมูล{" "}
                       <span className="font-medium text-white">
@@ -289,14 +289,14 @@ export default function TermsModal({
                   การคุ้มครองข้อมูลส่วนบุคคล
                 </h4>
                 <div className="bg-green-900/10 p-4 border border-green-700/50 ">
-                  <p className="mb-3 text-zinc-300 text-sm leading-relaxed">
+                  <p className="mb-3 text-zinc-400 text-sm leading-relaxed">
                     แม้ว่าคุณจะยินยอมให้ใช้ภาพลักษณ์เพื่อการตลาด แต่เรายังคง{" "}
                     <span className="font-medium text-green-400">
                       ปกป้องข้อมูลส่วนบุคคล
                     </span>{" "}
                     ของคุณตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล (PDPA):
                   </p>
-                  <ul className="space-y-2 text-zinc-300 text-sm">
+                  <ul className="space-y-2 text-zinc-400 text-sm">
                     <li className="flex items-start gap-2">
                       <span className="text-green-400">🔒</span>
                       <span>
@@ -334,14 +334,14 @@ export default function TermsModal({
 
           {/* hospital-specific Terms */}
           <div className="bg-linear-to-br from-zinc-900 to-zinc-800 mb-6 p-6 border border-red-600 ">
-            <h3 className="flex items-center gap-2 mb-4 font-bold text-xl">
+            <h3 className="flex items-center gap-2 mb-4 font-semibold text-xl">
               <span className="bg-red-500  w-2 h-2 animate-pulse"></span>
               เงื่อนไขสำหรับ: <span className="text-red-400">{hospitalName}</span>
             </h3>
 
             <div className="space-y-4">
               <div className="bg-zinc-100/50 p-4 border border-zinc-700 ">
-                <p className="text-zinc-300 leading-relaxed">
+                <p className="text-zinc-400 leading-relaxed">
                   ข้าพเจ้าได้อ่านและยอมรับ{" "}
                   <span className="font-semibold text-white">
                     ข้อตกลงและเงื่อนไขการใช้บริการ
@@ -392,11 +392,11 @@ export default function TermsModal({
                   <p className="font-semibold group-hover:text-red-400 text-base transition-colors">
                     คำยินยอมใช้สื่อการตลาด
                   </p>
-                  <span className="inline-flex items-center bg-brand-primary px-2 py-0.5  font-bold text-xs animate-pulse">
+                  <span className="inline-flex items-center bg-brand-primary px-2 py-0.5  font-semibold text-xs animate-pulse">
                     สำคัญมาก
                   </span>
                 </div>
-                <p className="text-zinc-300 text-sm leading-relaxed">
+                <p className="text-zinc-400 text-sm leading-relaxed">
                   ข้าพเจ้า{" "}
                   <span className="font-medium text-yellow-400">
                     ยินยอมโดยชัดแจ้ง

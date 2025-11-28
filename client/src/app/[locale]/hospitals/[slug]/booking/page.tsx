@@ -480,7 +480,7 @@ export default function BookingPage({
       {/* Form Content */}
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-4xl">
         <div className="bg-zinc-100 shadow-xl p-8 border border-zinc-700 ">
-          <h1 className="mb-2 font-bold text-3xl">
+          <h1 className="mb-2 font-semibold text-3xl">
             จอง {hospital.hospital_name}
           </h1>
           <p className="mb-8 text-zinc-400">
@@ -503,7 +503,7 @@ export default function BookingPage({
                 {/* One-time Packages */}
                 {oneTimePackages.length > 0 && (
                   <div className="mb-8">
-                    <h3 className="mb-4 font-semibold text-zinc-300 text-lg">รายครั้ง</h3>
+                    <h3 className="mb-4 font-semibold text-zinc-400 text-lg">รายครั้ง</h3>
                     <div className="gap-4 grid md:grid-cols-2">
                       {oneTimePackages.map((pkg) => (
                         <button
@@ -517,13 +517,13 @@ export default function BookingPage({
                         >
                           <div className="flex justify-between items-start mb-3">
                             <div>
-                              <h4 className="mb-1 font-bold text-lg">{pkg.name}</h4>
+                              <h4 className="mb-1 font-semibold text-lg">{pkg.name}</h4>
                               {pkg.name_english && (
                                 <p className="text-zinc-400 text-sm">{pkg.name_english}</p>
                               )}
                             </div>
                             <div className="text-right">
-                              <div className="font-bold text-red-500 text-2xl">
+                              <div className="font-semibold text-red-500 text-2xl">
                                 ฿{pkg.price.toLocaleString()}
                               </div>
                               <div className="text-zinc-400 text-xs">ต่อครั้ง</div>
@@ -531,13 +531,13 @@ export default function BookingPage({
                           </div>
                           
                           {pkg.description && (
-                            <p className="mb-4 text-zinc-300 text-sm">{pkg.description}</p>
+                            <p className="mb-4 text-zinc-400 text-sm">{pkg.description}</p>
                           )}
                           
                           {pkg.features && pkg.features.length > 0 && (
                             <ul className="space-y-2">
                               {pkg.features.map((feature, idx) => (
-                                <li key={idx} className="flex items-center gap-2 text-zinc-300 text-sm">
+                                <li key={idx} className="flex items-center gap-2 text-zinc-400 text-sm">
                                   <CheckIcon className="shrink-0 w-4 h-4 text-green-500" />
                                   <span>{feature}</span>
                                 </li>
@@ -553,7 +553,7 @@ export default function BookingPage({
                 {/* Subscription Packages */}
                 {subscriptionPackages.length > 0 && (
                   <div>
-                    <h3 className="mb-4 font-semibold text-zinc-300 text-lg">แพ็คเกจรายเดือน</h3>
+                    <h3 className="mb-4 font-semibold text-zinc-400 text-lg">แพ็คเกจรายเดือน</h3>
                     <div className="gap-4 grid md:grid-cols-3">
                       {subscriptionPackages.map((pkg) => (
                         <button
@@ -569,14 +569,14 @@ export default function BookingPage({
                             <div className="inline-flex justify-center items-center bg-brand-primary mb-2 px-3 py-1  font-semibold text-xs">
                               {pkg.duration_months} เดือน
                             </div>
-                            <h4 className="mb-1 font-bold text-lg">{pkg.name}</h4>
+                            <h4 className="mb-1 font-semibold text-lg">{pkg.name}</h4>
                             {pkg.name_english && (
                               <p className="text-zinc-400 text-xs">{pkg.name_english}</p>
                             )}
                           </div>
                           
                           <div className="mb-4 text-center">
-                            <div className="font-bold text-red-500 text-3xl">
+                            <div className="font-semibold text-red-500 text-3xl">
                               ฿{pkg.price.toLocaleString()}
                             </div>
                             <div className="text-zinc-400 text-xs">
@@ -585,13 +585,13 @@ export default function BookingPage({
                           </div>
                           
                           {pkg.description && (
-                            <p className="mb-4 text-zinc-300 text-sm text-center">{pkg.description}</p>
+                            <p className="mb-4 text-zinc-400 text-sm text-center">{pkg.description}</p>
                           )}
                           
                           {pkg.features && pkg.features.length > 0 && (
                             <ul className="space-y-2">
                               {pkg.features.map((feature, idx) => (
-                                <li key={idx} className="flex items-center gap-2 text-zinc-300 text-xs">
+                                <li key={idx} className="flex items-center gap-2 text-zinc-400 text-xs">
                                   <CheckIcon className="shrink-0 w-3 h-3 text-green-500" />
                                   <span>{feature}</span>
                                 </li>
@@ -611,7 +611,7 @@ export default function BookingPage({
                 {/* Promotions Section - Show after package is selected */}
                 {formData.selectedPackage && (
                   <div className="mt-8 pt-8 border-t border-zinc-700">
-                    <h3 className="mb-4 font-semibold text-zinc-300 text-lg">โปรโมชั่นที่ใช้ได้</h3>
+                    <h3 className="mb-4 font-semibold text-zinc-400 text-lg">โปรโมชั่นที่ใช้ได้</h3>
                     {(() => {
                       const applicablePromotions = filterApplicablePromotions(
                         promotions,
@@ -636,7 +636,7 @@ export default function BookingPage({
                           >
                             <div className="flex justify-between items-center">
                               <span className="font-semibold text-white">ไม่ใช้โปรโมชั่น</span>
-                              <span className="font-bold text-red-500 text-lg">
+                              <span className="font-semibold text-red-500 text-lg">
                                 ฿{formData.selectedPackage.price.toLocaleString()}
                               </span>
                             </div>
@@ -681,7 +681,7 @@ export default function BookingPage({
                                       ประหยัด ฿{discountResult.discountAmount.toLocaleString()}
                                     </span>
                                   </div>
-                                  <div className="font-bold text-green-500 text-xl">
+                                  <div className="font-semibold text-green-500 text-xl">
                                     ฿{discountResult.finalPrice.toLocaleString()}
                                   </div>
                                 </div>
@@ -727,7 +727,7 @@ export default function BookingPage({
                             ฿{originalPackagePrice.toLocaleString()}
                           </div>
                         )}
-                        <div className="font-bold text-red-500 text-xl">
+                        <div className="font-semibold text-red-500 text-xl">
                           ฿{selectedFinalPrice.toLocaleString()}
                         </div>
                         {hasSelectedDiscount && (
@@ -742,7 +742,7 @@ export default function BookingPage({
               )}
 
               <div>
-                <label className="block mb-2 text-zinc-300 text-sm">
+                <label className="block mb-2 text-zinc-400 text-sm">
                   ชื่อ-นามสกุล <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -760,7 +760,7 @@ export default function BookingPage({
               </div>
 
               <div>
-                <label className="block mb-2 text-zinc-300 text-sm">
+                <label className="block mb-2 text-zinc-400 text-sm">
                   อีเมล <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -778,7 +778,7 @@ export default function BookingPage({
               </div>
 
               <div>
-                <label className="block mb-2 text-zinc-300 text-sm">
+                <label className="block mb-2 text-zinc-400 text-sm">
                   เบอร์โทรศัพท์ <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -796,7 +796,7 @@ export default function BookingPage({
               </div>
 
               <div>
-                <label className="block mb-2 text-zinc-300 text-sm">
+                <label className="block mb-2 text-zinc-400 text-sm">
                   วันที่เริ่มต้น <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -819,7 +819,7 @@ export default function BookingPage({
               </div>
 
               <div>
-                <label className="block mb-2 text-zinc-300 text-sm">
+                <label className="block mb-2 text-zinc-400 text-sm">
                   คำขอพิเศษ
                 </label>
                 <textarea
@@ -840,7 +840,7 @@ export default function BookingPage({
 
               <div className="bg-zinc-100/50 p-6 ">
                 <h3 className="mb-4 font-semibold text-white">สรุปการจอง</h3>
-                <div className="space-y-2 text-zinc-300 text-sm">
+                <div className="space-y-2 text-zinc-400 text-sm">
                   <div className="flex justify-between">
                     <span>ชื่อผู้จอง:</span>
                     <span className="font-semibold text-white">{formData.fullName}</span>
@@ -889,7 +889,7 @@ export default function BookingPage({
                   )}
                   <div className="flex justify-between pt-4 border-zinc-600 border-t">
                     <span className="font-semibold text-lg">ยอดชำระสุทธิ:</span>
-                    <span className="font-bold text-red-500 text-2xl">
+                    <span className="font-semibold text-red-500 text-2xl">
                       ฿{selectedFinalPrice.toLocaleString()}
                     </span>
                   </div>

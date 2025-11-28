@@ -61,11 +61,11 @@ const HospitalHeader = memo(function HospitalHeader({ hospital }: { hospital: ho
     <div>
       <div className="flex justify-start items-end gap-3 mb-4">
         <div className="flex sm:flex-row flex-col sm:items-center sm:gap-4">
-          <h1 className="font-bold text-4xl sm:text-5xl tracking-tight">
+          <h1 className="font-semibold text-4xl sm:text-5xl tracking-tight">
             {hospital.hospital_name}
           </h1>
         </div>
-        <p className="mt-2 text-zinc-300 text-lg">{hospital.hospital_name_english}</p>
+        <p className="mt-2 text-zinc-400 text-lg">{hospital.hospital_name_english}</p>
       </div>
       {hospital.hospital_type && (
         <span className="inline-block bg-brand-primary px-3 py-1  font-semibold text-sm">
@@ -81,7 +81,7 @@ const HospitalDetailsContent = memo(function HospitalDetailsContent({ details }:
   
   return (
     <div 
-      className="text-zinc-300 leading-relaxed prose prose-invert max-w-none"
+      className="text-zinc-400 leading-relaxed prose prose-invert max-w-none"
       dangerouslySetInnerHTML={{ __html: sanitizedHTML }}
     />
   );
@@ -90,11 +90,11 @@ const HospitalDetailsContent = memo(function HospitalDetailsContent({ details }:
 const AboutSection = memo(function AboutSection({ details }: { details?: string | null }) {
   return (
     <div className="bg-zinc-100 p-6 border border-zinc-700 ">
-      <h2 className="mb-4 font-bold text-2xl">เกี่ยวกับโรงพยาบาล</h2>
+      <h2 className="mb-4 font-semibold text-2xl">เกี่ยวกับโรงพยาบาล</h2>
       {details ? (
         <HospitalDetailsContent details={details} />
       ) : (
-        <p className="text-zinc-300 leading-relaxed">ไม่มีรายละเอียดเพิ่มเติม</p>
+        <p className="text-zinc-400 leading-relaxed">ไม่มีรายละเอียดเพิ่มเติม</p>
       )}
     </div>
   );
@@ -109,10 +109,10 @@ const LocationSection = memo(function LocationSection({
 }) {
   return (
     <div className="bg-zinc-100 p-6 border border-zinc-700 ">
-      <h2 className="mb-4 font-bold text-2xl">ที่อยู่และแผนที่</h2>
+      <h2 className="mb-4 font-semibold text-2xl">ที่อยู่และแผนที่</h2>
       <div className="flex items-start gap-3 mb-4">
         <MapPinIcon className="shrink-0 w-6 h-6 text-red-500" />
-        <p className="text-zinc-300">{location || "ไม่มีข้อมูลที่อยู่"}</p>
+        <p className="text-zinc-400">{location || "ไม่มีข้อมูลที่อยู่"}</p>
       </div>
       {mapUrl && (
         <Link
@@ -133,12 +133,12 @@ const ServicesSection = memo(function ServicesSection({ services }: { services: 
   if (!services?.length) return null;
   return (
     <div className="bg-zinc-100 p-6 border border-zinc-700 ">
-      <h2 className="mb-4 font-bold text-2xl">บริการ</h2>
+      <h2 className="mb-4 font-semibold text-2xl">บริการ</h2>
       <div className="flex flex-wrap gap-2">
         {services.map((service, idx) => (
           <span
             key={service + idx}
-            className="bg-zinc-100 px-3 py-1  text-zinc-300 text-sm"
+            className="bg-zinc-100 px-3 py-1  text-zinc-400 text-sm"
           >
             {service}
           </span>
@@ -151,7 +151,7 @@ const ServicesSection = memo(function ServicesSection({ services }: { services: 
 const ContactInfo = memo(function ContactInfo({ hospital }: { hospital: hospital }) {
   return (
     <div className="bg-zinc-100 p-6 border border-zinc-700 ">
-      <h3 className="mb-4 font-bold text-xl">ข้อมูลติดต่อ</h3>
+      <h3 className="mb-4 font-semibold text-xl">ข้อมูลติดต่อ</h3>
       <div className="space-y-4">
         {hospital.phone && (
           <div className="flex items-start gap-3">
@@ -160,7 +160,7 @@ const ContactInfo = memo(function ContactInfo({ hospital }: { hospital: hospital
               <p className="mb-1 text-zinc-400 text-xs">โทรศัพท์</p>
               <Link
                 href={`tel:${hospital.phone}`}
-                className="text-zinc-300 hover:text-white transition-colors"
+                className="text-zinc-400 hover:text-white transition-colors"
               >
                 {hospital.phone}
               </Link>
@@ -174,7 +174,7 @@ const ContactInfo = memo(function ContactInfo({ hospital }: { hospital: hospital
               <p className="mb-1 text-zinc-400 text-xs">อีเมล</p>
               <Link
                 href={`mailto:${hospital.email}`}
-                className="text-zinc-300 hover:text-white break-all transition-colors"
+                className="text-zinc-400 hover:text-white break-all transition-colors"
               >
                 {hospital.email}
               </Link>
@@ -190,7 +190,7 @@ const ContactInfo = memo(function ContactInfo({ hospital }: { hospital: hospital
                 href={hospital.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-zinc-300 hover:text-white break-all transition-colors"
+                className="text-zinc-400 hover:text-white break-all transition-colors"
               >
                 {hospital.website}
               </Link>
@@ -220,13 +220,13 @@ const ContactInfo = memo(function ContactInfo({ hospital }: { hospital: hospital
 const QuickInfo = memo(function QuickInfo({ hospital }: { hospital: hospital }) {
   return (
     <div className="bg-zinc-100 p-6 border border-zinc-700 ">
-      <h3 className="mb-4 font-bold text-xl">ข้อมูลทั่วไป</h3>
+      <h3 className="mb-4 font-semibold text-xl">ข้อมูลทั่วไป</h3>
       <div className="space-y-4">
         <div className="flex items-center gap-3">
           <ClockIcon className="w-5 h-5 text-blue-500" />
           <div>
             <p className="text-zinc-400 text-xs">เวลาทำการ</p>
-            <p className="text-zinc-300">
+            <p className="text-zinc-400">
               {/* ใช้ hospital.opening_hours หากมีข้อมูล ไม่งั้น fallback */}
               {hospital.opening_hours ?? "จันทร์-เสาร์: 06:00-20:00"}
             </p>
@@ -236,7 +236,7 @@ const QuickInfo = memo(function QuickInfo({ hospital }: { hospital: hospital }) 
           <CurrencyDollarIcon className="w-5 h-5 text-green-500" />
           <div>
             <p className="text-zinc-400 text-xs">ราคา</p>
-            <p className="font-semibold text-zinc-300">
+            <p className="font-semibold text-zinc-400">
               {/* ใช้ hospital.price หากมีข้อมูล ไม่งั้น fallback */}
               {hospital.price ? hospital.price : "ติดต่อสอบถาม"}
             </p>
@@ -248,7 +248,7 @@ const QuickInfo = memo(function QuickInfo({ hospital }: { hospital: hospital }) 
             <GlobeAltIcon className="w-5 h-5 text-purple-500" />
             <div>
               <p className="text-zinc-400 text-xs">การใช้บริการ</p>
-              <p className="text-zinc-300">{hospital.usage_details}</p>
+              <p className="text-zinc-400">{hospital.usage_details}</p>
             </div>
           </div>
         )}
@@ -260,7 +260,7 @@ const QuickInfo = memo(function QuickInfo({ hospital }: { hospital: hospital }) 
 const CTABooking = memo(function CTABooking({ hospitalSlug }: { hospitalSlug: string }) {
   return (
     <div className="bg-linear-to-r from-red-600 to-red-700 p-6  text-center">
-      <h3 className="mb-2 font-bold text-xl">
+      <h3 className="mb-2 font-semibold text-xl">
         ต้องการใช้บริการโรงพยาบาล
       </h3>
       <Link

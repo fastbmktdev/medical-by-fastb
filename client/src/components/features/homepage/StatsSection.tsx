@@ -39,7 +39,7 @@ export default function StatsSection() {
     <section className="py-16 bg-linear-to-br from-blue-50 via-white to-cyan-50">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <div className="text-center mb-12">
-          <h2 className="mb-4 font-bold text-3xl md:text-4xl text-gray-900">
+          <h2 className="mb-4 font-semibold text-3xl md:text-4xl text-gray-900">
             ตัวเลขที่บอกเล่าเรื่องราว
           </h2>
           <p className="text-gray-600 text-lg">
@@ -58,7 +58,7 @@ export default function StatsSection() {
                 <div className={`${stat.bgColor} w-16 h-16  flex items-center justify-center mb-4`}>
                   <Icon className={`w-8 h-8 ${stat.color}`} />
                 </div>
-                <div className={`text-4xl font-bold ${stat.color} mb-2`}>
+                <div className={`text-4xl font-semibold ${stat.color} mb-2`}>
                   {stat.value}
                 </div>
                 <div className="font-semibold text-gray-900 text-lg mb-1">

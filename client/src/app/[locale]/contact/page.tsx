@@ -371,7 +371,7 @@ export default function ContactPage() {
           {/* Contact Information */}
           <div className="space-y-8 lg:col-span-1">
             <div>
-              <h2 className="mb-6 font-bold text-2xl">ข้อมูลติดต่อ</h2>
+              <h2 className="mb-6 font-semibold text-2xl">ข้อมูลติดต่อ</h2>
               <div className="space-y-6">
                 {contactInfo.map((info, index) => (
                   <div key={index} className="flex items-start gap-4">
@@ -430,7 +430,7 @@ export default function ContactPage() {
           {/* Contact Form */}
           <div className="lg:col-span-2">
             <div className="bg-zinc-100 text-zinc-950 p-8 ">
-              <h2 className="mb-6 font-bold text-2xl">ส่งข้อความถึงเรา</h2>
+              <h2 className="mb-6 font-semibold text-2xl">ส่งข้อความถึงเรา</h2>
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="gap-6 grid grid-cols-1 md:grid-cols-2">

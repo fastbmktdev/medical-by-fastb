@@ -269,7 +269,7 @@ export function ScheduledReportsManager({ onSave }: ScheduledReportsManagerProps
         <CardHeader className="flex justify-between items-center">
           <div className="flex items-center gap-3">
             <ClockIcon className="w-6 h-6" />
-            <h3 className="font-bold text-xl">รายงานที่กำหนดเวลา</h3>
+            <h3 className="font-semibold text-xl">รายงานที่กำหนดเวลา</h3>
           </div>
           <Button
             color="primary"

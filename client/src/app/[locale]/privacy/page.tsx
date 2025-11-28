@@ -327,11 +327,11 @@ export default function PrivacyPage() {
           {/* Content */}
           <div className="lg:w-3/4">
             <div className="bg-zinc-100 p-8 ">
-              <h2 className="mb-6 font-bold text-2xl">
+              <h2 className="mb-6 font-semibold text-2xl">
                 {privacyData[activeSection].title}
               </h2>
               <div className="prose-invert max-w-none prose">
-                <div className="text-zinc-300 leading-relaxed whitespace-pre-line">
+                <div className="text-zinc-400 leading-relaxed whitespace-pre-line">
                   {privacyData[activeSection].content}
                 </div>
               </div>

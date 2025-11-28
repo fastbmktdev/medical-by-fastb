@@ -327,13 +327,13 @@ function AdminBookingsContent() {
           <Card>
             <CardBody>
               <p className="text-default-400 text-sm">ทั้งหมด</p>
-              <p className="font-bold text-2xl">{appointments.length}</p>
+              <p className="font-semibold text-2xl">{appointments.length}</p>
             </CardBody>
           </Card>
           <Card>
             <CardBody>
               <p className="text-default-400 text-sm">รอตรวจสอบ</p>
-              <p className="font-bold text-2xl text-yellow-400">
+              <p className="font-semibold text-2xl text-yellow-400">
                 {appointments.filter((b) => b.status === 'pending').length}
               </p>
             </CardBody>
@@ -341,7 +341,7 @@ function AdminBookingsContent() {
           <Card>
             <CardBody>
               <p className="text-default-400 text-sm">ยืนยันแล้ว</p>
-              <p className="font-bold text-2xl text-green-400">
+              <p className="font-semibold text-2xl text-green-400">
                 {appointments.filter((b) => b.status === 'confirmed').length}
               </p>
             </CardBody>
@@ -349,7 +349,7 @@ function AdminBookingsContent() {
           <Card>
             <CardBody>
               <p className="text-default-400 text-sm">ยกเลิก</p>
-              <p className="font-bold text-2xl text-red-400">
+              <p className="font-semibold text-2xl text-red-400">
                 {appointments.filter((b) => b.status === 'cancelled').length}
               </p>
             </CardBody>

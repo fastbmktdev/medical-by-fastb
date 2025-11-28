@@ -193,7 +193,7 @@ function ErrorTrackingContent() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-gray-400">Total Errors</p>
-                    <p className="text-2xl font-bold">{stats.total}</p>
+                    <p className="text-2xl font-semibold">{stats.total}</p>
                   </div>
                   <ExclamationTriangleIcon className="w-8 h-8 text-red-500" />
                 </div>
@@ -205,7 +205,7 @@ function ErrorTrackingContent() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-gray-400">Critical Errors</p>
-                    <p className="text-2xl font-bold text-red-500">
+                    <p className="text-2xl font-semibold text-red-500">
                       {stats.bySeverity.critical}
                     </p>
                   </div>
@@ -219,7 +219,7 @@ function ErrorTrackingContent() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-gray-400">Affected Users</p>
-                    <p className="text-2xl font-bold">{stats.uniqueUsers}</p>
+                    <p className="text-2xl font-semibold">{stats.uniqueUsers}</p>
                   </div>
                   <UserIcon className="w-8 h-8 text-blue-500" />
                 </div>
@@ -231,7 +231,7 @@ function ErrorTrackingContent() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-gray-400">Affected Sessions</p>
-                    <p className="text-2xl font-bold">{stats.uniqueSessions}</p>
+                    <p className="text-2xl font-semibold">{stats.uniqueSessions}</p>
                   </div>
                   <ComputerDesktopIcon className="w-8 h-8 text-green-500" />
                 </div>

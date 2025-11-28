@@ -79,7 +79,7 @@ export const ApplicationStatusView = ({
             <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400  animate-ping"></div>
           </div>
 
-          <h1 className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-red-100 to-white text-5xl md:text-6xl mb-6 animate-fade-in">
+          <h1 className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-white via-red-100 to-white text-5xl md:text-6xl mb-6 animate-fade-in">
             สถานะการสมัคร Partner
           </h1>
 
@@ -110,7 +110,7 @@ export const ApplicationStatusView = ({
                 ></div>
               </div>
               <div>
-                <p className="font-bold text-white text-2xl mb-2">
+                <p className="font-semibold text-white text-2xl mb-2">
                   สถานะ:{" "}
                   <span className={`${status.text} drop-shadow-lg`}>
                     {status.label}
@@ -126,7 +126,7 @@ export const ApplicationStatusView = ({
             <div className="flex-1 lg:max-w-md">
               <div className="flex justify-between items-center mb-3 text-sm">
                 <span className="text-white font-medium">ความคืบหน้า</span>
-                <span className="text-white font-bold bg-zinc-800/50 px-3 py-1 ">
+                <span className="text-white font-semibold bg-zinc-800/50 px-3 py-1 ">
                   {status.progress}%
                 </span>
               </div>
@@ -157,7 +157,7 @@ export const ApplicationStatusView = ({
               <div className="p-3 bg-gradient-to-br from-red-500/20 to-red-600/20  border border-red-500/30">
                 <BuildingStorefrontIcon className="w-8 h-8 text-red-400" />
               </div>
-              <h2 className="font-bold text-white text-2xl">ข้อมูลโรงพยาบาล</h2>
+              <h2 className="font-semibold text-white text-2xl">ข้อมูลโรงพยาบาล</h2>
             </div>
 
             <div className="space-y-6">
@@ -202,7 +202,7 @@ export const ApplicationStatusView = ({
               <div className="p-3 bg-gradient-to-br from-blue-500/20 to-blue-600/20  border border-blue-500/30">
                 <ClockIcon className="w-8 h-8 text-blue-400" />
               </div>
-              <h2 className="font-bold text-white text-2xl">Timeline</h2>
+              <h2 className="font-semibold text-white text-2xl">Timeline</h2>
             </div>
 
             <div className="space-y-6">
@@ -212,7 +212,7 @@ export const ApplicationStatusView = ({
                   <div className="absolute inset-0 bg-green-400  opacity-30 animate-ping"></div>
                 </div>
                 <div className="flex-1">
-                  <p className="font-bold text-white text-lg">ส่งคำขอสมัคร</p>
+                  <p className="font-semibold text-white text-lg">ส่งคำขอสมัคร</p>
                   <p className="text-white text-sm bg-zinc-800/50 px-3 py-1  inline-block mt-1">
                     {existingHospital.created_at
                       ? new Date(existingHospital.created_at).toLocaleDateString(
@@ -237,7 +237,7 @@ export const ApplicationStatusView = ({
                     <div className="absolute inset-0 bg-yellow-400  opacity-30 animate-ping"></div>
                   </div>
                   <div className="flex-1">
-                    <p className="font-bold text-white text-lg">กำลังตรวจสอบ</p>
+                    <p className="font-semibold text-white text-lg">กำลังตรวจสอบ</p>
                     <p className="text-white text-sm">
                       ทีมงานกำลังตรวจสอบข้อมูล
                     </p>
@@ -252,7 +252,7 @@ export const ApplicationStatusView = ({
                     <div className="absolute inset-0 bg-green-400  opacity-30 animate-ping"></div>
                   </div>
                   <div className="flex-1">
-                    <p className="font-bold text-white text-lg">อนุมัติแล้ว</p>
+                    <p className="font-semibold text-white text-lg">อนุมัติแล้ว</p>
                     <p className="text-white text-sm bg-zinc-800/50 px-3 py-1  inline-block mt-1">
                       {existingHospital.updated_at
                         ? new Date(existingHospital.updated_at).toLocaleDateString(
@@ -280,7 +280,7 @@ export const ApplicationStatusView = ({
             <div className="p-3 bg-gradient-to-br from-purple-500/20 to-purple-600/20  border border-purple-500/30">
               <span className="text-3xl">📋</span>
             </div>
-            <h2 className="font-bold text-white text-2xl">
+            <h2 className="font-semibold text-white text-2xl">
               รายละเอียดเพิ่มเติม
             </h2>
           </div>
@@ -289,7 +289,7 @@ export const ApplicationStatusView = ({
             {/* Services */}
             {existingHospital.services && existingHospital.services.length > 0 && (
               <div className="space-y-6">
-                <h3 className="flex items-center gap-3 font-bold text-white text-xl">
+                <h3 className="flex items-center gap-3 font-semibold text-white text-xl">
                   <div className="p-2 bg-gradient-to-br from-orange-500/20 to-orange-600/20  border border-orange-500/30">
                     <span className="text-2xl">🏋️</span>
                   </div>
@@ -311,7 +311,7 @@ export const ApplicationStatusView = ({
             {/* Images */}
             {existingHospital.images && existingHospital.images.length > 0 && (
               <div className="space-y-6">
-                <h3 className="flex items-center gap-3 font-bold text-white text-xl">
+                <h3 className="flex items-center gap-3 font-semibold text-white text-xl">
                   <div className="p-2 bg-gradient-to-br from-blue-500/20 to-blue-600/20  border border-blue-500/30">
                     <span className="text-2xl">📸</span>
                   </div>
@@ -347,7 +347,7 @@ export const ApplicationStatusView = ({
           {applicationStatus === "approved" && (
             <Link
               href="/partner/dashboard"
-              className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-green-500 via-emerald-500 to-green-600 hover:from-green-600 hover:via-emerald-600 hover:to-green-700 px-10 py-4  font-bold text-white text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-green-500/25"
+              className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-green-500 via-emerald-500 to-green-600 hover:from-green-600 hover:via-emerald-600 hover:to-green-700 px-10 py-4  font-semibold text-white text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-green-500/25"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-400  blur opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
               <span className="text-2xl animate-bounce">🎉</span>
@@ -364,7 +364,7 @@ export const ApplicationStatusView = ({
                 </p>
                 <Link
                   href="mailto:support@medical-platform.com"
-                  className="group inline-flex items-center gap-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-8 py-3  font-bold text-white transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-blue-500/25"
+                  className="group inline-flex items-center gap-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-8 py-3  font-semibold text-white transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-blue-500/25"
                 >
                   <span className="text-xl">📧</span>
                   <span>ติดต่อทีมงาน</span>
@@ -382,14 +382,14 @@ export const ApplicationStatusView = ({
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link
                     href="mailto:support@medical-platform.com"
-                    className="group inline-flex items-center gap-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-6 py-3  font-bold text-white transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-blue-500/25"
+                    className="group inline-flex items-center gap-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-6 py-3  font-semibold text-white transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-blue-500/25"
                   >
                     <span className="text-lg">📧</span>
                     <span>ติดต่อทีมงาน</span>
                   </Link>
                   <Link
                     href="/partner/apply?reset=true"
-                    className="group inline-flex items-center gap-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 px-6 py-3  font-bold text-white transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-yellow-500/25"
+                    className="group inline-flex items-center gap-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 px-6 py-3  font-semibold text-white transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-yellow-500/25"
                   >
                     <span className="text-lg">🔄</span>
                     <span>ลองใหม่</span>
@@ -401,7 +401,7 @@ export const ApplicationStatusView = ({
 
           <Link
             href="/"
-            className="group inline-flex items-center gap-3 bg-gradient-to-r from-zinc-600 to-zinc-700 hover:from-zinc-700 hover:to-zinc-800 px-8 py-3  font-bold text-white transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
+            className="group inline-flex items-center gap-3 bg-gradient-to-r from-zinc-600 to-zinc-700 hover:from-zinc-700 hover:to-zinc-800 px-8 py-3  font-semibold text-white transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
           >
             <span className="text-lg">🏠</span>
             <span>กลับหน้าหลัก</span>

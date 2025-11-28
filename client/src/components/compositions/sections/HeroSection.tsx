@@ -46,7 +46,7 @@ export function HeroSection({
           )}
 
           {/* Title */}
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-zinc-950">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold mb-6 leading-tight text-zinc-950">
             {title}
           </h1>
 

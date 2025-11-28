@@ -74,7 +74,7 @@ export default function BadgeCollection({ badges, showAll = true, className = ''
             className={`px-3 py-1  text-sm font-medium transition-colors ${
               filter === 'all' 
                 ? 'bg-blue-600 text-white' 
-                : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-100 border border-zinc-700'
+                : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-100 border border-zinc-700'
             }`}
           >
             ทั้งหมด
@@ -84,7 +84,7 @@ export default function BadgeCollection({ badges, showAll = true, className = ''
             className={`px-3 py-1  text-sm font-medium transition-colors ${
               filter === 'earned' 
                 ? 'bg-green-600 text-white' 
-                : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-100 border border-zinc-700'
+                : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-100 border border-zinc-700'
             }`}
           >
             ได้รับแล้ว
@@ -94,7 +94,7 @@ export default function BadgeCollection({ badges, showAll = true, className = ''
             className={`px-3 py-1  text-sm font-medium transition-colors ${
               filter === 'available' 
                 ? 'bg-orange-600 text-white' 
-                : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-100 border border-zinc-700'
+                : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-100 border border-zinc-700'
             }`}
           >
             ยังไม่ได้รับ
@@ -107,7 +107,7 @@ export default function BadgeCollection({ badges, showAll = true, className = ''
           const isEarned = earnedBadgeIds.has(badge.id);
           const earnedAt = badges.find(b => b.badge_id === badge.id)?.earned_at;
           // Calculate display properties directly instead of using hook in callback
-          const rarityColorClass = badge.rarity === 'common' ? 'bg-zinc-800 text-zinc-300 border border-zinc-700' : 
+          const rarityColorClass = badge.rarity === 'common' ? 'bg-zinc-800 text-zinc-400 border border-zinc-700' : 
                                    badge.rarity === 'rare' ? 'bg-blue-900/50 text-blue-300 border border-blue-700' : 
                                    badge.rarity === 'epic' ? 'bg-purple-900/50 text-purple-300 border border-purple-700' : 
                                    'bg-yellow-900/50 text-yellow-300 border border-yellow-700';

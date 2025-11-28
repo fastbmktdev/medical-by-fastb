@@ -280,7 +280,7 @@ export const ErrorDisplay = React.forwardRef<HTMLDivElement, ErrorDisplayProps>(
                 {title && (
                   <h1
                     className={cn(
-                      'font-bold text-gray-900 dark:text-gray-100 mb-2',
+                      'font-semibold text-gray-900 dark:text-gray-100 mb-2',
                       size === 'sm'
                         ? 'text-lg'
                         : size === 'md'

@@ -259,7 +259,7 @@ function AdminReportsContent() {
                   <Icon className="w-8 h-8 text-white" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="mb-1 font-bold text-lg">{report.title}</h3>
+                  <h3 className="mb-1 font-semibold text-lg">{report.title}</h3>
                   <p className="text-default-400 text-sm">{report.description}</p>
                 </div>
               </CardHeader>

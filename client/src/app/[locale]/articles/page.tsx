@@ -55,7 +55,7 @@ const TabNavigation = ({
           <div className="relative flex">
             <button
               onClick={() => onTabChange("articles")}
-              className={`relative z-10 px-8 py-3 font-bold text-sm transition-all duration-300 ${
+              className={`relative z-10 px-8 py-3 font-semibold text-sm transition-all duration-300 ${
                 activeTab === "articles"
                   ? "text-white"
                   : "text-gray-600 hover:text-gray-800"
@@ -65,7 +65,7 @@ const TabNavigation = ({
             </button>
             <button
               onClick={() => onTabChange("news")}
-              className={`relative z-10 px-8 py-3 font-bold text-sm transition-all duration-300 ${
+              className={`relative z-10 px-8 py-3 font-semibold text-sm transition-all duration-300 ${
                 activeTab === "news"
                   ? "text-white"
                   : "text-gray-600 hover:text-gray-800"
@@ -208,7 +208,7 @@ const ArticleCard = ({ article }: { article: any }) => (
     </div>
     {/* Content */}
     <div className="p-6">
-      <h2 className="mb-3 font-bold group-hover:text-purple-500 text-xl line-clamp-2 transition-colors text-zinc-950">
+      <h2 className="mb-3 font-semibold group-hover:text-purple-500 text-xl line-clamp-2 transition-colors text-zinc-950">
         {article.title}
       </h2>
       <p className="mb-4 text-gray-600 text-sm line-clamp-3">

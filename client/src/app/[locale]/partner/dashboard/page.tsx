@@ -527,7 +527,7 @@ function PartnerDashboardContent() {
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardBody className="py-16 text-center">
             <BuildingStorefrontIcon className="mx-auto mb-6 w-20 h-20 text-default-300" />
-            <h2 className="mb-4 font-bold text-2xl">ยังไม่มีข้อมูลโรงพยาบาล</h2>
+            <h2 className="mb-4 font-semibold text-2xl">ยังไม่มีข้อมูลโรงพยาบาล</h2>
             <p className="mx-auto mb-8 max-w-md text-default-400 text-xl">
               เริ่มต้นสมัครเป็นพาร์ทเนอร์กับเราเพื่อเข้าถึงฐานลูกค้าที่กว้างขึ้น
             </p>
@@ -537,7 +537,7 @@ function PartnerDashboardContent() {
               color="secondary"
               size="lg"
               startContent={<BuildingStorefrontIcon className="w-6 h-6" />}
-              className="font-bold"
+              className="font-semibold"
             >
               สมัครเป็นพาร์ทเนอร์
             </Button>
@@ -566,8 +566,8 @@ function PartnerDashboardContent() {
               <div className="flex justify-center mb-4">
                 <ClockIcon className="w-20 h-20 text-yellow-500 animate-pulse" />
               </div>
-              <h1 className="mb-2 font-bold text-3xl">รอการตรวจสอบ</h1>
-              <p className="mt-2 text-zinc-300 text-lg">
+              <h1 className="mb-2 font-semibold text-3xl">รอการตรวจสอบ</h1>
+              <p className="mt-2 text-zinc-400 text-lg">
                 ทีมงานกำลังตรวจสอบข้อมูลของคุณ กรุณารอการติดต่อกลับภายใน 3-5
                 วันทำการ
               </p>
@@ -674,7 +674,7 @@ function PartnerDashboardContent() {
       <section className="mb-8">
         <div className="flex sm:flex-row flex-col justify-between items-start gap-4 mb-6">
           <div>
-            <h2 className="mb-2 font-bold text-2xl">สถานะโรงพยาบาล</h2>
+            <h2 className="mb-2 font-semibold text-2xl">สถานะโรงพยาบาล</h2>
             {getStatusChip(hospital.status)}
           </div>
           <div className="flex gap-3">
@@ -694,7 +694,7 @@ function PartnerDashboardContent() {
       <section className="mb-8">
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader className="flex justify-between items-center">
-            <h3 className="font-bold text-xl">ข้อมูลโรงพยาบาล</h3>
+            <h3 className="font-semibold text-xl">ข้อมูลโรงพยาบาล</h3>
             {!isEditing ? (
               <Button
                 size="sm"
@@ -887,7 +887,7 @@ function PartnerDashboardContent() {
       <section className="mb-8">
         <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 mb-6">
           <div>
-            <h2 className="font-bold text-2xl">จัดการแพ็คเกจและราคา</h2>
+            <h2 className="font-semibold text-2xl">จัดการแพ็คเกจและราคา</h2>
             <p className="text-zinc-400 text-sm">
               ตั้งค่าแพ็คเกจสำหรับลูกค้าจอง
             </p>
@@ -904,7 +904,7 @@ function PartnerDashboardContent() {
         {/* One-time Packages */}
         {oneTimePackages.length > 0 && (
           <div className="mb-6">
-            <h3 className="mb-4 font-semibold text-zinc-300 text-lg">
+            <h3 className="mb-4 font-semibold text-zinc-400 text-lg">
               รายครั้ง
             </h3>
             <div className="gap-4 grid md:grid-cols-2 lg:grid-cols-3">
@@ -915,7 +915,7 @@ function PartnerDashboardContent() {
                 >
                   <CardHeader className="flex justify-between items-start">
                     <div className="flex-1">
-                      <h4 className="font-bold text-white">{pkg.name}</h4>
+                      <h4 className="font-semibold text-white">{pkg.name}</h4>
                       {pkg.name_english && (
                         <p className="text-zinc-400 text-sm">
                           {pkg.name_english}
@@ -932,14 +932,14 @@ function PartnerDashboardContent() {
                   </CardHeader>
                   <CardBody className="gap-4">
                     <div>
-                      <div className="font-bold text-red-500 text-2xl">
+                      <div className="font-semibold text-red-500 text-2xl">
                         ฿{pkg.price.toLocaleString()}
                       </div>
                       <div className="text-zinc-400 text-xs">ต่อครั้ง</div>
                     </div>
 
                     {pkg.description && (
-                      <p className="text-zinc-300 text-sm">{pkg.description}</p>
+                      <p className="text-zinc-400 text-sm">{pkg.description}</p>
                     )}
 
                     {pkg.features && pkg.features.length > 0 && (
@@ -947,7 +947,7 @@ function PartnerDashboardContent() {
                         {pkg.features.map((feature, idx) => (
                           <li
                             key={idx}
-                            className="flex items-center gap-2 text-zinc-300 text-xs"
+                            className="flex items-center gap-2 text-zinc-400 text-xs"
                           >
                             <CheckIcon className="shrink-0 w-3 h-3 text-green-500" />
                             <span>{feature}</span>
@@ -996,7 +996,7 @@ function PartnerDashboardContent() {
         {/* Subscription Packages */}
         {subscriptionPackages.length > 0 && (
           <div className="mb-6">
-            <h3 className="mb-4 font-semibold text-zinc-300 text-lg">
+            <h3 className="mb-4 font-semibold text-zinc-400 text-lg">
               แพ็คเกจรายเดือน
             </h3>
             <div className="gap-4 grid md:grid-cols-2 lg:grid-cols-3">
@@ -1010,7 +1010,7 @@ function PartnerDashboardContent() {
                       <div className="inline-flex justify-center items-center bg-purple-600 mb-2 px-3 py-1  font-semibold text-xs">
                         {pkg.duration_months} เดือน
                       </div>
-                      <h4 className="font-bold text-white">{pkg.name}</h4>
+                      <h4 className="font-semibold text-white">{pkg.name}</h4>
                       {pkg.name_english && (
                         <p className="text-zinc-400 text-xs">
                           {pkg.name_english}
@@ -1027,7 +1027,7 @@ function PartnerDashboardContent() {
                   </CardHeader>
                   <CardBody className="gap-4">
                     <div className="text-center">
-                      <div className="font-bold text-purple-500 text-3xl">
+                      <div className="font-semibold text-purple-500 text-3xl">
                         ฿{pkg.price.toLocaleString()}
                       </div>
                       <div className="text-zinc-400 text-xs">
@@ -1040,7 +1040,7 @@ function PartnerDashboardContent() {
                     </div>
 
                     {pkg.description && (
-                      <p className="text-zinc-300 text-sm text-center">
+                      <p className="text-zinc-400 text-sm text-center">
                         {pkg.description}
                       </p>
                     )}
@@ -1050,7 +1050,7 @@ function PartnerDashboardContent() {
                         {pkg.features.map((feature, idx) => (
                           <li
                             key={idx}
-                            className="flex items-center gap-2 text-zinc-300 text-xs"
+                            className="flex items-center gap-2 text-zinc-400 text-xs"
                           >
                             <CheckIcon className="shrink-0 w-3 h-3 text-green-500" />
                             <span>{feature}</span>
@@ -1101,7 +1101,7 @@ function PartnerDashboardContent() {
           <Card className="bg-zinc-100/50 border border-zinc-700">
             <CardBody className="py-12 text-center">
               <SparklesIcon className="mx-auto mb-4 w-12 h-12 text-zinc-600" />
-              <h3 className="mb-2 font-bold text-lg">ยังไม่มีแพ็คเกจ</h3>
+              <h3 className="mb-2 font-semibold text-lg">ยังไม่มีแพ็คเกจ</h3>
               <p className="mb-4 text-zinc-400 text-sm">
                 สร้างแพ็คเกจแรกของคุณเพื่อให้ลูกค้าสามารถจองได้
               </p>
@@ -1120,7 +1120,7 @@ function PartnerDashboardContent() {
       {/* Recent appointments */}
       <section className="mb-8">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="font-bold text-2xl">การจองล่าสุด</h2>
+          <h2 className="font-semibold text-2xl">การจองล่าสุด</h2>
           <Button
             as={Link}
             href="/partner/dashboard/appointments"
@@ -1219,7 +1219,7 @@ function PartnerDashboardContent() {
       {/* Recent Transactions */}
       <section>
         <div className="flex justify-between items-center mb-6">
-          <h2 className="font-bold text-2xl">ธุรกรรมล่าสุด</h2>
+          <h2 className="font-semibold text-2xl">ธุรกรรมล่าสุด</h2>
           <Button
             as={Link}
             href="/partner/dashboard/transactions"
@@ -1282,7 +1282,7 @@ function PartnerDashboardContent() {
                     key: "amount",
                     label: "จำนวนเงิน",
                     render: (txn) => (
-                      <span className="font-mono font-bold text-success">
+                      <span className="font-mono font-semibold text-success">
                         +฿{Number(txn.amount || 0).toLocaleString()}
                       </span>
                     ),

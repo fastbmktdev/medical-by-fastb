@@ -226,7 +226,7 @@ export default function ProductDetailPage({
                   {product.category.nameThai || product.category.nameEnglish}
                 </span>
               )}
-              <h1 className="mb-2 font-bold text-4xl">
+              <h1 className="mb-2 font-semibold text-4xl">
                 {productName}
               </h1>
               {product.nameEnglish && product.nameThai && (
@@ -254,7 +254,7 @@ export default function ProductDetailPage({
             {/* Price */}
             <div className="mb-6 pb-6 border-zinc-700 border-b">
               <p className="mb-2 text-zinc-400 text-sm">ราคา</p>
-              <p className="font-bold text-violet-700 text-4xl">
+              <p className="font-semibold text-violet-700 text-4xl">
                 ฿{finalPrice.toLocaleString()}
               </p>
               {currentVariant && currentVariant.priceAdjustment !== 0 && (
@@ -278,7 +278,7 @@ export default function ProductDetailPage({
                       className={`px-4 py-2  border transition-colors ${
                         selectedVariant === variant.id
                           ? "border-red-500 bg-red-500/10 text-red-500"
-                          : "border-zinc-700 bg-zinc-100 text-zinc-300 hover:border-zinc-600"
+                          : "border-zinc-700 bg-zinc-100 text-zinc-400 hover:border-zinc-600"
                       }`}
                     >
                       {variant.name || variant.value}
@@ -295,7 +295,7 @@ export default function ProductDetailPage({
                 <h2 className="mb-2 font-semibold text-xl">
                   รายละเอียดสินค้า
                 </h2>
-                <p className="text-zinc-300 leading-relaxed whitespace-pre-line">
+                <p className="text-zinc-400 leading-relaxed whitespace-pre-line">
                   {product.description}
                 </p>
               </div>
@@ -307,7 +307,7 @@ export default function ProductDetailPage({
                 <h2 className="mb-2 font-semibold text-xl">
                   ข้อมูลสินค้า
                 </h2>
-                <div className="space-y-1 text-zinc-300">
+                <div className="space-y-1 text-zinc-400">
                   {product.weightKg && (
                     <p>น้ำหนัก: {product.weightKg} กิโลกรัม</p>
                   )}
@@ -368,7 +368,7 @@ export default function ProductDetailPage({
                   </button>
                   <div className="ml-auto text-right">
                     <p className="text-zinc-400 text-xs">ราคารวม</p>
-                    <p className="font-bold text-xl">
+                    <p className="font-semibold text-xl">
                       ฿{totalPrice.toLocaleString()}
                     </p>
                   </div>
@@ -414,7 +414,7 @@ export default function ProductDetailPage({
         {/* Related Products Section */}
         {relatedProducts.length > 0 && (
           <div className="mt-16">
-            <h2 className="mb-6 font-bold text-2xl">
+            <h2 className="mb-6 font-semibold text-2xl">
               สินค้าที่เกี่ยวข้อง
             </h2>
             <div className="gap-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -437,7 +437,7 @@ export default function ProductDetailPage({
                     <p className="mb-1 font-semibold group-hover:text-red-400 text-sm line-clamp-2 transition-colors">
                       {relatedProduct.nameThai || relatedProduct.nameEnglish}
                     </p>
-                    <p className="font-bold text-red-500">
+                    <p className="font-semibold text-red-500">
                       ฿{relatedProduct.price.toLocaleString()}
                     </p>
                   </div>

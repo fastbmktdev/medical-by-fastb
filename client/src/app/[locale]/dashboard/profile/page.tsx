@@ -216,7 +216,7 @@ function ProfileContent() {
           <Card className="bg-zinc-100/50 backdrop-blur-sm border border-zinc-700">
             <CardHeader className="flex justify-between items-center border-zinc-700 border-b">
               <div>
-                <h3 className="font-bold text-xl text-white">ข้อมูลส่วนตัว</h3>
+                <h3 className="font-semibold text-xl text-white">ข้อมูลส่วนตัว</h3>
                 <p className="text-zinc-400 text-sm">จัดการข้อมูลบัญชีของคุณ</p>
               </div>
               {!isEditing ? (
@@ -399,7 +399,7 @@ function ProfileContent() {
                   <span className="text-red-400 text-xl">⚠️</span>
                 </div>
                 <div>
-                  <h3 className="font-bold text-red-400 text-xl">โซนอันตราย</h3>
+                  <h3 className="font-semibold text-red-400 text-xl">โซนอันตราย</h3>
                   <p className="text-zinc-400 text-sm">ดำเนินการด้วยความระมัดระวัง</p>
                 </div>
               </div>

@@ -36,14 +36,14 @@ export default function StreakDisplay({ streak, className = '' }: StreakDisplayP
       {/* Streak Numbers */}
       <div className="grid grid-cols-2 gap-3 mb-3">
         <div className="text-center">
-          <div className="text-2xl font-bold text-orange-400">
+          <div className="text-2xl font-semibold text-orange-400">
             {streak.current_streak}
           </div>
           <div className="text-xs text-zinc-400">สตรีคปัจจุบัน</div>
         </div>
         
         <div className="text-center">
-          <div className="text-2xl font-bold text-blue-400">
+          <div className="text-2xl font-semibold text-blue-400">
             {streak.longest_streak}
           </div>
           <div className="text-xs text-zinc-400">สตรีคสูงสุด</div>

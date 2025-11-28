@@ -32,7 +32,7 @@ function isValidGAId(id: string): boolean {
 /**
  * Google Analytics Component
  *
- * Loads Google Analytics only after the page becomes interactive, avoiding a
+ * Loads Google Analytics lazily after the page loads, avoiding a
  * preload hint that could trigger browser warnings when the script isn't
  * requested immediately.
  *
@@ -73,8 +73,8 @@ export function GoogleAnalytics() {
 
   return (
     <>
-      <Script id="ga-script" src={gaSrc} strategy="afterInteractive" />
-      <Script id="ga-inline-init" strategy="afterInteractive">
+      <Script id="ga-script" src={gaSrc} strategy="lazyOnload" />
+      <Script id="ga-inline-init" strategy="lazyOnload">
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}

@@ -317,7 +317,7 @@ export default function PartnerMessagesPage() {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-zinc-100 text-center p-8">
         <ExclamationCircleIcon className="w-16 h-16 text-red-500 mb-4" />
-        <h2 className="text-xl font-bold text-white mb-2">เกิดข้อผิดพลาด</h2>
+        <h2 className="text-xl font-semibold text-white mb-2">เกิดข้อผิดพลาด</h2>
         <p className="text-zinc-400 mb-6">{error}</p>
         <button
           onClick={() => loadConversations()}
@@ -336,7 +336,7 @@ export default function PartnerMessagesPage() {
       <div className="bg-zinc-900 border-b border-zinc-800 p-4">
         <div className="flex items-center justify-between max-w-[1800px] mx-auto">
           <div>
-            <h1 className="text-2xl font-bold text-white">ข้อความ</h1>
+            <h1 className="text-2xl font-semibold text-white">ข้อความ</h1>
             <p className="text-sm text-zinc-400">จัดการข้อความกับลูกค้า</p>
           </div>
 

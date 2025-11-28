@@ -6,7 +6,7 @@ export default function ProductNotFound() {
     <div className="flex justify-center items-center bg-zinc-100 px-4 min-h-screen">
       <div className="text-center">
         <ExclamationTriangleIcon className="mx-auto mb-6 w-20 h-20 text-yellow-500" />
-        <h1 className="mb-4 font-bold text-4xl">
+        <h1 className="mb-4 font-semibold text-4xl">
           ไม่พบสินค้าที่คุณค้นหา
         </h1>
         <p className="mb-8 text-zinc-400 text-xl">

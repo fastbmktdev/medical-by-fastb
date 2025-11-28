@@ -88,7 +88,7 @@ const HospitalCard = ({ favorite, onRemove }: HospitalCardProps) => {
       </CardHeader>
       <CardBody className="gap-3">
         <div>
-          <h3 className="mb-1 font-bold text-lg">{hospital.hospital_name}</h3>
+          <h3 className="mb-1 font-semibold text-lg">{hospital.hospital_name}</h3>
           <div className="flex items-center gap-2 mb-2">
             <MapPinIcon className="w-4 h-4 text-default-400" />
             <p className="text-default-400 text-sm">{hospital.location}</p>
@@ -164,7 +164,7 @@ const FavoriteStats = ({
                 </div>
                 <div>
                   <p className="mb-1 text-default-400 text-sm">{label}</p>
-                  <p className="font-bold text-2xl text-violet-700">
+                  <p className="font-semibold text-2xl text-violet-700">
                     {isLoadingFavorites ? "..." : count}
                   </p>
                 </div>
@@ -373,7 +373,7 @@ const FavoritesContent = () => {
         allCount={favorites.length}
       />
       <section>
-        <h2 className="mb-6 font-bold text-2xl text-zinc-950">โรงพยาบาลโปรด</h2>
+        <h2 className="mb-6 font-semibold text-2xl text-zinc-950">โรงพยาบาลโปรด</h2>
         <HospitalFavoritesSection
           isLoadingFavorites={isLoadingFavorites}
           hospitalFavorites={hospitalFavorites}

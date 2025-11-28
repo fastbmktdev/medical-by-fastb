@@ -361,13 +361,13 @@ function AdminAuditLogsContent() {
           <Card className="bg-default-100/50 backdrop-blur-sm border-none">
             <CardBody>
               <p className="mb-2 text-default-400 text-sm">Total Logs</p>
-              <p className="font-bold text-3xl">{pagination.total}</p>
+              <p className="font-semibold text-3xl">{pagination.total}</p>
             </CardBody>
           </Card>
           <Card className="bg-default-100/50 backdrop-blur-sm border-none">
             <CardBody>
               <p className="mb-2 text-default-400 text-sm">Showing</p>
-              <p className="font-bold text-3xl">
+              <p className="font-semibold text-3xl">
                 {auditLogs.length} / {pagination.total}
               </p>
             </CardBody>
@@ -375,7 +375,7 @@ function AdminAuditLogsContent() {
           <Card className="bg-default-100/50 backdrop-blur-sm border-none">
             <CardBody>
               <p className="mb-2 text-default-400 text-sm">Page</p>
-              <p className="font-bold text-3xl">
+              <p className="font-semibold text-3xl">
                 {Math.floor(pagination.offset / pagination.limit) + 1}
               </p>
             </CardBody>

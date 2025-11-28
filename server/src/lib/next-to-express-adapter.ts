@@ -75,24 +75,55 @@ function createNextRequest(req: Request): NextRequest {
       return new Promise<FormData>((resolve, reject) => {
         const formData = new FormData();
         const bb = busboy({ headers: req.headers as any });
+        const filePromises: Promise<void>[] = [];
+        let hasError = false;
+
+        const checkComplete = () => {
+          // Wait for all file promises to complete before resolving
+          Promise.all(filePromises)
+            .then(() => {
+              if (!hasError) {
+                resolve(formData);
+              }
+            })
+            .catch((err) => {
+              if (!hasError) {
+                hasError = true;
+                reject(err);
+              }
+            });
+        };
 
         bb.on('file', (name, file, info) => {
           const { filename, encoding, mimeType } = info;
           const chunks: Buffer[] = [];
 
-          file.on('data', (chunk: Buffer) => {
-            chunks.push(chunk);
+          const filePromise = new Promise<void>((fileResolve, fileReject) => {
+            file.on('data', (chunk: Buffer) => {
+              chunks.push(chunk);
+            });
+
+            file.on('end', () => {
+              try {
+                const buffer = Buffer.concat(chunks);
+                // Create a File object from the buffer
+                const blob = new Blob([buffer], { type: mimeType || 'application/octet-stream' });
+                const fileObj = new File([blob], filename || 'file', {
+                  type: mimeType || 'application/octet-stream',
+                });
+                formData.append(name, fileObj);
+                fileResolve();
+              } catch (err) {
+                fileReject(err);
+              }
+            });
+
+            file.on('error', (err) => {
+              fileReject(err);
+            });
           });
 
-          file.on('end', () => {
-            const buffer = Buffer.concat(chunks);
-            // Create a File object from the buffer
-            const blob = new Blob([buffer], { type: mimeType || 'application/octet-stream' });
-            const fileObj = new File([blob], filename || 'file', {
-              type: mimeType || 'application/octet-stream',
-            });
-            formData.append(name, fileObj);
-          });
+          filePromises.push(filePromise);
         });
 
         bb.on('field', (name, value) => {
@@ -100,11 +131,14 @@ function createNextRequest(req: Request): NextRequest {
         });
 
         bb.on('finish', () => {
-          resolve(formData);
+          checkComplete();
         });
 
         bb.on('error', (err) => {
-          reject(err);
+          if (!hasError) {
+            hasError = true;
+            reject(err);
+          }
         });
 
         // Try to pipe the request to busboy
@@ -117,7 +151,9 @@ function createNextRequest(req: Request): NextRequest {
           // Body is already a buffer (shouldn't happen for multipart, but handle it)
           bb.end(req.body);
         } else {
-          reject(new Error('Request body already consumed. Ensure multipart requests skip body parsing middleware.'));
+          const errorMsg = `Request body already consumed. Stream readable: ${req.readable}, ended: ${req.readableEnded}, body type: ${typeof req.body}. Ensure multipart requests skip body parsing middleware.`;
+          console.error('FormData parsing error:', errorMsg);
+          reject(new Error(errorMsg));
         }
       });
     },

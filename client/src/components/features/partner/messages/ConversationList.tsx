@@ -181,7 +181,7 @@ export function ConversationList({
                         </div>
                       )}
                       {hasUnread && (
-                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500  flex items-center justify-center text-[10px] font-bold text-white">
+                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500  flex items-center justify-center text-[10px] font-semibold text-white">
                           {conversation.unread_count_partner > 9
                             ? "9+"
                             : conversation.unread_count_partner}
@@ -216,7 +216,7 @@ export function ConversationList({
                       <p
                         className={`text-xs truncate ${
                           hasUnread
-                            ? "text-zinc-300 font-medium"
+                            ? "text-zinc-400 font-medium"
                             : "text-zinc-500"
                         }`}
                       >

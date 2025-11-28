@@ -72,7 +72,7 @@ export function QRCodeDisplay({
       </div>
       <div className="text-center">
         <p className="text-zinc-400 text-xs mb-1">appointment Reference</p>
-        <p className="font-mono font-bold text-lg">{bookingReference}</p>
+        <p className="font-mono font-semibold text-lg">{bookingReference}</p>
       </div>
     </div>
   );

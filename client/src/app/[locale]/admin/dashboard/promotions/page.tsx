@@ -209,7 +209,7 @@ function AdminPromotionsContent() {
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-zinc-400 text-sm">โปรโมชั่นทั้งหมด</p>
-                  <p className="font-bold text-2xl">{stats.total}</p>
+                  <p className="font-semibold text-2xl">{stats.total}</p>
                 </div>
                 <MegaphoneIcon className="w-8 h-8 text-blue-500" />
               </div>
@@ -220,7 +220,7 @@ function AdminPromotionsContent() {
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-zinc-400 text-sm">กำลังใช้งาน</p>
-                  <p className="font-bold text-2xl text-green-500">{stats.active}</p>
+                  <p className="font-semibold text-2xl text-green-500">{stats.active}</p>
                 </div>
                 <MegaphoneIcon className="w-8 h-8 text-green-500" />
               </div>
@@ -231,7 +231,7 @@ function AdminPromotionsContent() {
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-zinc-400 text-sm">ปิดใช้งาน</p>
-                  <p className="font-bold text-2xl text-red-500">{stats.inactive}</p>
+                  <p className="font-semibold text-2xl text-red-500">{stats.inactive}</p>
                 </div>
                 <MegaphoneIcon className="w-8 h-8 text-red-500" />
               </div>
@@ -242,7 +242,7 @@ function AdminPromotionsContent() {
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-zinc-400 text-sm">แสดงใน Marquee</p>
-                  <p className="font-bold text-2xl text-yellow-500">{stats.marquee}</p>
+                  <p className="font-semibold text-2xl text-yellow-500">{stats.marquee}</p>
                 </div>
                 <ClockIcon className="w-8 h-8 text-yellow-500" />
               </div>

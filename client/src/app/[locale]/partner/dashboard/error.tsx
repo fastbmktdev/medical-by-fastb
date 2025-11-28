@@ -55,7 +55,7 @@ export default function PartnerDashboardError({ error, reset }: ErrorProps) {
         </div>
 
         {/* Error Title */}
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white text-center mb-4">
+        <h1 className="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white text-center mb-4">
           {t("title")}
         </h1>
 

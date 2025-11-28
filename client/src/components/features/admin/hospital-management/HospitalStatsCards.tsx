@@ -25,7 +25,7 @@ export default function HospitalStatsCards({ hospitals }: HospitalStatsCardsProp
         >
           <CardBody>
             <p className="mb-2 text-default-400 text-sm">{stat.title}</p>
-            <p className={`font-bold text-3xl ${stat.textColor}`}>
+            <p className={`font-semibold text-3xl ${stat.textColor}`}>
               {stat.value}
             </p>
           </CardBody>

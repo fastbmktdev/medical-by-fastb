@@ -348,7 +348,7 @@ function HospitalPageContent() {
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardBody className="py-16 text-center">
             <BuildingStorefrontIcon className="mx-auto mb-6 w-20 h-20 text-default-300" />
-            <h2 className="mb-4 font-bold text-2xl">ยังไม่มีข้อมูลโรงพยาบาล</h2>
+            <h2 className="mb-4 font-semibold text-2xl">ยังไม่มีข้อมูลโรงพยาบาล</h2>
             <p className="mx-auto mb-8 max-w-md text-default-400 text-xl">
               กรุณาสมัครเป็นพาร์ทเนอร์เพื่อเริ่มจัดการโรงพยาบาลของคุณ
             </p>
@@ -392,7 +392,7 @@ function HospitalPageContent() {
       {/* Hospital Information */}
       <Card className="bg-default-100/50 backdrop-blur-sm border-none">
         <CardHeader className="flex justify-between items-center">
-          <h3 className="font-bold text-xl">ข้อมูลโรงพยาบาล</h3>
+          <h3 className="font-semibold text-xl">ข้อมูลโรงพยาบาล</h3>
           {!isEditing ? (
             <Button
               size="sm"

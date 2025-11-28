@@ -92,7 +92,7 @@ function TicketCheckoutContent() {
         <div className="bg-white shadow-lg p-6  w-full max-w-md">
           <div className="text-center">
             <div className="mb-4 text-red-600 text-5xl">⚠️</div>
-            <h1 className="mb-2 font-bold text-gray-900 text-2xl">
+            <h1 className="mb-2 font-semibold text-gray-900 text-2xl">
               เกิดข้อผิดพลาด
             </h1>
             <p className="mb-6 text-gray-600">{error}</p>
@@ -112,7 +112,7 @@ function TicketCheckoutContent() {
     <div className="bg-gray-50 px-4 sm:px-6 lg:px-8 py-12 min-h-screen">
       <div className="mx-auto max-w-2xl">
         <div className="bg-white shadow-lg p-6 md:p-8 ">
-          <h1 className="mb-6 font-bold text-gray-900 text-2xl">
+          <h1 className="mb-6 font-semibold text-gray-900 text-2xl">
             ชำระเงินค่าตั๋ว
           </h1>
 
@@ -150,7 +150,7 @@ function TicketCheckoutContent() {
               </div>
               <div className="flex justify-between pt-2 border-gray-200 border-t">
                 <span className="font-semibold text-gray-900">ยอดรวม:</span>
-                <span className="font-bold text-blue-600 text-lg">
+                <span className="font-semibold text-blue-600 text-lg">
                   ฿{amount.toLocaleString('th-TH', { minimumFractionDigits: 2 })}
                 </span>
               </div>

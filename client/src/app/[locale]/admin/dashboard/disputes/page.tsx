@@ -226,7 +226,7 @@ function DisputesContent() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-default-500 text-sm">ทั้งหมด</p>
-                  <p className="text-2xl font-bold">{disputes.length}</p>
+                  <p className="text-2xl font-semibold">{disputes.length}</p>
                 </div>
                 <ExclamationTriangleIcon className="w-8 h-8 text-default-400" />
               </div>
@@ -237,7 +237,7 @@ function DisputesContent() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-danger text-sm">ต้องการตอบ</p>
-                  <p className="text-2xl font-bold text-danger">{urgentDisputes}</p>
+                  <p className="text-2xl font-semibold text-danger">{urgentDisputes}</p>
                 </div>
                 <ExclamationTriangleIcon className="w-8 h-8 text-danger" />
               </div>
@@ -248,7 +248,7 @@ function DisputesContent() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-warning text-sm">อยู่ระหว่างตรวจสอบ</p>
-                  <p className="text-2xl font-bold text-warning">
+                  <p className="text-2xl font-semibold text-warning">
                     {disputes.filter(d => d.status === 'under_review' || d.status === 'warning_under_review').length}
                   </p>
                 </div>
@@ -261,7 +261,7 @@ function DisputesContent() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-success text-sm">แก้ไขแล้ว</p>
-                  <p className="text-2xl font-bold text-success">
+                  <p className="text-2xl font-semibold text-success">
                     {disputes.filter(d => ['won', 'lost', 'charge_refunded', 'warning_closed'].includes(d.status)).length}
                   </p>
                 </div>
@@ -311,7 +311,7 @@ function DisputesContent() {
                     <TableCell className="text-default-400">
                       {getReasonText(dispute.reason)}
                     </TableCell>
-                    <TableCell className="font-mono font-bold">
+                    <TableCell className="font-mono font-semibold">
                       ฿{dispute.amount.toLocaleString()}
                     </TableCell>
                     <TableCell className="text-default-400">
@@ -373,7 +373,7 @@ function DisputesContent() {
                         </div>
                         <div>
                           <label className="text-default-500 text-sm">จำนวนเงิน</label>
-                          <p className="font-mono font-bold text-white">
+                          <p className="font-mono font-semibold text-white">
                             ฿{selectedDispute.amount.toLocaleString()} {selectedDispute.currency.toUpperCase()}
                           </p>
                         </div>

@@ -299,10 +299,10 @@ export default function PartnerApplyPage() {
       <div className="bg-linear-to-br from-red-900/20 to-zinc-950 mt-16">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-16 max-w-7xl">
           <div className="text-center">
-            <h1 className="mb-4 font-bold text-white text-4xl md:text-5xl">
+            <h1 className="mb-4 font-semibold text-white text-4xl md:text-5xl">
               สมัครเข้าร่วมเป็น Partner hospital
             </h1>
-            <p className="mx-auto mb-2 max-w-2xl text-zinc-300 text-xl">
+            <p className="mx-auto mb-2 max-w-2xl text-zinc-400 text-xl">
               ร่วมเป็นพันธมิตรกับเรา เพื่อเข้าถึงฐานลูกค้าที่กว้างขึ้น
             </p>
             <p className="text-zinc-400">
@@ -391,7 +391,7 @@ export default function PartnerApplyPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex justify-center items-center gap-3 bg-brand-primary hover:bg-red-600 disabled:bg-zinc-600 shadow-lg px-8 py-4  w-full font-bold text-white text-lg hover:scale-[1.02] transition-all disabled:cursor-not-allowed transform"
+              className="flex justify-center items-center gap-3 bg-brand-primary hover:bg-red-600 disabled:bg-zinc-600 shadow-lg px-8 py-4  w-full font-semibold text-white text-lg hover:scale-[1.02] transition-all disabled:cursor-not-allowed transform"
               aria-label="ส่งใบสมัครพาร์ทเนอร์"
             >
               {isSubmitting ? (

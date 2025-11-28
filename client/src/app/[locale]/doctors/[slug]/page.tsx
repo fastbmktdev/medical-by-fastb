@@ -84,7 +84,7 @@ export default function DoctorDetailPage({
           <div className="space-y-8 lg:col-span-2">
             {/* Header */}
             <div>
-              <h1 className="mb-4 font-bold text-4xl">
+              <h1 className="mb-4 font-semibold text-4xl">
                 {doctor.name}
               </h1>
               {doctor.name_english && (
@@ -119,11 +119,11 @@ export default function DoctorDetailPage({
 
             {/* About Doctor */}
             <div className="bg-zinc-100 p-6 border border-zinc-700 ">
-              <h2 className="flex items-center gap-2 mb-4 font-bold text-2xl">
+              <h2 className="flex items-center gap-2 mb-4 font-semibold text-2xl">
                 <InformationCircleIcon className="w-6 h-6 text-blue-500" />
                 เกี่ยวกับแพทย์
               </h2>
-              <p className="mb-4 text-zinc-300 leading-relaxed">
+              <p className="mb-4 text-zinc-400 leading-relaxed">
                 {doctor.bio || "ข้อมูลเพิ่มเติมจะประกาศในเร็วๆ นี้"}
               </p>
               {doctor.qualifications && doctor.qualifications.length > 0 && (
@@ -131,7 +131,7 @@ export default function DoctorDetailPage({
                   <h3 className="mb-3 font-semibold text-lg">
                     คุณวุฒิ
                   </h3>
-                  <ul className="space-y-2 text-zinc-300">
+                  <ul className="space-y-2 text-zinc-400">
                     {doctor.qualifications.map((qual, index) => (
                       <li key={index} className="flex items-start gap-2">
                         <span className="text-red-500">•</span>
@@ -146,11 +146,11 @@ export default function DoctorDetailPage({
             {/* Location */}
             {doctor.location && (
               <div className="bg-zinc-100 p-6 border border-zinc-700 ">
-                <h2 className="flex items-center gap-2 mb-4 font-bold text-2xl">
+                <h2 className="flex items-center gap-2 mb-4 font-semibold text-2xl">
                   <MapPinIcon className="w-6 h-6 text-red-500" />
                   สถานที่ปฏิบัติงาน
                 </h2>
-                <p className="mb-4 text-zinc-300 text-lg">{doctor.location}</p>
+                <p className="mb-4 text-zinc-400 text-lg">{doctor.location}</p>
               </div>
             )}
           </div>
@@ -160,7 +160,7 @@ export default function DoctorDetailPage({
             <div className="top-4 sticky space-y-6">
               {/* Consultation Fee */}
               <div className="bg-zinc-100 p-6 border border-zinc-700 ">
-                <h3 className="flex items-center gap-2 mb-4 font-bold text-xl">
+                <h3 className="flex items-center gap-2 mb-4 font-semibold text-xl">
                   <CurrencyDollarIcon className="w-6 h-6 text-green-500" />
                   ค่าคำปรึกษา
                 </h3>
@@ -168,7 +168,7 @@ export default function DoctorDetailPage({
                   {consultationFee > 0 ? (
                     <div>
                       <p className="mb-1 text-zinc-400 text-xs">ราคาเริ่มต้น</p>
-                      <p className="font-bold text-red-500 text-3xl">
+                      <p className="font-semibold text-red-500 text-3xl">
                         ฿{consultationFee.toLocaleString()}
                       </p>
                     </div>
@@ -180,32 +180,32 @@ export default function DoctorDetailPage({
 
               {/* Quick Info */}
               <div className="bg-zinc-100 p-6 border border-zinc-700 ">
-                <h3 className="mb-4 font-bold text-xl">
+                <h3 className="mb-4 font-semibold text-xl">
                   ข้อมูลด่วน
                 </h3>
                 <div className="space-y-4">
                   {doctor.specialization && (
                     <div>
                       <p className="mb-1 text-zinc-400 text-xs">สาขา</p>
-                      <p className="text-zinc-300 text-sm">{doctor.specialization}</p>
+                      <p className="text-zinc-400 text-sm">{doctor.specialization}</p>
                     </div>
                   )}
                   {doctor.hospital && (
                     <div>
                       <p className="mb-1 text-zinc-400 text-xs">โรงพยาบาล</p>
-                      <p className="text-zinc-300 text-sm">{doctor.hospital}</p>
+                      <p className="text-zinc-400 text-sm">{doctor.hospital}</p>
                     </div>
                   )}
                   {doctor.experience_years && (
                     <div>
                       <p className="mb-1 text-zinc-400 text-xs">ประสบการณ์</p>
-                      <p className="text-zinc-300 text-sm">{doctor.experience_years} ปี</p>
+                      <p className="text-zinc-400 text-sm">{doctor.experience_years} ปี</p>
                     </div>
                   )}
                   {doctor.location && (
                     <div>
                       <p className="mb-1 text-zinc-400 text-xs">สถานที่</p>
-                      <p className="text-zinc-300 text-sm">{doctor.location}</p>
+                      <p className="text-zinc-400 text-sm">{doctor.location}</p>
                     </div>
                   )}
                 </div>
@@ -213,7 +213,7 @@ export default function DoctorDetailPage({
 
               {/* CTA */}
               <div className="bg-linear-to-r from-red-600 to-red-700 p-6  text-center">
-                <h3 className="mb-2 font-bold text-xl">
+                <h3 className="mb-2 font-semibold text-xl">
                   ต้องการนัดหมาย?
                 </h3>
                 <p className="mb-4 text-white/80 text-sm">

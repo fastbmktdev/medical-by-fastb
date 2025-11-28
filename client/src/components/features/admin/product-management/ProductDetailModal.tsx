@@ -140,7 +140,7 @@ export default function ProductDetailModal({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <p className="text-zinc-400 text-sm mb-1">ราคา</p>
-              <p className="font-bold text-red-500 text-xl">฿{(product.price || 0).toLocaleString()}</p>
+              <p className="font-semibold text-red-500 text-xl">฿{(product.price || 0).toLocaleString()}</p>
             </div>
             <div>
               <p className="text-zinc-400 text-sm mb-1">สต็อก</p>
@@ -174,7 +174,7 @@ export default function ProductDetailModal({
         {/* Description */}
         {product.description && (
           <AdminInfoSection title="รายละเอียดสินค้า">
-            <p className="text-zinc-300 whitespace-pre-line">{product.description}</p>
+            <p className="text-zinc-400 whitespace-pre-line">{product.description}</p>
           </AdminInfoSection>
         )}
 

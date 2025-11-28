@@ -21,7 +21,7 @@ export const TermsSection = ({ formData, errors, onInputChange }: TermsSectionPr
           }`}
         />
         <div className="flex-1">
-          <span className="text-zinc-300">
+          <span className="text-zinc-950">
             ยืนยันว่าข้อมูลที่กรอกถูกต้องและรับทราบเงื่อนไขการสมัคร{" "}
             <span className="text-red-500">*</span>
           </span>

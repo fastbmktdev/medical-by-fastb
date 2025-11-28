@@ -45,7 +45,7 @@ export default function ForbiddenPage() {
           </div>
 
           {/* Error Code */}
-          <h1 className="mb-4 font-bold text-danger text-6xl text-center">403</h1>
+          <h1 className="mb-4 font-semibold text-danger text-6xl text-center">403</h1>
           
           {/* Title */}
           <h2 className="mb-4 font-semibold text-3xl text-center tracking-tight">

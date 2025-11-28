@@ -71,14 +71,14 @@ function PartnerApplicationAlert({
               </div>
               <div className="flex-1">
                 <div className="flex sm:flex-row flex-col sm:justify-between sm:items-center gap-2 mb-2">
-                  <h2 className="font-bold text-2xl">
+                  <h2 className="font-semibold text-2xl">
                     📋 รอการอนุมัติ Partner
                   </h2>
                   <Chip color="warning" variant="flat" size="lg">
                     กำลังตรวจสอบ
                   </Chip>
                 </div>
-                <p className="mb-4 text-zinc-300 text-lg">
+                <p className="mb-4 text-zinc-400 text-lg">
                   คำขอสมัครของคุณสำหรับ{" "}
                   <strong className="text-yellow-400">
                     {hospitalApplication.hospital_name}
@@ -88,7 +88,7 @@ function PartnerApplicationAlert({
                 <div className="bg-zinc-100/50 mb-4 p-4 border border-zinc-700 ">
                   <p className="mb-2 text-sm">
                     📅 ส่งคำขอเมื่อ:{" "}
-                    <span className="font-mono text-zinc-300">
+                    <span className="font-mono text-zinc-400">
                       {new Date(hospitalApplication.created_at).toLocaleDateString(
                         "th-TH",
                         {
@@ -108,7 +108,7 @@ function PartnerApplicationAlert({
                 </div>
                 <div className="space-y-2">
                   <p className="font-semibold text-sm">🔍 ขั้นตอนการตรวจสอบ:</p>
-                  <ul className="space-y-1 ml-4 text-zinc-300 text-sm list-disc">
+                  <ul className="space-y-1 ml-4 text-zinc-400 text-sm list-disc">
                     <li>ตรวจสอบความถูกต้องของข้อมูล</li>
                     <li>ตรวจสอบความครบถ้วนของเอกสาร</li>
                     <li>ยืนยันตัวตนและสถานที่</li>
@@ -133,7 +133,7 @@ function PartnerApplicationAlert({
                 <CheckCircleIcon className="w-6 h-6 text-green-400" />
               </div>
               <div>
-                <h2 className="font-bold text-xl">
+                <h2 className="font-semibold text-xl">
                   ✅ คำขอของคุณได้รับการอนุมัติแล้ว!
                 </h2>
                 <p className="text-green-300 text-sm">
@@ -147,7 +147,7 @@ function PartnerApplicationAlert({
                 variant="shadow"
                 size="lg"
                 endContent={<ArrowRightIcon className="w-5 h-5" />}
-                className="ml-auto font-bold"
+                className="ml-auto font-semibold"
               >
                 เข้าสู่ Partner Dashboard
               </Button>
@@ -173,7 +173,7 @@ function RecentBookingsSection({
   return (
     <section>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="font-bold text-xl">การจองล่าสุด</h2>
+        <h2 className="font-semibold text-xl">การจองล่าสุด</h2>
         <Button
           as={Link}
           href={`/${locale}/dashboard/appointments`}

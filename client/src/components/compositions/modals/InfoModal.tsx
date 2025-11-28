@@ -69,7 +69,7 @@ export function InfoModal({
           <div className="flex justify-center mb-4">
             {icon || getDefaultIcon()}
           </div>
-          <p className="text-zinc-300 leading-relaxed">
+          <p className="text-zinc-400 leading-relaxed">
             {message}
           </p>
         </div>

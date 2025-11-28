@@ -146,7 +146,7 @@ function ProductCardComponent({
               role="status"
               aria-label={t("outOfStock")}
             >
-              <span className="font-bold text-xs text-white">
+              <span className="font-semibold text-xs text-white">
                 {t("outOfStockBadge")}
               </span>
             </div>
@@ -189,7 +189,7 @@ function ProductCardComponent({
         <div className="flex justify-between items-center pt-3 border-zinc-700 border-t">
           <div>
             <p
-              className="font-bold text-purple-500 text-xl"
+              className="font-semibold text-purple-500 text-xl"
               aria-label={t("price", { amount: formattedPrice })}
             >
               ฿{formattedPrice}

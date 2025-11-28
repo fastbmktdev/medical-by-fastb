@@ -171,7 +171,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
             <div className="flex flex-col">
                 <button
                     type="button"
-                    className="px-2 py-1 text-xs text-zinc-400 hover:text-zinc-300 focus:outline-none focus:text-zinc-300 transition-colors"
+                    className="px-2 py-1 text-xs text-zinc-400 hover:text-zinc-400 focus:outline-none focus:text-zinc-400 transition-colors"
                     onClick={() => handleStep('up')}
                     aria-label="Increment"
                     tabIndex={-1}
@@ -182,7 +182,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                 </button>
                 <button
                     type="button"
-                    className="px-2 py-1 text-xs text-zinc-400 hover:text-zinc-300 focus:outline-none focus:text-zinc-300 transition-colors"
+                    className="px-2 py-1 text-xs text-zinc-400 hover:text-zinc-400 focus:outline-none focus:text-zinc-400 transition-colors"
                     onClick={() => handleStep('down')}
                     aria-label="Decrement"
                     tabIndex={-1}

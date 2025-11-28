@@ -31,7 +31,7 @@ export function FeatureSection({
         {/* Section Header */}
         {(title || description) && (
           <div className="text-center mb-12 max-w-3xl mx-auto">
-            {title && <h2 className="text-3xl font-bold mb-4">{title}</h2>}
+            {title && <h2 className="text-3xl font-semibold mb-4">{title}</h2>}
             {description && (
               <p className="text-xl text-zinc-400 leading-relaxed">
                 {description}

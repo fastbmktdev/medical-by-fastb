@@ -90,7 +90,7 @@ export function GalleryAnalytics({ hospitalId }: GalleryAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-default-500">Total Views</p>
-                <p className="text-2xl font-bold text-default-900">
+                <p className="text-2xl font-semibold text-default-900">
                   {summary.total_views.toLocaleString()}
                 </p>
               </div>
@@ -107,7 +107,7 @@ export function GalleryAnalytics({ hospitalId }: GalleryAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-default-500">Unique Visitors</p>
-                <p className="text-2xl font-bold text-default-900">
+                <p className="text-2xl font-semibold text-default-900">
                   {summary.total_unique_views.toLocaleString()}
                 </p>
               </div>
@@ -124,7 +124,7 @@ export function GalleryAnalytics({ hospitalId }: GalleryAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-default-500">Total Images</p>
-                <p className="text-2xl font-bold text-default-900">
+                <p className="text-2xl font-semibold text-default-900">
                   {summary.total_images}
                 </p>
               </div>
@@ -141,7 +141,7 @@ export function GalleryAnalytics({ hospitalId }: GalleryAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-default-500">Avg. Views/Image</p>
-                <p className="text-2xl font-bold text-default-900">
+                <p className="text-2xl font-semibold text-default-900">
                   {summary.average_views_per_image}
                 </p>
               </div>
@@ -159,7 +159,7 @@ export function GalleryAnalytics({ hospitalId }: GalleryAnalyticsProps) {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-default-500">Views (Last 7 Days)</p>
-              <p className="text-3xl font-bold text-default-900">
+              <p className="text-3xl font-semibold text-default-900">
                 {summary.recent_views_7d.toLocaleString()}
               </p>
             </div>
@@ -194,7 +194,7 @@ export function GalleryAnalytics({ hospitalId }: GalleryAnalyticsProps) {
                   className="flex items-center gap-4  border border-default-200 p-3 transition-colors hover:bg-default-50"
                 >
                   {/* Rank */}
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center  bg-default-100 font-bold text-default-700">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center  bg-default-100 font-semibold text-default-700">
                     #{index + 1}
                   </div>
 

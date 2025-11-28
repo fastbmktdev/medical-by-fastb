@@ -47,24 +47,24 @@ function DoctorCardComponent({ doctor, viewMode }: DoctorCardProps) {
       <BaseCard className="p-6">
         <div className="flex sm:flex-row flex-col justify-between items-start gap-4">
           <div className="flex-1">
-            <h3 className="mb-2 font-bold group-hover:text-purple-400 text-xl transition-colors">
+            <h3 className="mb-2 font-semibold group-hover:text-purple-400 text-xl transition-colors">
               {doctor.name}
             </h3>
             <div className="space-y-2">
               {doctor.specialization && (
-                <div className="flex items-center gap-2 text-zinc-300 text-sm">
+                <div className="flex items-center gap-2 text-zinc-400 text-sm">
                   <AcademicCapIcon className="shrink-0 w-4 h-4 text-blue-500" />
                   <span>{doctor.specialization}</span>
                 </div>
               )}
               {displayLocation && (
-                <div className="flex items-center gap-2 text-zinc-300 text-sm">
+                <div className="flex items-center gap-2 text-zinc-400 text-sm">
                   <MapPinIcon className="shrink-0 w-4 h-4 text-purple-500" />
                   <span>{displayLocation}</span>
                 </div>
               )}
               {doctor.experience_years && (
-                <div className="flex items-center gap-2 text-zinc-300 text-sm">
+                <div className="flex items-center gap-2 text-zinc-400 text-sm">
                   <UserIcon className="shrink-0 w-4 h-4 text-green-500" />
                   <span>ประสบการณ์ {doctor.experience_years} ปี</span>
                 </div>
@@ -104,7 +104,7 @@ function DoctorCardComponent({ doctor, viewMode }: DoctorCardProps) {
         {consultationFee && (
           <div className="top-2 right-2 absolute flex items-center gap-1 bg-black/50 px-3 py-1 ">
             <CurrencyDollarIcon className="w-4 h-4 text-green-400" />
-            <span className="font-bold text-sm">
+            <span className="font-semibold text-sm">
               ฿{consultationFee.toLocaleString()}
             </span>
           </div>
@@ -112,25 +112,25 @@ function DoctorCardComponent({ doctor, viewMode }: DoctorCardProps) {
       </div>
 
       <div className="relative h-2/3 p-6">
-        <h3 className="mb-3 font-bold group-hover:text-purple-400 text-xl transition-colors">
+        <h3 className="mb-3 font-semibold group-hover:text-purple-400 text-xl transition-colors">
           {doctor.name}
         </h3>
 
         <div className="space-y-2 mb-4">
           {doctor.specialization && (
-            <div className="flex items-start gap-2 text-zinc-300 text-sm">
+            <div className="flex items-start gap-2 text-zinc-400 text-sm">
               <AcademicCapIcon className="shrink-0 mt-0.5 w-4 h-4 text-blue-500" />
               <span className="line-clamp-1">{doctor.specialization}</span>
             </div>
           )}
           {displayLocation && (
-            <div className="flex items-start gap-2 text-zinc-300 text-sm">
+            <div className="flex items-start gap-2 text-zinc-400 text-sm">
               <MapPinIcon className="shrink-0 mt-0.5 w-4 h-4 text-purple-500" />
               <span className="line-clamp-1">{displayLocation}</span>
             </div>
           )}
           {doctor.experience_years && (
-            <div className="flex items-center gap-2 text-zinc-300 text-sm">
+            <div className="flex items-center gap-2 text-zinc-400 text-sm">
               <UserIcon className="shrink-0 w-4 h-4 text-green-500" />
               <span>ประสบการณ์ {doctor.experience_years} ปี</span>
             </div>

@@ -82,7 +82,7 @@ function PartnerSettingsContent() {
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader className="flex items-center gap-3">
             <BellIcon className="w-6 h-6 text-secondary" />
-            <h3 className="font-bold text-xl">การแจ้งเตือน</h3>
+            <h3 className="font-semibold text-xl">การแจ้งเตือน</h3>
           </CardHeader>
           <CardBody className="gap-4">
             <div className="flex justify-between items-center">
@@ -114,7 +114,7 @@ function PartnerSettingsContent() {
         <Card className="bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader className="flex items-center gap-3">
             <ShieldCheckIcon className="w-6 h-6 text-secondary" />
-            <h3 className="font-bold text-xl">ความปลอดภัย</h3>
+            <h3 className="font-semibold text-xl">ความปลอดภัย</h3>
           </CardHeader>
           <CardBody className="gap-4">
             <div className="flex justify-between items-center">
@@ -142,7 +142,7 @@ function PartnerSettingsContent() {
         <Card className="lg:col-span-2 bg-default-100/50 backdrop-blur-sm border-none">
           <CardHeader className="flex items-center gap-3">
             <BanknotesIcon className="w-6 h-6 text-secondary" />
-            <h3 className="font-bold text-xl">บัญชีธนาคาร</h3>
+            <h3 className="font-semibold text-xl">บัญชีธนาคาร</h3>
           </CardHeader>
           <CardBody className="gap-4">
             <div className="gap-4 grid grid-cols-1 md:grid-cols-2">

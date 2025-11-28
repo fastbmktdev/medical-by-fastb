@@ -71,7 +71,7 @@ const ApplicationTable = ({
     <CardBody>
       <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 mb-6">
         <div className="flex items-center gap-4">
-          <h2 className="font-bold text-xl">
+          <h2 className="font-semibold text-xl">
             รายการรออนุมัติ ({applications.length})
           </h2>
           {selectedIds.size > 0 && (

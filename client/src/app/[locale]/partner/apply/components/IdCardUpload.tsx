@@ -131,14 +131,14 @@ export const IdCardUpload = ({
 
   return (
     <div className="bg-zinc-100 shadow-xl p-6 md:p-8 ">
-      <h2 className="flex items-center gap-3 mb-6 font-semibold text-white text-2xl">
+      <h2 className="flex items-center gap-3 mb-6 font-semibold text-zinc-950 text-2xl">
         <IdentificationIcon className="w-7 h-7 text-violet-700" />
         บัตรประชาชน (จำเป็น)
       </h2>
 
       {/* Information Box */}
-      <div className="mb-6 p-4 border border-purple-500/30 bg-purple-500/10 ">
-        <p className="text-violet-700 text-sm font-medium mb-2">
+      <div className="mb-6 p-4 border border-purple-500/30 bg-violet-300 ">
+        <p className="text-violet-700 text-sm font-semibold mb-2">
           🔒 ข้อมูลความปลอดภัย:
         </p>
         <ul className="text-violet-700 text-sm space-y-1 ml-4 list-disc">
@@ -155,12 +155,12 @@ export const IdCardUpload = ({
       {/* Upload Area */}
       {!previewUrl ? (
         <div>
-          <label className="flex flex-col items-center gap-3 bg-zinc-100 hover:bg-zinc-600 p-8 border border-zinc-600 border-dashed  transition-colors cursor-pointer">
+          <label className="flex flex-col items-center gap-3 bg-zinc-100 hover:bg-violet-400 p-8 border border-zinc-600 border-dashed  transition-colors cursor-pointer">
             <IdentificationIcon className="w-16 h-16 text-violet-700" />
-            <span className="text-zinc-300 text-base font-medium">
+            <span className="text-zinc-950 text-base font-medium">
               คลิกเพื่ออัปโหลดบัตรประชาชน
             </span>
-            <span className="text-zinc-500 text-sm">
+            <span className="text-zinc-400 text-sm">
               (จะมีการใส่ลายน้ำโดยอัตโนมัติ)
             </span>
             <input
@@ -177,7 +177,7 @@ export const IdCardUpload = ({
             <div className="mt-4 p-4 bg-zinc-800 ">
               <div className="flex items-center gap-3">
                 <div className="animate-spin  h-5 w-5 border-b-2 border-purple-500"></div>
-                <span className="text-zinc-300 text-sm">{uploadProgress}</span>
+                <span className="text-zinc-400 text-sm">{uploadProgress}</span>
               </div>
             </div>
           )}

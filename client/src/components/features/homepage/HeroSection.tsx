@@ -138,7 +138,7 @@ function HeroContent() {
                 <Icon className="w-8 h-8 text-brand-primary" />
               </div>
             </div>
-            <h3 className="font-bold text-white text-lg mb-2">{text}</h3>
+            <h3 className="font-semibold text-white text-lg mb-2">{text}</h3>
             <p className="text-white/80 text-sm">{description}</p>
           </div>
         ))}

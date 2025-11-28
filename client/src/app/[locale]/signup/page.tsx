@@ -1104,7 +1104,7 @@ function SignupContent() {
                   />
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold text-zinc-950 mb-2">
+              <h2 className="text-2xl font-semibold text-zinc-950 mb-2">
                 ยืนยันอีเมลของคุณ
               </h2>
               <p className="text-gray-600 text-sm">

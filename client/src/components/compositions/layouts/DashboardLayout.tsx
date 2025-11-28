@@ -131,7 +131,7 @@ export default function DashboardLayout({
             >
               <Bars3Icon className="w-6 h-6 text-zinc-950" />
             </Button>
-            <h1 className="font-bold text-lg text-zinc-950">{headerTitle}</h1>
+            <h1 className="font-semibold text-lg text-zinc-950">{headerTitle}</h1>
             <div className="w-10" /> {/* Spacer for centering */}
           </header>
         )}
@@ -139,7 +139,7 @@ export default function DashboardLayout({
         {/* Page Header - Hospital Theme */}
         <div className="bg-gray-50 px-4 sm:px-6 lg:px-8 py-8 border-gray-200 border-b">
           <div className="mx-auto max-w-7xl">
-            <h1 className="mb-2 font-bold text-3xl md:text-4xl">
+            <h1 className="mb-2 font-semibold text-3xl md:text-4xl">
               {headerTitle}
             </h1>
             <p className="text-default-400 text-lg">

@@ -54,7 +54,7 @@ export function AuthLayout({
         <div className="w-full h-full bg-black/50 absolute top-0 left-0 z-0"></div>
         <div className="relative z-20 flex flex-col justify-center items-center text-center p-8 text-zinc-100">
           <div className="max-w-sm">
-            <h1 className="text-3xl lg:text-4xl font-bold mb-4">{title}</h1>
+            <h1 className="text-3xl lg:text-4xl font-semibold mb-4">{title}</h1>
             <p className="text-lg mb-6 leading-relaxed">
               {subtitle || "เพิ่มโอกาสในการเข้าถึงกลุ่มทางการแพทย์ที่ใหญ่ที่สุด"}
             </p>
@@ -67,7 +67,7 @@ export function AuthLayout({
         <div className="mx-auto w-full max-w-md py-4">
           {/* Mobile Header */}
           <div className="lg:hidden text-center mb-6">
-            <h1 className="text-2xl font-bold mb-2">{title}</h1>
+            <h1 className="text-2xl font-semibold mb-2">{title}</h1>
             {subtitle && <p className="text-gray-600 text-sm">{subtitle}</p>}
           </div>
 

@@ -107,7 +107,7 @@ const StatCard: React.FC<{
         <span className="text-zinc-400 text-sm text-right">{label}</span>
       </div>
       <div className="flex items-start justify-between h-full">
-        <p className="text-3xl font-bold text-white flex flex-col items-center gap-2 w-10 h-full">
+        <p className="text-3xl font-semibold text-white flex flex-col items-center gap-2 w-10 h-full">
           {value}
         </p>
         <p className="flex flex-col items-center gap-2">
@@ -276,8 +276,8 @@ export default function AffiliateDashboardPage() {
     return (
       <PageWrapper>
         <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">Affiliate Dashboard</h1>
-          <p className="text-zinc-300 text-xl mb-8">
+          <h1 className="text-4xl font-semibold mb-4">Affiliate Dashboard</h1>
+          <p className="text-zinc-400 text-xl mb-8">
             กรุณาเข้าสู่ระบบเพื่อเข้าถึง Affiliate Dashboard
           </p>
           <Button
@@ -315,10 +315,10 @@ export default function AffiliateDashboardPage() {
         <div className="inline-flex items-center justify-center w-20 h-20 bg-linear-to-br from-red-500 to-orange-500  mb-6 shadow-lg shadow-red-500/30">
           <SparklesIcon className="w-10 h-10 text-white" />
         </div>
-        <h1 className="text-5xl font-bold mb-4 bg-linear-to-r from-white via-zinc-100 to-zinc-300 bg-clip-text text-transparent">
+        <h1 className="text-5xl font-semibold mb-4 bg-linear-to-r from-white via-zinc-100 to-zinc-300 bg-clip-text text-transparent">
           Affiliate Dashboard
         </h1>
-        <p className="text-zinc-300 text-xl max-w-3xl mx-auto">
+        <p className="text-zinc-400 text-xl max-w-3xl mx-auto">
           ติดตามผลงานและสถิติการแนะนำของคุณแบบเรียลไทม์
         </p>
       </div>
@@ -365,7 +365,7 @@ export default function AffiliateDashboardPage() {
                 { label: "ลิงก์แนะนำ", value: affiliateLink, icon: "🔗" },
               ].map(({ label, value, icon }) => (
                 <div key={label}>
-                  <label className="text-zinc-300 text-sm mb-2 flex items-center gap-2">
+                  <label className="text-zinc-400 text-sm mb-2 flex items-center gap-2">
                     <span>{icon}</span>
                     {label}
                   </label>
@@ -390,7 +390,7 @@ export default function AffiliateDashboardPage() {
               ))}
               <Divider className="my-6 bg-zinc-100/50" />
               <div>
-                <p className="text-zinc-300 text-sm mb-4 flex items-center gap-2">
+                <p className="text-zinc-400 text-sm mb-4 flex items-center gap-2">
                   <ShareIcon className="w-4 h-4" />
                   แชร์บนโซเชียลมีเดีย
                 </p>
@@ -460,7 +460,7 @@ export default function AffiliateDashboardPage() {
                 return (
                   <div key={label}>
                     <div className="flex justify-between items-center mb-3">
-                      <span className="text-zinc-300 flex items-center gap-2">
+                      <span className="text-zinc-400 flex items-center gap-2">
                         <span>{icon}</span>
                         {label}
                       </span>
@@ -489,7 +489,7 @@ export default function AffiliateDashboardPage() {
               })}
               <Divider className="my-4 bg-zinc-100/50" />
               <div className="flex justify-between items-center p-3 bg-zinc-100/30 ">
-                <span className="text-zinc-300 flex items-center gap-2">
+                <span className="text-zinc-400 flex items-center gap-2">
                   <SparklesIcon className="w-4 h-4" />
                   ช่องทางแนะนำหลัก
                 </span>
@@ -504,7 +504,7 @@ export default function AffiliateDashboardPage() {
                 </h3>
                 <div className="space-y-3">
                   <div className="flex justify-between text-sm items-center">
-                    <span className="text-zinc-300">แนะนำ 10 คน</span>
+                    <span className="text-zinc-400">แนะนำ 10 คน</span>
                     <span className="text-white font-semibold">
                       {stats.totalReferrals}/10
                     </span>
@@ -544,8 +544,8 @@ export default function AffiliateDashboardPage() {
                   aria-label="Referral history"
                   classNames={{
                     wrapper: "bg-transparent",
-                    th: "bg-zinc-100/50 text-zinc-300 border-b border-zinc-600",
-                    td: "border-b border-zinc-700/50 text-zinc-300",
+                    th: "bg-zinc-100/50 text-zinc-400 border-b border-zinc-600",
+                    td: "border-b border-zinc-700/50 text-zinc-400",
                   }}
                 >
                   <TableHeader>
@@ -575,7 +575,7 @@ export default function AffiliateDashboardPage() {
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 bg-linear-to-br from-blue-500 to-blue-600  flex items-center justify-center text-white text-xs font-bold">
+                            <div className="w-8 h-8 bg-linear-to-br from-blue-500 to-blue-600  flex items-center justify-center text-white text-xs font-semibold">
                               {referral.referred_user_email
                                 .charAt(0)
                                 .toUpperCase()}
@@ -634,7 +634,7 @@ export default function AffiliateDashboardPage() {
                 <div className="w-24 h-24 bg-zinc-100/50  flex items-center justify-center mx-auto mb-6">
                   <UserPlusIcon className="w-12 h-12 text-zinc-500" />
                 </div>
-                <p className="text-zinc-300 text-lg font-medium mb-2">
+                <p className="text-zinc-400 text-lg font-medium mb-2">
                   ยังไม่มีประวัติการแนะนำ
                 </p>
                 <p className="text-zinc-500 text-sm mb-6">

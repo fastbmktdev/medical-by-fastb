@@ -120,7 +120,7 @@ export function TicketCheckIn({ ticketId, onCheckInSuccess }: TicketCheckInProps
                   <div className="flex justify-between items-start">
                     <div>
                       <p className="text-zinc-400 text-sm">appointment Reference</p>
-                      <p className="font-mono font-bold text-lg">{ticketData.booking_reference}</p>
+                      <p className="font-mono font-semibold text-lg">{ticketData.booking_reference}</p>
                     </div>
                     {ticketData.is_checked_in ? (
                       <div className="flex items-center gap-2 text-green-400">

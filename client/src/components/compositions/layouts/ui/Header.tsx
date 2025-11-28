@@ -361,7 +361,7 @@ export default function Header() {
           {/* Logo & Nav */}
           <div className="flex justify-center items-center gap-8">
             <Link href="/" className="flex items-center gap-2">
-              <span className="inline-flex justify-center items-center bg-brand-primary w-8 h-8 font-bold text-white ">
+              <span className="inline-flex justify-center items-center bg-brand-primary w-8 h-8 font-semibold text-white ">
                 MP
               </span>
               <span className="font-semibold text-base sm:text-lg">
