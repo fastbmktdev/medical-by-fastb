@@ -185,7 +185,7 @@ export default function PaymentPage() {
                     กรุณาเริ่มต้นกระบวนการชำระเงินจากหน้าอื่น
                   </p>
                   <button
-                    onClick={() => router.push(`/${locale}`)}
+                    onClick={() => router.push('/')}
                     className="bg-brand-primary hover:bg-red-600 px-6 py-3  font-medium transition-colors"
                   >
                     กลับหน้าหลัก
