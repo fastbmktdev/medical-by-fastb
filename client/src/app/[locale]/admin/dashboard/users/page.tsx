@@ -193,7 +193,7 @@ function AdminUsersContent() {
                 startContent={<MagnifyingGlassIcon className="w-4 h-4 text-default-400" />}
                 className="max-w-xs"
                 classNames={{
-                  input: "text-white",
+                  input: "text-zinc-950",
                 }}
               />
             </div>

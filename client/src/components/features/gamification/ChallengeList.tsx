@@ -84,7 +84,7 @@ export default function ChallengeList({ challenges, className = '' }: ChallengeL
                   {typeIcon}
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white">
+                  <h3 className="font-semibold text-zinc-950">
                     {challengeData.title}
                   </h3>
                   <div className="flex items-center space-x-2 mt-1">

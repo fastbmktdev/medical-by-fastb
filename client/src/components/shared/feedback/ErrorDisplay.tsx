@@ -171,7 +171,7 @@ const RetryButton: React.FC<{
   }[size];
 
   const variantClasses = variant === 'page' 
-    ? 'bg-brand-primary hover:bg-red-600 text-white' 
+    ? 'bg-brand-primary hover:bg-red-600 text-zinc-950' 
     : 'bg-red-100 hover:bg-red-200 text-red-800 dark:bg-red-800 dark:hover:bg-red-600 dark:text-red-100';
 
   return (

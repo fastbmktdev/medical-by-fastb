@@ -146,7 +146,7 @@ export function SocialLinksEditor() {
                   placeholder="https://..."
                   variant="bordered"
                   classNames={{
-                    input: "text-white",
+                    input: "text-zinc-950",
                     inputWrapper: "bg-zinc-100/50 border-zinc-700",
                   }}
                 />
@@ -169,7 +169,7 @@ export function SocialLinksEditor() {
               <select
                 value={newLink.platform}
                 onChange={(e) => setNewLink({ ...newLink, platform: e.target.value })}
-                className="px-3 py-2 bg-zinc-900 border border-zinc-700  text-white text-sm"
+                className="px-3 py-2 bg-zinc-900 border border-zinc-700  text-zinc-950 text-sm"
               >
                 {availablePlatforms.map(platform => (
                   <option key={platform.value} value={platform.value}>
@@ -183,7 +183,7 @@ export function SocialLinksEditor() {
                 placeholder="https://..."
                 variant="bordered"
                 classNames={{
-                  input: "text-white",
+                  input: "text-zinc-950",
                   inputWrapper: "bg-zinc-100/50 border-zinc-700 flex-1",
                 }}
               />
@@ -236,7 +236,7 @@ export function SocialLinksEditor() {
                   className="flex items-center gap-2 bg-zinc-100/50 hover:bg-zinc-100/70 p-3  transition-colors"
                 >
                   <span className="text-xl">{platform?.icon}</span>
-                  <span className="text-white flex-1">{platform?.label}</span>
+                  <span className="text-zinc-950 flex-1">{platform?.label}</span>
                   <span className="text-zinc-400 text-sm truncate max-w-[200px]">{link.url}</span>
                 </Link>
               );

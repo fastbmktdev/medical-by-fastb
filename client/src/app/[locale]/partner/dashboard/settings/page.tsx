@@ -87,7 +87,7 @@ function PartnerSettingsContent() {
           <CardBody className="gap-4">
             <div className="flex justify-between items-center">
               <div>
-                <p className="mb-1 font-semibold text-white">อีเมล</p>
+                <p className="mb-1 font-semibold text-zinc-950">อีเมล</p>
                 <p className="text-default-400 text-sm">รับการแจ้งเตือนทางอีเมล</p>
               </div>
               <Switch
@@ -98,7 +98,7 @@ function PartnerSettingsContent() {
             </div>
             <div className="flex justify-between items-center pt-4 border-white/5 border-t">
               <div>
-                <p className="mb-1 font-semibold text-white">SMS</p>
+                <p className="mb-1 font-semibold text-zinc-950">SMS</p>
                 <p className="text-default-400 text-sm">รับการแจ้งเตือนทาง SMS</p>
               </div>
               <Switch
@@ -119,7 +119,7 @@ function PartnerSettingsContent() {
           <CardBody className="gap-4">
             <div className="flex justify-between items-center">
               <div>
-                <p className="mb-1 font-semibold text-white">รหัสผ่าน</p>
+                <p className="mb-1 font-semibold text-zinc-950">รหัสผ่าน</p>
                 <p className="text-default-400 text-sm">เปลี่ยนรหัสผ่านของคุณ</p>
               </div>
               <Button size="sm" color="secondary" variant="flat">
@@ -128,7 +128,7 @@ function PartnerSettingsContent() {
             </div>
             <div className="flex justify-between items-center pt-4 border-white/5 border-t">
               <div>
-                <p className="mb-1 font-semibold text-white">2FA</p>
+                <p className="mb-1 font-semibold text-zinc-950">2FA</p>
                 <p className="text-default-400 text-sm">การยืนยันตัวตนแบบสองชั้น</p>
               </div>
               <Button size="sm" variant="flat">
@@ -150,7 +150,7 @@ function PartnerSettingsContent() {
                 label="ชื่อธนาคาร"
                 placeholder="เลือกธนาคาร"
                 classNames={{
-                  input: "text-white",
+                  input: "text-zinc-950",
                   label: "text-default-400",
                 }}
               />
@@ -158,7 +158,7 @@ function PartnerSettingsContent() {
                 label="เลขที่บัญชี"
                 placeholder="กรอกเลขที่บัญชี"
                 classNames={{
-                  input: "text-white",
+                  input: "text-zinc-950",
                   label: "text-default-400",
                 }}
               />
@@ -166,7 +166,7 @@ function PartnerSettingsContent() {
                 label="ชื่อบัญชี"
                 placeholder="กรอกชื่อบัญชี"
                 classNames={{
-                  input: "text-white",
+                  input: "text-zinc-950",
                   label: "text-default-400",
                 }}
               />

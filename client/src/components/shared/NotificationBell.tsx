@@ -44,7 +44,7 @@ function NotificationBellComponent({ className = '' }: NotificationBellProps) {
           <BellIcon className="w-6 h-6" />
           {unreadCount > 0 && (
             <span 
-              className="absolute -top-1 -right-1 bg-danger text-white text-xs font-semibold  w-5 h-5 flex items-center justify-center"
+              className="absolute -top-1 -right-1 bg-danger text-zinc-950 text-xs font-semibold  w-5 h-5 flex items-center justify-center"
               aria-label={`${unreadCount} unread notifications`}
             >
               {badgeCount}
@@ -52,7 +52,7 @@ function NotificationBellComponent({ className = '' }: NotificationBellProps) {
           )}
           {!isConnected && (
             <span 
-              className="absolute -bottom-1 -right-1 bg-warning text-white text-xs  w-2 h-2" 
+              className="absolute -bottom-1 -right-1 bg-warning text-zinc-950 text-xs  w-2 h-2" 
               title="Using polling mode (real-time connection unavailable)"
               aria-label="Real-time connection unavailable"
             />

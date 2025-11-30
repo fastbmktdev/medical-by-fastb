@@ -198,11 +198,11 @@ export default function HospitalDetailModal({
                   <div className="gap-4 grid grid-cols-2 text-xs">
                     <div>
                       <p className="text-default-400">วันที่สร้าง</p>
-                      <p className="text-white">{formatDate(hospital.created_at)}</p>
+                      <p className="text-zinc-950">{formatDate(hospital.created_at)}</p>
                     </div>
                     <div>
                       <p className="text-default-400">อัพเดทล่าสุด</p>
-                      <p className="text-white">{formatDate(hospital.updated_at)}</p>
+                      <p className="text-zinc-950">{formatDate(hospital.updated_at)}</p>
                     </div>
                   </div>
                 </div>

@@ -4,7 +4,7 @@ import { getAllBadges, getUserBadges, getBadgeProgress } from '@shared/services/
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createServerClient();
+    const supabase = await createServerClient(request);
 
     // Check if user is authenticated
     const {

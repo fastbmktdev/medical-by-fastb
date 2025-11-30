@@ -94,7 +94,7 @@ export function BioEditor() {
             minRows={4}
             variant="bordered"
             classNames={{
-              input: "text-white",
+              input: "text-zinc-950",
               inputWrapper: "bg-zinc-100/50 border-zinc-700",
             }}
           />
@@ -128,12 +128,12 @@ export function BioEditor() {
         <div className="bg-zinc-100/50 p-4  min-h-[100px]">
           {bio ? (
             <div 
-              className="text-white whitespace-pre-wrap prose prose-invert max-w-none"
+              className="text-zinc-950 whitespace-pre-wrap prose prose-invert max-w-none"
             >
               {sanitizeText(bio)}
             </div>
           ) : (
-            <p className="text-white">ยังไม่ได้เพิ่มข้อมูลเกี่ยวกับตัวคุณ</p>
+            <p className="text-zinc-950">ยังไม่ได้เพิ่มข้อมูลเกี่ยวกับตัวคุณ</p>
           )}
         </div>
       )}

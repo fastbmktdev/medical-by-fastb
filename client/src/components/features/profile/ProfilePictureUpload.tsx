@@ -192,7 +192,7 @@ export function ProfilePictureUpload({
             aria-label="อัปโหลดรูปโปรไฟล์"
             type="button"
           >
-            <CameraIcon className="w-8 h-8 text-white" aria-hidden="true" />
+            <CameraIcon className="w-8 h-8 text-zinc-950" aria-hidden="true" />
           </button>
         )}
       </div>
@@ -212,8 +212,8 @@ export function ProfilePictureUpload({
             color="danger"
             variant="flat"
             onPress={handleDeleteClick}
-            startContent={<XMarkIcon className="w-5 h-5 text-white" />}
-            className="bg-red-600 hover:bg-red-700 text-white w-10 h-10 "
+            startContent={<XMarkIcon className="w-5 h-5 text-zinc-950" />}
+            className="bg-red-600 hover:bg-red-700 text-zinc-950 w-10 h-10 "
             aria-label="ลบรูปโปรไฟล์"
           />
         )}

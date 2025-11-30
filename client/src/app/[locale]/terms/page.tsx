@@ -212,8 +212,8 @@ export default function TermsPage() {
                     onClick={() => setActiveSection(index)}
                     className={`w-full text-left px-3 py-2  text-sm transition-colors ${
                       activeSection === index
-                        ? "bg-brand-primary text-white"
-                        : "text-zinc-950 hover:bg-zinc-100 hover:text-white"
+                        ? "bg-brand-primary text-zinc-950"
+                        : "text-zinc-950 hover:bg-zinc-100 hover:text-zinc-950"
                     }`}
                   >
                     {section.title}

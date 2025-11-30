@@ -496,7 +496,7 @@ function AdminBookingsContent() {
                     </TableCell>
                     <TableCell>
                       <div className="flex flex-col">
-                        <span className="font-semibold text-white">{appointment.booking_number}</span>
+                        <span className="font-semibold text-zinc-950">{appointment.booking_number}</span>
                         <span className="text-xs text-default-400">
                           สร้างเมื่อ {formatDate(appointment.created_at)}
                         </span>
@@ -504,7 +504,7 @@ function AdminBookingsContent() {
                     </TableCell>
                     <TableCell>
                       <div className="flex flex-col">
-                        <span className="font-medium text-white">{appointment.customer_name}</span>
+                        <span className="font-medium text-zinc-950">{appointment.customer_name}</span>
                         <span className="text-xs text-default-400">
                           {appointment.customer_email || '-'}
                         </span>

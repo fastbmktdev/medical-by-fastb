@@ -489,7 +489,7 @@ function AdminModerationContent() {
                     </div>
                   ) : contentPreview ? (
                     <div className="space-y-2">
-                      <p className="text-white font-semibold">{getContentTitle(contentPreview)}</p>
+                      <p className="text-zinc-950 font-semibold">{getContentTitle(contentPreview)}</p>
                       {contentPreview.description && (
                         <p className="text-zinc-400 text-sm line-clamp-2">{contentPreview.description}</p>
                       )}
@@ -509,11 +509,11 @@ function AdminModerationContent() {
 
                 <div>
                   <label className="text-sm font-medium text-zinc-400">ประเภทเนื้อหา</label>
-                  <p className="text-white">{selectedFlag.content_type}</p>
+                  <p className="text-zinc-950">{selectedFlag.content_type}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-zinc-400">Content ID</label>
-                  <p className="text-white font-mono text-xs">{selectedFlag.content_id}</p>
+                  <p className="text-zinc-950 font-mono text-xs">{selectedFlag.content_id}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-zinc-400">ประเภทการแจ้งเตือน</label>
@@ -523,11 +523,11 @@ function AdminModerationContent() {
                 </div>
                 <div>
                   <label className="text-sm font-medium text-zinc-400">เหตุผล</label>
-                  <p className="text-white">{selectedFlag.reason || '-'}</p>
+                  <p className="text-zinc-950">{selectedFlag.reason || '-'}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-zinc-400">ผู้แจ้งเตือน</label>
-                  <p className="text-white">{selectedFlag.reported_by_user?.email || 'Unknown'}</p>
+                  <p className="text-zinc-950">{selectedFlag.reported_by_user?.email || 'Unknown'}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-zinc-400">สถานะ</label>
@@ -538,7 +538,7 @@ function AdminModerationContent() {
                 {selectedFlag.moderation_notes && (
                   <div>
                     <label className="text-sm font-medium text-zinc-400">หมายเหตุ</label>
-                    <p className="text-white">{selectedFlag.moderation_notes}</p>
+                    <p className="text-zinc-950">{selectedFlag.moderation_notes}</p>
                   </div>
                 )}
               </div>

@@ -13,12 +13,12 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: "bg-violet-700 hover:bg-[#8B5CF6] text-white shadow-lg hover:shadow-xl hover:shadow-[#A78BFA]/25 focus:ring-[#A78BFA]/50",
-        secondary: "bg-[#00ACC1] hover:bg-[#0097A7] text-white border border-[#00ACC1] hover:border-[#0097A7] focus:ring-[#00ACC1]/50",
-        outline: "border border-[#A78BFA] text-[#A78BFA] hover:bg-violet-700 hover:text-white focus:ring-[#A78BFA]/50",
+        primary: "bg-violet-700 hover:bg-[#8B5CF6] text-zinc-950 shadow-lg hover:shadow-xl hover:shadow-[#A78BFA]/25 focus:ring-[#A78BFA]/50",
+        secondary: "bg-[#00ACC1] hover:bg-[#0097A7] text-zinc-950 border border-[#00ACC1] hover:border-[#0097A7] focus:ring-[#00ACC1]/50",
+        outline: "border border-[#A78BFA] text-[#A78BFA] hover:bg-violet-700 hover:text-zinc-950 focus:ring-[#A78BFA]/50",
         ghost: "text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:ring-[#A78BFA]/50",
-        danger: "bg-red-600 hover:bg-red-700 text-white shadow-lg hover:shadow-xl hover:shadow-red-500/25 focus:ring-red-500/50",
-        success: "bg-[#4CAF50] hover:bg-[#45A049] text-white shadow-lg hover:shadow-xl hover:shadow-[#4CAF50]/25 focus:ring-[#4CAF50]/50",
+        danger: "bg-red-600 hover:bg-red-700 text-zinc-950 shadow-lg hover:shadow-xl hover:shadow-red-500/25 focus:ring-red-500/50",
+        success: "bg-[#4CAF50] hover:bg-[#45A049] text-zinc-950 shadow-lg hover:shadow-xl hover:shadow-[#4CAF50]/25 focus:ring-[#4CAF50]/50",
         link: "text-[#A78BFA] hover:text-[#8B5CF6] underline-offset-4 hover:underline p-0 h-auto focus:ring-[#A78BFA]/50",
       },
       size: {

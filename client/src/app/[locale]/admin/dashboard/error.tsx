@@ -49,7 +49,7 @@ export default function AdminDashboardError({ error, reset }: ErrorProps) {
         </div>
 
         {/* Error Title */}
-        <h1 className="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white text-center mb-4">
+        <h1 className="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-zinc-950 text-center mb-4">
           {t('title')}
         </h1>
 
@@ -62,14 +62,14 @@ export default function AdminDashboardError({ error, reset }: ErrorProps) {
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
           <button
             onClick={reset}
-            className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6  transition-colors duration-200 shadow-lg hover:shadow-xl"
+            className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-zinc-950 font-semibold py-3 px-6  transition-colors duration-200 shadow-lg hover:shadow-xl"
           >
             <ArrowPathIcon className="w-5 h-5" />
             {t('tryAgain')}
           </button>
           <button
             onClick={() => window.location.href = '/admin/dashboard'}
-            className="flex-1 flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6  transition-colors duration-200"
+            className="flex-1 flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-zinc-950 font-semibold py-3 px-6  transition-colors duration-200"
           >
             <HomeIcon className="w-5 h-5" />
             {t('goToDashboard')}
@@ -80,7 +80,7 @@ export default function AdminDashboardError({ error, reset }: ErrorProps) {
         <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
           <button
             onClick={() => setShowDetails(!showDetails)}
-            className="w-full flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+            className="w-full flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-zinc-950 transition-colors"
           >
             <span className="font-medium">
               {showDetails ? t('hideDetails') : t('showDetails')}

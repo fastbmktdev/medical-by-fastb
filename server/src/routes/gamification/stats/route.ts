@@ -2,9 +2,9 @@ import { NextResponse } from 'next/server';
 import { createServerClient } from "@shared/lib/database/supabase/server";
 import { getUserGamificationStats } from '@shared/services/gamification.service';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const supabase = await createServerClient();
+    const supabase = await createServerClient(request);
 
     // Check if user is authenticated
     const {

@@ -138,11 +138,11 @@ export function ConnectedAccountsPanel() {
         <div className="flex justify-between items-center p-4 bg-zinc-900/50 border border-zinc-700 ">
           <div className="flex items-center gap-4">
             <div className="shrink-0 w-10 h-10 bg-linear-to-br from-red-500 to-yellow-500  flex items-center justify-center">
-              <span className="text-white font-semibold text-lg">G</span>
+              <span className="text-zinc-950 font-semibold text-lg">G</span>
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <p className="font-semibold text-white">Google</p>
+                <p className="font-semibold text-zinc-950">Google</p>
                 {hasGoogleAccount && (
                   <Chip
                     size="sm"
@@ -204,11 +204,11 @@ export function ConnectedAccountsPanel() {
         <div className="flex justify-between items-center p-4 bg-zinc-900/50 border border-zinc-700 ">
           <div className="flex items-center gap-4">
             <div className="shrink-0 w-10 h-10 bg-linear-to-br from-blue-600 to-blue-800  flex items-center justify-center">
-              <span className="text-white font-semibold text-lg">f</span>
+              <span className="text-zinc-950 font-semibold text-lg">f</span>
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <p className="font-semibold text-white">Facebook</p>
+                <p className="font-semibold text-zinc-950">Facebook</p>
                 {hasFacebookAccount && (
                   <Chip
                     size="sm"

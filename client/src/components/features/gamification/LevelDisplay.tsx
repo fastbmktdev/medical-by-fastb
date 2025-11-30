@@ -19,7 +19,7 @@ export default function LevelDisplay({ userStats, className = '' }: LevelDisplay
   return (
     <GamificationCard variant="elevated" size="lg" className={className}>
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold flex items-center text-white">
+        <h2 className="text-xl font-semibold flex items-center text-zinc-950">
           {levelDisplay.levelIcon} ระดับของคุณ
         </h2>
         <div className="text-right">
@@ -30,7 +30,7 @@ export default function LevelDisplay({ userStats, className = '' }: LevelDisplay
 
       <div className="mb-4">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-lg font-medium text-white">{levelDisplay.levelTitle}</span>
+          <span className="text-lg font-medium text-zinc-950">{levelDisplay.levelTitle}</span>
           <span className="text-sm text-zinc-400">ระดับ {userStats.current_level}</span>
         </div>
         

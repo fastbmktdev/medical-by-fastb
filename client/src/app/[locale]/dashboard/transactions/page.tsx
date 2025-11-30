@@ -279,7 +279,7 @@ function TransactionsContent() {
         <Card className="backdrop-blur-sm border-none ">
           <CardBody className="p-0">
             <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 mb-6">
-              <h2 className="font-semibold text-xl text-white">ประวัติธุรกรรม</h2>
+              <h2 className="font-semibold text-xl text-zinc-950">ประวัติธุรกรรม</h2>
               <Button
                 color="primary"
                 variant="flat"
@@ -298,9 +298,9 @@ function TransactionsContent() {
                 base: "w-full",
                 tabList:
                   "bg-zinc-100/60 border border-zinc-700 text-zinc-950 p-1 gap-1 overflow-x-auto !p-0.5",
-                tab: "px-4 py-2 text-sm  text-default-400 transition-all data-[hover-unselected=true]:bg-zinc-800/60 data-[selected=true]:bg-red-600 data-[selected=true]:text-white",
+                tab: "px-4 py-2 text-sm  text-default-400 transition-all data-[hover-unselected=true]:bg-zinc-800/60 data-[selected=true]:bg-red-600 data-[selected=true]:text-zinc-950",
                 tabContent:
-                  "font-normal group-data-[selected=true]:font-medium group-data-[selected=true]:text-white",
+                  "font-normal group-data-[selected=true]:font-medium group-data-[selected=true]:text-zinc-950",
                 cursor: "hidden",
               }}
             >
@@ -328,10 +328,10 @@ function TransactionsContent() {
                 <TableColumn>สถานะ</TableColumn>
                 <TableColumn>อ้างอิง</TableColumn>
               </TableHeader>
-              <TableBody emptyContent="ไม่พบข้อมูลธุรกรรม" className="text-white">
+              <TableBody emptyContent="ไม่พบข้อมูลธุรกรรม" className="text-zinc-950">
                 {filteredTransactions.map((transaction) => (
                   <TableRow key={transaction.id} className="hover:bg-zinc-800/50">
-                    <TableCell className="font-mono text-white">{transaction.id}</TableCell>
+                    <TableCell className="font-mono text-zinc-950">{transaction.id}</TableCell>
                     <TableCell className="text-default-400">
                       {new Date(transaction.date).toLocaleDateString('th-TH', {
                         year: 'numeric',

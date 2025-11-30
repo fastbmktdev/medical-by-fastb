@@ -12,7 +12,7 @@ export const STATS_CARDS = [
     title: 'โรงพยาบาลทั้งหมด',
     color: 'default',
     bgColor: 'bg-default-100/50',
-    textColor: 'text-white',
+    textColor: 'text-zinc-950',
   },
   {
     title: 'อนุมัติแล้ว',

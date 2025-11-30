@@ -26,7 +26,7 @@ const Breadcrumb = memo(function Breadcrumb({ hospitalName }: { hospitalName: st
     <nav className="flex items-center gap-2 mb-3 text-sm">
       <Link
         href="/"
-        className="flex items-center gap-1 text-zinc-400 hover:text-white transition-colors"
+        className="flex items-center gap-1 text-zinc-400 hover:text-zinc-950 transition-colors"
       >
         <HomeIcon className="w-4 h-4" />
         <span>หน้าแรก</span>
@@ -34,12 +34,12 @@ const Breadcrumb = memo(function Breadcrumb({ hospitalName }: { hospitalName: st
       <ChevronRightIcon className="w-4 h-4 text-zinc-600" />
       <Link
         href="/hospitals"
-        className="text-zinc-400 hover:text-white transition-colors"
+        className="text-zinc-400 hover:text-zinc-950 transition-colors"
       >
         โรงพยาบาล
       </Link>
       <ChevronRightIcon className="w-4 h-4 text-zinc-600" />
-      <span className="font-medium text-white">{hospitalName}</span>
+      <span className="font-medium text-zinc-950">{hospitalName}</span>
     </nav>
   );
 });
@@ -48,7 +48,7 @@ const BackButton = memo(function BackButton() {
   return (
     <Link
       href="/hospitals"
-      className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
+      className="inline-flex items-center gap-2 text-zinc-400 hover:text-zinc-950 transition-colors"
     >
       <ArrowLeftIcon className="w-5 h-5" />
       <span>กลับไปหน้ารายการโรงพยาบาล</span>
@@ -160,7 +160,7 @@ const ContactInfo = memo(function ContactInfo({ hospital }: { hospital: hospital
               <p className="mb-1 text-zinc-400 text-xs">โทรศัพท์</p>
               <Link
                 href={`tel:${hospital.phone}`}
-                className="text-zinc-400 hover:text-white transition-colors"
+                className="text-zinc-400 hover:text-zinc-950 transition-colors"
               >
                 {hospital.phone}
               </Link>
@@ -174,7 +174,7 @@ const ContactInfo = memo(function ContactInfo({ hospital }: { hospital: hospital
               <p className="mb-1 text-zinc-400 text-xs">อีเมล</p>
               <Link
                 href={`mailto:${hospital.email}`}
-                className="text-zinc-400 hover:text-white break-all transition-colors"
+                className="text-zinc-400 hover:text-zinc-950 break-all transition-colors"
               >
                 {hospital.email}
               </Link>
@@ -190,7 +190,7 @@ const ContactInfo = memo(function ContactInfo({ hospital }: { hospital: hospital
                 href={hospital.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-zinc-400 hover:text-white break-all transition-colors"
+                className="text-zinc-400 hover:text-zinc-950 break-all transition-colors"
               >
                 {hospital.website}
               </Link>

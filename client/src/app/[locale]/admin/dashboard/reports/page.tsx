@@ -256,7 +256,7 @@ function AdminReportsContent() {
             <Card key={index} className="bg-default-100/50 backdrop-blur-sm border-none">
               <CardHeader className="flex items-center gap-4">
                 <div className={`bg-${report.color} p-4 `}>
-                  <Icon className="w-8 h-8 text-white" />
+                  <Icon className="w-8 h-8 text-zinc-950" />
                 </div>
                 <div className="flex-1">
                   <h3 className="mb-1 font-semibold text-lg">{report.title}</h3>

@@ -37,21 +37,21 @@ function VerificationPendingContent() {
               <EnvelopeIcon className="w-12 h-12 text-green-500" />
             </div>
             <div className="absolute -top-1 -right-1 w-8 h-8 bg-green-500  flex items-center justify-center">
-              <CheckCircleIcon className="w-5 h-5 text-white" />
+              <CheckCircleIcon className="w-5 h-5 text-zinc-950" />
             </div>
           </div>
         </div>
 
         {/* Message */}
         <div className="text-center space-y-4">
-          <h2 className="text-2xl font-semibold text-white">ลงทะเบียนสำเร็จ!</h2>
+          <h2 className="text-2xl font-semibold text-zinc-950">ลงทะเบียนสำเร็จ!</h2>
 
           {email && (
             <div className="bg-zinc-800/50 border border-zinc-700  p-4">
               <p className="text-zinc-400 text-sm mb-2">
                 เราได้ส่งอีเมลยืนยันไปที่:
               </p>
-              <p className="text-white font-semibold break-all">{email}</p>
+              <p className="text-zinc-950 font-semibold break-all">{email}</p>
             </div>
           )}
 

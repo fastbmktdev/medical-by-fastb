@@ -142,7 +142,7 @@ const ApplicationTable = ({
                   aria-label={`Select ${app.hospital_name}`}
                 />
               </TableCell>
-              <TableCell className="font-semibold text-white">{app.hospital_name}</TableCell>
+              <TableCell className="font-semibold text-zinc-950">{app.hospital_name}</TableCell>
               <TableCell>{app.contact_name}</TableCell>
               <TableCell>{app.email}</TableCell>
               <TableCell>{app.created_at ? formatDate(app.created_at) : '-'}</TableCell>
@@ -274,7 +274,7 @@ const ApplicationDetailModal = ({
                   </div>
                 )}
                 <div>
-                  <h4 className="mb-3 font-semibold text-white">ข้อมูลติดต่อ</h4>
+                  <h4 className="mb-3 font-semibold text-zinc-950">ข้อมูลติดต่อ</h4>
                   <div className="space-y-3">
                     <p><strong>ผู้ติดต่อ:</strong> {application.contact_name}</p>
                     <p><strong>เบอร์โทรศัพท์:</strong> {application.phone}</p>
@@ -284,7 +284,7 @@ const ApplicationDetailModal = ({
                 </div>
                 {(application.services?.length ?? 0) > 0 && (
                   <div>
-                    <h4 className="mb-3 font-semibold text-white">บริการที่มี</h4>
+                    <h4 className="mb-3 font-semibold text-zinc-950">บริการที่มี</h4>
                     <div className="flex flex-wrap gap-2">
                       {application.services?.map((service, index) => (
                         <Chip key={index} color="primary" variant="flat">
@@ -296,7 +296,7 @@ const ApplicationDetailModal = ({
                 )}
                 {application.hospital_details && (
                   <div>
-                    <h4 className="mb-3 font-semibold text-white">รายละเอียดเพิ่มเติม</h4>
+                    <h4 className="mb-3 font-semibold text-zinc-950">รายละเอียดเพิ่มเติม</h4>
                     <p>{application.hospital_details}</p>
                   </div>
                 )}

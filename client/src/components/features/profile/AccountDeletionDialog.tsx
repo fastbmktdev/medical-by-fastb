@@ -81,7 +81,7 @@ export function AccountDeletionDialog({ isOpen, onClose }: AccountDeletionDialog
 
           <div className="space-y-4">
             <div>
-              <label className="block mb-2 font-medium text-sm text-white">
+              <label className="block mb-2 font-medium text-sm text-zinc-950">
                 กรอกรหัสผ่านเพื่อยืนยัน
               </label>
               <Input
@@ -91,14 +91,14 @@ export function AccountDeletionDialog({ isOpen, onClose }: AccountDeletionDialog
                 placeholder="กรอกรหัสผ่านของคุณ"
                 variant="bordered"
                 classNames={{
-                  input: "text-white",
+                  input: "text-zinc-950",
                   inputWrapper: "bg-zinc-100/50 border-zinc-700",
                 }}
               />
             </div>
 
             <div>
-              <label className="block mb-2 font-medium text-sm text-white">
+              <label className="block mb-2 font-medium text-sm text-zinc-950">
                 เหตุผลที่ลบบัญชี (ไม่บังคับ)
               </label>
               <Textarea
@@ -108,7 +108,7 @@ export function AccountDeletionDialog({ isOpen, onClose }: AccountDeletionDialog
                 variant="bordered"
                 minRows={3}
                 classNames={{
-                  input: "text-white",
+                  input: "text-zinc-950",
                   inputWrapper: "bg-zinc-100/50 border-zinc-700",
                 }}
               />
@@ -118,10 +118,10 @@ export function AccountDeletionDialog({ isOpen, onClose }: AccountDeletionDialog
               isSelected={confirmed}
               onValueChange={setConfirmed}
               classNames={{
-                label: "text-white",
+                label: "text-zinc-950",
               }}
             >
-              <span className="text-white text-sm">
+              <span className="text-zinc-950 text-sm">
                 ฉันเข้าใจว่าการดำเนินการนี้ไม่สามารถย้อนกลับได้ และฉันต้องการลบบัญชีของฉันจริงๆ
               </span>
             </Checkbox>
@@ -129,7 +129,7 @@ export function AccountDeletionDialog({ isOpen, onClose }: AccountDeletionDialog
 
           <div className="bg-zinc-100/50 p-4 ">
             <p className="text-zinc-400 text-sm">
-              <strong className="text-white">Grace Period:</strong> คุณมีเวลา 30 วันในการกู้คืนบัญชีของคุณ
+              <strong className="text-zinc-950">Grace Period:</strong> คุณมีเวลา 30 วันในการกู้คืนบัญชีของคุณ
               หลังจากนั้นบัญชีจะถูกลบถาวร
             </p>
           </div>

@@ -149,7 +149,7 @@ export function HospitalGallery({ hospitalId, hospitalName }: HospitalGalleryPro
           />
           {image.title && (
             <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/80 to-transparent p-4">
-              <p className="font-semibold text-white">{image.title}</p>
+              <p className="font-semibold text-zinc-950">{image.title}</p>
               {image.description && (
                 <p className="mt-1 text-sm text-zinc-400">
                   {image.description}
@@ -158,7 +158,7 @@ export function HospitalGallery({ hospitalId, hospitalName }: HospitalGalleryPro
             </div>
           )}
           <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 group-hover:bg-black/20 group-hover:opacity-100 transition-all">
-            <PhotoIcon className="w-12 h-12 text-white drop-shadow-lg" />
+            <PhotoIcon className="w-12 h-12 text-zinc-950 drop-shadow-lg" />
           </div>
         </div>
 
@@ -185,7 +185,7 @@ export function HospitalGallery({ hospitalId, hospitalName }: HospitalGalleryPro
               </div>
               {image.title && (
                 <div className="bg-zinc-900 p-4">
-                  <p className="font-semibold text-white">{image.title}</p>
+                  <p className="font-semibold text-zinc-950">{image.title}</p>
                   {image.description && (
                     <p className="mt-1 text-sm text-zinc-400">
                       {image.description}
@@ -230,7 +230,7 @@ export function HospitalGallery({ hospitalId, hospitalName }: HospitalGalleryPro
           />
           {featuredImage.title && (
             <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/80 to-transparent p-4">
-              <p className="font-semibold text-lg text-white">
+              <p className="font-semibold text-lg text-zinc-950">
                 {featuredImage.title}
               </p>
               {featuredImage.description && (
@@ -241,7 +241,7 @@ export function HospitalGallery({ hospitalId, hospitalName }: HospitalGalleryPro
             </div>
           )}
           <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 group-hover:bg-black/20 group-hover:opacity-100 transition-all">
-            <PhotoIcon className="w-12 h-12 text-white drop-shadow-lg" />
+            <PhotoIcon className="w-12 h-12 text-zinc-950 drop-shadow-lg" />
           </div>
         </div>
 
@@ -271,7 +271,7 @@ export function HospitalGallery({ hospitalId, hospitalName }: HospitalGalleryPro
                   />
                   {isLast && (
                     <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 group-hover:bg-black/70 transition-colors">
-                      <p className="font-semibold text-3xl text-white">
+                      <p className="font-semibold text-3xl text-zinc-950">
                         +{remainingCount}
                       </p>
                       <p className="text-sm text-zinc-200">รูปเพิ่มเติม</p>
@@ -304,7 +304,7 @@ export function HospitalGallery({ hospitalId, hospitalName }: HospitalGalleryPro
               <Button
                 isIconOnly
                 variant="light"
-                className="top-4 right-4 z-50 absolute text-white"
+                className="top-4 right-4 z-50 absolute text-zinc-950"
                 onPress={onClose}
               >
                 <XMarkIcon className="w-6 h-6" />
@@ -331,7 +331,7 @@ export function HospitalGallery({ hospitalId, hospitalName }: HospitalGalleryPro
                   <Button
                     isIconOnly
                     variant="flat"
-                    className="top-1/2 left-4 absolute bg-black/50 text-white -translate-y-1/2"
+                    className="top-1/2 left-4 absolute bg-black/50 text-zinc-950 -translate-y-1/2"
                     onPress={goToPrevious}
                   >
                     <ChevronLeftIcon className="w-6 h-6" />
@@ -339,7 +339,7 @@ export function HospitalGallery({ hospitalId, hospitalName }: HospitalGalleryPro
                   <Button
                     isIconOnly
                     variant="flat"
-                    className="top-1/2 right-4 absolute bg-black/50 text-white -translate-y-1/2"
+                    className="top-1/2 right-4 absolute bg-black/50 text-zinc-950 -translate-y-1/2"
                     onPress={goToNext}
                   >
                     <ChevronRightIcon className="w-6 h-6" />
@@ -352,7 +352,7 @@ export function HospitalGallery({ hospitalId, hospitalName }: HospitalGalleryPro
                 images[selectedIndex].description) && (
                 <div className="bg-zinc-900/95 backdrop-blur-sm mt-4 p-6 ">
                   {images[selectedIndex].title && (
-                    <h3 className="font-semibold text-lg text-white">
+                    <h3 className="font-semibold text-lg text-zinc-950">
                       {images[selectedIndex].title}
                     </h3>
                   )}

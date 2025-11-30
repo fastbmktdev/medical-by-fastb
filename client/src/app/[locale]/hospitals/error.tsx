@@ -47,7 +47,7 @@ export default function HospitalsError({ error, reset }: ErrorProps) {
         </div>
 
         {/* Error Title */}
-        <h1 className="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white text-center mb-4">
+        <h1 className="text-3xl md:text-4xl font-semibold text-gray-900 dark:text-zinc-950 text-center mb-4">
           {t('title')}
         </h1>
 
@@ -60,7 +60,7 @@ export default function HospitalsError({ error, reset }: ErrorProps) {
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
           <button
             onClick={reset}
-            className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6  transition-colors duration-200 shadow-lg hover:shadow-xl"
+            className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-zinc-950 font-semibold py-3 px-6  transition-colors duration-200 shadow-lg hover:shadow-xl"
             aria-label="ลองอีกครั้ง"
           >
             <ArrowPathIcon className="w-5 h-5" />
@@ -68,7 +68,7 @@ export default function HospitalsError({ error, reset }: ErrorProps) {
           </button>
           <button
             onClick={() => window.location.href = '/hospitals'}
-            className="flex-1 flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-semibold py-3 px-6  transition-colors duration-200"
+            className="flex-1 flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-zinc-950 font-semibold py-3 px-6  transition-colors duration-200"
             aria-label="กลับไปหน้าโรงพยาบาล"
           >
             <HomeIcon className="w-5 h-5" />
@@ -80,7 +80,7 @@ export default function HospitalsError({ error, reset }: ErrorProps) {
         <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
           <button
             onClick={() => setShowDetails(!showDetails)}
-            className="w-full flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+            className="w-full flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-zinc-950 transition-colors"
             aria-label={showDetails ? 'ซ่อนรายละเอียด' : 'แสดงรายละเอียด'}
           >
             <span className="font-medium">

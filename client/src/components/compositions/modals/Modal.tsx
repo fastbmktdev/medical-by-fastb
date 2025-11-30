@@ -75,7 +75,7 @@ const ModalComponent = memo(function Modal({
 
   const modalContent = (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn"
+      className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn"
       onClick={handleOverlayClick}
       data-testid={`${testId}-overlay`}
     >
@@ -100,7 +100,7 @@ const ModalComponent = memo(function Modal({
             {title && (
               <h2
                 id={`${testId}-title`}
-                className="text-xl font-semibold text-white"
+                className="text-xl font-semibold text-zinc-950"
               >
                 {title}
               </h2>

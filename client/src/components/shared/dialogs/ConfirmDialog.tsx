@@ -102,7 +102,7 @@ export default function ConfirmDialog({
             {getIcon()}
           </div>
         )}
-        <p className="text-white text-center">{message}</p>
+        <p className="text-zinc-950 text-center">{message}</p>
         {warningMessage && (
           <div className="flex items-start gap-2 bg-warning/10 p-3 border-warning border-l-4 ">
             <ExclamationTriangleIcon className="shrink-0 mt-0.5 w-5 h-5 text-warning" />

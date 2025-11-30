@@ -580,32 +580,32 @@ function PartnerDashboardContent() {
               <div className="gap-4 grid grid-cols-1 md:grid-cols-2">
                 <div>
                   <p className="text-zinc-400 text-sm">ชื่อโรงพยาบาล</p>
-                  <p className="font-medium text-white">
+                  <p className="font-medium text-zinc-950">
                     {hospital.hospital_name}
                   </p>
                 </div>
                 <div>
                   <p className="text-zinc-400 text-sm">ผู้ติดต่อ</p>
-                  <p className="font-medium text-white">
+                  <p className="font-medium text-zinc-950">
                     {hospital.contact_name}
                   </p>
                 </div>
                 <div>
                   <p className="text-zinc-400 text-sm">เบอร์โทรศัพท์</p>
-                  <p className="font-mono font-medium text-white">
+                  <p className="font-mono font-medium text-zinc-950">
                     {hospital.phone}
                   </p>
                 </div>
                 <div>
                   <p className="text-zinc-400 text-sm">อีเมล</p>
-                  <p className="font-mono font-medium text-white">
+                  <p className="font-mono font-medium text-zinc-950">
                     {hospital.email}
                   </p>
                 </div>
                 {hospital.location && (
                   <div className="md:col-span-2">
                     <p className="text-zinc-400 text-sm">ที่อยู่</p>
-                    <p className="font-medium text-white">
+                    <p className="font-medium text-zinc-950">
                       {hospital.location}
                     </p>
                   </div>
@@ -858,7 +858,7 @@ function PartnerDashboardContent() {
 
                 {hospital.images && hospital.images.length > 0 && (
                   <div className="mt-6">
-                    <h4 className="mb-4 font-semibold text-white">รูปภาพ</h4>
+                    <h4 className="mb-4 font-semibold text-zinc-950">รูปภาพ</h4>
                     <div className="gap-4 grid grid-cols-2 md:grid-cols-4">
                       {hospital.images.map((image, idx) => (
                         <div
@@ -915,7 +915,7 @@ function PartnerDashboardContent() {
                 >
                   <CardHeader className="flex justify-between items-start">
                     <div className="flex-1">
-                      <h4 className="font-semibold text-white">{pkg.name}</h4>
+                      <h4 className="font-semibold text-zinc-950">{pkg.name}</h4>
                       {pkg.name_english && (
                         <p className="text-zinc-400 text-sm">
                           {pkg.name_english}
@@ -1010,7 +1010,7 @@ function PartnerDashboardContent() {
                       <div className="inline-flex justify-center items-center bg-purple-600 mb-2 px-3 py-1  font-semibold text-xs">
                         {pkg.duration_months} เดือน
                       </div>
-                      <h4 className="font-semibold text-white">{pkg.name}</h4>
+                      <h4 className="font-semibold text-zinc-950">{pkg.name}</h4>
                       {pkg.name_english && (
                         <p className="text-zinc-400 text-xs">
                           {pkg.name_english}
@@ -1141,7 +1141,7 @@ function PartnerDashboardContent() {
                     key: "customer_name",
                     label: "ลูกค้า",
                     render: (appointment) => (
-                      <span className="text-white">
+                      <span className="text-zinc-950">
                         {appointment.customer_name || "N/A"}
                       </span>
                     ),
@@ -1199,7 +1199,7 @@ function PartnerDashboardContent() {
                     key: "price_paid",
                     label: "ยอดเงิน",
                     render: (appointment) => (
-                      <span className="font-mono text-white">
+                      <span className="font-mono text-zinc-950">
                         ฿{Number(appointment.price_paid || 0).toLocaleString()}
                       </span>
                     ),
@@ -1240,7 +1240,7 @@ function PartnerDashboardContent() {
                     key: "id",
                     label: "รหัส",
                     render: (txn) => (
-                      <span className="font-mono text-white">{txn.id}</span>
+                      <span className="font-mono text-zinc-950">{txn.id}</span>
                     ),
                     showOnMobile: true,
                   },
@@ -1345,7 +1345,7 @@ function PartnerDashboardContent() {
         }}
       >
         <ModalContent className="bg-zinc-100 border border-zinc-700">
-          <ModalHeader className="text-white">
+          <ModalHeader className="text-zinc-950">
             {editingPackage ? "แก้ไขแพ็คเกจ" : "สร้างแพ็คเกจใหม่"}
           </ModalHeader>
           <ModalBody>

@@ -177,7 +177,7 @@ export default function AffiliatePage() {
         <div className="container mx-auto px-4 py-16 relative z-10 flex flex-col items-center justify-center">
           <div className="text-center max-w-2xl mx-auto">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-linear-to-br from-red-500 to-orange-500  mb-6 shadow-lg shadow-red-500/30">
-              <SparklesIcon className="w-10 h-10 text-white" />
+              <SparklesIcon className="w-10 h-10 text-zinc-950" />
             </div>
             <h1 className="text-5xl font-semibold mb-4 bg-linear-to-r from-black via-zinc-700 to-zinc-500 bg-clip-text text-transparent">
               Affiliate Program
@@ -257,7 +257,7 @@ export default function AffiliatePage() {
               <div className="bg-white text-zinc-950 border border-zinc-200  p-6">
                 <div className="text-center">
                   <div className="inline-flex items-center justify-center w-16 h-16 bg-linear-to-br from-red-500 to-orange-500  mb-4 shadow-lg shadow-red-500/30">
-                    <GiftIcon className="w-8 h-8 text-white" />
+                    <GiftIcon className="w-8 h-8 text-zinc-950" />
                   </div>
                   <h1 className="text-2xl font-semibold mb-3 bg-linear-to-r from-black via-zinc-700 to-zinc-500 bg-clip-text text-transparent">
                     Affiliate Program
@@ -335,7 +335,7 @@ export default function AffiliatePage() {
                     <CardHeader className="pb-3">
                       <h2 className="text-lg font-semibold flex items-center text-zinc-950">
                         <div className="p-2 bg-linear-to-br from-blue-500 to-blue-600  mr-3">
-                          <LinkIcon className="w-4 h-4 text-white" />
+                          <LinkIcon className="w-4 h-4 text-zinc-950" />
                         </div>
                         ลิงก์แนะนำของคุณ
                       </h2>
@@ -414,7 +414,7 @@ export default function AffiliatePage() {
                           ].map((platform) => (
                             <Button
                               key={platform.name}
-                              className={`${platform.color} text-white border-0`}
+                              className={`${platform.color} text-zinc-950 border-0`}
                               size="sm"
                               onClick={() => shareOnSocial(platform.name)}
                               startContent={<ShareIcon className="w-3 h-3" />}
@@ -429,7 +429,7 @@ export default function AffiliatePage() {
 
                       <div className="grid grid-cols-2 gap-2">
                         <Button
-                          className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs"
+                          className="w-full bg-blue-600 hover:bg-blue-700 text-zinc-950 text-xs"
                           size="sm"
                           onClick={() =>
                             copyToClipboard(affiliateLink, "ลิงก์แนะนำ")
@@ -441,7 +441,7 @@ export default function AffiliatePage() {
                           คัดลอกลิงก์
                         </Button>
                         <Button
-                          className="w-full bg-green-600 hover:bg-green-700 text-white text-xs"
+                          className="w-full bg-green-600 hover:bg-green-700 text-zinc-950 text-xs"
                           size="sm"
                           onClick={() => shareOnSocial("line")}
                           startContent={<ShareIcon className="w-3 h-3" />}
@@ -468,7 +468,7 @@ export default function AffiliatePage() {
                   <CardHeader className="pb-2">
                     <h2 className="text-lg font-semibold flex items-center text-zinc-950">
                       <div className="p-1.5 bg-linear-to-br from-green-500 to-green-600  mr-2">
-                        <ShareIcon className="w-4 h-4 text-white" />
+                        <ShareIcon className="w-4 h-4 text-zinc-950" />
                       </div>
                       วิธีการทำงาน & สิทธิประโยชน์
                     </h2>
@@ -503,7 +503,7 @@ export default function AffiliatePage() {
                           className="text-center p-3 bg-zinc-100 "
                         >
                           <div
-                            className={`w-8 h-8 ${color}  flex items-center justify-center text-white font-semibold text-sm mx-auto mb-2 shadow-lg`}
+                            className={`w-8 h-8 ${color}  flex items-center justify-center text-zinc-950 font-semibold text-sm mx-auto mb-2 shadow-lg`}
                           >
                             {step}
                           </div>
@@ -554,7 +554,7 @@ export default function AffiliatePage() {
                     <CardHeader className="pb-2">
                       <h2 className="text-lg font-semibold text-zinc-950 flex items-center">
                         <div className="p-1.5 bg-linear-to-br from-purple-500 to-purple-600  mr-2">
-                          <ChartBarIcon className="w-4 h-4 text-white" />
+                          <ChartBarIcon className="w-4 h-4 text-zinc-950" />
                         </div>
                         ประวัติการแนะนำ
                       </h2>
@@ -595,7 +595,7 @@ export default function AffiliatePage() {
                                   </TableCell>
                                   <TableCell>
                                     <div className="flex items-center gap-1.5">
-                                      <div className="w-6 h-6 bg-linear-to-br from-blue-500 to-blue-600  flex items-center justify-center text-white text-[10px] font-semibold">
+                                      <div className="w-6 h-6 bg-linear-to-br from-blue-500 to-blue-600  flex items-center justify-center text-zinc-950 text-[10px] font-semibold">
                                         {referral.referred_user_email
                                           .charAt(0)
                                           .toUpperCase()}
@@ -644,7 +644,7 @@ export default function AffiliatePage() {
                     <CardHeader className="pb-2">
                       <h2 className="text-lg font-semibold text-zinc-950 flex items-center">
                         <div className="p-1.5 bg-linear-to-br from-orange-500 to-orange-600  mr-2">
-                          <TrophyIcon className="w-4 h-4 text-white" />
+                          <TrophyIcon className="w-4 h-4 text-zinc-950" />
                         </div>
                         สรุปผลงาน
                       </h2>

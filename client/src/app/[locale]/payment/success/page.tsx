@@ -92,7 +92,7 @@ function PaymentSuccessContent() {
           {/* Success Header */}
           <div className="text-center mb-8">
             <div className="w-20 h-20 bg-green-600  flex items-center justify-center mx-auto mb-6">
-              <CheckCircleIcon className="w-12 h-12 text-white" />
+              <CheckCircleIcon className="w-12 h-12 text-zinc-950" />
             </div>
             <h1 className="text-3xl font-semibold mb-2">การชำระเงินสำเร็จ!</h1>
             <p className="text-zinc-400 text-lg">
@@ -127,7 +127,7 @@ function PaymentSuccessContent() {
                 )}
                 <div className="flex justify-between">
                   <span className="text-zinc-400">วันที่ชำระ:</span>
-                  <span className="text-white">
+                  <span className="text-zinc-950">
                     {new Date(paymentData.timestamp).toLocaleDateString('th-TH', {
                       year: 'numeric',
                       month: 'long',
@@ -153,7 +153,7 @@ function PaymentSuccessContent() {
                 <div className="flex items-start gap-3 p-4 bg-blue-600/10 border border-blue-600/50 ">
                   <ClockIcon className="w-5 h-5 text-blue-400 mt-0.5" />
                   <div>
-                    <h4 className="font-medium text-white">การจองโรงพยาบาล</h4>
+                    <h4 className="font-medium text-zinc-950">การจองโรงพยาบาล</h4>
                     <p className="text-zinc-400 text-sm">
                       การจองของคุณได้รับการยืนยันแล้ว กรุณามาที่โรงพยาบาลตามเวลาที่กำหนด
                     </p>
@@ -165,7 +165,7 @@ function PaymentSuccessContent() {
                 <div className="flex items-start gap-3 p-4 bg-green-600/10 border border-green-600/50 ">
                   <DocumentTextIcon className="w-5 h-5 text-green-400 mt-0.5" />
                   <div>
-                    <h4 className="font-medium text-white">การสั่งซื้อสินค้า</h4>
+                    <h4 className="font-medium text-zinc-950">การสั่งซื้อสินค้า</h4>
                     <p className="text-zinc-400 text-sm">
                       ใบเสร็จจะถูกส่งไปยังอีเมลของคุณ และสินค้าจะถูกจัดส่งภายใน 1-3 วันทำการ
                     </p>
@@ -177,7 +177,7 @@ function PaymentSuccessContent() {
                 <div className="flex items-start gap-3 p-4 bg-purple-600/10 border border-purple-600/50 ">
                   <DocumentTextIcon className="w-5 h-5 text-purple-400 mt-0.5" />
                   <div>
-                    <h4 className="font-medium text-white">การซื้อตั๋ว</h4>
+                    <h4 className="font-medium text-zinc-950">การซื้อตั๋ว</h4>
                     <p className="text-zinc-400 text-sm">
                       ตั๋วของคุณได้รับการยืนยันแล้ว กรุณานำ QR Code ไปแสดงที่งาน
                     </p>

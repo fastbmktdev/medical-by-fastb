@@ -176,7 +176,7 @@ export default function ResetPasswordPage() {
           <p className="mb-2 text-zinc-400 text-lg">
             {t('success.message')}
           </p>
-          <p className="mb-6 font-mono text-white">{formData.email}</p>
+          <p className="mb-6 font-mono text-zinc-950">{formData.email}</p>
           <div className="bg-blue-500/20 mb-6 p-4 border border-blue-500 ">
             <p className="text-blue-400 text-sm whitespace-pre-line">
               {t('success.tip')}

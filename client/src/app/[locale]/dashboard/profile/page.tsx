@@ -142,7 +142,7 @@ function ProfileContent() {
     >
       <Toaster />
 
-      <div className="gap-6 grid grid-cols-1 lg:grid-cols-3 text-white">
+      <div className="gap-6 grid grid-cols-1 lg:grid-cols-3 text-zinc-950">
         {/* Profile Summary */}
         <div className="lg:col-span-1 space-y-6">
           <Card className="bg-linear-to-br from-zinc-800 to-zinc-950 backdrop-blur-sm border border-zinc-700">
@@ -153,7 +153,7 @@ function ProfileContent() {
               />
               
               <div>
-                <h3 className="mb-1 font-medium text-2xl text-white">
+                <h3 className="mb-1 font-medium text-2xl text-zinc-950">
                   {formData.displayName || user?.email?.split('@')[0] || 'ผู้ใช้'}
                 </h3>
                 <p className="mb-3 text-zinc-400 text-sm">{user?.email}</p>
@@ -174,7 +174,7 @@ function ProfileContent() {
                     <ClockIcon className="w-4 h-4 text-zinc-400" />
                     <span className="text-zinc-400 text-sm">สมาชิกตั้งแต่</span>
                   </div>
-                  <span className="font-semibold text-sm text-white">
+                  <span className="font-semibold text-sm text-zinc-950">
                     {user?.created_at ? new Date(user.created_at).toLocaleDateString('th-TH', {
                       year: 'numeric',
                       month: 'short',
@@ -187,7 +187,7 @@ function ProfileContent() {
                     <UserIcon className="w-4 h-4 text-zinc-400" />
                     <span className="text-zinc-400 text-sm">ประเภทสมาชิก</span>
                   </div>
-                  <Chip color="primary" variant="flat" size="sm" className="text-white bg-blue-600 hover:bg-blue-700 px-3 py-1 text-xs">
+                  <Chip color="primary" variant="flat" size="sm" className="text-zinc-950 bg-blue-600 hover:bg-blue-700 px-3 py-1 text-xs">
                     ผู้ใช้ทั่วไป
                   </Chip>
                 </div>
@@ -211,12 +211,12 @@ function ProfileContent() {
         </div>
 
         {/* Profile Information */}
-        <div className="space-y-6 lg:col-span-2 text-white">
+        <div className="space-y-6 lg:col-span-2 text-zinc-950">
           {/* Personal Information */}
           <Card className="bg-zinc-100/50 backdrop-blur-sm border border-zinc-700">
             <CardHeader className="flex justify-between items-center border-zinc-700 border-b">
               <div>
-                <h3 className="font-semibold text-xl text-white">ข้อมูลส่วนตัว</h3>
+                <h3 className="font-semibold text-xl text-zinc-950">ข้อมูลส่วนตัว</h3>
                 <p className="text-zinc-400 text-sm">จัดการข้อมูลบัญชีของคุณ</p>
               </div>
               {!isEditing ? (
@@ -267,7 +267,7 @@ function ProfileContent() {
                         variant="bordered"
                         size="lg"
                         classNames={{
-                          input: "text-white",
+                          input: "text-zinc-950",
                           inputWrapper: "bg-zinc-100/50 border-zinc-700 hover:border-zinc-600 focus-within:border-blue-500",
                         }}
                         startContent={
@@ -287,7 +287,7 @@ function ProfileContent() {
                         variant="bordered"
                         size="lg"
                         classNames={{
-                          input: "text-white",
+                          input: "text-zinc-950",
                           inputWrapper: "bg-zinc-100/30 border-zinc-700 cursor-not-allowed",
                         }}
                         startContent={
@@ -309,7 +309,7 @@ function ProfileContent() {
                       variant="bordered"
                       size="lg"
                       classNames={{
-                        input: "text-white",
+                        input: "text-zinc-950",
                         inputWrapper: "bg-zinc-100/50 border-zinc-700 hover:border-zinc-600 focus-within:border-blue-500",
                       }}
                       startContent={
@@ -329,7 +329,7 @@ function ProfileContent() {
                       variant="bordered"
                       size="lg"
                       classNames={{
-                        input: "text-white",
+                        input: "text-zinc-950",
                         inputWrapper: "bg-zinc-100/50 border-zinc-700 hover:border-zinc-600 focus-within:border-blue-500",
                       }}
                       startContent={
@@ -342,19 +342,19 @@ function ProfileContent() {
                 <div className="gap-6 grid grid-cols-1 md:grid-cols-2">
                   <div className="bg-zinc-100/50 p-4 ">
                     <p className="mb-2 text-zinc-400 text-xs uppercase tracking-wide">ชื่อแสดง</p>
-                    <p className="font-semibold text-white">{formData.displayName || '-'}</p>
+                    <p className="font-semibold text-zinc-950">{formData.displayName || '-'}</p>
                   </div>
                   <div className="bg-zinc-100/50 p-4 ">
                     <p className="mb-2 text-zinc-400 text-xs uppercase tracking-wide">อีเมล</p>
-                    <p className="font-mono text-white">{user?.email || '-'}</p>
+                    <p className="font-mono text-zinc-950">{user?.email || '-'}</p>
                   </div>
                   <div className="bg-zinc-100/50 p-4 ">
                     <p className="mb-2 text-zinc-400 text-xs uppercase tracking-wide">เบอร์โทรศัพท์</p>
-                    <p className="font-mono text-white">{formData.phone || '-'}</p>
+                    <p className="font-mono text-zinc-950">{formData.phone || '-'}</p>
                   </div>
                   <div className="md:col-span-2 bg-zinc-100/50 p-4 ">
                     <p className="mb-2 text-zinc-400 text-xs uppercase tracking-wide">ที่อยู่</p>
-                    <p className="text-white">{formData.address || '-'}</p>
+                    <p className="text-zinc-950">{formData.address || '-'}</p>
                   </div>
                 </div>
               )}
@@ -407,7 +407,7 @@ function ProfileContent() {
             <CardBody className="gap-4">
               <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 bg-red-950/30 hover:bg-red-950/50 p-4 border border-red-800/30  transition-colors">
                 <div className="flex-1">
-                  <p className="mb-1 font-semibold text-white">ลบบัญชีถาวร</p>
+                  <p className="mb-1 font-semibold text-zinc-950">ลบบัญชีถาวร</p>
                   <p className="text-zinc-400 text-sm">
                     การดำเนินการนี้ไม่สามารถย้อนกลับได้ ข้อมูลทั้งหมดจะถูกลบอย่างถาวร
                   </p>

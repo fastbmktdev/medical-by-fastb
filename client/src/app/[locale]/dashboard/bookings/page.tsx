@@ -284,9 +284,9 @@ function BookingsContent() {
                 base: "w-full",
                 tabList:
                   "bg-zinc-100/60 border border-zinc-700 text-zinc-950 p-1 gap-1 overflow-x-auto !p-0.5",
-                tab: "px-4 py-2 text-sm  text-default-400 transition-all data-[hover-unselected=true]:bg-zinc-800/60 data-[selected=true]:bg-red-600 data-[selected=true]:text-white",
+                tab: "px-4 py-2 text-sm  text-default-400 transition-all data-[hover-unselected=true]:bg-zinc-800/60 data-[selected=true]:bg-red-600 data-[selected=true]:text-zinc-950",
                 tabContent:
-                  "font-normal group-data-[selected=true]:font-medium group-data-[selected=true]:text-white",
+                  "font-normal group-data-[selected=true]:font-medium group-data-[selected=true]:text-zinc-950",
                 cursor: "hidden",
               }}
             >

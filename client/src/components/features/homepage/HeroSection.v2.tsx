@@ -93,19 +93,19 @@ function HeroContent() {
       {/* Badge */}
       <div className="mb-6 inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 ">
         <div className="w-2 h-2 bg-brand-primary  animate-pulse"></div>
-        <p className="font-medium text-white text-xs md:text-sm tracking-wider">
+        <p className="font-medium text-zinc-950 text-xs md:text-sm tracking-wider">
           {HERO_HEADINGS.subheading}
         </p>
       </div>
 
       {/* Main Heading */}
       <h1
-        className="mb-6 text-white text-4xl md:text-5xl lg:text-7xl leading-tight text-balance font-medium"
+        className="mb-6 text-zinc-950 text-4xl md:text-5xl lg:text-7xl leading-tight text-balance font-medium"
         dangerouslySetInnerHTML={{ __html: HERO_HEADINGS.heading }}
       />
 
       {/* Description */}
-      <p className="mx-auto mb-12 max-w-2xl text-white/90 text-lg md:text-xl leading-relaxed text-balance">
+      <p className="mx-auto mb-12 max-w-2xl text-zinc-950/90 text-lg md:text-xl leading-relaxed text-balance">
         {HERO_HEADINGS.description}
       </p>
 
@@ -139,8 +139,8 @@ function HeroContent() {
                 <Icon className="w-8 h-8 text-brand-primary" />
               </div>
             </div>
-            <h3 className="font-semibold text-white text-lg mb-2">{text}</h3>
-            <p className="text-white/80 text-sm">{description}</p>
+            <h3 className="font-semibold text-zinc-950 text-lg mb-2">{text}</h3>
+            <p className="text-zinc-950/80 text-sm">{description}</p>
           </div>
         ))}
       </div>

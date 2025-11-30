@@ -121,7 +121,7 @@ function PaymentFailureContent() {
           {/* Failure Header */}
           <div className="text-center mb-8">
             <div className="w-20 h-20 bg-brand-primary  flex items-center justify-center mx-auto mb-6">
-              <XCircleIcon className="w-12 h-12 text-white" />
+              <XCircleIcon className="w-12 h-12 text-zinc-950" />
             </div>
             <h1 className="text-3xl font-semibold mb-2">การชำระเงินล้มเหลว</h1>
             <p className="text-zinc-400 text-lg">
@@ -150,7 +150,7 @@ function PaymentFailureContent() {
                 )}
                 <div className="flex justify-between">
                   <span className="text-zinc-400">วันที่:</span>
-                  <span className="text-white">
+                  <span className="text-zinc-950">
                     {new Date(paymentData.timestamp).toLocaleDateString('th-TH', {
                       year: 'numeric',
                       month: 'long',
@@ -197,7 +197,7 @@ function PaymentFailureContent() {
               <div className="flex items-start gap-3 p-4 bg-blue-600/10 border border-blue-600/50 ">
                 <ArrowPathIcon className="w-5 h-5 text-blue-400 mt-0.5" />
                 <div>
-                  <h4 className="font-medium text-white">ลองใหม่อีกครั้ง</h4>
+                  <h4 className="font-medium text-zinc-950">ลองใหม่อีกครั้ง</h4>
                   <p className="text-zinc-400 text-sm">
                     ตรวจสอบข้อมูลบัตรและลองชำระเงินอีกครั้ง
                   </p>
@@ -207,7 +207,7 @@ function PaymentFailureContent() {
               <div className="flex items-start gap-3 p-4 bg-green-600/10 border border-green-600/50 ">
                 <PhoneIcon className="w-5 h-5 text-green-400 mt-0.5" />
                 <div>
-                  <h4 className="font-medium text-white">ใช้วิธีการชำระเงินอื่น</h4>
+                  <h4 className="font-medium text-zinc-950">ใช้วิธีการชำระเงินอื่น</h4>
                   <p className="text-zinc-400 text-sm">
                     ลองใช้พร้อมเพย์ หรือโอนเงินผ่านธนาคาร
                   </p>
@@ -217,7 +217,7 @@ function PaymentFailureContent() {
               <div className="flex items-start gap-3 p-4 bg-purple-600/10 border border-purple-600/50 ">
                 <PhoneIcon className="w-5 h-5 text-purple-400 mt-0.5" />
                 <div>
-                  <h4 className="font-medium text-white">ติดต่อทีมสนับสนุน</h4>
+                  <h4 className="font-medium text-zinc-950">ติดต่อทีมสนับสนุน</h4>
                   <p className="text-zinc-400 text-sm">
                     หากปัญหายังคงเกิดขึ้น กรุณาติดต่อทีมสนับสนุน
                   </p>

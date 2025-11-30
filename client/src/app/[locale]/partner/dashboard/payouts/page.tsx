@@ -370,22 +370,22 @@ function PartnerPayoutsContent() {
         <div className="gap-4 grid grid-cols-1 md:grid-cols-4">
           <Card className="bg-linear-to-br from-success-500 to-success-700 border-none">
             <CardBody>
-              <p className="mb-2 text-white/80 text-sm">จ่ายเงินสำเร็จ</p>
-              <p className="font-semibold text-white text-2xl">{stats.totalCompleted}</p>
-              <p className="font-mono text-white/90 text-sm">฿{stats.totalAmount.toLocaleString()}</p>
+              <p className="mb-2 text-zinc-950/80 text-sm">จ่ายเงินสำเร็จ</p>
+              <p className="font-semibold text-zinc-950 text-2xl">{stats.totalCompleted}</p>
+              <p className="font-mono text-zinc-950/90 text-sm">฿{stats.totalAmount.toLocaleString()}</p>
             </CardBody>
           </Card>
           <Card className="bg-linear-to-br from-warning-500 to-warning-600 border-none">
             <CardBody>
-              <p className="mb-2 text-white/80 text-sm">รอดำเนินการ</p>
-              <p className="font-semibold text-white text-2xl">{stats.totalPending}</p>
-              <p className="font-mono text-white/90 text-sm">฿{stats.pendingAmount.toLocaleString()}</p>
+              <p className="mb-2 text-zinc-950/80 text-sm">รอดำเนินการ</p>
+              <p className="font-semibold text-zinc-950 text-2xl">{stats.totalPending}</p>
+              <p className="font-mono text-zinc-950/90 text-sm">฿{stats.pendingAmount.toLocaleString()}</p>
             </CardBody>
           </Card>
           <Card className="bg-linear-to-br from-default-500 to-default-600 border-none">
             <CardBody>
-              <p className="mb-2 text-white/80 text-sm">กำลังดำเนินการ</p>
-              <p className="font-semibold text-white text-2xl">{stats.totalProcessing}</p>
+              <p className="mb-2 text-zinc-950/80 text-sm">กำลังดำเนินการ</p>
+              <p className="font-semibold text-zinc-950 text-2xl">{stats.totalProcessing}</p>
             </CardBody>
           </Card>
           <Card className="bg-default-100/50 backdrop-blur-sm border-none">
@@ -452,11 +452,11 @@ function PartnerPayoutsContent() {
               <TableBody emptyContent="ยังไม่มีการจ่ายเงิน">
                 {payouts.map((payout) => (
                   <TableRow key={payout.id}>
-                    <TableCell className="font-mono text-white">{payout.payout_number}</TableCell>
+                    <TableCell className="font-mono text-zinc-950">{payout.payout_number}</TableCell>
                     <TableCell className="text-default-400">
                       {new Date(payout.period_start_date).toLocaleDateString('th-TH')} - {new Date(payout.period_end_date).toLocaleDateString('th-TH')}
                     </TableCell>
-                    <TableCell className="font-mono text-white">
+                    <TableCell className="font-mono text-zinc-950">
                       ฿{Number(payout.total_revenue || 0).toLocaleString()}
                     </TableCell>
                     <TableCell className="text-default-400">
@@ -507,7 +507,7 @@ function PartnerPayoutsContent() {
         }}
       >
         <ModalContent className="bg-zinc-100 border border-zinc-700">
-          <ModalHeader className="text-white">ขอจ่ายเงิน</ModalHeader>
+          <ModalHeader className="text-zinc-950">ขอจ่ายเงิน</ModalHeader>
           <ModalBody>
             <div className="space-y-4">
               <div className="gap-4 grid grid-cols-2">
@@ -624,7 +624,7 @@ function PartnerPayoutsContent() {
         }}
       >
         <ModalContent className="bg-zinc-100 border border-zinc-700">
-          <ModalHeader className="text-white">รายละเอียดการจ่ายเงิน</ModalHeader>
+          <ModalHeader className="text-zinc-950">รายละเอียดการจ่ายเงิน</ModalHeader>
           <ModalBody>
             {selectedPayout && (
               <div className="space-y-6">
@@ -632,7 +632,7 @@ function PartnerPayoutsContent() {
                 <div className="gap-4 grid grid-cols-2">
                   <div>
                     <p className="mb-1 text-zinc-400 text-sm">รหัสการจ่ายเงิน</p>
-                    <p className="font-mono font-semibold text-white">{selectedPayout.payout_number}</p>
+                    <p className="font-mono font-semibold text-zinc-950">{selectedPayout.payout_number}</p>
                   </div>
                   <div>
                     <p className="mb-1 text-zinc-400 text-sm">สถานะ</p>
@@ -643,7 +643,7 @@ function PartnerPayoutsContent() {
                 {/* Period */}
                 <div>
                   <p className="mb-1 text-zinc-400 text-sm">ช่วงเวลา</p>
-                  <p className="text-white">
+                  <p className="text-zinc-950">
                     {new Date(selectedPayout.period_start_date).toLocaleDateString('th-TH')} - {new Date(selectedPayout.period_end_date).toLocaleDateString('th-TH')}
                   </p>
                 </div>
@@ -652,14 +652,14 @@ function PartnerPayoutsContent() {
                 <div className="bg-zinc-800/50 p-4  space-y-2">
                   <div className="flex justify-between">
                     <span className="text-zinc-400">รายได้รวม</span>
-                    <span className="font-mono font-semibold text-white">฿{Number(selectedPayout.total_revenue || 0).toLocaleString()}</span>
+                    <span className="font-mono font-semibold text-zinc-950">฿{Number(selectedPayout.total_revenue || 0).toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-zinc-400">ค่าคอมมิชชั่น ({selectedPayout.commission_rate}%)</span>
                     <span className="font-mono text-zinc-400">-฿{Number(selectedPayout.platform_fee || 0).toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between pt-2 border-t border-zinc-700">
-                    <span className="font-semibold text-white">ยอดจ่ายสุทธิ</span>
+                    <span className="font-semibold text-zinc-950">ยอดจ่ายสุทธิ</span>
                     <span className="font-mono font-semibold text-success text-xl">฿{Number(selectedPayout.net_amount || 0).toLocaleString()}</span>
                   </div>
                 </div>
@@ -671,30 +671,30 @@ function PartnerPayoutsContent() {
                     <div className="bg-zinc-800/50 p-4  space-y-2">
                       <div className="flex justify-between">
                         <span className="text-zinc-400">วิธีการจ่าย</span>
-                        <span className="text-white">{getPayoutMethodLabel(selectedPayout.payout_method)}</span>
+                        <span className="text-zinc-950">{getPayoutMethodLabel(selectedPayout.payout_method)}</span>
                       </div>
                       {selectedPayout.bank_account_name && (
                         <div className="flex justify-between">
                           <span className="text-zinc-400">ชื่อบัญชี</span>
-                          <span className="text-white">{selectedPayout.bank_account_name}</span>
+                          <span className="text-zinc-950">{selectedPayout.bank_account_name}</span>
                         </div>
                       )}
                       {selectedPayout.bank_account_number && (
                         <div className="flex justify-between">
                           <span className="text-zinc-400">เลขที่บัญชี</span>
-                          <span className="font-mono text-white">{selectedPayout.bank_account_number}</span>
+                          <span className="font-mono text-zinc-950">{selectedPayout.bank_account_number}</span>
                         </div>
                       )}
                       {selectedPayout.bank_name && (
                         <div className="flex justify-between">
                           <span className="text-zinc-400">ธนาคาร</span>
-                          <span className="text-white">{selectedPayout.bank_name}</span>
+                          <span className="text-zinc-950">{selectedPayout.bank_name}</span>
                         </div>
                       )}
                       {selectedPayout.transaction_id && (
                         <div className="flex justify-between">
                           <span className="text-zinc-400">รหัสอ้างอิง</span>
-                          <span className="font-mono text-white">{selectedPayout.transaction_id}</span>
+                          <span className="font-mono text-zinc-950">{selectedPayout.transaction_id}</span>
                         </div>
                       )}
                     </div>
@@ -705,18 +705,18 @@ function PartnerPayoutsContent() {
                 <div className="gap-4 grid grid-cols-3">
                   <div>
                     <p className="mb-1 text-zinc-400 text-sm">วันที่ขอ</p>
-                    <p className="text-white text-sm">{new Date(selectedPayout.requested_at).toLocaleString('th-TH')}</p>
+                    <p className="text-zinc-950 text-sm">{new Date(selectedPayout.requested_at).toLocaleString('th-TH')}</p>
                   </div>
                   {selectedPayout.processed_at && (
                     <div>
                       <p className="mb-1 text-zinc-400 text-sm">วันที่ดำเนินการ</p>
-                      <p className="text-white text-sm">{new Date(selectedPayout.processed_at).toLocaleString('th-TH')}</p>
+                      <p className="text-zinc-950 text-sm">{new Date(selectedPayout.processed_at).toLocaleString('th-TH')}</p>
                     </div>
                   )}
                   {selectedPayout.completed_at && (
                     <div>
                       <p className="mb-1 text-zinc-400 text-sm">วันที่เสร็จสิ้น</p>
-                      <p className="text-white text-sm">{new Date(selectedPayout.completed_at).toLocaleString('th-TH')}</p>
+                      <p className="text-zinc-950 text-sm">{new Date(selectedPayout.completed_at).toLocaleString('th-TH')}</p>
                     </div>
                   )}
                 </div>
@@ -725,7 +725,7 @@ function PartnerPayoutsContent() {
                 {selectedPayout.notes && (
                   <div>
                     <p className="mb-1 text-zinc-400 text-sm">หมายเหตุ</p>
-                    <p className="text-white">{selectedPayout.notes}</p>
+                    <p className="text-zinc-950">{selectedPayout.notes}</p>
                   </div>
                 )}
 
@@ -733,7 +733,7 @@ function PartnerPayoutsContent() {
                 {selectedPayout.related_booking_ids && selectedPayout.related_booking_ids.length > 0 && (
                   <div>
                     <p className="mb-1 text-zinc-400 text-sm">จำนวนการจองที่รวม</p>
-                    <p className="text-white">{selectedPayout.related_booking_ids.length} รายการ</p>
+                    <p className="text-zinc-950">{selectedPayout.related_booking_ids.length} รายการ</p>
                   </div>
                 )}
               </div>

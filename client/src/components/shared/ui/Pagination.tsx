@@ -104,9 +104,9 @@ function PaginationComponent({
     <div className={`flex flex-col sm:flex-row items-center justify-between gap-4 ${className}`}>
       {/* Items info */}
       <div className="text-sm text-gray-600 dark:text-gray-400">
-        แสดง <span className="font-medium text-gray-900 dark:text-white">{startItem}</span> ถึง{' '}
-        <span className="font-medium text-gray-900 dark:text-white">{endItem}</span> จาก{' '}
-        <span className="font-medium text-gray-900 dark:text-white">{totalItems}</span> รายการ
+        แสดง <span className="font-medium text-gray-900 dark:text-zinc-950">{startItem}</span> ถึง{' '}
+        <span className="font-medium text-gray-900 dark:text-zinc-950">{endItem}</span> จาก{' '}
+        <span className="font-medium text-gray-900 dark:text-zinc-950">{totalItems}</span> รายการ
       </div>
 
       {/* Pagination controls */}
@@ -118,7 +118,7 @@ function PaginationComponent({
             <select
               value={itemsPerPage}
               onChange={(e) => handleItemsPerPageChange(e.target.value)}
-              className="px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600  bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600  bg-white dark:bg-gray-800 text-gray-900 dark:text-zinc-950 focus:outline-none focus:ring-2 focus:ring-blue-500"
               aria-label="รายการต่อหน้า"
             >
               {itemsPerPageOptions.map((option) => (
@@ -165,7 +165,7 @@ function PaginationComponent({
                   min-w-10 px-3 py-1.5 text-sm font-medium  transition-colors
                   ${
                     isCurrentPage
-                      ? 'bg-blue-600 text-white'
+                      ? 'bg-blue-600 text-zinc-950'
                       : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
                   }
                 `}

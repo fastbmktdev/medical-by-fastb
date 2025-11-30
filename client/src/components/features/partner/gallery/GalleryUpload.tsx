@@ -327,7 +327,7 @@ export function GalleryUpload({ hospitalId, onUploadComplete, maxFiles = 10 }: G
                       <button
                         onClick={() => handleCropImage(index)}
                         disabled={uploading}
-                        className=" bg-primary-600/90 p-1.5 text-white transition-colors hover:bg-primary-700 disabled:opacity-50"
+                        className=" bg-primary-600/90 p-1.5 text-zinc-950 transition-colors hover:bg-primary-700 disabled:opacity-50"
                         title="Crop image"
                       >
                         <ScissorsIcon className="h-4 w-4" />
@@ -335,7 +335,7 @@ export function GalleryUpload({ hospitalId, onUploadComplete, maxFiles = 10 }: G
                       <button
                         onClick={() => handleRemoveFile(index)}
                         disabled={uploading}
-                        className=" bg-black/60 p-1.5 text-white transition-colors hover:bg-black/80 disabled:opacity-50"
+                        className=" bg-black/60 p-1.5 text-zinc-950 transition-colors hover:bg-black/80 disabled:opacity-50"
                         title="Remove image"
                       >
                         <XMarkIcon className="h-4 w-4" />
@@ -345,7 +345,7 @@ export function GalleryUpload({ hospitalId, onUploadComplete, maxFiles = 10 }: G
                     {/* Optimization info */}
                     {fileWithPreview.optimized && (
                       <div className="absolute bottom-0 left-0 right-0 bg-black/70 p-2">
-                        <div className="flex items-center justify-between text-xs text-white">
+                        <div className="flex items-center justify-between text-xs text-zinc-950">
                           <span>
                             {fileWithPreview.optimized.width}×{fileWithPreview.optimized.height}
                           </span>
@@ -361,7 +361,7 @@ export function GalleryUpload({ hospitalId, onUploadComplete, maxFiles = 10 }: G
                             -{Math.round(fileWithPreview.optimized.compressionRatio)}%
                           </Chip>
                         </div>
-                        <p className="mt-1 text-xs text-white/80">
+                        <p className="mt-1 text-xs text-zinc-950/80">
                           {formatFileSize(fileWithPreview.optimized.size)}
                         </p>
                       </div>

@@ -57,7 +57,7 @@ const TabNavigation = ({
               onClick={() => onTabChange("articles")}
               className={`relative z-10 px-8 py-3 font-semibold text-sm transition-all duration-300 ${
                 activeTab === "articles"
-                  ? "text-white"
+                  ? "text-zinc-950"
                   : "text-gray-600 hover:text-gray-800"
               }`}
             >
@@ -67,7 +67,7 @@ const TabNavigation = ({
               onClick={() => onTabChange("news")}
               className={`relative z-10 px-8 py-3 font-semibold text-sm transition-all duration-300 ${
                 activeTab === "news"
-                  ? "text-white"
+                  ? "text-zinc-950"
                   : "text-gray-600 hover:text-gray-800"
               }`}
             >
@@ -136,7 +136,7 @@ const CategoryPills = ({
         onClick={() => onSelect(category)}
         className={`group relative px-4 py-2 font-medium text-xs transition-all duration-300 ${
           selectedCategory === category
-            ? "bg-linear-to-r from-purple-500 to-purple-600 shadow-lg shadow-purple-500/25 text-white"
+            ? "bg-linear-to-r from-purple-500 to-purple-600 shadow-lg shadow-purple-500/25 text-zinc-950"
             : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-zinc-950 border border-gray-300 hover:border-gray-400"
         }`}
       >

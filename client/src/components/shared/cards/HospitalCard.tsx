@@ -80,7 +80,7 @@ function HospitalCardComponent({ hospital }: HospitalCardProps) {
           </div>
           <Link
             href={hospitalLink}
-            className="bg-brand-primary hover:bg-[#8B5CF6] text-white px-4 py-2  font-semibold text-sm transition-colors"
+            className="bg-brand-primary hover:bg-[#8B5CF6] text-zinc-950 px-4 py-2  font-semibold text-sm transition-colors"
           >
             ดูรายละเอียด
           </Link>

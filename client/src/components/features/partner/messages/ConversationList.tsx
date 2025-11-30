@@ -120,7 +120,7 @@ export function ConversationList({
           onClick={() => setFilter("active")}
           className={`px-3 py-1.5 text-sm  transition-colors ${
             filter === "active"
-              ? "bg-blue-600 text-white"
+              ? "bg-blue-600 text-zinc-950"
               : "bg-zinc-800 text-zinc-400 hover:bg-zinc-100"
           }`}
         >
@@ -130,7 +130,7 @@ export function ConversationList({
           onClick={() => setFilter("archived")}
           className={`px-3 py-1.5 text-sm  transition-colors ${
             filter === "archived"
-              ? "bg-blue-600 text-white"
+              ? "bg-blue-600 text-zinc-950"
               : "bg-zinc-800 text-zinc-400 hover:bg-zinc-100"
           }`}
         >
@@ -177,11 +177,11 @@ export function ConversationList({
                         />
                       ) : (
                         <div className="w-10 h-10  bg-linear-to-br from-blue-600 to-purple-600 flex items-center justify-center">
-                          <UserIcon className="w-5 h-5 text-white" />
+                          <UserIcon className="w-5 h-5 text-zinc-950" />
                         </div>
                       )}
                       {hasUnread && (
-                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500  flex items-center justify-center text-[10px] font-semibold text-white">
+                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500  flex items-center justify-center text-[10px] font-semibold text-zinc-950">
                           {conversation.unread_count_partner > 9
                             ? "9+"
                             : conversation.unread_count_partner}
@@ -195,7 +195,7 @@ export function ConversationList({
                       <div className="flex items-start justify-between gap-2 mb-1">
                         <span
                           className={`text-sm font-medium truncate ${
-                            hasUnread ? "text-white" : "text-zinc-200"
+                            hasUnread ? "text-zinc-950" : "text-zinc-200"
                           }`}
                         >
                           {getCustomerDisplayName(conversation)}

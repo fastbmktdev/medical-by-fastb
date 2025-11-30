@@ -70,7 +70,7 @@ export default function DoctorDetailPage({
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-7xl">
           <Link
             href="/doctors"
-            className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
+            className="inline-flex items-center gap-2 text-zinc-400 hover:text-zinc-950 transition-colors"
           >
             <ArrowLeftIcon className="w-5 h-5" />
             <span>กลับไปหน้ารายการแพทย์</span>
@@ -94,13 +94,13 @@ export default function DoctorDetailPage({
                 {doctor.specialization && (
                   <div className="flex items-center gap-2 bg-zinc-100 px-4 py-2 ">
                     <AcademicCapIcon className="w-5 h-5 text-blue-500" />
-                    <span className="text-white">{doctor.specialization}</span>
+                    <span className="text-zinc-950">{doctor.specialization}</span>
                   </div>
                 )}
                 {doctor.hospital && (
                   <div className="flex items-center gap-2 bg-zinc-100 px-4 py-2 ">
                     <MapPinIcon className="w-5 h-5 text-green-500" />
-                    <span className="text-white">{doctor.hospital}</span>
+                    <span className="text-zinc-950">{doctor.hospital}</span>
                   </div>
                 )}
               </div>
@@ -216,7 +216,7 @@ export default function DoctorDetailPage({
                 <h3 className="mb-2 font-semibold text-xl">
                   ต้องการนัดหมาย?
                 </h3>
-                <p className="mb-4 text-white/80 text-sm">
+                <p className="mb-4 text-zinc-950/80 text-sm">
                   ติดต่อโรงพยาบาลเพื่อนัดหมาย
                 </p>
                 {doctor.hospital && (

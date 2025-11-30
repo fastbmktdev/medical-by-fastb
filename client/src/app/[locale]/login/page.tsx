@@ -398,7 +398,7 @@ function LoginForm() {
             loading={isGoogleLoading}
             loadingText="กำลังเชื่อมต่อ Google..."
             leftIcon={
-              <span className="flex items-center justify-center w-4 h-4 text-white">
+              <span className="flex items-center justify-center w-4 h-4 text-zinc-950">
                 <svg viewBox="0 0 24 24" className="w-4 h-4" aria-hidden="true">
                   <path fill="currentColor" d="M12 10.8v3.84h5.44c-.24 1.44-1.6 4.24-5.44 4.24-3.28 0-5.96-2.72-5.96-6.08s2.68-6.08 5.96-6.08c1.88 0 3.16.8 3.88 1.48l2.64-2.56C16.72 3.68 14.56 2.8 12 2.8 6.88 2.8 2.8 6.88 2.8 12s4.08 9.2 9.2 9.2c5.32 0 8.84-3.72 8.84-8.96 0-.6-.04-1.04-.12-1.44H12z" />
                 </svg>

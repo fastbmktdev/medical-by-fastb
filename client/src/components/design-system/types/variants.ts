@@ -107,7 +107,7 @@ export type ResponsiveValue<T> = T | Partial<Record<Breakpoint, T>>;
  *     lg: 'px-6 py-3 text-lg'
  *   },
  *   variant: {
- *     solid: 'bg-primary text-white',
+ *     solid: 'bg-primary text-zinc-950',
  *     outline: 'border border-primary text-primary'
  *   }
  * };

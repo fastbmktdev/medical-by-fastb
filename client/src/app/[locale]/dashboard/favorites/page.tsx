@@ -134,19 +134,19 @@ const FavoriteStats = ({
 }: FavoriteStatsProps) => {
   const stats = [
     {
-      icon: <HeartSolidIcon className="w-6 h-6 text-white" />,
+      icon: <HeartSolidIcon className="w-6 h-6 text-zinc-950" />,
       bgColor: "bg-danger",
       label: "โรงพยาบาลโปรด",
       count: hospitalCount,
     },
     {
-      icon: <StarIcon className="w-6 h-6 text-white" />,
+      icon: <StarIcon className="w-6 h-6 text-zinc-950" />,
       bgColor: "bg-secondary",
       label: "สินค้าโปรด",
       count: productCount,
     },
     {
-      icon: <CalendarIcon className="w-6 h-6 text-white" />,
+      icon: <CalendarIcon className="w-6 h-6 text-zinc-950" />,
       bgColor: "bg-primary",
       label: "รายการโปรดทั้งหมด",
       count: allCount,
@@ -188,7 +188,7 @@ const NoHospitalFavorites = () => (
       <Button
         as={Link}
         href="/hospitals"
-        className="bg-violet-700 text-white hover:bg-violet-800  w-fit mx-auto"
+        className="bg-violet-700 text-zinc-950 hover:bg-violet-800  w-fit mx-auto"
         startContent={<MapPinIcon className="w-5 h-5" />}
       >
         ค้นหาโรงพยาบาล

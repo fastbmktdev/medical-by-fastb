@@ -49,7 +49,7 @@ export default function LeaderboardWidget({ leaderboard, className = '' }: Leade
             {getLeaderboardIcon(leaderboard.leaderboard.leaderboard_type)}
           </span>
           <div>
-            <h3 className="font-semibold text-white">
+            <h3 className="font-semibold text-zinc-950">
               {leaderboard.leaderboard.name}
             </h3>
             <p className="text-sm text-zinc-400">
@@ -105,7 +105,7 @@ export default function LeaderboardWidget({ leaderboard, className = '' }: Leade
                 )}
                 
                 <div>
-                  <div className="font-medium text-white">
+                  <div className="font-medium text-zinc-950">
                     {entry.user?.full_name || entry.user?.username || 'ผู้ใช้ไม่ระบุชื่อ'}
                   </div>
                   <div className="text-sm text-zinc-400">
@@ -116,7 +116,7 @@ export default function LeaderboardWidget({ leaderboard, className = '' }: Leade
             </div>
             
             <div className="text-right">
-              <div className="font-semibold text-white">
+              <div className="font-semibold text-zinc-950">
                 {entry.score.toLocaleString()}
               </div>
               <div className="text-sm text-zinc-500">

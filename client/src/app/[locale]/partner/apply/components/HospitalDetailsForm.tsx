@@ -51,7 +51,7 @@ export const HospitalDetailsForm: React.FC<HospitalDetailsFormProps> = ({
             onChange={onInputChange}
             onBlur={onBlur}
             rows={6}
-            className="bg-zinc-100 px-4 py-3 border border-zinc-600 focus:border-transparent  focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-white resize-none placeholder-zinc-500"
+            className="bg-zinc-100 px-4 py-3 border border-zinc-600 focus:border-transparent  focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-zinc-950 resize-none placeholder-zinc-500"
             placeholder="เช่น: โรงพยาบาลการแพทย์ขนาดใหญ่ มีเวที 2 เวที รองรับได้ 50 คน เปิดทุกวัน 06:00-22:00 มีแพทย์มืออาชีพ 10 คน..."
           />
         </div>
@@ -67,7 +67,7 @@ export const HospitalDetailsForm: React.FC<HospitalDetailsFormProps> = ({
                 key={service}
                 className={`flex items-center gap-3 p-3  border cursor-pointer transition-all ${
                   formData.services.includes(service)
-                    ? "bg-brand-primary/20 border-red-500 text-white"
+                    ? "bg-violet-400/20 border-violet-500"
                     : "bg-zinc-100 border-zinc-600 text-zinc-950 hover:border-zinc-500"
                 }`}
               >

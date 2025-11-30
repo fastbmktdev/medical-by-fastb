@@ -153,6 +153,43 @@ export function sanitizeFilename(filename: string): string {
 }
 
 /**
+ * Validate storage path to prevent path traversal attacks
+ * Ensures the path starts with the expected prefix and doesn't contain dangerous patterns
+ * 
+ * @param path - The storage path to validate
+ * @param expectedPrefix - The expected prefix (e.g., "id-cards/{userId}/")
+ * @returns true if the path is valid and safe
+ */
+export function validateStoragePath(path: string, expectedPrefix: string): boolean {
+  if (!path || typeof path !== 'string') {
+    return false;
+  }
+
+  // Must start with expected prefix
+  if (!path.startsWith(expectedPrefix)) {
+    return false;
+  }
+
+  // Must not contain path traversal patterns
+  if (path.includes('..') || path.includes('//') || path.includes('\\')) {
+    return false;
+  }
+
+  // Must not contain null bytes
+  if (path.includes('\0')) {
+    return false;
+  }
+
+  // Must not be empty after prefix
+  const relativePath = path.slice(expectedPrefix.length);
+  if (!relativePath || relativePath.trim().length === 0) {
+    return false;
+  }
+
+  return true;
+}
+
+/**
  * Check file content for suspicious patterns
  */
 async function checkSuspiciousContent(file: File): Promise<string | null> {

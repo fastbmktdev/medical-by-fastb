@@ -317,11 +317,11 @@ export default function PartnerMessagesPage() {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-zinc-100 text-center p-8">
         <ExclamationCircleIcon className="w-16 h-16 text-red-500 mb-4" />
-        <h2 className="text-xl font-semibold text-white mb-2">เกิดข้อผิดพลาด</h2>
+        <h2 className="text-xl font-semibold text-zinc-950 mb-2">เกิดข้อผิดพลาด</h2>
         <p className="text-zinc-400 mb-6">{error}</p>
         <button
           onClick={() => loadConversations()}
-          className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white  transition-colors flex items-center gap-2"
+          className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-zinc-950  transition-colors flex items-center gap-2"
         >
           <ArrowPathIcon className="w-4 h-4" />
           ลองอีกครั้ง
@@ -336,14 +336,14 @@ export default function PartnerMessagesPage() {
       <div className="bg-zinc-900 border-b border-zinc-800 p-4">
         <div className="flex items-center justify-between max-w-[1800px] mx-auto">
           <div>
-            <h1 className="text-2xl font-semibold text-white">ข้อความ</h1>
+            <h1 className="text-2xl font-semibold text-zinc-950">ข้อความ</h1>
             <p className="text-sm text-zinc-400">จัดการข้อความกับลูกค้า</p>
           </div>
 
           <div className="flex items-center gap-3">
             <button
               onClick={() => loadConversations()}
-              className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800  transition-colors"
+              className="p-2 text-zinc-400 hover:text-zinc-950 hover:bg-zinc-800  transition-colors"
               aria-label="รีเฟรช"
             >
               <ArrowPathIcon className="w-5 h-5" />
@@ -351,7 +351,7 @@ export default function PartnerMessagesPage() {
 
             <button
               onClick={() => setIsComposeOpen(true)}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white  transition-colors flex items-center gap-2"
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-zinc-950  transition-colors flex items-center gap-2"
             >
               <PlusIcon className="w-4 h-4" />
               <span className="hidden sm:inline">ส่งข้อความใหม่</span>

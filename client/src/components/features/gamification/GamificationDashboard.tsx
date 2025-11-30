@@ -25,7 +25,7 @@ const Section = ({
   children: React.ReactNode;
 }) => (
   <div className="bg-zinc-100/50 backdrop-blur-sm border border-zinc-800/50  shadow-md p-6">
-    <h2 className="text-xl font-semibold mb-4 flex items-center text-white">
+    <h2 className="text-xl font-semibold mb-4 flex items-center text-zinc-950">
       {icon} {title}
     </h2>
     {children}
@@ -162,7 +162,7 @@ export default function GamificationDashboard({
             />
           </svg>
         </div>
-        <h3 className="text-lg font-medium text-white mb-2">เกิดข้อผิดพลาด</h3>
+        <h3 className="text-lg font-medium text-zinc-950 mb-2">เกิดข้อผิดพลาด</h3>
         <p className="text-zinc-400 mb-4">{error}</p>
         <button
           onClick={fetchDashboard}
@@ -188,7 +188,7 @@ export default function GamificationDashboard({
       <div className="flex justify-start">
         <Link
           href="/dashboard"
-          className="inline-flex items-center px-4 py-2 mb-2 bg-red-600 text-white  hover:bg-red-700 transition-colors font-normal min-h-9"
+          className="inline-flex items-center px-4 py-2 mb-2 bg-red-600 text-zinc-950  hover:bg-red-700 transition-colors font-normal min-h-9"
         >
           <svg
             className="w-4 h-4 mr-2"
@@ -207,7 +207,7 @@ export default function GamificationDashboard({
         </Link>
       </div>
       {/* Header */}
-      <div className="bg-linear-to-r from-blue-900/80 to-purple-900/80  p-6 text-white border border-blue-700/30 backdrop-blur-sm">
+      <div className="bg-linear-to-r from-blue-900/80 to-purple-900/80  p-6 text-zinc-950 border border-blue-700/30 backdrop-blur-sm">
         <h1 className="text-2xl font-semibold mb-2">🏆 ระบบ Gamification</h1>
         <p className="text-blue-200">
           สะสมคะแนน รับเหรียญ และแข่งขันกับเพื่อนๆ

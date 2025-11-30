@@ -60,7 +60,7 @@ export default function GamificationWidget({ className = '' }: GamificationWidge
         <div className="flex items-center space-x-2">
           <span className="text-2xl">{getLevelIcon(stats.current_level)}</span>
           <div>
-            <h3 className="font-semibold text-white text-sm">
+            <h3 className="font-semibold text-zinc-950 text-sm">
               {getLevelTitle(stats.current_level)}
             </h3>
             <p className="text-xs text-zinc-400">ระดับ {stats.current_level}</p>
@@ -117,13 +117,13 @@ export default function GamificationWidget({ className = '' }: GamificationWidge
       <div className="mt-3 flex space-x-2 text-sm">
         <Link
           href="/dashboard/gamification"
-          className="flex-1 bg-blue-600 text-white py-2 px-3  text-center hover:bg-blue-700 transition-colors min-h-9"
+          className="flex-1 bg-blue-600 text-zinc-950 py-2 px-3  text-center hover:bg-blue-700 transition-colors min-h-9"
         >
           ดูความคืบหน้า
         </Link>
         <Link
           href="/dashboard/gamification?tab=leaderboards"
-          className="flex-1 bg-purple-600 text-white py-2 px-3  text-center hover:bg-purple-700 transition-colors min-h-9"
+          className="flex-1 bg-purple-600 text-zinc-950 py-2 px-3  text-center hover:bg-purple-700 transition-colors min-h-9"
         >
           ตารางคะแนน
         </Link>

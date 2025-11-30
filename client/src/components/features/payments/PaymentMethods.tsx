@@ -228,10 +228,10 @@ export default function PaymentMethods({
       {selectedMethod && (
         <div>
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold text-white">วิธีการชำระเงินที่เลือก</h3>
+            <h3 className="text-lg font-semibold text-zinc-950">วิธีการชำระเงินที่เลือก</h3>
             <button
               onClick={() => setSelectedMethod(null)}
-              className="text-zinc-400 hover:text-white text-sm"
+              className="text-zinc-400 hover:text-zinc-950 text-sm"
             >
               เปลี่ยนวิธีการชำระเงิน
             </button>
@@ -241,7 +241,7 @@ export default function PaymentMethods({
             <div className="bg-zinc-100  p-6">
               <div className="flex items-center gap-3 mb-4">
                 <CreditCardIcon className="w-6 h-6 text-red-500" />
-                <h4 className="font-semibold text-white">บัตรเครดิต/เดบิต</h4>
+                <h4 className="font-semibold text-zinc-950">บัตรเครดิต/เดบิต</h4>
               </div>
               <CheckoutForm
                 returnUrl="/payment/success"
@@ -255,7 +255,7 @@ export default function PaymentMethods({
             <div className="bg-zinc-100  p-6">
               <div className="flex items-center gap-3 mb-4">
                 <BanknotesIcon className="w-6 h-6 text-red-500" />
-                <h4 className="font-semibold text-white">โอนเงินผ่านธนาคาร</h4>
+                <h4 className="font-semibold text-zinc-950">โอนเงินผ่านธนาคาร</h4>
               </div>
               <div className="space-y-4">
                 <div className="bg-zinc-800  p-4">
@@ -263,7 +263,7 @@ export default function PaymentMethods({
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-zinc-400">ธนาคาร:</span>
-                      <span className="text-white">ธนาคารกสิกรไทย</span>
+                      <span className="text-zinc-950">ธนาคารกสิกรไทย</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-zinc-400">เลขที่บัญชี:</span>
@@ -271,7 +271,7 @@ export default function PaymentMethods({
                     </div>
                     <div className="flex justify-between">
                       <span className="text-zinc-400">ชื่อบัญชี:</span>
-                      <span className="text-white">โรงพยาบาลไทย</span>
+                      <span className="text-zinc-950">โรงพยาบาลไทย</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-zinc-400">จำนวนเงิน:</span>
@@ -295,7 +295,7 @@ export default function PaymentMethods({
             <div className="bg-zinc-100  p-6">
               <div className="flex items-center gap-3 mb-4">
                 <QrCodeIcon className="w-6 h-6 text-red-500" />
-                <h4 className="font-semibold text-white">พร้อมเพย์</h4>
+                <h4 className="font-semibold text-zinc-950">พร้อมเพย์</h4>
               </div>
               <div className="space-y-4">
                 <div className="bg-zinc-800  p-4">
@@ -327,7 +327,7 @@ export default function PaymentMethods({
             <div className="bg-zinc-100  p-6">
               <div className="flex items-center gap-3 mb-4">
                 <DevicePhoneMobileIcon className="w-6 h-6 text-red-500" />
-                <h4 className="font-semibold text-white">ชำระเงินที่โรงพยาบาล</h4>
+                <h4 className="font-semibold text-zinc-950">ชำระเงินที่โรงพยาบาล</h4>
               </div>
               <div className="space-y-4">
                 <div className="bg-zinc-800  p-4">
@@ -339,7 +339,7 @@ export default function PaymentMethods({
                     </div>
                     <div className="flex justify-between">
                       <span className="text-zinc-400">สถานที่:</span>
-                      <span className="text-white">โรงพยาบาลไทย</span>
+                      <span className="text-zinc-950">โรงพยาบาลไทย</span>
                     </div>
                   </div>
                 </div>

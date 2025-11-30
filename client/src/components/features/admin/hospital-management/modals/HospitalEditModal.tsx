@@ -156,7 +156,7 @@ export default function HospitalEditModal({
           errorMessage={errors.hospital_name}
           isRequired
           classNames={{
-            input: 'text-white',
+            input: 'text-zinc-950',
             label: 'text-default-400',
           }}
         />
@@ -171,7 +171,7 @@ export default function HospitalEditModal({
           errorMessage={errors.hospital_name_english}
           description={formData.hospital_name_english ? `Slug: ${previewSlug(formData.hospital_name_english)}` : 'ใช้สำหรับสร้าง URL ของโรงพยาบาล'}
           classNames={{
-            input: 'text-white',
+            input: 'text-zinc-950',
             label: 'text-default-400',
           }}
         />
@@ -194,7 +194,7 @@ export default function HospitalEditModal({
           errorMessage={errors.contact_name}
           isRequired
           classNames={{
-            input: 'text-white',
+            input: 'text-zinc-950',
             label: 'text-default-400',
           }}
         />
@@ -209,7 +209,7 @@ export default function HospitalEditModal({
           errorMessage={errors.phone}
           isRequired
           classNames={{
-            input: 'text-white',
+            input: 'text-zinc-950',
             label: 'text-default-400',
           }}
         />
@@ -225,7 +225,7 @@ export default function HospitalEditModal({
           errorMessage={errors.email}
           isRequired
           classNames={{
-            input: 'text-white',
+            input: 'text-zinc-950',
             label: 'text-default-400',
           }}
         />
@@ -240,7 +240,7 @@ export default function HospitalEditModal({
           isInvalid={!!errors.website}
           errorMessage={errors.website}
           classNames={{
-            input: 'text-white',
+            input: 'text-zinc-950',
             label: 'text-default-400',
           }}
         />
@@ -256,7 +256,7 @@ export default function HospitalEditModal({
           isRequired
           minRows={2}
           classNames={{
-            input: 'text-white',
+            input: 'text-zinc-950',
             label: 'text-default-400',
           }}
         />
@@ -269,7 +269,7 @@ export default function HospitalEditModal({
           onValueChange={(value) => setFormData(prev => ({ ...prev, hospital_details: value }))}
           minRows={3}
           classNames={{
-            input: 'text-white',
+            input: 'text-zinc-950',
             label: 'text-default-400',
           }}
         />
@@ -289,7 +289,7 @@ export default function HospitalEditModal({
                 }
               }}
               classNames={{
-                input: 'text-white',
+                input: 'text-zinc-950',
               }}
             />
             <Button
@@ -322,7 +322,7 @@ export default function HospitalEditModal({
           classNames={{
             trigger: 'bg-default-100',
             label: 'text-default-400',
-            value: 'text-white',
+            value: 'text-zinc-950',
           }}
         >
           <SelectItem key="pending">

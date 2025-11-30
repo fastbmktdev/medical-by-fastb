@@ -34,7 +34,7 @@ export function FormSection({
         <div className="mb-4">
           {title && (
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-white">
+              <h3 className="text-lg font-semibold text-zinc-950">
                 {title}
               </h3>
               {collapsible && (

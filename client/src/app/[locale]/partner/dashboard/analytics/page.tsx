@@ -176,7 +176,7 @@ function PartnerAnalyticsContent() {
             <p className="text-danger">{error}</p>
             <button
               onClick={loadAnalytics}
-              className="mt-4 px-4 py-2 bg-secondary text-white  hover:opacity-80"
+              className="mt-4 px-4 py-2 bg-secondary text-zinc-950  hover:opacity-80"
             >
               โหลดใหม่
             </button>
@@ -204,7 +204,7 @@ function PartnerAnalyticsContent() {
             <CardBody className="gap-3">
               <div className="flex justify-between items-center">
                 <div className="bg-primary p-3 ">
-                  <UsersIcon className="w-6 h-6 text-white" />
+                  <UsersIcon className="w-6 h-6 text-zinc-950" />
                 </div>
               </div>
               <div>
@@ -220,7 +220,7 @@ function PartnerAnalyticsContent() {
             <CardBody className="gap-3">
               <div className="flex justify-between items-center">
                 <div className="bg-success p-3 ">
-                  <CalendarIcon className="w-6 h-6 text-white" />
+                  <CalendarIcon className="w-6 h-6 text-zinc-950" />
                 </div>
               </div>
               <div>
@@ -241,7 +241,7 @@ function PartnerAnalyticsContent() {
             <CardBody className="gap-3">
               <div className="flex justify-between items-center">
                 <div className="bg-warning p-3 ">
-                  <StarIcon className="w-6 h-6 text-white" />
+                  <StarIcon className="w-6 h-6 text-zinc-950" />
                 </div>
               </div>
               <div>
@@ -268,7 +268,7 @@ function PartnerAnalyticsContent() {
             <CardBody className="gap-3">
               <div className="flex justify-between items-center">
                 <div className="bg-secondary p-3 ">
-                  <TrophyIcon className="w-6 h-6 text-white" />
+                  <TrophyIcon className="w-6 h-6 text-zinc-950" />
                 </div>
               </div>
               <div>
@@ -293,18 +293,18 @@ function PartnerAnalyticsContent() {
           <CardBody>
             <div className="flex justify-between items-center">
               <div>
-                <p className="mb-2 text-white/80 text-sm">รายได้เดือนนี้</p>
-                <p className="font-mono font-semibold text-white text-3xl">
+                <p className="mb-2 text-zinc-950/80 text-sm">รายได้เดือนนี้</p>
+                <p className="font-mono font-semibold text-zinc-950 text-3xl">
                   ฿{Number(analyticsData?.revenue.monthly || 0).toLocaleString()}
                 </p>
                 {analyticsData && (
-                  <p className="mt-2 text-white/70 text-sm">
+                  <p className="mt-2 text-zinc-950/70 text-sm">
                     รายได้ทั้งหมด: ฿{Number(analyticsData.revenue.total || 0).toLocaleString()}
                   </p>
                 )}
               </div>
               <div className="bg-white/20 backdrop-blur-sm p-4 ">
-                <CurrencyDollarIcon className="w-12 h-12 text-white" />
+                <CurrencyDollarIcon className="w-12 h-12 text-zinc-950" />
               </div>
             </div>
           </CardBody>
@@ -392,10 +392,10 @@ function PartnerAnalyticsContent() {
                   >
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="flex justify-center items-center bg-secondary w-6 h-6  text-white text-xs font-semibold">
+                        <span className="flex justify-center items-center bg-secondary w-6 h-6  text-zinc-950 text-xs font-semibold">
                           {index + 1}
                         </span>
-                        <h4 className="font-semibold text-white">{service.package_name}</h4>
+                        <h4 className="font-semibold text-zinc-950">{service.package_name}</h4>
                         <Chip
                           size="sm"
                           color={service.package_type === 'package' ? 'secondary' : 'default'}

@@ -214,7 +214,7 @@ function PartnerPerformanceContent() {
 
           {/* Overview Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card className="bg-linear-to-br from-blue-500 to-blue-600 text-white">
+            <Card className="bg-linear-to-br from-blue-500 to-blue-600 text-zinc-950">
               <CardBody>
                 <div className="flex justify-between items-start">
                   <div>
@@ -230,7 +230,7 @@ function PartnerPerformanceContent() {
               </CardBody>
             </Card>
 
-            <Card className="bg-linear-to-br from-green-500 to-green-600 text-white">
+            <Card className="bg-linear-to-br from-green-500 to-green-600 text-zinc-950">
               <CardBody>
                 <div className="flex justify-between items-start">
                   <div>
@@ -249,7 +249,7 @@ function PartnerPerformanceContent() {
               </CardBody>
             </Card>
 
-            <Card className="bg-linear-to-br from-purple-500 to-purple-600 text-white">
+            <Card className="bg-linear-to-br from-purple-500 to-purple-600 text-zinc-950">
               <CardBody>
                 <div className="flex justify-between items-start">
                   <div>
@@ -266,7 +266,7 @@ function PartnerPerformanceContent() {
               </CardBody>
             </Card>
 
-            <Card className="bg-linear-to-br from-orange-500 to-orange-600 text-white">
+            <Card className="bg-linear-to-br from-orange-500 to-orange-600 text-zinc-950">
               <CardBody>
                 <div className="flex justify-between items-start">
                   <div>

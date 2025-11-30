@@ -103,7 +103,7 @@ function PartnerApplicationAlert({
                   </p>
                   <p className="text-zinc-400 text-sm">
                     ⏱️ ระยะเวลาการตรวจสอบโดยเฉลี่ย:{" "}
-                    <strong className="text-white">3-5 วันทำการ</strong>
+                    <strong className="text-zinc-950">3-5 วันทำการ</strong>
                   </p>
                 </div>
                 <div className="space-y-2">
@@ -179,7 +179,7 @@ function RecentBookingsSection({
           href={`/${locale}/dashboard/appointments`}
           size="md"
           endContent={<ArrowRightIcon className="w-4 h-4" />}
-          className="bg-red-600 text-white hover:bg-red-800  font-normal min-h-9"
+          className="bg-red-600 text-zinc-950 hover:bg-red-800  font-normal min-h-9"
         >
           ดูทั้งหมด
         </Button>
@@ -200,7 +200,7 @@ function RecentBookingsSection({
                 key: 'hospital_name',
                 label: 'โรงพยาบาล',
                 render: (appointment) => (
-                  <span className="font-semibold text-white">
+                  <span className="font-semibold text-zinc-950">
                     {appointment.hospitals?.hospital_name || "N/A"}
                   </span>
                 ),
@@ -232,7 +232,7 @@ function RecentBookingsSection({
                 key: 'price_paid',
                 label: 'ยอดเงิน',
                 render: (appointment) => (
-                  <span className="font-mono text-white">
+                  <span className="font-mono text-zinc-950">
                     ฿{Number(appointment.price_paid).toLocaleString()}
                   </span>
                 ),

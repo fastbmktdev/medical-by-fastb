@@ -26,42 +26,34 @@ type ReportRow = Record<string, unknown>;
 function verifyCronSecret(request: NextRequest): boolean {
   const cronSecret = process.env.CRON_SECRET;
   
-  // In development, allow without secret if not configured
-  if (process.env.NODE_ENV === 'development' && !cronSecret) {
-    console.warn('⚠️ Development mode: CRON_SECRET not configured. Allowing request.');
+  // CRON_SECRET is required in all environments for security
+  // User-Agent can be easily spoofed, so we don't rely on it
+  if (!cronSecret) {
+    console.error('⚠️ CRON_SECRET not configured. This is a security risk.');
+    // In development, log warning but still allow (for local testing only)
+    // In production, this should always be set
+    if (process.env.NODE_ENV === 'production') {
+      return false;
+    }
+    console.warn('⚠️ Development mode: Allowing request without CRON_SECRET (NOT RECOMMENDED)');
     return true;
   }
 
-  // Check if request is from Vercel Cron
-  const userAgent = request.headers.get('user-agent') || '';
-  const isVercelCron = userAgent.toLowerCase().includes('vercel');
-  
-  // If secret is configured, require it
-  if (cronSecret) {
-    const headerSecret = request.headers.get('x-cron-secret') || 
-                         request.headers.get('authorization')?.replace('Bearer ', '');
-    if (headerSecret === cronSecret) {
-      return true;
-    }
-
-    const querySecret = request.nextUrl.searchParams.get('secret');
-    if (querySecret === cronSecret) {
-      return true;
-    }
-  }
-
-  // In production, if CRON_SECRET is set, require it
-  if (process.env.NODE_ENV === 'production' && cronSecret) {
-    console.error('CRON_SECRET required but not provided');
-    return false;
-  }
-
-  // Allow Vercel Cron requests if no secret is configured (development/testing)
-  if (isVercelCron && !cronSecret) {
-    console.warn('⚠️ Vercel Cron detected but CRON_SECRET not configured');
+  // Check header first (preferred method)
+  const headerSecret = request.headers.get('x-cron-secret') || 
+                       request.headers.get('authorization')?.replace('Bearer ', '');
+  if (headerSecret === cronSecret) {
     return true;
   }
 
+  // Check query parameter (less secure, but sometimes needed for external cron services)
+  const querySecret = request.nextUrl.searchParams.get('secret');
+  if (querySecret === cronSecret) {
+    return true;
+  }
+
+  // Secret is required but not provided
+  console.error('CRON_SECRET required but not provided or incorrect');
   return false;
 }
 

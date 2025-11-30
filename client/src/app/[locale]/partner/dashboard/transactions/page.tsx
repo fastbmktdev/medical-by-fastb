@@ -159,13 +159,13 @@ function PartnerTransactionsContent() {
           <Card className="bg-linear-to-br from-success-500 to-success-700 border-none">
             <CardBody>
               {hospital?.hospital_name && (
-                <p className="mb-1 text-white/60 text-xs uppercase tracking-wide">
+                <p className="mb-1 text-zinc-950/60 text-xs uppercase tracking-wide">
                   {hospital.hospital_name}
                 </p>
               )}
-              <p className="mb-2 text-white/80 text-sm">ยอดคงเหลือ</p>
+              <p className="mb-2 text-zinc-950/80 text-sm">ยอดคงเหลือ</p>
               <p className="font-mono font-semibold text-3xl">฿{Number(totalBalance || 0).toLocaleString()}</p>
-              <Button size="sm" className="bg-white/20 backdrop-blur-sm mt-4 text-white">
+              <Button size="sm" className="bg-white/20 backdrop-blur-sm mt-4 text-zinc-950">
                 ถอนเงิน
               </Button>
             </CardBody>
@@ -221,7 +221,7 @@ function PartnerTransactionsContent() {
               <TableBody emptyContent="ยังไม่มีธุรกรรม">
                 {transactions.map((txn) => (
                   <TableRow key={txn.id}>
-                    <TableCell className="font-mono text-white">{txn.id}</TableCell>
+                    <TableCell className="font-mono text-zinc-950">{txn.id}</TableCell>
                     <TableCell className="text-default-400">
                       {new Date(txn.date).toLocaleDateString('th-TH')}
                     </TableCell>

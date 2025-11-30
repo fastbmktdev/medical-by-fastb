@@ -9,6 +9,7 @@ import { NextRequest, NextResponse } from 'next/server';
  * This client manages authentication cookies and sessions through Next.js cookies API.
  * It should be used in server-side code where you need user authentication context.
  * 
+ * @param request - Optional NextRequest object. If provided, uses cookies from the request (for Express adapter compatibility).
  * @returns A Promise resolving to a Supabase client instance configured for server use
  * 
  * @example
@@ -19,7 +20,37 @@ import { NextRequest, NextResponse } from 'next/server';
  * const { data: { user } } = await supabase.auth.getUser();
  * ```
  */
-export async function createServerClient() {
+export async function createServerClient(request?: NextRequest) {
+  // If request is provided (e.g., from Express adapter), use its cookies
+  if (request) {
+    const nextResponse = NextResponse.next({ request });
+    
+    return createSupabaseServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll: () => request.cookies.getAll(),
+          setAll: (
+            cookiesToSet: Array<{
+              name: string;
+              value: string;
+              options?: CookieOptions;
+            }>
+          ) => {
+            cookiesToSet.forEach(({ name, value }) => {
+              request.cookies.set(name, value);
+            });
+            cookiesToSet.forEach(({ name, value, options }) => {
+              nextResponse.cookies.set(name, value, options);
+            });
+          },
+        },
+      }
+    );
+  }
+
+  // Otherwise, use Next.js cookies API (for Next.js Server Components and Route Handlers)
   const cookieStore = await cookies();
 
   return createSupabaseServerClient(

@@ -261,31 +261,31 @@ function PartnerBookingsContent() {
       <section className="gap-4 grid grid-cols-1 md:grid-cols-5 mb-6">
         <Card className="bg-linear-to-br from-blue-500 to-blue-600">
           <CardBody className="text-center">
-            <p className="mb-1 text-white/80 text-sm">ทั้งหมด</p>
+            <p className="mb-1 text-zinc-950/80 text-sm">ทั้งหมด</p>
             <p className="font-semibold text-3xl">{stats.total}</p>
           </CardBody>
         </Card>
         <Card className="bg-linear-to-br from-yellow-500 to-yellow-600">
           <CardBody className="text-center">
-            <p className="mb-1 text-white/80 text-sm">รอยืนยัน</p>
+            <p className="mb-1 text-zinc-950/80 text-sm">รอยืนยัน</p>
             <p className="font-semibold text-3xl">{stats.pending}</p>
           </CardBody>
         </Card>
         <Card className="bg-linear-to-br from-green-500 to-green-600">
           <CardBody className="text-center">
-            <p className="mb-1 text-white/80 text-sm">ยืนยันแล้ว</p>
+            <p className="mb-1 text-zinc-950/80 text-sm">ยืนยันแล้ว</p>
             <p className="font-semibold text-3xl">{stats.confirmed}</p>
           </CardBody>
         </Card>
         <Card className="bg-linear-to-br from-purple-500 to-purple-600">
           <CardBody className="text-center">
-            <p className="mb-1 text-white/80 text-sm">เสร็จสิ้น</p>
+            <p className="mb-1 text-zinc-950/80 text-sm">เสร็จสิ้น</p>
             <p className="font-semibold text-3xl">{stats.completed}</p>
           </CardBody>
         </Card>
         <Card className="bg-linear-to-br from-red-500 to-red-600">
           <CardBody className="text-center">
-            <p className="mb-1 text-white/80 text-sm">ยกเลิก</p>
+            <p className="mb-1 text-zinc-950/80 text-sm">ยกเลิก</p>
             <p className="font-semibold text-3xl">{stats.cancelled}</p>
           </CardBody>
         </Card>
@@ -373,7 +373,7 @@ function PartnerBookingsContent() {
                     <TableCell className="font-mono text-xs">
                       {appointment.booking_number}
                     </TableCell>
-                    <TableCell className="font-semibold text-white">
+                    <TableCell className="font-semibold text-zinc-950">
                       {appointment.customer_name}
                     </TableCell>
                     <TableCell className="font-mono text-default-400 text-sm">
@@ -388,7 +388,7 @@ function PartnerBookingsContent() {
                     <TableCell className="text-default-400">
                       {appointment.end_date ? formatDate(appointment.end_date) : '-'}
                     </TableCell>
-                    <TableCell className="font-mono text-white">
+                    <TableCell className="font-mono text-zinc-950">
                       {formatCurrency(Number(appointment.price_paid))}
                     </TableCell>
                     <TableCell>

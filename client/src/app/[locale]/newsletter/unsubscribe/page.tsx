@@ -56,14 +56,14 @@ function UnsubscribeContent() {
           {status === 'loading' && (
             <>
               <Loading centered size="xl" />
-              <p className="text-white">{message}</p>
+              <p className="text-zinc-950">{message}</p>
             </>
           )}
 
           {status === 'success' && (
             <>
               <CheckCircleIcon className="w-16 h-16 text-green-500 mx-auto" />
-              <h1 className="text-2xl font-semibold text-white">ยกเลิกการสมัครสมาชิกสำเร็จ</h1>
+              <h1 className="text-2xl font-semibold text-zinc-950">ยกเลิกการสมัครสมาชิกสำเร็จ</h1>
               <p className="text-zinc-400">{message}</p>
               <Button
                 color="primary"
@@ -78,7 +78,7 @@ function UnsubscribeContent() {
           {status === 'error' && (
             <>
               <XCircleIcon className="w-16 h-16 text-red-500 mx-auto" />
-              <h1 className="text-2xl font-semibold text-white">เกิดข้อผิดพลาด</h1>
+              <h1 className="text-2xl font-semibold text-zinc-950">เกิดข้อผิดพลาด</h1>
               <p className="text-zinc-400">{message}</p>
               <Button
                 variant="light"
@@ -102,7 +102,7 @@ export default function NewsletterUnsubscribePage() {
         <Card className="max-w-md w-full bg-zinc-100/50 backdrop-blur-sm border border-zinc-700">
           <CardBody className="p-8 text-center space-y-4">
             <Loading centered size="xl" />
-            <p className="text-white">กำลังโหลด...</p>
+            <p className="text-zinc-950">กำลังโหลด...</p>
           </CardBody>
         </Card>
       </div>

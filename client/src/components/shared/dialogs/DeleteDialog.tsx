@@ -81,7 +81,7 @@ export default function DeleteDialog<T = any>({
       isProcessing={isProcessing}
     >
       <div className="space-y-4">
-        <p className="text-white">
+        <p className="text-zinc-950">
           คุณต้องการลบ <span className="font-semibold">{itemName}</span> ใช่หรือไม่?
         </p>
         {warningMessage && (

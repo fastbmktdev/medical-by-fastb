@@ -184,7 +184,7 @@ function AdminPromotionsContent() {
         userEmail={user?.email}
       >
         <div className="flex justify-center items-center py-12">
-          <div className="text-white">กำลังโหลด...</div>
+          <div className="text-zinc-950">กำลังโหลด...</div>
         </div>
       </DashboardLayout>
     );

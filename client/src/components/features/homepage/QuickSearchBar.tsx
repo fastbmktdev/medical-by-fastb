@@ -84,7 +84,7 @@ export default function QuickSearchBar() {
             </div>
             <button
               type="submit"
-              className="bg-brand-primary hover:bg-[#8B5CF6] text-white px-8 py-3  font-semibold transition-colors shadow-lg hover:shadow-xl whitespace-nowrap"
+              className="bg-brand-primary hover:bg-[#8B5CF6] text-zinc-950 px-8 py-3  font-semibold transition-colors shadow-lg hover:shadow-xl whitespace-nowrap"
               aria-label="ค้นหาโรงพยาบาลและบริการ"
             >
               ค้นหา

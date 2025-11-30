@@ -121,14 +121,14 @@ export default function CouponCodeInput({
           <button
             onClick={handleApplyCoupon}
             disabled={loading || !couponCode.trim()}
-            className="px-6 py-2 bg-blue-600 text-white  hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+            className="px-6 py-2 bg-blue-600 text-zinc-950  hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
           >
             {loading ? 'กำลังตรวจสอบ...' : 'ใช้โค้ด'}
           </button>
         ) : (
           <button
             onClick={handleRemoveCoupon}
-            className="px-6 py-2 bg-red-600 text-white  hover:bg-red-600 transition-colors"
+            className="px-6 py-2 bg-red-600 text-zinc-950  hover:bg-red-600 transition-colors"
           >
             ลบ
           </button>

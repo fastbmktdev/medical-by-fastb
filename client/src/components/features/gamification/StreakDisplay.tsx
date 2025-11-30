@@ -23,7 +23,7 @@ export default function StreakDisplay({ streak, className = '' }: StreakDisplayP
         <div className="flex items-center space-x-2">
           <span className="text-2xl">{streakDisplay.icon}</span>
           <div>
-            <h3 className="font-semibold text-white text-sm">
+            <h3 className="font-semibold text-zinc-950 text-sm">
               {streakDisplay.title}
             </h3>
             <p className="text-xs text-zinc-400">

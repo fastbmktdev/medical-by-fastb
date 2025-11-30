@@ -113,11 +113,11 @@ export default function LeaderboardPage() {
       <div className="min-h-screen bg-zinc-100 flex items-center justify-center">
         <div className="text-center">
           <div className="text-4xl mb-4">😕</div>
-          <h1 className="text-2xl font-semibold text-white mb-2">ไม่พบข้อมูล</h1>
+          <h1 className="text-2xl font-semibold text-zinc-950 mb-2">ไม่พบข้อมูล</h1>
           <p className="text-zinc-400 mb-4">{error || 'ไม่พบข้อมูลตารางคะแนน'}</p>
           <Link
             href="/dashboard/gamification"
-            className="inline-block px-4 py-2 bg-red-600 text-white  hover:bg-red-600"
+            className="inline-block px-4 py-2 bg-red-600 text-zinc-950  hover:bg-red-600"
           >
             กลับไปหน้า Gamification
           </Link>
@@ -145,7 +145,7 @@ export default function LeaderboardPage() {
               {getLeaderboardIcon(leaderboardData.leaderboard.leaderboard_type)}
             </span>
             <div>
-              <h1 className="text-3xl font-semibold text-white">
+              <h1 className="text-3xl font-semibold text-zinc-950">
                 {leaderboardData.leaderboard.name}
               </h1>
               {leaderboardData.leaderboard.description && (
@@ -230,7 +230,7 @@ export default function LeaderboardPage() {
                               </div>
                             )}
                             <div>
-                              <div className={`font-medium ${isCurrentUser ? 'text-blue-400' : 'text-white'}`}>
+                              <div className={`font-medium ${isCurrentUser ? 'text-blue-400' : 'text-zinc-950'}`}>
                                 {entry.user?.full_name || entry.user?.username || 'ผู้ใช้ไม่ระบุชื่อ'}
                                 {isCurrentUser && (
                                   <span className="ml-2 text-xs text-blue-400">(คุณ)</span>
@@ -243,7 +243,7 @@ export default function LeaderboardPage() {
                           </div>
                         </td>
                         <td className="px-6 py-4 text-right">
-                          <div className="font-semibold text-white">
+                          <div className="font-semibold text-zinc-950">
                             {entry.score.toLocaleString()}
                           </div>
                         </td>
@@ -266,7 +266,7 @@ export default function LeaderboardPage() {
               <button
                 onClick={() => setPage((prev) => Math.max(1, prev - 1))}
                 disabled={page === 1}
-                className="px-4 py-2 bg-zinc-800 text-white  hover:bg-zinc-100 disabled:opacity-40 disabled:cursor-not-allowed"
+                className="px-4 py-2 bg-zinc-800 text-zinc-950  hover:bg-zinc-100 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 ก่อนหน้า
               </button>
@@ -276,7 +276,7 @@ export default function LeaderboardPage() {
               <button
                 onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
                 disabled={page === totalPages}
-                className="px-4 py-2 bg-zinc-800 text-white  hover:bg-zinc-100 disabled:opacity-40 disabled:cursor-not-allowed"
+                className="px-4 py-2 bg-zinc-800 text-zinc-950  hover:bg-zinc-100 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 ถัดไป
               </button>

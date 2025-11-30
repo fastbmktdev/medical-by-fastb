@@ -66,7 +66,7 @@ export default function AdminConfirmDialog({
       isProcessing={isProcessing}
     >
       <div className="space-y-4">
-        <p className="text-white">{message}</p>
+        <p className="text-zinc-950">{message}</p>
         {warningMessage && (
           <div className="flex items-start gap-2 bg-warning/10 p-3 border-warning border-l-4 ">
             <ExclamationTriangleIcon className="shrink-0 mt-0.5 w-5 h-5 text-warning" />

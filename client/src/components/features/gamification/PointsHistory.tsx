@@ -41,7 +41,7 @@ export default function PointsHistory({ activities, className = '' }: PointsHist
             </div>
             
             <div>
-              <div className="font-medium text-white">
+              <div className="font-medium text-zinc-950">
                 {getActionTitle(activity.action_type)}
               </div>
               {activity.action_description && (

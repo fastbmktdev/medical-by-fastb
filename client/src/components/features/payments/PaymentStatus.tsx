@@ -83,7 +83,7 @@ export default function PaymentStatus() {
   return (
     <div className="bg-zinc-800  p-6">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-white">สถานะการชำระเงิน</h3>
+        <h3 className="text-lg font-semibold text-zinc-950">สถานะการชำระเงิน</h3>
         <button
           onClick={handleRefresh}
           disabled={refreshing}
@@ -115,7 +115,7 @@ export default function PaymentStatus() {
                   <PaymentStatusDisplay status={payment.status} size="lg" />
                   <div>
                     <div className="flex items-center gap-3 mb-2">
-                      <h4 className="font-semibold text-white">
+                      <h4 className="font-semibold text-zinc-950">
                         {getPaymentTypeText(payment.payment_type)}
                       </h4>
                     </div>
@@ -139,7 +139,7 @@ export default function PaymentStatus() {
 
                       <div className="flex justify-between">
                         <span className="text-zinc-400">วันที่สร้าง:</span>
-                        <span className="text-white">
+                        <span className="text-zinc-950">
                           {formatPaymentDate(payment.created_at)}
                         </span>
                       </div>
@@ -147,7 +147,7 @@ export default function PaymentStatus() {
                       {payment.updated_at !== payment.created_at && (
                         <div className="flex justify-between">
                           <span className="text-zinc-400">อัปเดตล่าสุด:</span>
-                          <span className="text-white">
+                          <span className="text-zinc-950">
                             {formatPaymentDate(payment.updated_at)}
                           </span>
                         </div>
@@ -158,7 +158,7 @@ export default function PaymentStatus() {
 
                 <div className="flex items-center gap-2">
                   <button 
-                    className="text-zinc-400 hover:text-white p-2  hover:bg-zinc-600 transition-colors" 
+                    className="text-zinc-400 hover:text-zinc-950 p-2  hover:bg-zinc-600 transition-colors" 
                     aria-label="ดูรายละเอียดการชำระเงิน"
                   >
                     <EyeIcon className="w-5 h-5" />

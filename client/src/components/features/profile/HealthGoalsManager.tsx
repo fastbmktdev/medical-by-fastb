@@ -167,13 +167,13 @@ export function HealthGoalsManager() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-lg text-white">เป้าหมายด้านสุขภาพ</h3>
+        <h3 className="font-semibold text-lg text-zinc-950">เป้าหมายด้านสุขภาพ</h3>
         <Button
           size="sm"
           color="primary"
           onPress={() => setShowForm(!showForm)}
           startContent={<PlusIcon className="w-4 h-4" />}
-          className="text-white bg-blue-600 hover:bg-blue-700 px-3 py-1 text-xs font-medium"
+          className="text-zinc-950 bg-blue-600 hover:bg-blue-700 px-3 py-1 text-xs font-medium"
         >
           เพิ่มเป้าหมาย
         </Button>
@@ -182,7 +182,7 @@ export function HealthGoalsManager() {
       {showForm && (
         <Card className="bg-zinc-100/50 border border-zinc-700">
           <CardHeader className="border-b border-zinc-700">
-            <h4 className="font-semibold text-white">เป้าหมายใหม่</h4>
+            <h4 className="font-semibold text-zinc-950">เป้าหมายใหม่</h4>
           </CardHeader>
           <CardBody>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -212,7 +212,7 @@ export function HealthGoalsManager() {
                 isRequired
                 variant="bordered"
                 classNames={{
-                  input: "text-white",
+                  input: "text-zinc-950",
                   inputWrapper: "bg-zinc-100/50 border-zinc-700",
                 }}
               />
@@ -223,7 +223,7 @@ export function HealthGoalsManager() {
                 onValueChange={(value) => setFormData({ ...formData, description: value })}
                 variant="bordered"
                 classNames={{
-                  input: "text-white",
+                  input: "text-zinc-950",
                   inputWrapper: "bg-zinc-100/50 border-zinc-700",
                 }}
               />
@@ -236,7 +236,7 @@ export function HealthGoalsManager() {
                   onValueChange={(value) => setFormData({ ...formData, target_value: value })}
                   variant="bordered"
                   classNames={{
-                    input: "text-white",
+                    input: "text-zinc-950",
                     inputWrapper: "bg-zinc-100/50 border-zinc-700",
                   }}
                 />
@@ -247,7 +247,7 @@ export function HealthGoalsManager() {
                   placeholder="เช่น ครั้ง, กก."
                   variant="bordered"
                   classNames={{
-                    input: "text-white",
+                    input: "text-zinc-950",
                     inputWrapper: "bg-zinc-100/50 border-zinc-700",
                   }}
                 />
@@ -260,7 +260,7 @@ export function HealthGoalsManager() {
                 onValueChange={(value) => setFormData({ ...formData, target_date: value })}
                 variant="bordered"
                 classNames={{
-                  input: "text-white",
+                  input: "text-zinc-950",
                   inputWrapper: "bg-zinc-100/50 border-zinc-700",
                 }}
               />
@@ -307,7 +307,7 @@ export function HealthGoalsManager() {
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <h4 className="font-semibold text-white">{goal.title}</h4>
+                        <h4 className="font-semibold text-zinc-950">{goal.title}</h4>
                         {goal.is_completed && (
                           <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs ">
                             สำเร็จแล้ว

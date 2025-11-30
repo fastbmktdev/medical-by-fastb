@@ -34,7 +34,7 @@ export default function ForbiddenPage() {
   }, [supabase]);
 
   return (
-    <div className="flex flex-col justify-center items-center bg-linear-to-br from-zinc-950 to-zinc-950 px-4 min-h-screen text-white">
+    <div className="flex flex-col justify-center items-center bg-linear-to-br from-zinc-950 to-zinc-950 px-4 min-h-screen text-zinc-950">
       <Card className="bg-default-100/50 backdrop-blur-sm border-none w-full max-w-2xl">
         <CardBody className="p-8 md:p-12">
           {/* Icon */}

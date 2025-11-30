@@ -12,7 +12,7 @@ export const SuccessView = () => {
           <div className="flex justify-center mb-6">
             <CheckCircleIcon className="w-24 h-24 text-green-500" />
           </div>
-          <h1 className="mb-4 font-semibold text-white text-3xl md:text-4xl">
+          <h1 className="mb-4 font-semibold text-zinc-950 text-3xl md:text-4xl">
             สมัครสำเร็จ!
           </h1>
           <p className="mb-4 text-zinc-400 text-xl leading-relaxed">
@@ -29,7 +29,7 @@ export const SuccessView = () => {
           <div className="flex sm:flex-row flex-col justify-center gap-4">
             <Link
               href="/"
-              className="inline-block bg-brand-primary hover:bg-red-600 px-6 py-3  font-semibold text-white transition-colors"
+              className="inline-block bg-brand-primary hover:bg-red-600 px-6 py-3  font-semibold text-zinc-950 transition-colors"
             >
               กลับหน้าหลัก
             </Link>

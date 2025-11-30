@@ -135,22 +135,22 @@ export default function ArticleDetailPage({
       <div className="border-zinc-800 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-4xl">
           <div className="flex items-center gap-2 mb-4 text-zinc-400 text-sm">
-            <Link href="/" className="hover:text-white transition-colors">
+            <Link href="/" className="hover:text-zinc-950 transition-colors">
               หน้าแรก
             </Link>
             <ChevronRightIcon className="w-4 h-4" />
             <Link
               href="/articles"
-              className="hover:text-white transition-colors"
+              className="hover:text-zinc-950 transition-colors"
             >
               บทความ
             </Link>
             <ChevronRightIcon className="w-4 h-4" />
-            <span className="text-white">{article.title}</span>
+            <span className="text-zinc-950">{article.title}</span>
           </div>
           <Link
             href="/articles"
-            className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
+            className="inline-flex items-center gap-2 text-zinc-400 hover:text-zinc-950 transition-colors"
           >
             <ArrowLeftIcon className="w-5 h-5" />
             <span>กลับไปหน้าบทความ</span>

@@ -78,7 +78,7 @@ export default function TermsModal({
 
                 <div className="space-y-4">
                   <div className="bg-zinc-100 p-4 border-blue-500 border-l-4 ">
-                    <h5 className="mb-2 font-semibold text-white">
+                    <h5 className="mb-2 font-semibold text-zinc-950">
                       1. การยินยอม
                     </h5>
                     <p className="text-zinc-400 text-sm leading-relaxed">
@@ -91,18 +91,18 @@ export default function TermsModal({
                         medicalhospital.com
                       </span>{" "}
                       ในการ{" "}
-                      <span className="font-medium text-white">
+                      <span className="font-medium text-zinc-950">
                         บันทึก ถ่ายภาพ ถ่ายวิดีโอ
                       </span>{" "}
                       (รวมถึงเสียง) หรือ{" "}
-                      <span className="font-medium text-white">ประมวลผล</span>{" "}
+                      <span className="font-medium text-zinc-950">ประมวลผล</span>{" "}
                       ภาพลักษณ์ ข้อมูล หรือสื่อใด ๆ ที่ผู้ใช้ปรากฏตัวในสถานที่
                       กิจกรรม หรือบนแพลตฟอร์มของ medicalhospital.com
                     </p>
                   </div>
 
                   <div className="bg-zinc-100 p-4 border-green-500 border-l-4 ">
-                    <h5 className="mb-2 font-semibold text-white">
+                    <h5 className="mb-2 font-semibold text-zinc-950">
                       2. วัตถุประสงค์และขอบเขต
                     </h5>
                     <p className="text-zinc-400 text-sm leading-relaxed">
@@ -111,7 +111,7 @@ export default function TermsModal({
                         โดยเด็ดขาดและเป็นสิทธิ์ขาดแต่เพียงผู้เดียว
                       </span>{" "}
                       ในการ{" "}
-                      <span className="font-medium text-white">
+                      <span className="font-medium text-zinc-950">
                         ใช้ ทำซ้ำ ดัดแปลง แก้ไข เผยแพร่ หรือโอนสิทธิ
                       </span>{" "}
                       ในสื่อดังกล่าวทั้งหมดหรือบางส่วน เพื่อวัตถุประสงค์ในการ{" "}
@@ -127,7 +127,7 @@ export default function TermsModal({
                   </div>
 
                   <div className="bg-zinc-100 p-4 border-purple-500 border-l-4 ">
-                    <h5 className="mb-2 font-semibold text-white">
+                    <h5 className="mb-2 font-semibold text-zinc-950">
                       3. การสละสิทธิ
                     </h5>
                     <p className="text-zinc-400 text-sm leading-relaxed">
@@ -138,7 +138,7 @@ export default function TermsModal({
                       และ{" "}
                       <span className="font-medium text-red-400">สละสิทธิ</span>{" "}
                       ในการเรียกร้อง{" "}
-                      <span className="font-medium text-white">
+                      <span className="font-medium text-zinc-950">
                         ค่าเสียหาย ค่าตอบแทน หรือค่าสิทธิ (Royalty)
                       </span>{" "}
                       ใด ๆ จาก medicalhospital.com
@@ -147,7 +147,7 @@ export default function TermsModal({
                   </div>
 
                   <div className="bg-zinc-100 p-4 border-orange-500 border-l-4 ">
-                    <h5 className="mb-2 font-semibold text-white">
+                    <h5 className="mb-2 font-semibold text-zinc-950">
                       4. การคงอยู่ของสิทธิ
                     </h5>
                     <p className="text-zinc-400 text-sm leading-relaxed">
@@ -156,11 +156,11 @@ export default function TermsModal({
                         มีผลต่อเนื่องและไม่มีกำหนดเวลา
                       </span>{" "}
                       แม้ว่าผู้ใช้บริการจะ{" "}
-                      <span className="font-medium text-white">
+                      <span className="font-medium text-zinc-950">
                         ส��้นสุดสถานะการเป็นสมาชิก
                       </span>{" "}
                       หรือ{" "}
-                      <span className="font-medium text-white">
+                      <span className="font-medium text-zinc-950">
                         เลิกใช้บริการ
                       </span>
                       ของ medicalhospital.com แล้วก็ตาม
@@ -239,11 +239,11 @@ export default function TermsModal({
                     <p className="text-zinc-400 text-sm leading-relaxed">
                       <span className="font-semibold text-yellow-300">→</span>{" "}
                       การยินยอมนี้{" "}
-                      <span className="font-medium text-white">
+                      <span className="font-medium text-zinc-950">
                         ไม่มีค่าใช้จ่าย
                       </span>{" "}
                       และ{" "}
-                      <span className="font-medium text-white">
+                      <span className="font-medium text-zinc-950">
                         ไม่มีค่าตอบแทน
                       </span>{" "}
                       ใดๆ
@@ -253,7 +253,7 @@ export default function TermsModal({
                     <p className="text-zinc-400 text-sm leading-relaxed">
                       <span className="font-semibold text-blue-300">→</span>{" "}
                       สิทธิที่ได้รับ{" "}
-                      <span className="font-medium text-white">
+                      <span className="font-medium text-zinc-950">
                         ไม่สามารถเพิกถอนได้
                       </span>{" "}
                       แม้จะยกเลิกการเป็นสมาชิกแล้ว
@@ -263,7 +263,7 @@ export default function TermsModal({
                     <p className="text-zinc-400 text-sm leading-relaxed">
                       <span className="font-semibold text-purple-300">→</span>{" "}
                       เราจะใช้ภาพและข้อมูล{" "}
-                      <span className="font-medium text-white">
+                      <span className="font-medium text-zinc-950">
                         อย่างมืออาชีพและสร้างสรรค์
                       </span>{" "}
                       เพื่อประโยชน์ในการประชาสัมพันธ์เท่านั้น
@@ -301,7 +301,7 @@ export default function TermsModal({
                       <span className="text-green-400">🔒</span>
                       <span>
                         ข้อมูลส่วนตัว (ชื่อ, ที่อยู่, เบอร์โทร) จะ
-                        <span className="font-medium text-white">
+                        <span className="font-medium text-zinc-950">
                           ไม่ถูกเผยแพร่
                         </span>
                         สาธารณะ
@@ -311,7 +311,7 @@ export default function TermsModal({
                       <span className="text-green-400">🔒</span>
                       <span>
                         ใช้เฉพาะภาพและวิดีโอที่
-                        <span className="font-medium text-white">
+                        <span className="font-medium text-zinc-950">
                           เหมาะสมและสร้างสรรค์
                         </span>
                       </span>
@@ -320,7 +320,7 @@ export default function TermsModal({
                       <span className="text-green-400">🔒</span>
                       <span>
                         คุณสามารถ
-                        <span className="font-medium text-white">
+                        <span className="font-medium text-zinc-950">
                           ขอดูและแก้ไขข้อมูล
                         </span>
                         ส่วนตัวได้ตลอดเวลา
@@ -343,11 +343,11 @@ export default function TermsModal({
               <div className="bg-zinc-100/50 p-4 border border-zinc-700 ">
                 <p className="text-zinc-400 leading-relaxed">
                   ข้าพเจ้าได้อ่านและยอมรับ{" "}
-                  <span className="font-semibold text-white">
+                  <span className="font-semibold text-zinc-950">
                     ข้อตกลงและเงื่อนไขการใช้บริการ
                   </span>{" "}
                   และ{" "}
-                  <span className="font-semibold text-white">
+                  <span className="font-semibold text-zinc-950">
                     นโยบายความเป็นส่วนตัว
                   </span>{" "}
                   ของ{" "}
@@ -404,11 +404,11 @@ export default function TermsModal({
                   ให้{" "}
                   <span className="font-semibold text-red-400">{hospitalName}</span>{" "}
                   ใช้{" "}
-                  <span className="font-medium text-white">
+                  <span className="font-medium text-zinc-950">
                     ภาพถ่าย วิดีโอ และข้อมูลความสำเร็จ
                   </span>{" "}
                   ของข้าพเจ้า เพื่อวัตถุประสงค์ในการ{" "}
-                  <span className="font-medium text-white">
+                  <span className="font-medium text-zinc-950">
                     ประชาสัมพันธ์และการตลาด
                   </span>{" "}
                   <span className="font-medium text-yellow-400">

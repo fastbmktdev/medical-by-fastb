@@ -119,7 +119,7 @@ export default function PaymentHistory() {
                   <PaymentStatusDisplay status={payment.status} size="md" />
                   <div>
                     <div className="flex items-center space-x-2">
-                      <h4 className="text-lg font-semibold text-white">
+                      <h4 className="text-lg font-semibold text-zinc-950">
                         {getPaymentTypeText(payment.payment_type)}
                       </h4>
                     </div>
@@ -137,7 +137,7 @@ export default function PaymentHistory() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-2xl font-semibold text-white">
+                  <p className="text-2xl font-semibold text-zinc-950">
                     {formatAmount(payment.amount)}
                   </p>
                   <div className="mt-2 flex items-center justify-end space-x-2">
@@ -167,10 +167,10 @@ export default function PaymentHistory() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
           <div className="bg-zinc-800  p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-white">รายละเอียดการชำระเงิน</h3>
+              <h3 className="text-xl font-semibold text-zinc-950">รายละเอียดการชำระเงิน</h3>
               <button
                 onClick={() => setSelectedPayment(null)}
-                className="text-zinc-400 hover:text-white transition-colors"
+                className="text-zinc-400 hover:text-zinc-950 transition-colors"
               >
                 <XCircleIcon className="w-6 h-6" />
               </button>
@@ -188,7 +188,7 @@ export default function PaymentHistory() {
                 </div>
                 <div>
                   <label className="text-zinc-400 text-sm">ประเภท</label>
-                  <p className="text-white">{getPaymentTypeText(selectedPayment.payment_type)}</p>
+                  <p className="text-zinc-950">{getPaymentTypeText(selectedPayment.payment_type)}</p>
                 </div>
                 <div>
                   <label className="text-zinc-400 text-sm">จำนวนเงิน</label>
@@ -198,7 +198,7 @@ export default function PaymentHistory() {
                 </div>
                 <div>
                   <label className="text-zinc-400 text-sm">วันที่สร้าง</label>
-                  <p className="text-white">{formatPaymentDate(selectedPayment.created_at)}</p>
+                  <p className="text-zinc-950">{formatPaymentDate(selectedPayment.created_at)}</p>
                 </div>
               </div>
 

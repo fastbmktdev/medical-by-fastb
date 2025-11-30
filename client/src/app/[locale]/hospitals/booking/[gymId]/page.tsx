@@ -371,9 +371,9 @@ export default function HospitalBookingPage() {
                   <div
                     className={`w-10 h-10  flex items-center justify-center font-semibold transition-colors ${
                       currentStep > step.id
-                        ? 'bg-green-500 text-white'
+                        ? 'bg-green-500 text-zinc-950'
                         : currentStep === step.id
-                        ? 'bg-blue-600 text-white'
+                        ? 'bg-blue-600 text-zinc-950'
                         : 'bg-gray-300 text-gray-600'
                     }`}
                   >

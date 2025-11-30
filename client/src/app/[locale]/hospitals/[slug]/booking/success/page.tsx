@@ -122,7 +122,7 @@ function BookingSuccessContent() {
       <div className="flex justify-center items-center bg-zinc-100 p-4 min-h-screen">
         <div className="bg-zinc-100 shadow-xl p-8 border border-zinc-700  w-full max-w-md text-center">
           <div className="inline-flex justify-center items-center bg-brand-primary mb-4  w-16 h-16">
-            <ExclamationTriangleIcon className="w-8 h-8 text-white" />
+            <ExclamationTriangleIcon className="w-8 h-8 text-zinc-950" />
           </div>
           <h1 className="mb-2 font-semibold text-2xl">
             ไม่พบข้อมูล
@@ -147,7 +147,7 @@ function BookingSuccessContent() {
         {/* Success Message */}
         <div className="mb-8 text-center">
           <div className="inline-flex justify-center items-center bg-green-600 mb-4  w-20 h-20">
-            <CheckCircleIcon className="w-12 h-12 text-white" />
+            <CheckCircleIcon className="w-12 h-12 text-zinc-950" />
           </div>
           <h1 className="mb-2 font-semibold text-3xl md:text-4xl">
             จองสำเร็จ!
@@ -191,7 +191,7 @@ function BookingSuccessContent() {
           <div className="gap-6 grid sm:grid-cols-2 mb-6">
             <div className="bg-zinc-100/50 p-4 ">
               <p className="mb-2 text-zinc-400 text-xs uppercase tracking-wide">แพ็คเกจ</p>
-              <p className="font-semibold text-white">{appointment.package_name}</p>
+              <p className="font-semibold text-zinc-950">{appointment.package_name}</p>
               {appointment.duration_months && (
                 <p className="mt-1 text-zinc-400 text-sm">
                   ระยะเวลา {appointment.duration_months} เดือน
@@ -213,7 +213,7 @@ function BookingSuccessContent() {
               <CalendarIcon className="shrink-0 mt-1 w-5 h-5 text-zinc-400" />
               <div>
                 <p className="mb-1 text-zinc-400 text-xs uppercase tracking-wide">วันเริ่มต้น</p>
-                <p className="font-semibold text-white">
+                <p className="font-semibold text-zinc-950">
                   {new Date(appointment.start_date).toLocaleDateString('th-TH', {
                     year: 'numeric',
                     month: 'long',
@@ -228,7 +228,7 @@ function BookingSuccessContent() {
                 <CalendarIcon className="shrink-0 mt-1 w-5 h-5 text-zinc-400" />
                 <div>
                   <p className="mb-1 text-zinc-400 text-xs uppercase tracking-wide">วันสิ้นสุด</p>
-                  <p className="font-semibold text-white">
+                  <p className="font-semibold text-zinc-950">
                     {new Date(appointment.end_date).toLocaleDateString('th-TH', {
                       year: 'numeric',
                       month: 'long',
@@ -242,26 +242,26 @@ function BookingSuccessContent() {
 
           {/* Contact Info */}
           <div className="pt-6 border-zinc-700 border-t">
-            <p className="mb-3 font-semibold text-white">ข้อมูลผู้จอง</p>
+            <p className="mb-3 font-semibold text-zinc-950">ข้อมูลผู้จอง</p>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-zinc-400">ชื่อ:</span>
-                <span className="font-medium text-white">{appointment.customer_name}</span>
+                <span className="font-medium text-zinc-950">{appointment.customer_name}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-400">อีเมล:</span>
-                <span className="font-medium text-white">{appointment.customer_email}</span>
+                <span className="font-medium text-zinc-950">{appointment.customer_email}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-400">เบอร์โทร:</span>
-                <span className="font-medium text-white">{appointment.customer_phone}</span>
+                <span className="font-medium text-zinc-950">{appointment.customer_phone}</span>
               </div>
             </div>
           </div>
 
           {appointment.special_requests && (
             <div className="mt-6 pt-6 border-zinc-700 border-t">
-              <p className="mb-2 font-semibold text-white">คำขอพิเศษ</p>
+              <p className="mb-2 font-semibold text-zinc-950">คำขอพิเศษ</p>
               <p className="text-zinc-400 text-sm">{appointment.special_requests}</p>
             </div>
           )}
@@ -280,8 +280,8 @@ function BookingSuccessContent() {
                 กรุณาชำระเงินภายใน 24 ชั่วโมง เพื่อยืนยันการจอง
               </p>
               <div className="space-y-2 text-zinc-400 text-sm">
-                <p>• หมายเลขการจอง: <span className="font-mono font-semibold text-white">{appointment.booking_number}</span></p>
-                <p>• จำนวนเงิน: <span className="font-semibold text-white">฿{appointment.price_paid.toLocaleString()}</span></p>
+                <p>• หมายเลขการจอง: <span className="font-mono font-semibold text-zinc-950">{appointment.booking_number}</span></p>
+                <p>• จำนวนเงิน: <span className="font-semibold text-zinc-950">฿{appointment.price_paid.toLocaleString()}</span></p>
               </div>
             </div>
           </div>

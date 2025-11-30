@@ -184,7 +184,7 @@ export default function MediaLibraryModal({ isOpen, onClose, onSelect }: MediaLi
                     sizes="(max-width: 768px) 50vw, 25vw"
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-                    <span className="opacity-0 group-hover:opacity-100 text-white text-sm font-medium transition-opacity">
+                    <span className="opacity-0 group-hover:opacity-100 text-zinc-950 text-sm font-medium transition-opacity">
                       เลือก
                     </span>
                   </div>

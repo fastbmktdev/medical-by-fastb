@@ -27,7 +27,7 @@ export function FormField({
         <div className="md:pt-2">
           <label
             htmlFor={fieldId}
-            className="block text-sm font-medium text-white"
+            className="block text-sm font-medium text-zinc-950"
           >
             {label}
             {required && (
@@ -71,7 +71,7 @@ export function FormField({
       {/* Label */}
       <label
         htmlFor={fieldId}
-        className="block text-sm font-medium text-white"
+        className="block text-sm font-medium text-zinc-950"
       >
         {label}
         {required && (

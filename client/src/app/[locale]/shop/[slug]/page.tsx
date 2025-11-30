@@ -174,7 +174,7 @@ export default function ProductDetailPage({
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-7xl">
           <Link
             href="/shop"
-            className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
+            className="inline-flex items-center gap-2 text-zinc-400 hover:text-zinc-950 transition-colors"
           >
             <ArrowLeftIcon className="w-5 h-5" />
             <span>กลับไปหน้าร้านค้า</span>
@@ -267,7 +267,7 @@ export default function ProductDetailPage({
             {/* Variants */}
             {product.variants && product.variants.length > 0 && (
               <div className="mb-6">
-                <label className="block mb-2 font-semibold text-white">
+                <label className="block mb-2 font-semibold text-zinc-950">
                   {product.variants[0].type || "ตัวเลือก"}
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -338,7 +338,7 @@ export default function ProductDetailPage({
             {/* Quantity Selector */}
             {!isOutOfStock && (
               <div className="mb-6">
-                <label className="block mb-2 font-semibold text-white">
+                <label className="block mb-2 font-semibold text-zinc-950">
                   จำนวน
                 </label>
                 <div className="flex items-center gap-3">
@@ -382,7 +382,7 @@ export default function ProductDetailPage({
               className={`w-full flex items-center justify-center gap-2 px-6 py-4  font-semibold text-lg transition-colors ${
                 isOutOfStock
                   ? "bg-zinc-100 text-zinc-500 cursor-not-allowed"
-                  : "bg-brand-primary hover:bg-red-600 text-white"
+                  : "bg-brand-primary hover:bg-red-600 text-zinc-950"
               }`}
               aria-label="เพิ่มสินค้าลงตะกร้า"
             >

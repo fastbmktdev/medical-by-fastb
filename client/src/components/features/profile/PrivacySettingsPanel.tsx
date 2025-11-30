@@ -71,12 +71,12 @@ export function PrivacySettingsPanel() {
           <ShieldCheckIcon className="w-5 h-5 text-blue-400" />
         </div>
         <div>
-          <h3 className="font-semibold text-xl text-white">การตั้งค่าความเป็นส่วนตัว</h3>
+          <h3 className="font-semibold text-xl text-zinc-950">การตั้งค่าความเป็นส่วนตัว</h3>
           <p className="text-zinc-400 text-sm">ควบคุมข้อมูลที่ผู้ใช้คนอื่นสามารถเห็นได้</p>
         </div>
       </CardHeader>
       <CardBody className="space-y-6">
-        <div className="text-white space-y-2">
+        <div className="text-zinc-950 space-y-2">
           <Select
             label="ความโปร่งใสของโปรไฟล์"
             labelPlacement="outside"
@@ -88,7 +88,7 @@ export function PrivacySettingsPanel() {
             variant="bordered"
             classNames={{
               trigger: "bg-zinc-100/50 border-zinc-700",
-              label: "text-white/90 font-medium text-sm",
+              label: "text-zinc-950/90 font-medium text-sm",
             }}
             aria-label="ความโปร่งใสของโปรไฟล์"
           >
@@ -105,7 +105,7 @@ export function PrivacySettingsPanel() {
             className="privacy-switch"
           >
             <div className="flex flex-col">
-              <span className="text-white">แสดงอีเมล</span>
+              <span className="text-zinc-950">แสดงอีเมล</span>
               <span className="text-zinc-400 text-xs">อนุญาตให้ผู้ใช้คนอื่นเห็นอีเมลของคุณ</span>
             </div>
           </Switch>
@@ -116,7 +116,7 @@ export function PrivacySettingsPanel() {
             className="privacy-switch"
           >
             <div className="flex flex-col">
-              <span className="text-white">แสดงเบอร์โทรศัพท์</span>
+              <span className="text-zinc-950">แสดงเบอร์โทรศัพท์</span>
               <span className="text-zinc-400 text-xs">อนุญาตให้ผู้ใช้คนอื่นเห็นเบอร์โทรศัพท์ของคุณ</span>
             </div>
           </Switch>
@@ -127,7 +127,7 @@ export function PrivacySettingsPanel() {
             className="privacy-switch"
           >
             <div className="flex flex-col">
-              <span className="text-white">แสดงประวัติการรักษา</span>
+              <span className="text-zinc-950">แสดงประวัติการรักษา</span>
               <span className="text-zinc-400 text-xs">อนุญาตให้ผู้ใช้คนอื่นเห็นประวัติการรักษาของคุณ</span>
             </div>
           </Switch>
@@ -138,7 +138,7 @@ export function PrivacySettingsPanel() {
             className="privacy-switch"
           >
             <div className="flex flex-col">
-              <span className="text-white">แสดง Achievements</span>
+              <span className="text-zinc-950">แสดง Achievements</span>
               <span className="text-zinc-400 text-xs">อนุญาตให้ผู้ใช้คนอื่นเห็น Badges และ Achievements ของคุณ</span>
             </div>
           </Switch>
@@ -149,7 +149,7 @@ export function PrivacySettingsPanel() {
             className="privacy-switch"
           >
             <div className="flex flex-col">
-              <span className="text-white">แสดง Social Media Links</span>
+              <span className="text-zinc-950">แสดง Social Media Links</span>
               <span className="text-zinc-400 text-xs">อนุญาตให้ผู้ใช้คนอื่นเห็น Social Media Links ของคุณ</span>
             </div>
           </Switch>

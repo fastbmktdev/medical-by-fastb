@@ -141,7 +141,7 @@ export default function PaymentPage() {
               onClick={() => setActiveTab('process')}
               className={`px-6 py-3  font-medium transition-colors ${
                 activeTab === 'process'
-                  ? 'bg-brand-primary text-white'
+                  ? 'bg-brand-primary text-zinc-950'
                   : 'text-zinc-950 hover:text-gray-700'
               }`}
             >
@@ -152,7 +152,7 @@ export default function PaymentPage() {
               onClick={() => setActiveTab('status')}
               className={`px-6 py-3  font-medium transition-colors ${
                 activeTab === 'status'
-                  ? 'bg-brand-primary text-white'
+                  ? 'bg-brand-primary text-zinc-950'
                   : 'text-zinc-950 hover:text-gray-700'
               }`}
             >
@@ -163,7 +163,7 @@ export default function PaymentPage() {
               onClick={() => setActiveTab('history')}
               className={`px-6 py-3  font-medium transition-colors ${
                 activeTab === 'history'
-                  ? 'bg-brand-primary text-white'
+                  ? 'bg-brand-primary text-zinc-950'
                   : 'text-zinc-950 hover:text-gray-700'
               }`}
             >

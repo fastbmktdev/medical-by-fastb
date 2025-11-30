@@ -64,14 +64,14 @@ function NewsSlide({ item, isActive }: { item: typeof NEWS_ITEMS[0]; isActive: b
       {/* Content */}
       <div className="relative z-10 flex flex-col justify-end h-full p-6">
         {item.isNew && (
-          <div className="absolute top-4 right-4 bg-brand-primary text-white text-xs font-semibold px-3 py-1  animate-pulse shadow-lg">
+          <div className="absolute top-4 right-4 bg-brand-primary text-zinc-950 text-xs font-semibold px-3 py-1  animate-pulse shadow-lg">
             ใหม่
           </div>
         )}
-        <h3 className="font-semibold text-lg md:text-xl mb-2 text-white group-hover:text-brand-primary transition-colors">
+        <h3 className="font-semibold text-lg md:text-xl mb-2 text-zinc-950 group-hover:text-brand-primary transition-colors">
           {item.title}
         </h3>
-        <p className="text-white/90 text-sm md:text-base line-clamp-2">
+        <p className="text-zinc-950/90 text-sm md:text-base line-clamp-2">
           {item.description}
         </p>
       </div>
@@ -108,7 +108,7 @@ function NewsBannerContent() {
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <div className="w-2 h-2 bg-brand-primary  animate-pulse"></div>
-            <h2 className="font-semibold text-lg md:text-xl text-white">
+            <h2 className="font-semibold text-lg md:text-xl text-zinc-950">
               ข่าวสารและโปรโมชั่น
             </h2>
           </div>

@@ -65,51 +65,140 @@ export const IdCardUpload = ({
       formData.append("file", file);
       formData.append("watermarkedFile", watermarkedFile);
 
-      const response = await fetch("/api/partner/id-card", {
-        method: "POST",
-        body: formData,
-      });
+      // Retry logic for transient network errors
+      let lastError: Error | null = null;
+      const maxRetries = 2;
+      let retryCount = 0;
+      
+      while (retryCount <= maxRetries) {
+        try {
+          const response = await fetch("/api/partner/id-card", {
+            method: "POST",
+            body: formData,
+          });
 
-      if (!response.ok) {
-        // Check if response is JSON before trying to parse
-        const contentType = response.headers.get("content-type");
-        if (contentType?.includes("application/json")) {
-          try {
-            const error = await response.json();
-            throw new Error(error.error || "การอัปโหลดล้มเหลว");
-          } catch (parseError) {
-            throw new Error(
-              `การอัปโหลดล้มเหลว (${response.status} ${response.statusText})`
-            );
+          if (!response.ok) {
+            // Check if response is JSON before trying to parse
+            const contentType = response.headers.get("content-type");
+            let errorMessage = "การอัปโหลดล้มเหลว";
+            
+            if (contentType?.includes("application/json")) {
+              try {
+                const errorData = await response.json();
+                errorMessage = errorData.error || errorData.message || errorMessage;
+                
+                // Include additional details if available (for debugging)
+                if (errorData.details) {
+                  console.error("Upload error details:", errorData.details);
+                }
+                
+                // Don't retry on client errors (4xx) or specific server errors
+                const shouldRetry = response.status >= 500 && retryCount < maxRetries;
+                
+                if (!shouldRetry) {
+                  throw new Error(errorMessage);
+                }
+                
+                // For retryable errors, wait before retrying
+                lastError = new Error(errorMessage);
+                retryCount++;
+                if (retryCount <= maxRetries) {
+                  setUploadProgress(`กำลังลองใหม่อีกครั้ง... (${retryCount}/${maxRetries})`);
+                  await new Promise(resolve => setTimeout(resolve, 1000 * retryCount)); // Exponential backoff
+                  continue;
+                }
+                throw lastError;
+              } catch (parseError) {
+                // If JSON parsing fails, use status-based error
+                const statusError = `การอัปโหลดล้มเหลว (${response.status} ${response.statusText})`;
+                if (response.status >= 500 && retryCount < maxRetries) {
+                  lastError = new Error(statusError);
+                  retryCount++;
+                  if (retryCount <= maxRetries) {
+                    setUploadProgress(`กำลังลองใหม่อีกครั้ง... (${retryCount}/${maxRetries})`);
+                    await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
+                    continue;
+                  }
+                }
+                throw new Error(statusError);
+              }
+            } else {
+              // Response is not JSON (likely HTML error page)
+              const statusError = `การอัปโหลดล้มเหลว (${response.status} ${response.statusText})`;
+              if (response.status >= 500 && retryCount < maxRetries) {
+                lastError = new Error(statusError);
+                retryCount++;
+                if (retryCount <= maxRetries) {
+                  setUploadProgress(`กำลังลองใหม่อีกครั้ง... (${retryCount}/${maxRetries})`);
+                  await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
+                  continue;
+                }
+              }
+              throw new Error(statusError);
+            }
           }
-        } else {
-          // Response is not JSON (likely HTML error page)
-          const text = await response.text();
-          throw new Error(
-            `การอัปโหลดล้มเหลว (${response.status} ${response.statusText})`
-          );
+
+          // Check if response is JSON before parsing
+          const contentType = response.headers.get("content-type");
+          if (!contentType?.includes("application/json")) {
+            throw new Error("ได้รับข้อมูลที่ไม่ถูกต้องจากเซิร์ฟเวอร์");
+          }
+
+          const result = await response.json();
+
+          if (result.success && result.data) {
+            setPreviewUrl(result.data.watermarkedUrl);
+            onUploadComplete(result.data);
+            toast.success("อัปโหลดบัตรประชาชนสำเร็จ");
+            return; // Success, exit retry loop
+          } else {
+            throw new Error(result.error || "ไม่สามารถอัปโหลดได้");
+          }
+        } catch (fetchError) {
+          // Handle network errors (timeout, connection refused, etc.)
+          if (fetchError instanceof TypeError && fetchError.message.includes('fetch')) {
+            lastError = new Error("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต");
+          } else if (fetchError instanceof Error) {
+            lastError = fetchError;
+          } else {
+            lastError = new Error("เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ");
+          }
+          
+          // Retry on network errors
+          if (retryCount < maxRetries) {
+            retryCount++;
+            setUploadProgress(`กำลังลองใหม่อีกครั้ง... (${retryCount}/${maxRetries})`);
+            await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
+            continue;
+          }
+          
+          throw lastError;
         }
       }
-
-      // Check if response is JSON before parsing
-      const contentType = response.headers.get("content-type");
-      if (!contentType?.includes("application/json")) {
-        throw new Error("ได้รับข้อมูลที่ไม่ถูกต้องจากเซิร์ฟเวอร์");
-      }
-
-      const result = await response.json();
-
-      if (result.success && result.data) {
-        setPreviewUrl(result.data.watermarkedUrl);
-        onUploadComplete(result.data);
-        toast.success("อัปโหลดบัตรประชาชนสำเร็จ");
-      } else {
-        throw new Error("ไม่สามารถอัปโหลดได้");
+      
+      // Should not reach here, but handle just in case
+      if (lastError) {
+        throw lastError;
       }
     } catch (error) {
       console.error("Upload error:", error);
-      const errorMessage =
-        error instanceof Error ? error.message : "เกิดข้อผิดพลาดในการอัปโหลด";
+      
+      // Extract user-friendly error message
+      let errorMessage = "เกิดข้อผิดพลาดในการอัปโหลด";
+      
+      if (error instanceof Error) {
+        errorMessage = error.message;
+        
+        // Provide more specific error messages for common issues
+        if (error.message.includes("502") || error.message.includes("Bad Gateway")) {
+          errorMessage = "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาลองใหม่อีกครั้งในภายหลัง";
+        } else if (error.message.includes("504") || error.message.includes("timeout")) {
+          errorMessage = "การอัปโหลดใช้เวลานานเกินไป กรุณาลองอัปโหลดไฟล์ที่มีขนาดเล็กลง";
+        } else if (error.message.includes("network") || error.message.includes("fetch")) {
+          errorMessage = "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต";
+        }
+      }
+      
       onUploadError(errorMessage);
       toast.error(errorMessage);
     } finally {
@@ -191,7 +280,7 @@ export const IdCardUpload = ({
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
                   <CheckCircleIcon className="w-5 h-5 text-green-400" />
-                  <span className="text-white font-medium">อัปโหลดสำเร็จ</span>
+                  <span className="text-zinc-950 font-medium">อัปโหลดสำเร็จ</span>
                 </div>
                 <p className="text-zinc-400 text-sm mb-3">
                   บัตรประชาชนของคุณถูกอัปโหลดและใส่ลายน้ำเรียบร้อยแล้ว

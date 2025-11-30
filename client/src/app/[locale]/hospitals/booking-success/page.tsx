@@ -189,7 +189,7 @@ function BookingSuccessContent() {
         <div className="bg-zinc-100 shadow-xl p-8 border border-zinc-700  w-full max-w-2xl">
           <div className="mb-8 text-center">
             <div className="inline-flex justify-center items-center bg-brand-primary mb-4  w-20 h-20">
-              <XCircleIcon className="w-12 h-12 text-white" />
+              <XCircleIcon className="w-12 h-12 text-zinc-950" />
             </div>
             <h1 className="mb-2 font-semibold text-3xl">
               การชำระเงินไม่สำเร็จ
@@ -218,7 +218,7 @@ function BookingSuccessContent() {
         <div className="bg-zinc-100 shadow-xl p-8 border border-zinc-700  w-full max-w-2xl">
           <div className="mb-8 text-center">
             <div className="inline-flex justify-center items-center bg-yellow-600 mb-4  w-20 h-20">
-              <ClockIcon className="w-12 h-12 text-white" />
+              <ClockIcon className="w-12 h-12 text-zinc-950" />
             </div>
             <h1 className="mb-2 font-semibold text-3xl">
               กำลังตรวจสอบการชำระเงิน
@@ -244,7 +244,7 @@ function BookingSuccessContent() {
         {/* Success Icon */}
         <div className="mb-8 text-center">
           <div className="inline-flex justify-center items-center bg-green-600 mb-4  w-20 h-20">
-            <CheckCircleIcon className="w-12 h-12 text-white" />
+            <CheckCircleIcon className="w-12 h-12 text-zinc-950" />
           </div>
           <h1 className="mb-2 font-semibold text-3xl md:text-4xl">
             จองสำเร็จ!
@@ -261,19 +261,19 @@ function BookingSuccessContent() {
             <div className="space-y-3">
               <div className="flex justify-between">
                 <span className="text-zinc-400">เลขที่การจอง:</span>
-                <span className="font-mono font-medium text-white">{appointment.booking_number}</span>
+                <span className="font-mono font-medium text-zinc-950">{appointment.booking_number}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-400">โรงพยาบาล:</span>
-                <span className="font-medium text-white">{appointment.hospital_name}</span>
+                <span className="font-medium text-zinc-950">{appointment.hospital_name}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-400">แพ็กเกจ:</span>
-                <span className="font-medium text-white">{appointment.package_name}</span>
+                <span className="font-medium text-zinc-950">{appointment.package_name}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-400">วันที่เริ่มต้น:</span>
-                <span className="font-medium text-white">
+                <span className="font-medium text-zinc-950">
                   {new Date(appointment.start_date).toLocaleDateString('th-TH', {
                     year: 'numeric',
                     month: 'long',
@@ -284,7 +284,7 @@ function BookingSuccessContent() {
               {appointment.end_date && (
                 <div className="flex justify-between">
                   <span className="text-zinc-400">วันที่สิ้นสุด:</span>
-                  <span className="font-medium text-white">
+                  <span className="font-medium text-zinc-950">
                     {new Date(appointment.end_date).toLocaleDateString('th-TH', {
                       year: 'numeric',
                       month: 'long',
@@ -295,15 +295,15 @@ function BookingSuccessContent() {
               )}
               <div className="flex justify-between">
                 <span className="text-zinc-400">ชื่อผู้จอง:</span>
-                <span className="font-medium text-white">{appointment.customer_name}</span>
+                <span className="font-medium text-zinc-950">{appointment.customer_name}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-400">อีเมล:</span>
-                <span className="font-medium text-white">{appointment.customer_email}</span>
+                <span className="font-medium text-zinc-950">{appointment.customer_email}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-400">เบอร์โทร:</span>
-                <span className="font-medium text-white">{appointment.customer_phone}</span>
+                <span className="font-medium text-zinc-950">{appointment.customer_phone}</span>
               </div>
               <div className="flex justify-between items-center pt-3 border-zinc-600 border-t">
                 <span className="font-semibold text-lg">ยอดรวม:</span>
@@ -329,9 +329,9 @@ function BookingSuccessContent() {
             ขั้นตอนถัดไป
           </h3>
           <ul className="space-y-2 text-zinc-400 text-sm list-disc list-inside">
-            <li>เราได้ส่งอีเมลยืนยันการจองไปที่ <strong className="text-white">{appointment?.customer_email}</strong> แล้ว</li>
+            <li>เราได้ส่งอีเมลยืนยันการจองไปที่ <strong className="text-zinc-950">{appointment?.customer_email}</strong> แล้ว</li>
             <li>{`คุณสามารถดูรายละเอียดการจองได้ที่หน้า "การจองของฉัน"`}</li>
-            <li>กรุณานำหมายเลขการจอง <strong className="font-mono text-white">{appointment?.booking_number}</strong> มาแสดงเมื่อเช็คอิน</li>
+            <li>กรุณานำหมายเลขการจอง <strong className="font-mono text-zinc-950">{appointment?.booking_number}</strong> มาแสดงเมื่อเช็คอิน</li>
             <li>โรงพยาบาลจะติดต่อกลับเพื่อยืนยันการจองภายใน 24 ชั่วโมง</li>
           </ul>
         </div>

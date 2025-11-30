@@ -79,14 +79,14 @@ export function NotificationPreferencesPanel() {
           <BellIcon className="w-5 h-5 text-blue-400" />
         </div>
         <div>
-          <h3 className="font-semibold text-xl text-white">การตั้งค่าการแจ้งเตือน</h3>
+          <h3 className="font-semibold text-xl text-zinc-950">การตั้งค่าการแจ้งเตือน</h3>
           <p className="text-zinc-400 text-sm">ควบคุมการแจ้งเตือนที่คุณต้องการรับ</p>
         </div>
       </CardHeader>
       <CardBody className="space-y-6">
         {/* General Settings */}
         <div className="space-y-4">
-          <h4 className="font-semibold text-white">การตั้งค่าทั่วไป</h4>
+          <h4 className="font-semibold text-zinc-950">การตั้งค่าทั่วไป</h4>
           
           <Switch
             isSelected={preferences.email_enabled}
@@ -95,7 +95,7 @@ export function NotificationPreferencesPanel() {
             className="privacy-switch"
           >
             <div className="flex flex-col">
-              <span className="text-white">เปิดใช้งานอีเมล</span>
+              <span className="text-zinc-950">เปิดใช้งานอีเมล</span>
               <span className="text-zinc-400 text-xs">รับการแจ้งเตือนทางอีเมล</span>
             </div>
           </Switch>
@@ -107,7 +107,7 @@ export function NotificationPreferencesPanel() {
             className="privacy-switch"
           >
             <div className="flex flex-col">
-              <span className="text-white">เปิดใช้งานในแอป</span>
+              <span className="text-zinc-950">เปิดใช้งานในแอป</span>
               <span className="text-zinc-400 text-xs">รับการแจ้งเตือนในแอปพลิเคชัน</span>
             </div>
           </Switch>
@@ -115,7 +115,7 @@ export function NotificationPreferencesPanel() {
 
         {/* Specific Notifications */}
         <div className="space-y-4">
-          <h4 className="font-semibold text-white">ประเภทการแจ้งเตือน</h4>
+          <h4 className="font-semibold text-zinc-950">ประเภทการแจ้งเตือน</h4>
           
           <Switch
             isSelected={preferences.booking_confirmation}
@@ -124,7 +124,7 @@ export function NotificationPreferencesPanel() {
             className="privacy-switch"
           >
             <div className="flex flex-col">
-              <span className="text-white">ยืนยันการจอง</span>
+              <span className="text-zinc-950">ยืนยันการจอง</span>
               <span className="text-zinc-400 text-xs">แจ้งเตือนเมื่อจองสำเร็จ</span>
             </div>
           </Switch>
@@ -136,7 +136,7 @@ export function NotificationPreferencesPanel() {
             className="privacy-switch"
           >
             <div className="flex flex-col">
-              <span className="text-white">เตือนก่อนเข้าชั้นเรียน</span>
+              <span className="text-zinc-950">เตือนก่อนเข้าชั้นเรียน</span>
               <span className="text-zinc-400 text-xs">แจ้งเตือนก่อนวันเข้าชั้นเรียน</span>
             </div>
           </Switch>
@@ -148,7 +148,7 @@ export function NotificationPreferencesPanel() {
             className="privacy-switch"
           >
             <div className="flex flex-col">
-              <span className="text-white">อัปเดต Gamification</span>
+              <span className="text-zinc-950">อัปเดต Gamification</span>
               <span className="text-zinc-400 text-xs">แจ้งเตือนเมื่อได้รับ Points, Badges หรือ Achievements</span>
             </div>
           </Switch>
@@ -160,7 +160,7 @@ export function NotificationPreferencesPanel() {
             className="privacy-switch"
           >
             <div className="flex flex-col">
-              <span className="text-white">โปรโมชั่นและข่าวสาร</span>
+              <span className="text-zinc-950">โปรโมชั่นและข่าวสาร</span>
               <span className="text-zinc-400 text-xs">รับข่าวสารและโปรโมชั่นพิเศษ</span>
             </div>
           </Switch>
@@ -172,7 +172,7 @@ export function NotificationPreferencesPanel() {
             className="privacy-switch"
           >
             <div className="flex flex-col">
-              <span className="text-white">ข้อความจาก Partner</span>
+              <span className="text-zinc-950">ข้อความจาก Partner</span>
               <span className="text-zinc-400 text-xs">รับข้อความและการอัปเดตจากโรงพยาบาล</span>
             </div>
           </Switch>

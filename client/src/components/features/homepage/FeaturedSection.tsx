@@ -37,7 +37,7 @@ export default function FeaturedSection({
         <div className="text-center">
           <Link
             href="/hospitals"
-            className="inline-block bg-brand-primary hover:bg-[#8B5CF6] text-white px-8 py-3  focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 font-semibold transition-colors shadow-lg hover:shadow-xl"
+            className="inline-block bg-brand-primary hover:bg-[#8B5CF6] text-zinc-950 px-8 py-3  focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 font-semibold transition-colors shadow-lg hover:shadow-xl"
             aria-label="ดูโรงพยาบาลทั้งหมด"
           >
             ดูโรงพยาบาลทั้งหมด

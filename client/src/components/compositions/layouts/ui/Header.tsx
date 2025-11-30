@@ -355,13 +355,13 @@ export default function Header() {
   ];
 
   return (
-    <header className="top-0 z-5000 fixed bg-white/75 supports-backdrop-filter:bg-white/60 backdrop-blur border-gray-200 border-b w-screen h-16 text-zinc-950">
+    <header className="top-0 z-50 fixed bg-white/75 supports-backdrop-filter:bg-white/60 backdrop-blur border-gray-200 border-b w-screen h-16 text-zinc-950">
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo & Nav */}
           <div className="flex justify-center items-center gap-8">
             <Link href="/" className="flex items-center gap-2">
-              <span className="inline-flex justify-center items-center bg-brand-primary w-8 h-8 font-semibold text-white ">
+              <span className="inline-flex justify-center items-center bg-brand-primary w-8 h-8 font-semibold text-zinc-950 ">
                 MP
               </span>
               <span className="font-semibold text-base sm:text-lg">
@@ -386,7 +386,7 @@ export default function Header() {
             ) : (
               <Link
                 href="/login"
-                className="text-white hidden md:inline-flex items-center gap-2 bg-brand-primary hover:bg-violet-800 px-4 h-10 font-medium text-sm transition-colors"
+                className="text-zinc-950 hidden md:inline-flex items-center gap-2 bg-brand-primary hover:bg-violet-800 px-4 h-10 font-medium text-sm transition-colors"
               >
                 <UserCircleIcon className="w-5 h-5" />
                 เข้าสู่ระบบ

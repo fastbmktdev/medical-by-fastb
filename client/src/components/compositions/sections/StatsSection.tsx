@@ -54,7 +54,7 @@ export function StatsSection({
         {/* Section Header */}
         {title && (
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-semibold text-white">
+            <h2 className="text-3xl font-semibold text-zinc-950">
               {title}
             </h2>
           </div>

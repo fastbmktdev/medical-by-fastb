@@ -65,10 +65,10 @@ export function AchievementsShowcase() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-lg text-white">Achievements & Badges</h3>
+        <h3 className="font-semibold text-lg text-zinc-950">Achievements & Badges</h3>
         <div className="flex items-center gap-2">
           <TrophyIcon className="w-5 h-5 text-yellow-500" />
-          <span className="text-white font-semibold">
+          <span className="text-zinc-950 font-semibold">
             Level {currentLevel} • {currentPoints} Points
           </span>
         </div>
@@ -76,7 +76,7 @@ export function AchievementsShowcase() {
 
       {/* Earned Badges */}
       <div>
-        <h4 className="mb-3 font-medium text-white">
+        <h4 className="mb-3 font-medium text-zinc-950">
           Badges ที่ได้รับ ({earnedBadges.length})
         </h4>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -98,7 +98,7 @@ export function AchievementsShowcase() {
                     <TrophyIcon className="w-12 h-12 text-yellow-500" />
                   )}
                 </div>
-                <h5 className="font-semibold text-white text-sm">
+                <h5 className="font-semibold text-zinc-950 text-sm">
                   {earned.badges?.name}
                 </h5>
                 <p className="text-zinc-400 text-xs mt-1">
@@ -112,7 +112,7 @@ export function AchievementsShowcase() {
 
       {/* All Badges with Progress */}
       <div>
-        <h4 className="mb-3 font-medium text-white">Badges ทั้งหมด</h4>
+        <h4 className="mb-3 font-medium text-zinc-950">Badges ทั้งหมด</h4>
         <div className="space-y-3">
           {allBadges.slice(0, 5).map((badge) => (
             <Card
@@ -133,7 +133,7 @@ export function AchievementsShowcase() {
                       <TrophyIcon className="w-10 h-10 text-zinc-400" />
                     )}
                     <div>
-                      <h5 className="font-semibold text-white">{badge.name}</h5>
+                      <h5 className="font-semibold text-zinc-950">{badge.name}</h5>
                       <p className="text-zinc-400 text-xs">
                         {badge.description}
                       </p>

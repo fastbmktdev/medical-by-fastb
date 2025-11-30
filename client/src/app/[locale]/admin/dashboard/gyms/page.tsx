@@ -217,7 +217,7 @@ function AdminHospitalsContent() {
                   key: 'hospital_name',
                   label: 'ชื่อโรงพยาบาล',
                   render: (hospital) => (
-                    <span className="font-semibold text-white">{hospital.hospital_name}</span>
+                    <span className="font-semibold text-zinc-950">{hospital.hospital_name}</span>
                   ),
                   showOnMobile: true,
                   exportFormat: (hospital) => hospital.hospital_name,

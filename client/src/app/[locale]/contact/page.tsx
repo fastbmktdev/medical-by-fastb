@@ -501,7 +501,7 @@ export default function ContactPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex justify-center items-center gap-2 bg-brand-primary hover:bg-red-600 disabled:bg-zinc-600 px-6 py-3 w-full font-semibold text-white transition-colors disabled:cursor-not-allowed"
+                  className="flex justify-center items-center gap-2 bg-brand-primary hover:bg-red-600 disabled:bg-zinc-600 px-6 py-3 w-full font-semibold text-zinc-950 transition-colors disabled:cursor-not-allowed"
                   aria-label="ส่งข้อความติดต่อ"
                 >
                   {isSubmitting ? (

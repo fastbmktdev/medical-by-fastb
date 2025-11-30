@@ -402,25 +402,25 @@ export default function BookingPage({
       <div className="bg-zinc-100 border-zinc-700 border-b">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-7xl">
           <nav className="flex items-center gap-2 mb-3 text-sm">
-            <Link href="/" className="flex items-center gap-1 text-zinc-400 hover:text-white transition-colors">
+            <Link href="/" className="flex items-center gap-1 text-zinc-400 hover:text-zinc-950 transition-colors">
               <HomeIcon className="w-4 h-4" />
               <span>หน้าแรก</span>
             </Link>
             <ChevronRightIcon className="w-4 h-4 text-zinc-600" />
-            <Link href="/hospitals" className="text-zinc-400 hover:text-white transition-colors">
+            <Link href="/hospitals" className="text-zinc-400 hover:text-zinc-950 transition-colors">
               โรงพยาบาล
             </Link>
             <ChevronRightIcon className="w-4 h-4 text-zinc-600" />
-            <Link href={`/hospitals/${slug}`} className="text-zinc-400 hover:text-white transition-colors">
+            <Link href={`/hospitals/${slug}`} className="text-zinc-400 hover:text-zinc-950 transition-colors">
               {hospital.hospital_name}
             </Link>
             <ChevronRightIcon className="w-4 h-4 text-zinc-600" />
-            <span className="font-medium text-white">จองโรงพยาบาล</span>
+            <span className="font-medium text-zinc-950">จองโรงพยาบาล</span>
           </nav>
 
           <Link
             href={`/hospitals/${slug}`}
-            className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
+            className="inline-flex items-center gap-2 text-zinc-400 hover:text-zinc-950 transition-colors"
           >
             <ArrowLeftIcon className="w-5 h-5" />
             <span>กลับไปหน้ารายละเอียด</span>
@@ -450,9 +450,9 @@ export default function BookingPage({
                       }`}
                     >
                       {isCompleted ? (
-                        <CheckIcon className="w-6 h-6 text-white" />
+                        <CheckIcon className="w-6 h-6 text-zinc-950" />
                       ) : (
-                        <Icon className="w-6 h-6 text-white" />
+                        <Icon className="w-6 h-6 text-zinc-950" />
                       )}
                     </div>
                     <span
@@ -635,7 +635,7 @@ export default function BookingPage({
                             }`}
                           >
                             <div className="flex justify-between items-center">
-                              <span className="font-semibold text-white">ไม่ใช้โปรโมชั่น</span>
+                              <span className="font-semibold text-zinc-950">ไม่ใช้โปรโมชั่น</span>
                               <span className="font-semibold text-red-500 text-lg">
                                 ฿{formData.selectedPackage.price.toLocaleString()}
                               </span>
@@ -663,7 +663,7 @@ export default function BookingPage({
                                       <span className="bg-green-500/20 text-green-400 px-2 py-1  text-xs font-semibold">
                                         {formatDiscountText(promo)}
                                       </span>
-                                      <span className="font-semibold text-white">{promo.title}</span>
+                                      <span className="font-semibold text-zinc-950">{promo.title}</span>
                                     </div>
                                     {promo.description && (
                                       <p className="text-zinc-400 text-xs">{promo.description}</p>
@@ -705,11 +705,11 @@ export default function BookingPage({
               {/* Selected Package Summary */}
               {formData.selectedPackage && selectedPackageDiscount && (
                 <div className="bg-zinc-100/50 p-4 ">
-                  <p className="mb-2 font-semibold text-white">แพ็คเกจที่เลือก:</p>
+                  <p className="mb-2 font-semibold text-zinc-950">แพ็คเกจที่เลือก:</p>
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
                       <div>
-                        <p className="text-white">{formData.selectedPackage.name}</p>
+                        <p className="text-zinc-950">{formData.selectedPackage.name}</p>
                         {formData.selectedPackage.duration_months && (
                           <p className="text-zinc-400 text-sm">
                             ระยะเวลา {formData.selectedPackage.duration_months} เดือน
@@ -839,19 +839,19 @@ export default function BookingPage({
               <h2 className="font-semibold text-xl">ยืนยันและชำระเงิน</h2>
 
               <div className="bg-zinc-100/50 p-6 ">
-                <h3 className="mb-4 font-semibold text-white">สรุปการจอง</h3>
+                <h3 className="mb-4 font-semibold text-zinc-950">สรุปการจอง</h3>
                 <div className="space-y-2 text-zinc-400 text-sm">
                   <div className="flex justify-between">
                     <span>ชื่อผู้จอง:</span>
-                    <span className="font-semibold text-white">{formData.fullName}</span>
+                    <span className="font-semibold text-zinc-950">{formData.fullName}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>เบอร์โทรศัพท์:</span>
-                    <span className="font-semibold text-white">{formData.phone}</span>
+                    <span className="font-semibold text-zinc-950">{formData.phone}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>แพ็คเกจ:</span>
-                    <span className="font-semibold text-white">{formData.selectedPackage?.name}</span>
+                    <span className="font-semibold text-zinc-950">{formData.selectedPackage?.name}</span>
                   </div>
                   {formData.selectedPromotion && selectedPackageDiscount && (
                     <div className="flex justify-between">
@@ -864,20 +864,20 @@ export default function BookingPage({
                   {formData.selectedPackage?.duration_months && (
                     <div className="flex justify-between">
                       <span>ระยะเวลา:</span>
-                      <span className="font-semibold text-white">
+                      <span className="font-semibold text-zinc-950">
                         {formData.selectedPackage.duration_months} เดือน
                       </span>
                     </div>
                   )}
                   <div className="flex justify-between">
                     <span>วันที่เริ่มต้น:</span>
-                    <span className="font-semibold text-white">
+                    <span className="font-semibold text-zinc-950">
                       {new Date(formData.startDate).toLocaleDateString('th-TH')}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span>ราคาปกติ:</span>
-                    <span className={hasSelectedDiscount ? 'line-through text-zinc-500' : 'font-semibold text-white'}>
+                    <span className={hasSelectedDiscount ? 'line-through text-zinc-500' : 'font-semibold text-zinc-950'}>
                       ฿{originalPackagePrice.toLocaleString()}
                     </span>
                   </div>
@@ -906,7 +906,7 @@ export default function BookingPage({
                 </div>
               ) : clientSecret ? (
                 <div>
-                  <h3 className="mb-4 font-semibold text-white">ชำระเงิน</h3>
+                  <h3 className="mb-4 font-semibold text-zinc-950">ชำระเงิน</h3>
                   <PaymentWrapper
                     clientSecret={clientSecret}
                     returnUrl={`${process.env.NEXT_PUBLIC_APP_URL}/hospitals/${slug}/appointment/success?appointment=${bookingId}`}
@@ -935,7 +935,7 @@ export default function BookingPage({
               <button
                 onClick={handlePrevious}
                 disabled={currentStep === 1}
-                className="disabled:opacity-50 px-6 py-3  font-semibold text-zinc-400 hover:text-white transition-colors disabled:cursor-not-allowed"
+                className="disabled:opacity-50 px-6 py-3  font-semibold text-zinc-400 hover:text-zinc-950 transition-colors disabled:cursor-not-allowed"
                 aria-label="ย้อนกลับไปขั้นตอนก่อนหน้า"
               >
                 ย้อนกลับ
@@ -957,7 +957,7 @@ export default function BookingPage({
             <div className="flex justify-start mt-8 pt-6 border-zinc-700 border-t">
               <button
                 onClick={handlePrevious}
-                className="px-6 py-3  font-semibold text-zinc-400 hover:text-white transition-colors"
+                className="px-6 py-3  font-semibold text-zinc-400 hover:text-zinc-950 transition-colors"
                 aria-label="ย้อนกลับไปขั้นตอนก่อนหน้า"
               >
                 ย้อนกลับ

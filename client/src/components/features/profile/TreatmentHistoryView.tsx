@@ -50,7 +50,7 @@ export function TreatmentHistoryView() {
 
   return (
     <div className="space-y-4">
-      <h3 className="font-semibold text-lg text-white">ประวัติการรักษา</h3>
+      <h3 className="font-semibold text-lg text-zinc-950">ประวัติการรักษา</h3>
 
       {/* Statistics */}
       {stats && (
@@ -58,19 +58,19 @@ export function TreatmentHistoryView() {
           <Card className="bg-zinc-100/50 border border-zinc-700">
             <CardBody>
               <p className="text-zinc-400 text-sm">จำนวนครั้งทั้งหมด</p>
-              <p className="text-2xl font-semibold text-white">{stats.total_bookings}</p>
+              <p className="text-2xl font-semibold text-zinc-950">{stats.total_bookings}</p>
             </CardBody>
           </Card>
           <Card className="bg-zinc-100/50 border border-zinc-700">
             <CardBody>
               <p className="text-zinc-400 text-sm">โรงพยาบาลที่ไป</p>
-              <p className="text-2xl font-semibold text-white">{stats.unique_hospitals}</p>
+              <p className="text-2xl font-semibold text-zinc-950">{stats.unique_hospitals}</p>
             </CardBody>
           </Card>
           <Card className="bg-zinc-100/50 border border-zinc-700">
             <CardBody>
               <p className="text-zinc-400 text-sm">ยอดรวมที่ใช้</p>
-              <p className="text-2xl font-semibold text-white">
+              <p className="text-2xl font-semibold text-zinc-950">
                 ฿{(stats.total_spent || 0).toLocaleString()}
               </p>
             </CardBody>
@@ -86,14 +86,14 @@ export function TreatmentHistoryView() {
               <CardBody className="space-y-2">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <h4 className="font-semibold text-white">{appointment.hospitals?.hospital_name}</h4>
+                    <h4 className="font-semibold text-zinc-950">{appointment.hospitals?.hospital_name}</h4>
                     <div className="flex items-center gap-2 mt-1">
                       <MapPinIcon className="w-4 h-4 text-zinc-400" />
                       <span className="text-zinc-400 text-sm">{appointment.hospitals?.location}</span>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-white font-semibold">
+                    <p className="text-zinc-950 font-semibold">
                       ฿
                       {Number(appointment.price_paid || 0).toLocaleString()}
                     </p>

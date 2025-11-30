@@ -198,10 +198,10 @@ function AdminDashboardContent() {
         <Card className="bg-warning/10 backdrop-blur-sm mb-8 border border-warning/30">
           <CardBody className="flex-row items-center gap-4">
             <div className="flex justify-center items-center bg-warning  w-12 h-12">
-              <ClockIcon className="w-6 h-6 text-white" />
+              <ClockIcon className="w-6 h-6 text-zinc-950" />
             </div>
             <div className="flex-1">
-              <h3 className="mb-1 font-semibold text-white">มีรายการรออนุมัติ</h3>
+              <h3 className="mb-1 font-semibold text-zinc-950">มีรายการรออนุมัติ</h3>
               <p className="text-default-400 text-sm">
                 มี {stats.pendingApprovals} โรงพยาบาลที่รอการอนุมัติจากคุณ
               </p>
@@ -290,7 +290,7 @@ function AdminDashboardContent() {
                 <CardBody>
                   <div className="flex items-center gap-4">
                     <div className={`bg-${tool.color} p-4 `}>
-                      <Icon className="w-7 h-7 text-white" />
+                      <Icon className="w-7 h-7 text-zinc-950" />
                     </div>
                     <div className="flex-1">
                       <h3 className="mb-1 font-semibold text-xl">

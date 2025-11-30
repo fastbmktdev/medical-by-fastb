@@ -128,7 +128,7 @@ function RetryPaymentForm({
                 />
                 <div className="flex-1">
                   <div className="flex items-center space-x-2">
-                    <span className="text-white font-medium">
+                    <span className="text-zinc-950 font-medium">
                       {method.brand?.toUpperCase() || 'Card'} •••• {method.last4}
                     </span>
                     {method.is_default && (
@@ -251,11 +251,11 @@ export default function RetryPaymentButton({
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
           <div className="bg-zinc-800  p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
             <div className="mb-6">
-              <h3 className="text-xl font-semibold text-white mb-2">
+              <h3 className="text-xl font-semibold text-zinc-950 mb-2">
                 ลองชำระเงินใหม่
               </h3>
               <p className="text-zinc-400 text-sm">
-                จำนวนเงิน: <span className="text-white font-medium">฿{(payment.amount || 0).toLocaleString()}</span>
+                จำนวนเงิน: <span className="text-zinc-950 font-medium">฿{(payment.amount || 0).toLocaleString()}</span>
               </p>
               {payment.failure_reason && (
                 <p className="text-zinc-400 text-sm mt-1">

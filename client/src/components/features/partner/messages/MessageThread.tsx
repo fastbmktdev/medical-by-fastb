@@ -169,13 +169,13 @@ export function MessageThread({
             />
           ) : (
             <div className="w-10 h-10  bg-linear-to-br from-blue-600 to-purple-600 flex items-center justify-center">
-              <UserIcon className="w-5 h-5 text-white" />
+              <UserIcon className="w-5 h-5 text-zinc-950" />
             </div>
           )}
 
           {/* Customer Info */}
           <div className="flex-1">
-            <h3 className="font-semibold text-white">{customerName}</h3>
+            <h3 className="font-semibold text-zinc-950">{customerName}</h3>
             <p className="text-xs text-zinc-400">
               {conversation.subject || "การสนทนา"}
             </p>
@@ -218,7 +218,7 @@ export function MessageThread({
                       />
                     ) : (
                       <div className="w-8 h-8  bg-linear-to-br from-blue-600 to-purple-600 flex items-center justify-center">
-                        <UserIcon className="w-4 h-4 text-white" />
+                        <UserIcon className="w-4 h-4 text-zinc-950" />
                       </div>
                     )}
                   </div>
@@ -231,7 +231,7 @@ export function MessageThread({
                   <div
                     className={` px-4 py-2 ${
                       isOwn
-                        ? "bg-blue-600 text-white"
+                        ? "bg-blue-600 text-zinc-950"
                         : "bg-zinc-800 text-zinc-100"
                     }`}
                   >
@@ -295,7 +295,7 @@ export function MessageThread({
               onKeyDown={handleKeyDown}
               placeholder="พิมพ์ข้อความ... (กด Enter เพื่อส่ง)"
               disabled={isSending}
-              className="w-full bg-transparent p-3 text-sm text-white placeholder:text-zinc-500 focus:outline-none resize-none min-h-[44px] max-h-[120px]"
+              className="w-full bg-transparent p-3 text-sm text-zinc-950 placeholder:text-zinc-500 focus:outline-none resize-none min-h-[44px] max-h-[120px]"
               rows={1}
             />
           </div>
@@ -304,7 +304,7 @@ export function MessageThread({
           <button
             onClick={handleSend}
             disabled={!newMessage.trim() || isSending}
-            className="shrink-0 w-11 h-11 flex items-center justify-center bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-100 disabled:cursor-not-allowed text-white  transition-colors"
+            className="shrink-0 w-11 h-11 flex items-center justify-center bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-100 disabled:cursor-not-allowed text-zinc-950  transition-colors"
             aria-label="ส่งข้อความ"
           >
             {isSending ? (

@@ -204,7 +204,7 @@ function CheckoutContent() {
             <button
               onClick={handleProceedToPayment}
               disabled={loading}
-              className="w-full py-3 bg-blue-600 text-white  hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors font-semibold"
+              className="w-full py-3 bg-blue-600 text-zinc-950  hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors font-semibold"
             >
               {loading ? 'กำลังเตรียมการชำระเงิน...' : 'ดำเนินการชำระเงิน'}
             </button>

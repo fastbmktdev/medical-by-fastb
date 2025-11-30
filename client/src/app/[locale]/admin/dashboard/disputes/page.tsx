@@ -304,7 +304,7 @@ function DisputesContent() {
               <TableBody emptyContent="ไม่พบข้อพิพาท">
                 {filteredDisputes.map((dispute) => (
                   <TableRow key={dispute.id}>
-                    <TableCell className="font-mono text-white text-sm">
+                    <TableCell className="font-mono text-zinc-950 text-sm">
                       {dispute.id.slice(0, 8)}...
                     </TableCell>
                     <TableCell>{getStatusChip(dispute.status)}</TableCell>
@@ -365,25 +365,25 @@ function DisputesContent() {
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <label className="text-default-500 text-sm">ID</label>
-                          <p className="font-mono text-white">{selectedDispute.id}</p>
+                          <p className="font-mono text-zinc-950">{selectedDispute.id}</p>
                         </div>
                         <div>
                           <label className="text-default-500 text-sm">Stripe Dispute ID</label>
-                          <p className="font-mono text-white text-sm">{selectedDispute.stripe_dispute_id}</p>
+                          <p className="font-mono text-zinc-950 text-sm">{selectedDispute.stripe_dispute_id}</p>
                         </div>
                         <div>
                           <label className="text-default-500 text-sm">จำนวนเงิน</label>
-                          <p className="font-mono font-semibold text-white">
+                          <p className="font-mono font-semibold text-zinc-950">
                             ฿{selectedDispute.amount.toLocaleString()} {selectedDispute.currency.toUpperCase()}
                           </p>
                         </div>
                         <div>
                           <label className="text-default-500 text-sm">เหตุผล</label>
-                          <p className="text-white">{getReasonText(selectedDispute.reason)}</p>
+                          <p className="text-zinc-950">{getReasonText(selectedDispute.reason)}</p>
                         </div>
                         <div>
                           <label className="text-default-500 text-sm">วันที่ต้องตอบ</label>
-                          <p className="text-white">
+                          <p className="text-zinc-950">
                             {selectedDispute.evidence_due_by
                               ? new Date(selectedDispute.evidence_due_by).toLocaleString('th-TH')
                               : '-'}
@@ -391,7 +391,7 @@ function DisputesContent() {
                         </div>
                         <div>
                           <label className="text-default-500 text-sm">วันที่ตอบ</label>
-                          <p className="text-white">
+                          <p className="text-zinc-950">
                             {selectedDispute.responded_at
                               ? new Date(selectedDispute.responded_at).toLocaleString('th-TH')
                               : 'ยังไม่ได้ตอบ'}
@@ -402,7 +402,7 @@ function DisputesContent() {
                       {selectedDispute.admin_notes && (
                         <div>
                           <label className="text-default-500 text-sm">หมายเหตุ</label>
-                          <p className="text-white bg-default-100 p-3 ">
+                          <p className="text-zinc-950 bg-default-100 p-3 ">
                             {selectedDispute.admin_notes}
                           </p>
                         </div>

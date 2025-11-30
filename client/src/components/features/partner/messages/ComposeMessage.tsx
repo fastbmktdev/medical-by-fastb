@@ -108,10 +108,10 @@ export function ComposeMessage({
       <div className="bg-zinc-900  shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col border border-zinc-700">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-zinc-700">
-          <h2 className="text-xl font-semibold text-white">ส่งข้อความใหม่</h2>
+          <h2 className="text-xl font-semibold text-zinc-950">ส่งข้อความใหม่</h2>
           <button
             onClick={onClose}
-            className="text-zinc-400 hover:text-white transition-colors"
+            className="text-zinc-400 hover:text-zinc-950 transition-colors"
             aria-label="ปิด"
           >
             <XMarkIcon className="w-6 h-6" />
@@ -137,7 +137,7 @@ export function ComposeMessage({
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="ค้นหาลูกค้า..."
-                      className="w-full pl-10 pr-4 py-2 bg-zinc-800 border border-zinc-700  text-white placeholder:text-zinc-500 focus:outline-none focus:border-blue-600"
+                      className="w-full pl-10 pr-4 py-2 bg-zinc-800 border border-zinc-700  text-zinc-950 placeholder:text-zinc-500 focus:outline-none focus:border-blue-600"
                     />
                   </div>
 
@@ -170,14 +170,14 @@ export function ComposeMessage({
                                 className="w-10 h-10  object-cover"
                               />
                             ) : (
-                              <div className="w-10 h-10  bg-linear-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold">
+                              <div className="w-10 h-10  bg-linear-to-br from-blue-600 to-purple-600 flex items-center justify-center text-zinc-950 font-semibold">
                                 {getCustomerDisplayName(
                                   customer
                                 )[0].toUpperCase()}
                               </div>
                             )}
                             <div className="flex-1 min-w-0">
-                              <p className="font-medium text-white truncate">
+                              <p className="font-medium text-zinc-950 truncate">
                                 {getCustomerDisplayName(customer)}
                               </p>
                               <p className="text-xs text-zinc-400 truncate">
@@ -201,14 +201,14 @@ export function ComposeMessage({
                       className="w-10 h-10  object-cover"
                     />
                   ) : (
-                    <div className="w-10 h-10  bg-linear-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold">
+                    <div className="w-10 h-10  bg-linear-to-br from-blue-600 to-purple-600 flex items-center justify-center text-zinc-950 font-semibold">
                       {getCustomerDisplayName(
                         selectedCustomer
                       )[0].toUpperCase()}
                     </div>
                   )}
                   <div className="flex-1">
-                    <p className="font-medium text-white">
+                    <p className="font-medium text-zinc-950">
                       {getCustomerDisplayName(selectedCustomer)}
                     </p>
                     <p className="text-xs text-zinc-400">
@@ -218,7 +218,7 @@ export function ComposeMessage({
                   <button
                     type="button"
                     onClick={() => setSelectedCustomer(null)}
-                    className="text-zinc-400 hover:text-white"
+                    className="text-zinc-400 hover:text-zinc-950"
                     aria-label="เปลี่ยนลูกค้า"
                   >
                     <XMarkIcon className="w-5 h-5" />
@@ -246,7 +246,7 @@ export function ComposeMessage({
                 onChange={(e) => setSubject(e.target.value)}
                 placeholder="เช่น: ยินดีต้อนรับสู่โรงพยาบาล"
                 maxLength={200}
-                className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700  text-white placeholder:text-zinc-500 focus:outline-none focus:border-blue-600"
+                className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700  text-zinc-950 placeholder:text-zinc-500 focus:outline-none focus:border-blue-600"
               />
               <div className="flex justify-between mt-1">
                 {errors.subject ? (
@@ -275,7 +275,7 @@ export function ComposeMessage({
                 placeholder="พิมพ์ข้อความของคุณที่นี่..."
                 maxLength={5000}
                 rows={6}
-                className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700  text-white placeholder:text-zinc-500 focus:outline-none focus:border-blue-600 resize-none"
+                className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700  text-zinc-950 placeholder:text-zinc-500 focus:outline-none focus:border-blue-600 resize-none"
               />
               <div className="flex justify-between mt-1">
                 {errors.message ? (
@@ -303,14 +303,14 @@ export function ComposeMessage({
               type="button"
               onClick={onClose}
               disabled={isSending}
-              className="px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors disabled:opacity-50"
+              className="px-4 py-2 text-sm font-medium text-zinc-400 hover:text-zinc-950 transition-colors disabled:opacity-50"
             >
               ยกเลิก
             </button>
             <button
               type="submit"
               disabled={isSending}
-              className="px-6 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-100 disabled:cursor-not-allowed text-white  transition-colors flex items-center gap-2"
+              className="px-6 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-100 disabled:cursor-not-allowed text-zinc-950  transition-colors flex items-center gap-2"
             >
               {isSending ? (
                 <>

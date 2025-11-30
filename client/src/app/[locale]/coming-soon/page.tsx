@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function ComingSoonPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-6 bg-linear-to-b from-slate-900 via-slate-950 to-black px-4 text-center text-white">
+    <main className="flex min-h-screen flex-col items-center justify-center gap-6 bg-linear-to-b from-slate-900 via-slate-950 to-black px-4 text-center text-zinc-950">
       <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
         {metadata.title as string}
       </h1>

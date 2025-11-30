@@ -326,7 +326,7 @@ export default function SavedPaymentMethods({
                   </div>
                   <div>
                     <div className="flex items-center space-x-2">
-                      <h4 className="text-lg font-semibold text-white">
+                      <h4 className="text-lg font-semibold text-zinc-950">
                         {method.brand?.toUpperCase() || 'Card'} •••• {method.last4}
                       </h4>
                       {method.is_default && (
@@ -344,7 +344,7 @@ export default function SavedPaymentMethods({
                   {!method.is_default && (
                     <button
                       onClick={() => handleSetDefault(method.id)}
-                      className="text-zinc-400 hover:text-white text-sm font-medium transition-colors"
+                      className="text-zinc-400 hover:text-zinc-950 text-sm font-medium transition-colors"
                     >
                       ตั้งเป็นเริ่มต้น
                     </button>
@@ -386,14 +386,14 @@ export default function SavedPaymentMethods({
                 setShowAddModal(false);
                 setSetupIntentClientSecret(null);
               }}
-              className="absolute top-4 right-4 text-zinc-400 hover:text-white transition-colors"
+              className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-950 transition-colors"
               aria-label="ปิด"
             >
               <XMarkIcon className="w-6 h-6" />
             </button>
 
             <div className="mb-6 pr-8">
-              <h3 className="text-xl font-semibold text-white mb-2">
+              <h3 className="text-xl font-semibold text-zinc-950 mb-2">
                 เพิ่มบัตรเครดิตใหม่
               </h3>
               <p className="text-zinc-400 text-sm">
@@ -431,7 +431,7 @@ export default function SavedPaymentMethods({
                     setShowAddModal(false);
                     setSetupIntentClientSecret(null);
                   }}
-                  className="mt-4 bg-zinc-600 hover:bg-zinc-500 px-4 py-2  font-medium transition-colors text-white"
+                  className="mt-4 bg-zinc-600 hover:bg-zinc-500 px-4 py-2  font-medium transition-colors text-zinc-950"
                 >
                   ยกเลิก
                 </button>

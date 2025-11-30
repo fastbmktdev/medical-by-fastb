@@ -132,7 +132,7 @@ function SortableImage({
             {!selectionMode && (
               <button
                 {...listeners}
-                className="absolute right-2 top-2 cursor-move  bg-black/60 p-2 text-white transition-colors hover:bg-black/80"
+                className="absolute right-2 top-2 cursor-move  bg-black/60 p-2 text-zinc-950 transition-colors hover:bg-black/80"
               >
                 <ArrowsUpDownIcon className="h-4 w-4" />
               </button>
@@ -177,11 +177,11 @@ function SortableImage({
             {/* Image info */}
             <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent p-3 pt-8">
               {image.title && (
-                <p className="truncate text-sm font-semibold text-white">
+                <p className="truncate text-sm font-semibold text-zinc-950">
                   {image.title}
                 </p>
               )}
-              <div className="flex items-center gap-2 text-xs text-white/70">
+              <div className="flex items-center gap-2 text-xs text-zinc-950/70">
                 {image.width && image.height && (
                   <span>
                     {image.width}×{image.height}

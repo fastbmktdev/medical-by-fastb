@@ -69,7 +69,7 @@ function AdminSettingsContent() {
               label="ชื่อเว็บไซต์"
               placeholder="medical"
               classNames={{
-                input: "text-white",
+                input: "text-zinc-950",
                 label: "text-default-400",
               }}
             />
@@ -77,7 +77,7 @@ function AdminSettingsContent() {
               label="คำอธิบายเว็บไซต์"
               placeholder="แพลตฟอร์มจองโรงพยาบาลการแพทย์ออนไลน์"
               classNames={{
-                input: "text-white",
+                input: "text-zinc-950",
                 label: "text-default-400",
               }}
             />
@@ -86,7 +86,7 @@ function AdminSettingsContent() {
               type="email"
               placeholder="admin@medical.com"
               classNames={{
-                input: "text-white",
+                input: "text-zinc-950",
                 label: "text-default-400",
               }}
             />
@@ -102,7 +102,7 @@ function AdminSettingsContent() {
           <CardBody className="gap-4">
             <div className="flex justify-between items-center">
               <div>
-                <p className="mb-1 font-semibold text-white">โหมดปิดปรับปรุง</p>
+                <p className="mb-1 font-semibold text-zinc-950">โหมดปิดปรับปรุง</p>
                 <p className="text-default-400 text-sm">ปิดเว็บไซต์ชั่วคราว</p>
               </div>
               <Switch
@@ -113,7 +113,7 @@ function AdminSettingsContent() {
             </div>
             <div className="flex justify-between items-center pt-4 border-white/5 border-t">
               <div>
-                <p className="mb-1 font-semibold text-white">อนุมัติโรงพยาบาลอัตโนมัติ</p>
+                <p className="mb-1 font-semibold text-zinc-950">อนุมัติโรงพยาบาลอัตโนมัติ</p>
                 <p className="text-default-400 text-sm">อนุมัติโรงพยาบาลใหม่โดยอัตโนมัติ</p>
               </div>
               <Switch
@@ -134,21 +134,21 @@ function AdminSettingsContent() {
           <CardBody className="gap-4">
             <div className="flex justify-between items-center">
               <div>
-                <p className="mb-1 font-semibold text-white">แจ้งเตือนผู้ใช้ใหม่</p>
+                <p className="mb-1 font-semibold text-zinc-950">แจ้งเตือนผู้ใช้ใหม่</p>
                 <p className="text-default-400 text-sm">แจ้งเตือนเมื่อมีผู้ใช้ใหม่</p>
               </div>
               <Switch color="danger" defaultSelected />
             </div>
             <div className="flex justify-between items-center pt-4 border-white/5 border-t">
               <div>
-                <p className="mb-1 font-semibold text-white">แจ้งเตือนโรงพยาบาลใหม่</p>
+                <p className="mb-1 font-semibold text-zinc-950">แจ้งเตือนโรงพยาบาลใหม่</p>
                 <p className="text-default-400 text-sm">แจ้งเตือนเมื่อมีโรงพยาบาลใหม่</p>
               </div>
               <Switch color="danger" defaultSelected />
             </div>
             <div className="flex justify-between items-center pt-4 border-white/5 border-t">
               <div>
-                <p className="mb-1 font-semibold text-white">แจ้งเตือนการจอง</p>
+                <p className="mb-1 font-semibold text-zinc-950">แจ้งเตือนการจอง</p>
                 <p className="text-default-400 text-sm">แจ้งเตือนเมื่อมีการจอง</p>
               </div>
               <Switch color="danger" defaultSelected />
@@ -168,7 +168,7 @@ function AdminSettingsContent() {
               type="number"
               placeholder="10"
               classNames={{
-                input: "text-white",
+                input: "text-zinc-950",
                 label: "text-default-400",
               }}
             />
@@ -177,7 +177,7 @@ function AdminSettingsContent() {
               type="number"
               placeholder="1000"
               classNames={{
-                input: "text-white",
+                input: "text-zinc-950",
                 label: "text-default-400",
               }}
             />
@@ -193,7 +193,7 @@ function AdminSettingsContent() {
           <CardBody className="gap-4">
             <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4">
               <div>
-                <p className="mb-1 font-semibold text-white">เปลี่ยนรหัสผ่าน</p>
+                <p className="mb-1 font-semibold text-zinc-950">เปลี่ยนรหัสผ่าน</p>
                 <p className="text-default-400 text-sm">เปลี่ยนรหัสผ่านผู้ดูแลระบบ</p>
               </div>
               <Button size="sm" color="danger" variant="flat">
@@ -202,7 +202,7 @@ function AdminSettingsContent() {
             </div>
             <div className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 pt-4 border-white/5 border-t">
               <div>
-                <p className="mb-1 font-semibold text-white">ดูบันทึกกิจกรรม</p>
+                <p className="mb-1 font-semibold text-zinc-950">ดูบันทึกกิจกรรม</p>
                 <p className="text-default-400 text-sm">ดูประวัติการใช้งานของผู้ดูแล</p>
               </div>
               <Button size="sm" variant="flat">

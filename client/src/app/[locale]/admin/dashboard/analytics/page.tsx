@@ -67,7 +67,7 @@ function AdminAnalyticsContent() {
             <CardBody className="gap-3">
               <div className="flex justify-between items-center">
                 <div className="bg-primary p-3 ">
-                  <UsersIcon className="w-6 h-6 text-white" />
+                  <UsersIcon className="w-6 h-6 text-zinc-950" />
                 </div>
                 <ArrowTrendingUpIcon className="w-5 h-5 text-success" />
               </div>
@@ -81,7 +81,7 @@ function AdminAnalyticsContent() {
             <CardBody className="gap-3">
               <div className="flex justify-between items-center">
                 <div className="bg-success p-3 ">
-                  <BuildingStorefrontIcon className="w-6 h-6 text-white" />
+                  <BuildingStorefrontIcon className="w-6 h-6 text-zinc-950" />
                 </div>
                 <ArrowTrendingUpIcon className="w-5 h-5 text-success" />
               </div>
@@ -95,7 +95,7 @@ function AdminAnalyticsContent() {
             <CardBody className="gap-3">
               <div className="flex justify-between items-center">
                 <div className="bg-warning p-3 ">
-                  <CalendarIcon className="w-6 h-6 text-white" />
+                  <CalendarIcon className="w-6 h-6 text-zinc-950" />
                 </div>
                 <ArrowTrendingUpIcon className="w-5 h-5 text-success" />
               </div>
@@ -109,7 +109,7 @@ function AdminAnalyticsContent() {
             <CardBody className="gap-3">
               <div className="flex justify-between items-center">
                 <div className="bg-secondary p-3 ">
-                  <CurrencyDollarIcon className="w-6 h-6 text-white" />
+                  <CurrencyDollarIcon className="w-6 h-6 text-zinc-950" />
                 </div>
                 <ArrowTrendingUpIcon className="w-5 h-5 text-success" />
               </div>

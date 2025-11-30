@@ -383,7 +383,7 @@ function HospitalPageContent() {
             </div>
             {/* <div className="text-right">
               <p className="mb-1 text-default-400 text-sm">ID โรงพยาบาล</p>
-              <p className="font-mono text-white">{hospital.id}</p>
+              <p className="font-mono text-zinc-950">{hospital.id}</p>
             </div> */}
           </div>
         </CardBody>
@@ -450,7 +450,7 @@ function HospitalPageContent() {
                   <BuildingStorefrontIcon className="w-4 h-4 text-default-400" />
                 }
                 classNames={{
-                  input: "text-white",
+                  input: "text-zinc-950",
                   label: "text-default-400",
                 }}
               />
@@ -462,7 +462,7 @@ function HospitalPageContent() {
                   setEditFormData({ ...editFormData, contact_name: value })
                 }
                 classNames={{
-                  input: "text-white",
+                  input: "text-zinc-950",
                   label: "text-default-400",
                 }}
               />
@@ -477,7 +477,7 @@ function HospitalPageContent() {
                   <PhoneIcon className="w-4 h-4 text-default-400" />
                 }
                 classNames={{
-                  input: "text-white",
+                  input: "text-zinc-950",
                   label: "text-default-400",
                 }}
               />
@@ -493,7 +493,7 @@ function HospitalPageContent() {
                   <EnvelopeIcon className="w-4 h-4 text-default-400" />
                 }
                 classNames={{
-                  input: "text-white",
+                  input: "text-zinc-950",
                   label: "text-default-400",
                 }}
               />
@@ -509,7 +509,7 @@ function HospitalPageContent() {
                 }
                 className="md:col-span-2"
                 classNames={{
-                  input: "text-white",
+                  input: "text-zinc-950",
                   label: "text-default-400",
                 }}
               />
@@ -522,7 +522,7 @@ function HospitalPageContent() {
                 }
                 className="md:col-span-2"
                 classNames={{
-                  input: "text-white",
+                  input: "text-zinc-950",
                   label: "text-default-400",
                 }}
               />
@@ -590,7 +590,7 @@ function HospitalPageContent() {
 
               <div className="pt-6 border-white/5 border-t">
                 <div className="flex justify-between items-center mb-4">
-                  <h4 className="font-semibold text-white">รูปภาพโรงพยาบาล</h4>
+                  <h4 className="font-semibold text-zinc-950">รูปภาพโรงพยาบาล</h4>
                   <Button
                     size="sm"
                     color="secondary"
@@ -665,10 +665,10 @@ function HospitalPageContent() {
                                     onClick={() => handleRemoveFile(idx)}
                                     className="absolute top-1 right-1 bg-red-500 hover:bg-red-600  p-1 opacity-0 group-hover:opacity-100 transition-opacity"
                                   >
-                                    <XMarkIcon className="w-4 h-4 text-white" />
+                                    <XMarkIcon className="w-4 h-4 text-zinc-950" />
                                   </button>
                                   <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-2 py-1">
-                                    <p className="text-white text-xs truncate">
+                                    <p className="text-zinc-950 text-xs truncate">
                                       {file.name}
                                     </p>
                                   </div>
@@ -736,7 +736,7 @@ function HospitalPageContent() {
                           className="absolute top-2 right-2 bg-red-500/80 hover:bg-red-600  p-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
                           title="ลบรูปภาพ"
                         >
-                          <TrashIcon className="w-4 h-4 text-white" />
+                          <TrashIcon className="w-4 h-4 text-zinc-950" />
                         </button>
                       </div>
                     ))}

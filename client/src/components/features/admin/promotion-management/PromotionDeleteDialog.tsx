@@ -64,7 +64,7 @@ export default function PromotionDeleteDialog({
       <ModalContent>
         <ModalHeader className="flex flex-col gap-1">ยืนยันการลบโปรโมชั่น</ModalHeader>
         <ModalBody>
-          <p className="text-white">
+          <p className="text-zinc-950">
             คุณแน่ใจหรือไม่ว่าต้องการลบโปรโมชั่น &quot;{promotion.title}&quot;?
           </p>
           <p className="text-red-400 text-sm mt-2">

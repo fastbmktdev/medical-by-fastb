@@ -146,7 +146,7 @@ function ProductCardComponent({
               role="status"
               aria-label={t("outOfStock")}
             >
-              <span className="font-semibold text-xs text-white">
+              <span className="font-semibold text-xs text-zinc-950">
                 {t("outOfStockBadge")}
               </span>
             </div>
@@ -158,7 +158,7 @@ function ProductCardComponent({
               className="absolute bottom-2 left-2 bg-black/70 backdrop-blur-sm px-2 py-1 "
               aria-label={t("category")}
             >
-              <span className="text-xs text-white">{product.category}</span>
+              <span className="text-xs text-zinc-950">{product.category}</span>
             </div>
           )}
         </div>
@@ -221,7 +221,7 @@ function ProductCardComponent({
                 ${
                   isOutOfStock || isAddingToCart
                     ? "bg-zinc-100 text-zinc-500"
-                    : "bg-brand-primary hover:bg-[#8B5CF6] active:scale-95 text-white"
+                    : "bg-brand-primary hover:bg-[#8B5CF6] active:scale-95 text-zinc-950"
                 }
               `}
               data-testid={testId ? `${testId}-add-to-cart` : undefined}

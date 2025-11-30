@@ -107,7 +107,7 @@ const StatCard: React.FC<{
         <span className="text-zinc-400 text-sm text-right">{label}</span>
       </div>
       <div className="flex items-start justify-between h-full">
-        <p className="text-3xl font-semibold text-white flex flex-col items-center gap-2 w-10 h-full">
+        <p className="text-3xl font-semibold text-zinc-950 flex flex-col items-center gap-2 w-10 h-full">
           {value}
         </p>
         <p className="flex flex-col items-center gap-2">
@@ -313,7 +313,7 @@ export default function AffiliateDashboardPage() {
       {/* Header Section */}
       <div className="text-center mb-12 animate-fade-in w-2/5">
         <div className="inline-flex items-center justify-center w-20 h-20 bg-linear-to-br from-red-500 to-orange-500  mb-6 shadow-lg shadow-red-500/30">
-          <SparklesIcon className="w-10 h-10 text-white" />
+          <SparklesIcon className="w-10 h-10 text-zinc-950" />
         </div>
         <h1 className="text-5xl font-semibold mb-4 bg-linear-to-r from-white via-zinc-100 to-zinc-300 bg-clip-text text-transparent">
           Affiliate Dashboard
@@ -352,9 +352,9 @@ export default function AffiliateDashboardPage() {
           {/* Affiliate Link Card */}
           <Card className="bg-zinc-800/60 border-zinc-700/50 backdrop-blur-sm hover:shadow-xl hover:shadow-red-500/10 transition-all duration-300">
             <CardHeader className="pb-3">
-              <h2 className="text-xl font-semibold flex items-center text-white">
+              <h2 className="text-xl font-semibold flex items-center text-zinc-950">
                 <div className="p-2 bg-linear-to-br from-blue-500 to-blue-600  mr-3">
-                  <LinkIcon className="w-5 h-5 text-white" />
+                  <LinkIcon className="w-5 h-5 text-zinc-950" />
                 </div>
                 ลิงก์แนะนำของคุณ
               </h2>
@@ -373,7 +373,7 @@ export default function AffiliateDashboardPage() {
                     <input
                       value={value}
                       readOnly
-                      className="flex-1 bg-zinc-100/50 border border-zinc-600  px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-red-500/50"
+                      className="flex-1 bg-zinc-100/50 border border-zinc-600  px-4 py-3 text-sm text-zinc-950 focus:outline-none focus:ring-2 focus:ring-red-500/50"
                     />
                     <Tooltip content="คัดลอก">
                       <Button
@@ -414,7 +414,7 @@ export default function AffiliateDashboardPage() {
                   ].map((platform) => (
                     <Button
                       key={platform.name}
-                      className={`${platform.color} text-white border-0`}
+                      className={`${platform.color} text-zinc-950 border-0`}
                       size="md"
                       onClick={() => shareOnSocial(platform.name)}
                       startContent={<ShareIcon className="w-4 h-4" />}
@@ -430,9 +430,9 @@ export default function AffiliateDashboardPage() {
           {/* Performance Stats Card */}
           <Card className="bg-zinc-800/60 border-zinc-700/50 backdrop-blur-sm hover:shadow-xl hover:shadow-red-500/10 transition-all duration-300">
             <CardHeader className="pb-3">
-              <h2 className="text-xl font-semibold flex items-center text-white">
+              <h2 className="text-xl font-semibold flex items-center text-zinc-950">
                 <div className="p-2 bg-linear-to-br from-green-500 to-green-600  mr-3">
-                  <ChartBarIcon className="w-5 h-5 text-white" />
+                  <ChartBarIcon className="w-5 h-5 text-zinc-950" />
                 </div>
                 สถิติประสิทธิภาพ
               </h2>
@@ -498,14 +498,14 @@ export default function AffiliateDashboardPage() {
                 </Chip>
               </div>
               <div className="bg-linear-to-br from-zinc-700/50 to-zinc-800/50 p-5  border border-zinc-600/50">
-                <h3 className="font-semibold mb-4 text-white flex items-center gap-2">
+                <h3 className="font-semibold mb-4 text-zinc-950 flex items-center gap-2">
                   <span className="text-xl">🎯</span>
                   เป้าหมายประจำเดือน
                 </h3>
                 <div className="space-y-3">
                   <div className="flex justify-between text-sm items-center">
                     <span className="text-zinc-400">แนะนำ 10 คน</span>
-                    <span className="text-white font-semibold">
+                    <span className="text-zinc-950 font-semibold">
                       {stats.totalReferrals}/10
                     </span>
                   </div>
@@ -530,9 +530,9 @@ export default function AffiliateDashboardPage() {
         {/* Referral History Card */}
         <Card className="bg-zinc-800/60 border-zinc-700/50 backdrop-blur-sm hover:shadow-xl hover:shadow-red-500/10 transition-all duration-300 mt-8">
           <CardHeader className="pb-3">
-            <h2 className="text-xl font-semibold text-white flex items-center">
+            <h2 className="text-xl font-semibold text-zinc-950 flex items-center">
               <div className="p-2 bg-linear-to-br from-purple-500 to-purple-600  mr-3">
-                <UserPlusIcon className="w-5 h-5 text-white" />
+                <UserPlusIcon className="w-5 h-5 text-zinc-950" />
               </div>
               ประวัติการแนะนำ
             </h2>
@@ -575,7 +575,7 @@ export default function AffiliateDashboardPage() {
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 bg-linear-to-br from-blue-500 to-blue-600  flex items-center justify-center text-white text-xs font-semibold">
+                            <div className="w-8 h-8 bg-linear-to-br from-blue-500 to-blue-600  flex items-center justify-center text-zinc-950 text-xs font-semibold">
                               {referral.referred_user_email
                                 .charAt(0)
                                 .toUpperCase()}
